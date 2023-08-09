@@ -1,4 +1,4 @@
-# Advanced Connection Handling Script ![GitHub stars](https://img.shields.io/github/stars/yourusername/yourrepo) ![GitHub forks](https://img.shields.io/github/forks/yourusername/yourrepo) ![GitHub issues](https://img.shields.io/github/issues/yourusername/yourrepo)
+# PowerShell Connection Handling Script (for my project learning) ![GitHub stars](https://img.shields.io/github/stars/yourusername/yourrepo) ![GitHub forks](https://img.shields.io/github/forks/yourusername/yourrepo) ![GitHub issues](https://img.shields.io/github/issues/yourusername/yourrepo)
 
 This script represents an advanced connection handling system, designed to manage client connections, rate limiting, logging, email notifications, SIEM integration, and Machine Learning invocation. It showcases a modular design and is written in PowerShell.
 
