@@ -42,20 +42,5 @@ function Send-EmailNotification {
 - [Machine Learning](https://en.wikipedia.org/wiki/Machine_learning)
 - [SIEM - Security Information and Event Management](https://en.wikipedia.org/wiki/Security_information_and_event_management)
 
-## Author
-
-[Your Name](https://github.com/yourusername) - Feel free to connect or follow on [GitHub](https://github.com/yourusername).
-
----
-
-Please refer to the full code file in the repository for complete details. Contributions, issues, and feature requests are welcome!
 
 💻 Happy Coding!
-"""
-
-# Save the markdown content to a file
-file_path = "/mnt/data/github_readme.md"
-with open(file_path, 'w') as file:
-    file.write(markdown_content)
-
-file_path
