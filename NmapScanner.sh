@@ -1,6 +1,6 @@
  #!/bin/bash
 
-function iSpy() {
+function nmap_iSpy() {
     if [ "$#" -lt 1 ]; then
         echo "Error: target not specified"
         exit 1
