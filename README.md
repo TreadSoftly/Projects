@@ -123,10 +123,10 @@
 <p align="justify">The final image provides a perspective on the compact size of the build. With the Raspberry Pi and its associated hardware, we've managed to fit a powerful computing system into the palm of a hand. Despite its small size, it's equipped to perform a wide range of tasks, from simple computing operations to complex network penetration tests. It's a testament to how far we've come in the realm of miniaturization and portable computing.</p>
 
 <h2 align="center">
-  <a href="https://www.theregister.com/2023/03/21/russian_foss_contributions_blocked/"><b>🎯 Mighty Mobile Penetration Testing Rig</b></a>
+  <a href="https://www.theregister.com/2023/03/21/russian_foss_contributions_blocked/"><b>🎯Summary</b></a>
   & 
-  <a href="https://youtu.be/h_f9lB4i-LA"><b>Unleashing</b></a>
-  <a href="https://youtu.be/ChtnZtTMUGU"><b>Potential 🌐</b></a>
+  <a href="https://youtu.be/h_f9lB4i-LA"><b>Use</b></a>
+  <a href="https://youtu.be/ChtnZtTMUGU"><b>Cases🌐</b></a>
 </h2>
 
 <p align="justify">
