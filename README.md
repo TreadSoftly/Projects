@@ -153,15 +153,15 @@ Whether you're a seasoned pro or an aspiring ethical hacker, this rig's blend of
 
 
 <p align="left" style="color: #007BFF; margin-bottom: 20px;">
-    <img src="https://i.gifer.com/YTiO.gif" width="230" height="230" alt="">
-    <strong><a href="https://secure.newegg.com/wishlist/md/42242292" style="text-decoration: none; color: inherit;">Click on the product names to view or purchase the items!</a></strong><img src="https://i.gifer.com/ZMQt.gif" width="230" height="230" alt="">
+    <img src="https://github.com/TreadSoftly/Projects/assets/121847455/2c6bace9-61b3-4aa3-afde-4adb7ef7897a" width="230" height="230" alt="">
+    <strong><a href="https://secure.newegg.com/wishlist/md/42242292" style="text-decoration: none; color: inherit;">Click on the product names to view or purchase the items!</a></strong><img src="https://github.com/TreadSoftly/Projects/assets/121847455/3762cf32-fe14-446a-8b58-f04f73fa7304" width="230" height="230" alt="">
 </p>
  
 <h2 align="center" style="color: #007BFF; margin-bottom: 20px;">
     <p href="https://www.amazon.com/hz/wishlist/dl/invite/imXrlKn?ref_=wl_share" style="text-decoration: none; color: inherit;">
         💻Hardware & Affiliate Links to Parts🔗
     </p>
-    <img src="https://i.gifer.com/WXfK.gif" width="80" height="80" alt="">
+    <img src="https://github.com/TreadSoftly/Projects/assets/121847455/f85e6b95-c537-4f89-ae19-dad755ecb9d1" width="80" height="80" alt="">
 </h2>
 
 
