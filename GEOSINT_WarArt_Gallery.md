@@ -31,11 +31,20 @@
 <p align="left"><img src="https://github.com/TreadSoftly/ContractSecurityProjects/assets/121847455/ac3c2bf7-10c4-4288-acad-7bc6854378b7" width="360" height="320"></p>
 <!-- Additional Images -->
 </div>
+<br>
+<br>
+
 
 <h3 align="center">🔒 Professional Background 🔒</h3>
 <p align="center">💼 Dedicated to the research, development, and deployment of cutting-edge solutions in the field of cybersecurity, humanitarian aid, and more. Seeking collaboration and innovation opportunities with like-minded professionals. 💼</p>
+<br>
+<br>
 
-<h3 align="center">🔗 Connect with me: 🔗</h3>
+
+<h3 align="center">🔗 Connect with me: 🔗
+
+  ![giphy](https://github.com/TreadSoftly/Projects/assets/121847455/c746210c-63fb-4d7e-a48e-944f43115fea)
+</h3>
 <p align="center">
   <a href="https://github.com/TreadSoftly"><img src="https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white"></a> •
   <a href="https://linkedin.com/in/raydraleaus/"><img src="https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white"></a> •
