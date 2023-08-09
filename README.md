@@ -296,7 +296,7 @@ Whether you're a seasoned pro or an aspiring ethical hacker, this rig's blend of
     <a href="https://www.youtube.com/watch?v=U1w4T03B30I" style="text-decoration: none; color: #007BFF; font-weight: bold; font-size: 36px;">Bash</a>
 </p>
   <p align="center">
-     <img src="https://github.com/TreadSoftly/Projects/assets/121847455/a5927369-1e07-4b2e-9c0c-5250242918a1" width="800" height="100" />
+     <img src="https://github.com/TreadSoftly/Projects/assets/121847455/a5927369-1e07-4b2e-9c0c-5250242918a1" width="700" height="150" />
   </p>
   <br>
   <br>
@@ -309,7 +309,7 @@ Whether you're a seasoned pro or an aspiring ethical hacker, this rig's blend of
 </h1>
 
   <p align="center">
-    <img src="https://github.com/TreadSoftly/Projects/assets/121847455/77bc8d0e-0daf-4803-9c78-2faa04927946" width="150" height="150" />
+    <img src="https://github.com/TreadSoftly/Projects/assets/121847455/77bc8d0e-0daf-4803-9c78-2faa04927946" width="200" height="200" />
   </p>
 
   
@@ -338,7 +338,7 @@ Whether you're a seasoned pro or an aspiring ethical hacker, this rig's blend of
 </h2>
 
  <p align="center">
-    <img src="https://github.com/TreadSoftly/Projects/assets/121847455/a55928dc-e6c2-4013-9d05-cc289f5f9dc3" width="150" height="150" />
+    <img src="https://github.com/TreadSoftly/Projects/assets/121847455/a55928dc-e6c2-4013-9d05-cc289f5f9dc3" width="200" height="200" />
   </p>
 
 
@@ -375,7 +375,7 @@ Whether you're a seasoned pro or an aspiring ethical hacker, this rig's blend of
 <p align="center"><i>Ready for enlightening discussions and collaborative ventures</i></p>
 
  <p align="center">
-    <img src="https://github.com/TreadSoftly/Projects/assets/121847455/8af3f926-67f9-40a2-a015-1a0a279442bc" width="150" height="150" />
+    <img src="https://github.com/TreadSoftly/Projects/assets/121847455/8af3f926-67f9-40a2-a015-1a0a279442bc" width="200" height="200" />
   </p>
 
 
@@ -393,7 +393,10 @@ Whether you're a seasoned pro or an aspiring ethical hacker, this rig's blend of
 
 <h2 align="center">🔐 Dive Deeper into Cybersecurity</h2>
 
-https://github.com/TreadSoftly/Projects/assets/121847455/34fb43c1-392d-47db-9c29-35a5d155b0aa
+ <p align="center">
+    <img src="https://github.com/TreadSoftly/Projects/assets/121847455/e529c902-4c7c-412c-9c7a-fdd91bf23192" width="150" height="150" />
+  </p>
+
 
 
 <p align="center">
