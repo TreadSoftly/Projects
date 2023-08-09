@@ -309,7 +309,7 @@ Whether you're a seasoned pro or an aspiring ethical hacker, this rig's blend of
 </h1>
 
   <p align="center">
-    <img src="https://github.com/TreadSoftly/Projects/assets/121847455/77bc8d0e-0daf-4803-9c78-2faa04927946" width="250" height="250" />
+    <img src="https://github.com/TreadSoftly/Projects/assets/121847455/77bc8d0e-0daf-4803-9c78-2faa04927946" width="200" height="200" />
   </p>
 
   
@@ -338,7 +338,7 @@ Whether you're a seasoned pro or an aspiring ethical hacker, this rig's blend of
 </h2>
 
  <p align="center">
-    <img src="https://github.com/TreadSoftly/Projects/assets/121847455/a55928dc-e6c2-4013-9d05-cc289f5f9dc3" width="275" height="200" />
+    <img src="https://github.com/TreadSoftly/Projects/assets/121847455/a55928dc-e6c2-4013-9d05-cc289f5f9dc3" width="325" height="200" />
   </p>
 
 
@@ -397,7 +397,7 @@ Whether you're a seasoned pro or an aspiring ethical hacker, this rig's blend of
 <h2 align="center">🔐 Dive Deeper into Cybersecurity</h2>
 
  <p align="center">
-    <img src="https://github.com/TreadSoftly/Projects/assets/121847455/e529c902-4c7c-412c-9c7a-fdd91bf23192" width="175" height="150" />
+    <img src="https://github.com/TreadSoftly/Projects/assets/121847455/e529c902-4c7c-412c-9c7a-fdd91bf23192" width="225" height="150" />
   </p>
 
 
