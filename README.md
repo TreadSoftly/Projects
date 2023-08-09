@@ -210,7 +210,7 @@ Whether you're a seasoned pro or an aspiring ethical hacker, this rig's blend of
     A portable Bluetooth-enabled keyboard with a touchpad mouse that acts as the input device for the Raspberry Pi setup, offering convenience for on-the-go use and compact storage.
 </p>
   <p align="center">
-    <img src="https://github.com/TreadSoftly/Projects/assets/121847455/b5d3cdbc-769e-42b5-9fa5-13e52dc0b11e" width="150" height="150" />
+    <img src="https://github.com/TreadSoftly/Projects/assets/121847455/8a35f356-84ed-4cca-b12d-8ee22874b485" width="150" height="150" />
   </p>
 <br>
 
