@@ -41,7 +41,7 @@
 <br>
 <br>
 <br>
-<h1 align="center">🐉💻PenTesting Kali OS On A Raspberry Pi 4 8GB Ram🛠️🐧</h1>
+<h1 align="center">🐉PenTest Kali OS On A Raspberry Pi 4 Build🐧</h1>
 <br>
 <br>
 <br>
