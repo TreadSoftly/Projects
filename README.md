@@ -18,21 +18,30 @@
 </h1>
 
 <div align="center">
+    <!-- Updated Badge -->
     <a href="https://youtu.be/5IIkGJc3T7o">
         <img src="https://img.shields.io/badge/Updated-August_2023-blue.svg?longCache=true&style=flat-square">
     </a>
-    <a href="https://www.youtube.com/watch?v=sH20ovfcpGA">
-        <img src="https://www.kali.org/docs/">
+    <!-- Kali Docs Badge -->
+    <a href="https://www.kali.org/docs/">
+        <img src="https://img.shields.io/badge/Kali-Linux-green.svg?longCache=true&style=flat-square">
     </a>
-    <a href="https://null-byte.wonderhowto.com/how-to/get-started-with-kali-linux-2020-0231506/">
+    <!-- Windows 11 Badge -->
+    <a href="https://www.microsoft.com/en-us/windows/windows-11?r=1">
         <img src="https://img.shields.io/badge/Windows-11-red.svg?longCache=true&style=flat-square">
     </a>
-    <a href="https://adamtheautomator.com/berryboot/">
+    <!-- VirtualBox Badge -->
+    <a href="https://www.virtualbox.org/">
         <img src="https://img.shields.io/badge/VirtualBox-v7-orange.svg?longCache=true&style=flat-square">
     </a>
+    <!-- PowerShell Badge -->
     <img src="https://img.shields.io/badge/PowerShell-Advanced-lightgrey.svg?longCache=true&style=flat-square">
-    <img src="https://img.shields.io/badge/Bash-Scripting-blueviolet.svg?longCache=true&style=flat-square">
+    <!-- Bash Scripting Badge -->
+    <a href="https://devhints.io/bash">
+        <img src="https://img.shields.io/badge/Bash-Scripting-blueviolet.svg?longCache=true&style=flat-square">
+    </a>
 </div>
+
 
 
 
