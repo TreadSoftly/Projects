@@ -152,9 +152,9 @@ Whether you're a seasoned pro or an aspiring ethical hacker, this rig's blend of
 <br>
 
 
-<p align="left" style="color: #007BFF; margin-bottom: 20px;">
-    <img src="https://github.com/TreadSoftly/Projects/assets/121847455/2c6bace9-61b3-4aa3-afde-4adb7ef7897a" width="100" height="100" alt="">
-    <strong><a href="https://secure.newegg.com/wishlist/md/42242292" style="text-decoration: none; color: inherit;">Click on the product names to view or purchase the items!</a></strong><img src="https://github.com/TreadSoftly/Projects/assets/121847455/3762cf32-fe14-446a-8b58-f04f73fa7304" width="100" height="100" alt="">
+<p align="center" style="color: #007BFF; margin-bottom: 20px;">
+    <img src="https://github.com/TreadSoftly/Projects/assets/121847455/2c6bace9-61b3-4aa3-afde-4adb7ef7897a" width="150" height="100" alt="">
+    <strong><a href="https://secure.newegg.com/wishlist/md/42242292" style="text-decoration: none; color: inherit;">Click on the product names to view or purchase the items!</a></strong><img src="https://github.com/TreadSoftly/Projects/assets/121847455/3762cf32-fe14-446a-8b58-f04f73fa7304" width="70" height="70" alt="">
 </p>
  
 <h2 align="center" style="color: #007BFF; margin-bottom: 20px;">
