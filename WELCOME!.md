@@ -1,6 +1,8 @@
 <div align="center">
   <h1>🚀 Welcome to my GitHub Profile! </h1>
-  <img src="![goku](https://github.com/TreadSoftly/Projects/assets/121847455/1d215e5d-caaa-4931-a237-a11460dab47f)" />
+ 
+   <img src="https://github.com/TreadSoftly/Projects/assets/121847455/1d215e5d-caaa-4931-a237-a11460dab47f"/>
+  
   <h3>A Fusion of <a href="https://github.com/TreadSoftly/Projects/blob/main/RaspberryPi-KaliLinux-ModularBuild.md">Projects🗝️</a> & <a href="https://www.linkedin.com/in/raydraleaus/">Cyber</a> <a href="https://github.com/TreadSoftly/Projects/blob/main/GEOSINT_WAR_GALLERY.md">Use</a> <a href="https://github.com/TreadSoftly/Projects/blob/main/GhostProtocolREADME.md">Cases🏴‍☠️</a></h3>
   <br>
   <p>
@@ -9,7 +11,7 @@
   is a repository where I come to throw more than half completed ideas into a single place.</p>
   <p>Please enjoy my GitHub profile.</p>
   <br>
-  <img src="https://github.com/TreadSoftly/Projects/assets/121847455/6bca7e26-e8be-4c61-a384-cd62f3f7321a" alt="sketch" />
+  <img src="https://github.com/TreadSoftly/Projects/assets/121847455/250904fb-3abc-4d82-8770-f12196c069ac"/>
   <br>
   <h1>🔐 Security Development Projects 🔐</h1>
   <h2>Security Use Cases & Similar Security Projects (Kali Linux Admin & Security)</h2>
