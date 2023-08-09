@@ -1,27 +1,45 @@
 function asdf() {
-    # Colors for formatting output
+INTERFACE_NAME=$(ip -o link show | awk -F': ' '/state UP/ {print $2}')
+if [ -z "$INTERFACE_NAME" ]; then
+    log "ERROR" "Failed to retrieve the interface name."
+    exit 1
+fi
+    
+# Required packages list
+PACKAGES=("arp-scan" "macchanger" "mtr-tiny" "mtr" "grc" "python3-venv" "tor" "proxychains4" "torsocks" "srm" "jq")
+check_and_install_packages
+
+# Automatically call change_mac_address function
+change_mac_address
+
+    CONFIG_FILE="/path/to/config.cfg"
+
+    if [ ! -f "$CONFIG_FILE" ]; then
+        log "ERROR" "Config file not found!"
+        exit 1
+    fi
+
+    source "${CONFIG_FILE}"
+
     local GREEN='\033[0;32m'
     local YELLOW='\033[1;33m'
     local BLUE='\033[0;34m'
     local RED='\033[0;31m'
-    local NC='\033[0m' # No Color
+    local NC='\033[0m'
 
-    # Log file path
-    local LOG_FILE="/path/to/your/logfile.log"
+    local LOG_FILE="${LOG_PATH}/logfile.log"
+    local interface="${INTERFACE_NAME}"
 
-    # Network interface name
-    local INTERFACE_NAME="eth0"
-
-    # Function to create log directory
     create_log_directory() {
         local log_directory=$(dirname "${LOG_FILE}")
         [ ! -d "${log_directory}" ] && mkdir -p "${log_directory}"
     }
 
-# Function to log messages
+# Function to log messages in different formats
 log() {
     local log_priority="$1"
     local log_message="$2"
+    local log_format="$3"
     local date_time=$(date "+%Y-%m-%d %H:%M:%S")
     local log_color
     case ${log_priority} in
@@ -32,11 +50,48 @@ log() {
         *)       log_color="${NC}" ;;
     esac
     echo -e "${log_color}${date_time} [${log_priority}] ${log_message}${NC}"
-    echo -e "${date_time} [${log_priority}] ${log_message}" >> "${LOG_FILE}"
-    [[ "${log_priority}" == "FATAL" ]] && exit 1
-}
 
-    # Function to create directory and files
+    case ${log_format} in
+        "txt") echo -e "${date_time} [${log_priority}] ${log_message}" >> "${LOG_FILE}.txt";;
+        "json") echo "{\"date\":\"${date_time}\",\"level\":\"${log_priority}\",\"message\":\"${log_message}\"}" >> "${LOG_FILE}.json";;
+        "xml") echo "<log><date>${date_time}</date><level>${log_priority}</level><message>${log_message}</message></log>" >> "${LOG_FILE}.xml";;
+        "ini") echo "[${log_priority}]\ndate=${date_time}\nmessage=${log_message}" >> "${LOG_FILE}.ini";;
+    esac
+
+    [[ "${log_priority}" == "FATAL" ]] && exit 1
+
+    dynamic_system_update() {
+        printf "${YELLOW}===[ Initiating Dynamic System Update... ]===${NC}\n"
+        log "INFO" "Initiating dynamic system update..."
+        local packages_to_update=("package1" "package2" "package3")
+
+        for package in "${packages_to_update[@]}"; do
+            printf "${BLUE}===[ Updating Package: ${package} ]===${NC}\n"
+            log "INFO" "Updating package: ${package}"
+            apt -qq update && apt -qq upgrade -y "$package" >/dev/null 2>&1 &
+            pid=$!
+            spinner $pid
+            printf "${GREEN}===[ Updated: ${package} ]===${NC}\n"
+            log "INFO" "Updated: ${package}"
+        done
+
+        printf "${GREEN}===[ Dynamic System Update Completed. ]===${NC}\n"
+        log "INFO" "Dynamic system update completed."
+    }
+
+    spinner() {
+        local pid="$1"
+        local delay=0.1
+        local spinstr='|/-\'
+        while [ "$(ps a | awk '{print $1}' | grep $pid)" ]; do
+            local temp=${spinstr#?}
+            printf "\r ${spinstr:0:1} "
+            local spinstr=$temp${spinstr%"$temp"}
+            sleep $delay
+        done
+        printf "\r"
+    }
+
     create_directory_and_files() {
         local dir_name="$1"
         local file_name="$2"
@@ -51,7 +106,6 @@ log() {
         touch "${dir_name}/${user_id}/${timestamp}/${file_name}.ini" || log "WARN" "Failed to create ini file"
     }
 
-    # Function to convert JSON to CSV (requires jq)
     convert_json_to_csv() {
         local json_file="$1"
         local csv_file="$2"
@@ -60,48 +114,34 @@ log() {
 
     # Define progress bar function
     progress_bar() {
-    local label=$1
-    local percent=$2
-    if [ "$percent" -lt 0 ] || [ "$percent" -gt 100 ]; then
-        printf "Error: percentage value must be between 0 and 100.\n"
-        return 1
-    fi
-    printf "$label: \e[32m[\e[0m"
-    for i in $(seq 1 "$percent"); do printf "\e[32m=\e[0m"; done
-    for i in $(seq 1 $(($percent+1)) 100); do printf " "; done
-    printf "\e[32m] $percent%% completed\e[0m\n"
-    # Print additional progress information
-    if [ "$percent" -eq 0 ]; then
-        printf "$label: No progress has been made.\n"
-    elif [ "$percent" -lt 50 ]; then
-        printf "$label: Progress is slow.\n"
-    elif [ "$percent" -ge 50 ] && [ "$percent" -lt 75 ]; then
-        printf "$label: Progress is moderate.\n"
-    elif [ "$percent" -ge 75 ] && [ "$percent" -lt 90 ]; then
-        printf "$label: Progress is good.\n"
-    elif [ "$percent" -ge 90 ] && [ "$percent" -lt 100 ]; then
-        printf "$label: Progress is almost complete.\n"
-    elif [ "$percent" -eq 100 ]; then
-        printf "$label: Progress is complete.\n"
-    fi
-}
+        local label=$1
+        local percent=$2
+        if [ "$percent" -lt 0 ] || [ "$percent" -gt 100 ]; then
+            printf "Error: percentage value must be between 0 and 100.\n"
+            return 1
+        fi
+        printf "$label: \e[32m[\e[0m"
+        for i in $(seq 1 "$percent"); do printf "\e[32m=\e[0m"; done
+        for i in $(seq 1 $(($percent+1)) 100); do printf " "; done
+        printf "\e[32m] $percent%% completed\e[0m\n"
+        # Print additional progress information
+        if [ "$percent" -eq 0 ]; then
+            printf "$label: No progress has been made.\n"
+        elif [ "$percent" -lt 50 ]; then
+            printf "$label: Progress is slow.\n"
+        elif [ "$percent" -ge 50 ] && [ "$percent" -lt 75 ]; then
+            printf "$label: Progress is moderate.\n"
+        elif [ "$percent" -ge 75 ] && [ "$percent" -lt 90 ]; then
+            printf "$label: Progress is good.\n"
+        elif [ "$percent" -ge 90 ] && [ "$percent" -lt 100 ]; then
+            printf "$label: Progress is almost complete.\n"
+        elif [ "$percent" -eq 100 ]; then
+            printf "$label: Progress is complete.\n"
+        fi
+    }
 
-# Function for a spinner
-spinner() {
-    local pid="$1"
-    local delay=0.1
-    local spinstr='|/-\'
-    while [ "$(ps a | awk '{print $1}' | grep $pid)" ]; do
-        local temp=${spinstr#?}
-        printf "\r ${spinstr:0:1} "
-        local spinstr=$temp${spinstr%"$temp"}
-        sleep $delay
-    done
-    printf "\r"
-}
-
-# ASCII progress bar function
-progress_bar_ascii() {
+    # ASCII progress bar function
+    progress_bar_ascii() {
     local task="$1"
     local percent="$2"
     local width=50
@@ -109,8 +149,6 @@ progress_bar_ascii() {
     local empty=$((width - filled))
     printf "\r${task}: [${GREEN}%-*s${NC}${BLUE}%-*s${NC}] ${percent}%%" "${filled}" "$(printf '%0.s=' {1..${filled}})" "${empty}" "$(printf '%0.s ' {1..${empty}})"
 }
-
-
     # Timer countdown function
     timer_countdown() {
         local time="$1"
@@ -122,6 +160,35 @@ progress_bar_ascii() {
         done
         printf "\n"
     }
+
+    # Function to monitor network traffic
+    monitor_network_traffic() {
+        local interface="$1"
+        local duration="$2"
+        local file_output="$3"
+
+        log "INFO" "Monitoring network traffic on interface: ${interface} for ${duration} seconds"
+        printf "${BLUE}===[ Monitoring Network Traffic... ]===${NC}\n"
+        tshark -i "$interface" -a duration:"$duration" -w "$file_output" &
+        pid=$!
+        spinner $pid
+        printf "${GREEN}===[ Network Monitoring Completed. ]===${NC}\n"
+        log "INFO" "Network monitoring completed."
+    }
+
+    # Function to analyze logs
+    analyze_logs() {
+        local log_file="$1"
+        local analyzed_output="$2"
+        log "INFO" "Analyzing logs: ${log_file}"
+
+while getopts "z:c:" opt; do
+    case $opt in
+        z) zeroize_file="$OPTARG";;
+        c) config_file="$OPTARG";;
+        *) echo "Invalid option: -$OPTARG"; exit 1;;
+    esac
+done
 
 # Memory Analysis Prevention
 func_memory_analysis_prevention() {
@@ -224,8 +291,7 @@ func_anti_forensics() {
     done
 
 check_and_install_packages() {
-    declare -a packages=("arp-scan" "macchanger" "mtr-tiny" "mtr" "grc" "python3-venv" "tor" "proxychains4" "torsocks" "srm" "jq")
-    for package in "${packages[@]}"; do
+    for package in "${PACKAGES[@]}"; do
         if ! dpkg-query -W -f='${Status}' "$package" >/dev/null 2>&1 | grep -q "install ok installed"; then
             printf "${YELLOW}===[ Installing ${package} ]===${NC}\n"
             log "INFO" "Installing ${package}"
@@ -277,7 +343,7 @@ check_and_install_packages() {
     printf "${YELLOW}===[ THIS WILL TAKE SOME TIME ON FIRST INSTALL... ]===${NC}\n"
     log "INFO" "===[ Updating and Upgrading Kali Linux ]==="
     export DEBIAN_FRONTEND=noninteractive
-    apt update --quiet=2 -y >/dev/null 2>&1 && apt full-upgrade --quiet=2 -y -o >/dev/null 2>&1 Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confold" && apt dist-upgrade --quiet=2 -y -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confold" >/dev/null 2>&1 && apt autoremove --quiet=2 -y >/dev/null 2>&1 && apt autoclean --quiet=2 -y >/dev/null 2>&1
+    apt update --quiet=2 -y >/dev/null 2>&1 && apt full-upgrade --quiet=2 -y -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confold" >/dev/null 2>&1 && apt dist-upgrade --quiet=2 -y -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confold" >/dev/null 2>&1 && apt autoremove --quiet=2 -y >/dev/null 2>&1 && apt autoclean --quiet=2 -y >/dev/null 2>&1
     unset DEBIAN_FRONTEND
     log "INFO" "Kali Linux updated and upgraded."
 
@@ -390,9 +456,11 @@ fi
 
     # Add a route to bypass Anonsurf for local network traffic
     printf "\n${BLUE}Add a route to bypass Anonsurf for local network traffic${NC}\n"
-    if ! ip route show | grep -q "1XX.XX8.0.0/24 dev eth0"; then
-        ip route add 1XX.XX8.0.0/24 dev eth0
-    fi
+IP_RANGE=$(ip -o -f inet addr show | awk '/scope global/ {print $4}')
+if ! ip route show | grep -q "${IP_RANGE} dev ${INTERFACE_NAME}"; then
+    ip route add ${IP_RANGE} dev ${INTERFACE_NAME}
+fi
+
 
     # Start Tor and verify fingerprint (fixed syntax)
     printf "${YELLOW}===[ Starting Tor and Verifying Fingerprint ]===${NC}\n"
@@ -433,7 +501,7 @@ fi
 # Function to change MAC address using ARP scanner
 change_mac_address() {
     log "INFO" "===[ Changing MAC address using ARP scanner ]==="
-    local interface=eth0
+    local interface="${INTERFACE_NAME}"
     local arp_output=$(sudo arp-scan -l)
     local similar_mac=$(echo "$arp_output" | grep -E -o '([[:xdigit:]]{1,2}:){5}[[:xdigit:]]{1,2}' | shuf -n 1)
     if [ -z "$similar_mac" ]; then
@@ -444,14 +512,12 @@ change_mac_address() {
         ip link set dev $interface up
         local new_mac=$(ip link show $interface | awk '/ether/ {print $2}')
         printf "Changed MAC address of ${BLUE}${interface}${NC} from ${GREEN}${old_mac}${NC} to ${BLUE}${new_mac}${NC}\n"
-        log "INFO" "Changed MAC address of ${interface} from ${old_mac} to ${new_mac}."
     else
         local old_mac=$(ip link show $interface | awk '/ether/ {print $2}')
         ip link set dev $interface down
         ip link set dev $interface address $similar_mac
         ip link set dev $interface up
         printf "Changed MAC address of ${BLUE}${interface}${NC} from ${GREEN}${old_mac}${NC} to ${BLUE}${similar_mac}${NC}\n"
-        log "INFO" "Changed MAC address of ${interface} from ${old_mac} to ${similar_mac}."
     fi
 }
 
