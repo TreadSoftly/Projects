@@ -80,7 +80,7 @@ if target_type == "unknown":
     exit(1)
 
 # Run the masscan function with the provided arguments
-# run_masscan(args.target, args.port, args.rate, args.duration)
+    run_masscan(args.target, args.port, args.rate, args.duration)
 # Explanations and Comments
 # identify_target_type Function: This function takes an input string and identifies whether it's an IP address, domain, port, MAC address, URL, or ASN. It returns the type as a string.
 # Regular Expressions: Regular expressions are used to match the input string against various patterns. The re module is used for this purpose.
