@@ -1,4 +1,4 @@
-<h2 align="center">🌍 GEOSINT WAR GALLERY 🌍</h2>
+<h2 align="center">🌍 GEOSINT ARTofWAR GALLERY 🌍</h2>
 <br>
 <p align="center"><strong>🔥 Some of the work I have pulled for humanitarian aid. I will build out a credited section in a README.md later 🚀</strong></p>
 
