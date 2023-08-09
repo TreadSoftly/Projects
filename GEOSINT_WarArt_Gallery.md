@@ -43,9 +43,17 @@
 <br>
 
 
-<h3 align="center">🔒 Professional Background 🔒</h3>
-<p align="center">💼 Dedicated to the research, development, and deployment of cutting-edge solutions in the field of cybersecurity, humanitarian aid, and more. Seeking collaboration and innovation opportunities with like-minded professionals. 💼</p>
-<br>
+<h1 align="center">
+## 🔒 Professional Background 🔒
+  </h1>
+
+💼 Dedicated to the research, development, and deployment of cutting-edge solutions in the field of cybersecurity, humanitarian aid, and more. Seeking collaboration and innovation opportunities with like-minded professionals. 💼
+
+<h2 align="center">🎖️ Projects 🎖️</h2>
+<p align="center">
+  <a href="https://github.com/TreadSoftly/Projects"><img src="https://img.shields.io/badge/Projects-Click_Here-green?style=for-the-badge"></a>
+</p>
+
 <br>
 
 
