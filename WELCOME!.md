@@ -1,6 +1,6 @@
 <div align="center">
   <h1>🚀 Welcome to my GitHub Profile! </h1>
-  <img src="https://github.com/TreadSoftly/Projects/assets/121847455/c3b3c6f1-0a4e-4d8c-aeec-47766529c5ad" alt="littleDragon" />
+  <img src="![goku](https://github.com/TreadSoftly/Projects/assets/121847455/1d215e5d-caaa-4931-a237-a11460dab47f)" />
   <h3>A Fusion of <a href="https://github.com/TreadSoftly/Projects/blob/main/RaspberryPi-KaliLinux-ModularBuild.md">Projects🗝️</a> & <a href="https://www.linkedin.com/in/raydraleaus/">Cyber</a> <a href="https://github.com/TreadSoftly/Projects/blob/main/GEOSINT_WAR_GALLERY.md">Use</a> <a href="https://github.com/TreadSoftly/Projects/blob/main/GhostProtocolREADME.md">Cases🏴‍☠️</a></h3>
   <br>
   <p>
