@@ -1,4 +1,4 @@
-CONFIGURABLE MAIN CONFIG FILE VERSION (this config file alows for preset config files to be uploaded) ####
+# CONFIGURABLE MAIN CONFIG FILE VERSION (this config file alows for preset config files to be uploaded) ####
 
 {
   "log_config": {
