@@ -67,7 +67,9 @@ For any inquiries or support, please contact the maintainer at [your-email@examp
 
 ## 📜 SPECIFICALLY FOR THIS SCRIPT
 
-\```bash
+
+
+    \```bash
 #!/bin/bash
 
 function dig_iSpy() {
@@ -135,5 +137,7 @@ fi
 if command -v xz &> /dev/null; then
     xz -9 "${dns_enum_json}" &
 fi
-\```
+
+
+    \```
 </p>
