@@ -34,8 +34,6 @@
     <a href="https://www.virtualbox.org/">
         <img src="https://img.shields.io/badge/VirtualBox-v7-orange.svg?longCache=true&style=flat-square">
     </a>
-    <!-- PowerShell Badge -->
-    <img src="https://img.shields.io/badge/PowerShell-Advanced-lightgrey.svg?longCache=true&style=flat-square">
     <!-- Bash Scripting Badge -->
     <a href="https://devhints.io/bash">
         <img src="https://img.shields.io/badge/Bash-Scripting-blueviolet.svg?longCache=true&style=flat-square">
