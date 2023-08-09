@@ -29,8 +29,9 @@ function Handle-Client {
 function Send-EmailNotification {
     # ... (Code continues)
 }
-\`\`\`
 
+# ... (Remaining code)
+\`\`\`
 ## Links
 
 - [PowerShell Documentation](https://docs.microsoft.com/en-us/powershell/)
