@@ -1,5 +1,6 @@
 # 🛠️ asdf: A Multi-purpose Toolkit
 
+## The script does not work fully intentionally (I whisper to myself🥴)
 ## Function: `asdf` 🧰
 The `asdf` function is a powerhouse, packed with utilities for various needs. Here's an insight into its offerings:
 
@@ -55,5 +56,5 @@ Use Case: Clean slate after every shutdown.
 
 <h2 align="center"><br/<h2>🎓 Conclusion
 This script is more than a toolkit; it's a lifeline for security pros, sysadmins, ethical hackers, 
-and privacy enthusiasts. It's crafted with love, attention, and a flair for making complex tasks a breeze. 
-Use it, customize it, love it. 🚀
+and privacy enthusiasts. It's crafted with attention, and a flair for making complex tasks a more automated at the fundamental levels. 
+Use it, customize it, break it. 🚀
