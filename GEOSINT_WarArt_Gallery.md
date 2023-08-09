@@ -17,7 +17,6 @@
 </p>
 
 
-<div align="center">
 <p align="left"><img src="https://github.com/TreadSoftly/Projects/assets/121847455/33e8d2ed-1882-474f-9536-0e9cdfb7819a"></p>
 <p align="center"><img src="https://github.com/TreadSoftly/Projects/assets/121847455/3baed55c-69b4-49dc-add2-acb269cb8956"></p>
 <p align="right"><img src="https://github.com/TreadSoftly/Projects/assets/121847455/bb63e448-8013-46de-a8b6-e132c26b62cf"></p>
@@ -39,7 +38,7 @@
 <p align="right"><img src="https://github.com/TreadSoftly/Projects/assets/121847455/c9d139cf-5bfd-4524-ba95-83fceb6a3a50"></p>
 
 <!-- Additional Images -->
-</div>
+
 <br>
 <br>
 
