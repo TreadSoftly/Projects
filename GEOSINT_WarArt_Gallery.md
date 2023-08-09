@@ -65,8 +65,9 @@
 </h3>
 
 <p align="center">
-  <img src="https://github.com/TreadSoftly/Projects/assets/121847455/b27fdb47-23cd-457c-8e59-31e28d6d0f35" alt="giphy" width="200px" style="border-radius: 10px;" />
+  <img src="https://github.com/TreadSoftly/Projects/assets/121847455/c3790e16-0b87-41df-98df-457446602b4a" alt="giphy" width="200px" style="border-radius: 10px;" />
 </p>
+
 
 <p align="center">
   <a href="https://github.com/TreadSoftly">
