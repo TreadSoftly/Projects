@@ -158,11 +158,11 @@ Whether you're a seasoned pro or an aspiring ethical hacker, this rig's blend of
         💻Hardware & Affiliate Links to Parts🔗
     </a>
     <br>
-    <img src="https://github.com/TreadSoftly/Projects/assets/121847455/f85e6b95-c537-4f89-ae19-dad755ecb9d1" width="80" height="80" alt="">
+    <img src="https://github.com/TreadSoftly/Projects/assets/121847455/f85e6b95-c537-4f89-ae19-dad755ecb9d1" width="100" height="100" alt="">
 </h2>
 
 <p align="center" style="color: #007BFF; margin-bottom: 20px;">
-    <img src="https://github.com/TreadSoftly/Projects/assets/121847455/2c6bace9-61b3-4aa3-afde-4adb7ef7897a" width="180" height="130" alt="">
+    <img src="https://github.com/TreadSoftly/Projects/assets/121847455/2c6bace9-61b3-4aa3-afde-4adb7ef7897a" width="1600" height="1200" alt="">
     <strong><a href="https://secure.newegg.com/wishlist/md/42242292" style="text-decoration: none; color: inherit;">Click on the product names to view or purchase the items!</a></strong><img src="https://github.com/TreadSoftly/Projects/assets/121847455/3762cf32-fe14-446a-8b58-f04f73fa7304" width="100" height="100" alt="">
 </p>
 
@@ -296,7 +296,7 @@ Whether you're a seasoned pro or an aspiring ethical hacker, this rig's blend of
     <a href="https://www.youtube.com/watch?v=U1w4T03B30I" style="text-decoration: none; color: #007BFF; font-weight: bold; font-size: 36px;">Bash</a>
 </p>
   <p align="center">
-     <img src="https://github.com/TreadSoftly/Projects/assets/121847455/a5927369-1e07-4b2e-9c0c-5250242918a1" width="800" height="500" />
+     <img src="https://github.com/TreadSoftly/Projects/assets/121847455/a5927369-1e07-4b2e-9c0c-5250242918a1" width="650" height="150" />
   </p>
   <br>
   <br>
