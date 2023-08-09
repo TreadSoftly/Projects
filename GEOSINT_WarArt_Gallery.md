@@ -44,7 +44,8 @@
 
 
 <h1 align="center">
-## 🔒 Professional Background 🔒
+
+  [Professional Background📋📎](https://linkedin.com/in/raydraleaus/)
   </h1>
 
 💼 Dedicated to the research, development, and deployment of cutting-edge solutions in the field of cybersecurity, humanitarian aid, and more. Seeking collaboration and innovation opportunities with like-minded professionals. 💼
