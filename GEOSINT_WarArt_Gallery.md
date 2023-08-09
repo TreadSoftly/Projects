@@ -60,9 +60,9 @@
 
 <h3 align="center">
   
-  [Connect with me:🤝](https://github.com/TreadSoftly/Projects)
+  [Connect with me: 🤝](https://github.com/TreadSoftly/Projects)
 
-  ![giphy](https://github.com/TreadSoftly/Projects/assets/121847455/c746210c-63fb-4d7e-a48e-944f43115fea)
+  ![giphy](https://github.com/TreadSoftly/Projects/raw/main/assets/121847455/c746210c-63fb-4d7e-a48e-944f43115fea.gif)
 </h3>
 
 <p align="center">
