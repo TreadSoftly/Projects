@@ -1,6 +1,5 @@
 # Creating a markdown file with the advanced and appealing content for the GitHub README.md file
 
-markdown_content = """
 # Advanced Connection Handling Script
 
 This script represents an advanced connection handling system, designed to manage client connections, rate limiting, logging, email notifications, SIEM integration, and Machine Learning invocation. It showcases a modular design and is written in PowerShell.
