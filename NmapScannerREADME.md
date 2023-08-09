@@ -10,9 +10,10 @@
 3. [Requirements](#requirements)
 4. [Installation](#installation)
 5. [Usage](#usage)
-6. [Example Code](#example-code)
-7. [Links & Resources](#links--resources)
-8. [License](#license)
+6. [Nmap Flags & Options](#nmap-flags--options)
+7. [Example Code](#example-code)
+8. [Links & Resources](#links--resources)
+9. [License](#license)
 
 ## Introduction
 
@@ -54,6 +55,20 @@ Advanced usage with optional parameters:
 ```bash
 ./nmap_iSpy.sh <target> <scan_type> <port> <verbosity> <scan_duration> <scan_detail>
 ```
+
+## Nmap Flags & Options
+
+`nmap` offers a wide variety of flags and options. Below are some examples:
+
+- **Basic Scan**: `nmap <target>`
+- **TCP SYN Scan**: `nmap -sS <target>`
+- **UDP Scan**: `nmap -sU <target>`
+- **Version Detection**: `nmap -sV <target>`
+- **Operating System Detection**: `nmap -O <target>`
+- **Output in XML Format**: `nmap -oX <output.xml> <target>`
+- **Verbose Mode**: `nmap -v <target>`
+
+Refer to the [Nmap Reference Guide](https://nmap.org/book/man.html) for a complete list of options.
 
 ## Example Code
 
