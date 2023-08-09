@@ -60,25 +60,8 @@
   <a href="https://discord.gg/zw5fsRM9"><img src="https://img.shields.io/badge/Discord-7289DA?style=for-the-badge&logo=discord&logoColor=white"></a>
 </p>
 
-<h3 align="center">🛠️ Technologies & Tools 🛠️</h3>
-<p align="center">
-  <strong>Python</strong> • <strong>PowerShell</strong> • <strong>Bash</strong> • <strong>Go</strong> • <strong>SQL/MySQL/PostgreSQL</strong> • <strong>Network Design</strong> • <strong>Network Security</strong> • <strong>Ethical Hacking</strong> 🧠💻🎓
-</p>
-<br>
-<br>
-<br>
 
 
 
-<h1 align="center">
-## 🔒 Professional Background 🔒
-  </h1>
-
-💼 Dedicated to the research, development, and deployment of cutting-edge solutions in the field of cybersecurity, humanitarian aid, and more. Seeking collaboration and innovation opportunities with like-minded professionals. 💼
-
-<h2 align="center">🎖️ Projects 🎖️</h2>
-<p align="center">
-  <a href="https://github.com/TreadSoftly/Projects"><img src="https://img.shields.io/badge/Projects-Click_Here-green?style=for-the-badge"></a>
-</p>
 
 
