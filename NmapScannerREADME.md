@@ -14,7 +14,7 @@
 
 <p align="center">
 
-  1. [Introduction](#introduction)
+1. [Introduction](#introduction)
 2. [Features](#features)
 3. [Requirements](#requirements)
 4. [Installation](#installation)
@@ -23,6 +23,7 @@
 7. [Example Code](#example-code)
 8. [Links & Resources](#links--resources)
 9. [License](#license)
+
 </p>
 <br>
 <br>
