@@ -23,7 +23,6 @@
 <p align="left"><img src="https://github.com/TreadSoftly/ContractSecurityProjects/assets/121847455/168e6159-e38a-4406-9cb9-4c0ab548e8dc" width="400" height="300"></p>
 <p align="right"><img src="https://github.com/TreadSoftly/ContractSecurityProjects/assets/121847455/a8a50ddc-23be-44e3-8ee7-12701de4aa75" width="450" height="300"></p>
 <p align="center"><img src="https://github.com/TreadSoftly/ContractSecurityProjects/assets/121847455/f0400e30-00f3-4d8e-a8b1-2ea05e2680ab" width="430" height="320"></p>
-<p align="left"><img src="https://github.com/TreadSoftly/ContractSecurityProjects/assets/121847455/8e8d4167-288a-4900-960c-9752055d09c4" width="420" height="350"></p>
 <p align="right"><img src="https://github.com/TreadSoftly/ContractSecurityProjects/assets/121847455/c608b9b5-c161-4f36-80b7-bf032235959b" width="370" height="330"></p>
 <p align="center"><img src="https://github.com/TreadSoftly/ContractSecurityProjects/assets/121847455/eca77785-1a6b-46c5-a9d3-016cb0009f9e" width="480" height="310"></p>
 <p align="right"><img src="https://github.com/TreadSoftly/ContractSecurityProjects/assets/121847455/36825028-b4d0-4899-9157-5222ad40dfb2" width="420" height="320"></p>
