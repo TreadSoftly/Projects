@@ -1,7 +1,4 @@
 <h2 align="center">🌍GEOSINT ARTofWAR🪖</h2>
-<br>
-
-
 
 <p align="center"><strong>🔥 Some of the work I have pulled for humanitarian aid.</strong></p>
 
