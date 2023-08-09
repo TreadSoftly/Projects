@@ -2,7 +2,11 @@
   <img src="https://path/to/your/logo.png" alt="Put this logo in later" width="200">
 </p>
 
-<h1 align="center">🔍 This needs the GitHub hyperlink: Advanced Web Security Scanner</h1>
+<h1 align="center">
+  <a href="https://github.com/yourusername/LEVERAGE">
+    🔍 Advanced Web Security Scanner
+  </a>
+</h1>
 
 <p align="center">
   Empowering security assessments with Nikto integration, providing comprehensive web vulnerability insights.
