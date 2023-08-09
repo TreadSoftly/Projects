@@ -13,20 +13,18 @@
 </h2>
 
 <p align="center">
-
-1. [Introduction](#introduction)
-2. [Features](#features)
-3. [Requirements](#requirements)
-4. [Installation](#installation)
-5. [Usage](#usage)
-6. [Nmap Flags & Options](#nmap-flags--options)
-7. [Example Code](#example-code)
-8. [Links & Resources](#links--resources)
-9. [License](#license)
-
+  <a href="#introduction">1. Introduction</a><br>
+  <a href="#features">2. Features</a><br>
+  <a href="#requirements">3. Requirements</a><br>
+  <a href="#installation">4. Installation</a><br>
+  <a href="#usage">5. Usage</a><br>
+  <a href="#nmap-flags--options">6. Nmap Flags & Options</a><br>
+  <a href="#example-code">7. Example Code</a><br>
+  <a href="#links--resources">8. Links & Resources</a><br>
+  <a href="#license">9. License</a><br>
 </p>
 <br>
-<br>
+
 ## Introduction
 
 `nmap_iSpy` streamlines the process of scanning networks by allowing users to easily set up comprehensive scans using [`nmap`](https://github.com/nmap/nmap). It automates various scanning functions and provides extensive customization options.
