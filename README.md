@@ -22,7 +22,7 @@
         <img src="https://img.shields.io/badge/Updated-August_2023-blue.svg?longCache=true&style=flat-square">
     </a>
     <a href="https://www.youtube.com/watch?v=sH20ovfcpGA">
-        <img src="https://img.shields.io/badge/Kali_Linux-2023.3-green.svg?longCache=true&style=flat-square">
+        <img src="https://www.kali.org/docs/">
     </a>
     <a href="https://null-byte.wonderhowto.com/how-to/get-started-with-kali-linux-2020-0231506/">
         <img src="https://img.shields.io/badge/Windows-11-red.svg?longCache=true&style=flat-square">
