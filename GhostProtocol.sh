@@ -1,25 +1,62 @@
-# THIS NEEDS TO BE BROKEN OUT FROM MONOLITHIC asdf FUNCTION (I goofed arouned with an alias command 'asdf' so much I now need to turn it inot a tool)
-# There are current impacting bugs to pick through. Planned on testing it out when I break it apart from its monolithic form and pure bash buildout
-
-
 function asdf() {
-    # Set colors for formatting output
-    GREEN='\033[0;32m'
-    YELLOW='\033[1;33m'
-    BLUE='\033[0;34m'
-    RED='\033[0;31m'
-    NC='\033[0m' # No Color
+    # Colors for formatting output
+    local GREEN='\033[0;32m'
+    local YELLOW='\033[1;33m'
+    local BLUE='\033[0;34m'
+    local RED='\033[0;31m'
+    local NC='\033[0m' # No Color
 
-    # Create the directory if it does not exist
+    # Log file path
+    local LOG_FILE="/path/to/your/logfile.log"
+
+    # Network interface name
+    local INTERFACE_NAME="eth0"
+
+    # Function to create log directory
     create_log_directory() {
-    local log_directory=$(dirname "${LOG_FILE}")
-    [ ! -d "${log_directory}" ] && mkdir -p "${log_directory}"
+        local log_directory=$(dirname "${LOG_FILE}")
+        [ ! -d "${log_directory}" ] && mkdir -p "${log_directory}"
+    }
 
-    # Log file path (change to your desired log file path)
-    LOG_FILE="/path/to/your/logfile.log"
+# Function to log messages
+log() {
+    local log_priority="$1"
+    local log_message="$2"
+    local date_time=$(date "+%Y-%m-%d %H:%M:%S")
+    local log_color
+    case ${log_priority} in
+        "INFO")  log_color="${BLUE}" ;;
+        "WARN")  log_color="${YELLOW}" ;;
+        "ERROR") log_color="${RED}" ;;
+        "FATAL") log_color="${RED}" ;;
+        *)       log_color="${NC}" ;;
+    esac
+    echo -e "${log_color}${date_time} [${log_priority}] ${log_message}${NC}"
+    echo -e "${date_time} [${log_priority}] ${log_message}" >> "${LOG_FILE}"
+    [[ "${log_priority}" == "FATAL" ]] && exit 1
+}
 
-    # Network interface name (replace with your desired interface name)
-    INTERFACE_NAME="eth0"
+    # Function to create directory and files
+    create_directory_and_files() {
+        local dir_name="$1"
+        local file_name="$2"
+        local user_id="$3"
+        local timestamp=$(date "+%Y-%m-%d %H:%M:%S")
+
+        mkdir -p "${dir_name}/${user_id}/${timestamp}" || { log "ERROR" "Failed to create directory"; return 1; }
+        touch "${dir_name}/${user_id}/${timestamp}/${file_name}.txt" || log "WARN" "Failed to create txt file"
+        touch "${dir_name}/${user_id}/${timestamp}/${file_name}.csv" || log "WARN" "Failed to create csv file"
+        touch "${dir_name}/${user_id}/${timestamp}/${file_name}.json" || log "WARN" "Failed to create json file"
+        touch "${dir_name}/${user_id}/${timestamp}/${file_name}.xml" || log "WARN" "Failed to create xml file"
+        touch "${dir_name}/${user_id}/${timestamp}/${file_name}.ini" || log "WARN" "Failed to create ini file"
+    }
+
+    # Function to convert JSON to CSV (requires jq)
+    convert_json_to_csv() {
+        local json_file="$1"
+        local csv_file="$2"
+        jq -r '(.[0] | keys_unsorted) as $keys | $keys, map([.[ $keys[] ]])[] | @csv' "$json_file" > "$csv_file"
+    }
 
     # Define progress bar function
     progress_bar() {
@@ -49,95 +86,30 @@ function asdf() {
     fi
 }
 
-function spin() {
-    local message="$1"
-    local pid=$2
+# Function for a spinner
+spinner() {
+    local pid="$1"
     local delay=0.1
     local spinstr='|/-\'
-    local i=0
-    tput civis # Hide cursor
-    while kill -0 $pid 2>/dev/null; do
+    while [ "$(ps a | awk '{print $1}' | grep $pid)" ]; do
         local temp=${spinstr#?}
-        printf " \r${!color}${spinstr:0:1} ${message}${NC}"
-        local spinstr=${temp}${spinstr%"$temp"}
+        printf "\r ${spinstr:0:1} "
+        local spinstr=$temp${spinstr%"$temp"}
         sleep $delay
-        i=$(( (i+1) % 4 ))
-        case $i in
-            0) local color_var_name="YELLOW";;
-            1) local color_var_name="BLUE";;
-            2) local color_var_name="GREEN";;
-            3) local color_var_name="RED";;
-        esac
-        local color
-        eval "color=\$$color_var_name" # Get the value of the variable by its name
     done
-    printf " \r"
-    tput cnorm # Show cursor
+    printf "\r"
 }
 
-    # Logging function
-    log() {
-        # Create the directory if it does not exist
-        local log_directory=$(dirname "${LOG_FILE}")
-        [ ! -d "${log_directory}" ] && mkdir -p "${log_directory}"
-        local log_priority="$1"
-        local log_message="$2"
-        local date_time
-        date_time=$(date "+%Y-%m-%d %H:%M:%S")
-        local log_color
-        echo -e "${date_time} [${log_priority}] ${log_message}" >> "${LOG_FILE}"
-	
-    }
+# ASCII progress bar function
+progress_bar_ascii() {
+    local task="$1"
+    local percent="$2"
+    local width=50
+    local filled=$(printf "%.0f" $(echo "$width * $percent / 100" | bc -l))
+    local empty=$((width - filled))
+    printf "\r${task}: [${GREEN}%-*s${NC}${BLUE}%-*s${NC}] ${percent}%%" "${filled}" "$(printf '%0.s=' {1..${filled}})" "${empty}" "$(printf '%0.s ' {1..${empty}})"
+}
 
-        # Define log colors based on priority
-        case ${log_priority} in
-            "INFO")  log_color="${BLUE}" ;;
-            "WARN")  log_color="${YELLOW}" ;;
-            "ERROR") log_color="${RED}" ;;
-            "FATAL") log_color="${RED}" ;;
-            *)       log_color="${NC}" ;;
-        esac
-
-        # Log to console
-        echo -e "${log_color}${date_time} [${log_priority}] ${log_message}${NC}"
-
-        # Log to file
-        echo -e "${date_time} [${log_priority}] ${log_message}" >> ${LOG_FILE}
-
-        # Exit if fatal error
-        [[ "${log_priority}" == "FATAL" ]] && exit 1
-    }
-
-    create_directory_and_files() {
-        local dir_name="$1"
-        local file_name="$2"
-        local user_id="$3"
-        local timestamp=$(date "+%Y-%m-%d %H:%M:%S")
-
-        mkdir -p "${dir_name}/${user_id}/${timestamp}" || { log "ERROR" "Failed to create directory"; return 1; }
-        touch "${dir_name}/${user_id}/${timestamp}/${file_name}.txt" || log "WARN" "Failed to create txt file"
-        touch "${dir_name}/${user_id}/${timestamp}/${file_name}.csv" || log "WARN" "Failed to create csv file"
-        touch "${dir_name}/${user_id}/${timestamp}/${file_name}.json" || log "WARN" "Failed to create json file"
-        touch "${dir_name}/${user_id}/${timestamp}/${file_name}.xml" || log "WARN" "Failed to create xml file"
-        touch "${dir_name}/${user_id}/${timestamp}/${file_name}.ini" || log "WARN" "Failed to create ini file"
-    }
-
-    # Function to convert JSON to CSV (requires jq)
-    convert_json_to_csv() {
-        local json_file="$1"
-        local csv_file="$2"
-        jq -r '(.[0] | keys_unsorted) as $keys | $keys, map([.[ $keys[] ]])[] | @csv' "$json_file" > "$csv_file"
-    }
-
-    # ASCII progress bar function
-    progress_bar() {
-        local task="$1"
-        local percent="$2"
-        local width=50
-        local filled=$(printf "%.0f" $(echo "$width * $percent / 100" | bc -l))
-        local empty=$((width - filled))
-        printf "\r${task}: [${GREEN}%-*s${NC}${BLUE}%-*s${NC}] ${percent}%%" "${filled}" "$(printf '%0.s=' {1..${filled}})" "${empty}" "$(printf '%0.s ' {1..${empty}})"
-    }
 
     # Timer countdown function
     timer_countdown() {
@@ -217,19 +189,19 @@ func_anti_forensics() {
         mount -t tmpfs -o size=512M,mode=1777 -o tmpfs /secure_memory
     }
 
-# Memory Zeroization Functionality
+    # Memory Zeroization Functionality
     memory_zeroization() {
-    local target_file="$1"
-    if [ -f "$target_file" ]; then
-        printf "${BLUE}===[ Zeroizing Memory For File: ${target_file}... ]===${NC}\n"
-        log "${BLUE}INFO${NC}" "Zeroizing memory for file: ${target_file}..."
-        dd if=/dev/zero of="$target_file" bs=1M count=$(($(stat -c %s "$target_file") / (1024 * 1024)))
-        rm -f "$target_file"
-    else
-        printf "${RED}===[ File Not Found: ${target_file} ]===${NC}\n"
-        log "${RED}ERROR${NC}" "File not found: ${target_file}"
-    fi
-}
+        local target_file="$1"
+        if [ -f "$target_file" ]; then
+            printf "${BLUE}===[ Zeroizing Memory For File: ${target_file}... ]===${NC}\n"
+            log "${BLUE}INFO${NC}" "Zeroizing memory for file: ${target_file}..."
+            dd if=/dev/zero of="$target_file" bs=1M count=$(($(stat -c %s "$target_file") / (1024 * 1024)))
+            rm -f "$target_file"
+        else
+            printf "${RED}===[ File Not Found: ${target_file} ]===${NC}\n"
+            log "${RED}ERROR${NC}" "File not found: ${target_file}"
+        fi
+    }
 
     # Parse command-line arguments
     while [ $# -gt 0 ]; do
@@ -251,28 +223,24 @@ func_anti_forensics() {
         shift
     done
 
-    # Check and install required packages dynamically
-    check_and_install_packages() {
-        printf "${BLUE}===[ Checking & Installing Required Packages... ]===${NC}\n"
-        log "INFO" "===[ Checking and Installing Required Packages ]==="
-        declare -a packages=("python3-venv" "tor" "proxychains4" "macchanger" "torsocks" "grc" "srm" "arp-scan" "mtr-tiny" "mtr")
-        for package in "${packages[@]}"; do
-            if ! dpkg-query -W -f='${Status}' "$package" >/dev/null 2>&1 | grep -q "install ok installed"; then
-                apt -qq install -y "$package" >/dev/null 2>&1 &
-                local pid=$!
-                spin "Downloading ${package}..." $pid
-                wait $pid
-                printf "${GREEN}INFO${NC} ${GREEN}===[ Installed: ${package} ]===${NC}\n"
-		local pid=$!
-                spin "Downloading ${package}..." $pid
-                wait $pid
-                log "INFO" "Installed: ${package}"
-            else
-                printf "${BLUE}INFO${NC} ${BLUE}===[ Already Installed: ${package} ]===${NC}\n"
-                log "INFO" "Already installed: ${package}"
-            fi
-        done
-    }
+check_and_install_packages() {
+    declare -a packages=("arp-scan" "macchanger" "mtr-tiny" "mtr" "grc" "python3-venv" "tor" "proxychains4" "torsocks" "srm" "jq")
+    for package in "${packages[@]}"; do
+        if ! dpkg-query -W -f='${Status}' "$package" >/dev/null 2>&1 | grep -q "install ok installed"; then
+            printf "${YELLOW}===[ Installing ${package} ]===${NC}\n"
+            log "INFO" "Installing ${package}"
+            apt -qq install -y "$package" >/dev/null 2>&1 &
+            pid=$!
+            spinner $pid
+            printf "${GREEN}===[ Installed: ${package} ]===${NC}\n"
+            log "INFO" "Installed: ${package}"
+        else
+            printf "${BLUE}===[ Already Installed: ${package} ]===${NC}\n"
+            log "INFO" "Already installed: ${package}"
+        fi
+    done
+}
+
 
     # Activate virtual environment
     printf "${GREEN}===[ Activating Python3-myvnv ]===${NC}\n"    
@@ -341,7 +309,7 @@ Cache=yes
 CacheSize=100M
 CacheTimeSec=300
 DNSOverTLS=yes
-DNSOverTLSPort=XXX
+DNSOverTLSPort=853
 DNSOverTLSCertificateDepth=2
 DNSOverTLSServerName=cloudflare-dns.com
 MulticastDNS=yes
@@ -462,30 +430,30 @@ fi
         log "INFO" "arp-scan installed."
     fi
 
-    # Change MAC Address Using ARP Scanner
-    change_mac_address() {
-        log "INFO" "===[ Changing MAC address using ARP scanner ]==="
-        local interface=eth0
-        local arp_output=$(sudo arp-scan -l)
-        local similar_mac=$(echo "$arp_output" | grep -E -o '([[:xdigit:]]{1,2}:){5}[[:xdigit:]]{1,2}' | shuf -n 1)
-        if [ -z "$similar_mac" ]; then
-            # Fallback to Random MAC if Similar MAC Not Found
-            local old_mac=$(ip link show $interface | awk '/ether/ {print $2}')
-            ip link set dev $interface down
-            macchanger -r $interface
-            ip link set dev $interface up
-            local new_mac=$(ip link show $interface | awk '/ether/ {print $2}')
-            printf "Changed MAC address of ${BLUE}${interface}${NC} from ${GREEN}${old_mac}${NC} to ${BLUE}${new_mac}${NC}\n"
-            log "INFO" "Changed MAC address of ${interface} from ${old_mac} to ${new_mac}."
-        else
-            local old_mac=$(ip link show $interface | awk '/ether/ {print $2}')
-            ip link set dev $interface down
-            ip link set dev $interface address $similar_mac
-            ip link set dev $interface up
-            printf "Changed MAC address of ${BLUE}${interface}${NC} from ${GREEN}${old_mac}${NC} to ${BLUE}${similar_mac}${NC}\n"
-            log "INFO" "Changed MAC address of ${interface} from ${old_mac} to ${similar_mac}."
-        fi
-    }
+# Function to change MAC address using ARP scanner
+change_mac_address() {
+    log "INFO" "===[ Changing MAC address using ARP scanner ]==="
+    local interface=eth0
+    local arp_output=$(sudo arp-scan -l)
+    local similar_mac=$(echo "$arp_output" | grep -E -o '([[:xdigit:]]{1,2}:){5}[[:xdigit:]]{1,2}' | shuf -n 1)
+    if [ -z "$similar_mac" ]; then
+        # Fallback to Random MAC if Similar MAC Not Found
+        local old_mac=$(ip link show $interface | awk '/ether/ {print $2}')
+        ip link set dev $interface down
+        macchanger -r $interface
+        ip link set dev $interface up
+        local new_mac=$(ip link show $interface | awk '/ether/ {print $2}')
+        printf "Changed MAC address of ${BLUE}${interface}${NC} from ${GREEN}${old_mac}${NC} to ${BLUE}${new_mac}${NC}\n"
+        log "INFO" "Changed MAC address of ${interface} from ${old_mac} to ${new_mac}."
+    else
+        local old_mac=$(ip link show $interface | awk '/ether/ {print $2}')
+        ip link set dev $interface down
+        ip link set dev $interface address $similar_mac
+        ip link set dev $interface up
+        printf "Changed MAC address of ${BLUE}${interface}${NC} from ${GREEN}${old_mac}${NC} to ${BLUE}${similar_mac}${NC}\n"
+        log "INFO" "Changed MAC address of ${interface} from ${old_mac} to ${similar_mac}."
+    fi
+}
 
     # Check if mtr-tiny or mtr is installed, and install if not
     if ! command -v mtr-tiny &> /dev/null; then
@@ -510,7 +478,18 @@ fi
     grc mtr -T -r -c 1 -i 0.1 -I eth0 -n --displaymode 2 8.8.8.8
     
     log "INFO" "Script execution completed."
-    
+
+    # Create log directory
+    create_log_directory
+    log "INFO" "Starting enhanced function asdf()"
+
+    # Combine, merge, and add functionalities as needed for enhancement
+    local dir_path="/path/to/dir"
+    local filename="filename"
+    local userID="userID"
+    create_directory_and_files "$dir_path" "$filename" "$userID"
+
+    log "INFO" "Function asdf() executed successfully"
     bash
 }
 
