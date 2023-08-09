@@ -14,7 +14,7 @@
     <a href="https://github.com/TreadSoftly/Projects">Cyber</a> 
     <a href="https://github.com/TreadSoftly/Projects/blob/main/GEOSINT_WAR_GALLERY.md">Use</a> 
     <a href="https://github.com/TreadSoftly/Projects/blob/main/GhostProtocolREADME.md">Cases🏴‍☠️</a>
-    <img src="https://github.com/TreadSoftly/Projects/assets/121847455/b5ee9b7e-770f-47c1-a28b-48cbcc1c6bf0" width="50" height="50" alt="purpose">
+    <img src="https://github.com/TreadSoftly/Projects/assets/121847455/b5ee9b7e-770f-47c1-a28b-48cbcc1c6bf0" width="100" height="100" alt="purpose">
 </h1>
 
 <div align="center">
