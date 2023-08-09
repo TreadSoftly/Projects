@@ -45,6 +45,35 @@
 <p align="center">
   <strong>Python</strong> • <strong>PowerShell</strong> • <strong>Bash</strong> • <strong>Go</strong> • <strong>SQL/MySQL/PostgreSQL</strong> • <strong>Network Design</strong> • <strong>Network Security</strong> • <strong>Ethical Hacking</strong> 🧠💻🎓
 </p>
+<br>
+<br>
+<br>
+
+
+
+
+## 🔒 Professional Background 🔒
+💼 Dedicated to the research, development, and deployment of cutting-edge solutions in the field of cybersecurity, humanitarian aid, and more. Seeking collaboration and innovation opportunities with like-minded professionals. 💼
+
+## 🔗 Connect with me: 🔗
+[![GitHub](https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white)](https://github.com/TreadSoftly) • 
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white)](https://linkedin.com/in/raydraleaus/) • 
+[![Discord](https://img.shields.io/badge/Discord-7289DA?style=for-the-badge&logo=discord&logoColor=white)](https://discord.gg/zw5fsRM9)
+
+## 🛠️ Technologies & Tools 🛠️
+**Python** • **PowerShell** • **Bash** • **Go** • **SQL/MySQL/PostgreSQL** • **Network Design** • **Network Security** • **Ethical Hacking** 🧠💻🎓
+
+## 🎖️ Projects 🎖️
+[![Projects](https://img.shields.io/badge/Projects-Click_Here-green?style=for-the-badge)](https://github.com/TreadSoftly/Projects)
+
+---
+
+### Additional Images
+<p align="center">
+  <!-- Additional Images -->
+  <img src="https://github.com/TreadSoftly/ContractSecurityProjects/assets/121847455/4dd2bf7a-f790-4a27-8d23-3e95a7fd980d" width="400" height="300">
+  <img src="https://github.com/TreadSoftly/ContractSecurityProjects/assets/121847455/692d66da-5a07-4229-9f74-ee3bbb8fb42f" width="350" height="300">
+</p>
 
 <h2 align="center">🎖️ Projects 🎖️</h2>
 <p align="center">
