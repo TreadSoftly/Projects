@@ -58,7 +58,9 @@
 <br>
 
 
-<h3 align="center">[Connect with me:🤝](https://github.com/TreadSoftly/Projects)
+<h3 align="center">
+  
+  [Connect with me:🤝](https://github.com/TreadSoftly/Projects)
 
   ![giphy](https://github.com/TreadSoftly/Projects/assets/121847455/c746210c-63fb-4d7e-a48e-944f43115fea)
 </h3>
