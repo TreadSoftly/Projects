@@ -420,5 +420,5 @@ Whether you're a seasoned pro or an aspiring ethical hacker, this rig's blend of
 
 
  <p align="center">
-   <im src="https://github.com/TreadSoftly/Projects/assets/121847455/eefccd15-a0e5-4a51-81e8-565dff2bb1f1" width="300" height="300" />
+   <img src="https://github.com/TreadSoftly/Projects/assets/121847455/eefccd15-a0e5-4a51-81e8-565dff2bb1f1" width="300" height="300" />
   </p>
