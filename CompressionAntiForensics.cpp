@@ -1,7 +1,5 @@
 1. Compression and Encryption Techniques
 a. Gzip Compression
-cpp
-Copy code
 #include <boost/iostreams/filtering_streambuf.hpp>
 #include <boost/iostreams/copy.hpp>
 #include <boost/iostreams/filter/gzip.hpp>
@@ -18,8 +16,6 @@ void gzip_compress(const std::string& input_file, const std::string& output_file
 This code is using the Boost library to perform Gzip compression. It reads the content of the input file, compresses it using Gzip, and writes the compressed data to the output file.
 
 b. OpenSSL Encryption
-cpp
-Copy code
 #include <openssl/evp.h>
 #include <fstream>
 #include <vector>
@@ -31,8 +27,7 @@ This code utilizes the OpenSSL library to encrypt the input file using AES-256-C
 
 2. Anti-Forensics Techniques
 a. Securely Wipe Free Space
-cpp
-Copy code
+
 #include <cstdio>
 
 void securely_wipe_file(const std::string& file_path) {
@@ -40,9 +35,8 @@ void securely_wipe_file(const std::string& file_path) {
 }
 This code uses the standard C function std::remove to delete a file. Please note that this code will only delete the file without overwriting it multiple times, so it might not meet certain secure deletion standards.
 
+
 3. Data Obfuscation
-cpp
-Copy code
 #include <fstream>
 #include <vector>
 
