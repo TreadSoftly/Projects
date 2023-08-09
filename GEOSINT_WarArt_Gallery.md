@@ -1,7 +1,8 @@
-<h2 align="center">🌍GEOSINT ARTofWAR🌍</h2>
+<h2 align="center">🌍GEOSINT ARTofWAR🪖</h2>
 <br>
-<p align="center"><strong>🔥 Some of the work I have pulled for humanitarian aid. I will build out a credited section in a README.md later 🚀</strong></p>
-
+![globalstrike](https://github.com/TreadSoftly/Projects/assets/121847455/995c1191-709a-44d7-910e-2b57ccb09a12)
+<p align="center"><strong>🔥 Some of the work I have pulled for humanitarian aid.</strong></p>
+![camera](https://github.com/TreadSoftly/Projects/assets/121847455/7a95c7cb-4bb5-43a7-adb7-922bdac1d0dd)
 <div align="center">
 <p align="right"><img src="https://github.com/TreadSoftly/ContractSecurityProjects/assets/121847455/da6242b6-3a5b-4e75-bee6-915d5073ab1c" width="450" height="300"></p>
 <p align="center"><img src="https://github.com/TreadSoftly/ContractSecurityProjects/assets/121847455/0e7e9b1d-41a0-4104-af98-888e41f789fb" width="400" height="300"></p>
