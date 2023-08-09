@@ -12,7 +12,6 @@ This script represents an advanced connection handling system, designed to manag
 - **Notifications:** Send email alerts for connections.
 - **Integrations:** SIEM and Machine Learning integration.
 
-## Code
 
 \`\`\`powershell
 # Load Configuration File JSON
@@ -31,23 +30,10 @@ function Send-EmailNotification {
     # ... (Code continues)
 }
 
-# ... (Remaining code)
-\`\`\`
-
 ## Links
 
-- [GitHub](https://github.com/yourusername)
-- [Stack Overflow](https://stackoverflow.com/yourprofile)
 - [PowerShell Documentation](https://docs.microsoft.com/en-us/powershell/)
 - [Machine Learning](https://en.wikipedia.org/wiki/Machine_learning)
 - [SIEM - Security Information and Event Management](https://en.wikipedia.org/wiki/Security_information_and_event_management)
-
-## Author
-
-[Your Name](https://github.com/yourusername) - Feel free to connect or follow on [GitHub](https://github.com/yourusername), [LinkedIn](https://linkedin.com/in/yourusername), [Twitter](https://twitter.com/yourusername).
-
----
-
-Please refer to the full code file in the repository for complete details. Contributions, issues, and feature requests are welcome!
 
 💻 Happy Coding! 🚀
