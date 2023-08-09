@@ -77,40 +77,10 @@
 ## 🎖️ Projects 🎖️
 [![Projects](https://img.shields.io/badge/Projects-Click_Here-green?style=for-the-badge)](https://github.com/TreadSoftly/Projects)
 
----
-
-### Additional Images
-<p align="center">
-  <!-- Additional Images -->
-  <img src="https://github.com/TreadSoftly/Projects/assets/121847455/4dd2bf7a-f790-4a27-8d23-3e95a7fd980d" width="400" height="300">
-  <img src="https://github.com/TreadSoftly/Projects/assets/121847455/692d66da-5a07-4229-9f74-ee3bbb8fb42f" width="350" height="300">
-</p>
 
 <h2 align="center">🎖️ Projects 🎖️</h2>
 <p align="center">
   <a href="https://github.com/TreadSoftly/Projects"><img src="https://img.shields.io/badge/Projects-Click_Here-green?style=for-the-badge"></a>
 </p>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
