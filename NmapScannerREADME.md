@@ -1,7 +1,7 @@
 
-# nmap_iSpy - Network Scanning Made Simple
+# :mag: nmap_iSpy - Network Scanning Made Simple :computer:
 
-`nmap_iSpy` is a cutting-edge Bash script that integrates with `nmap` to conduct customized and automated network scans. Designed for security experts, system administrators, and developers, this tool offers a rich set of features tailored to meet diverse scanning needs.
+`nmap_iSpy` is a cutting-edge Bash script that integrates with [`nmap`](https://github.com/nmap/nmap) to conduct customized and automated network scans. Designed for security experts, system administrators, and developers, this tool offers a rich set of features tailored to meet diverse scanning needs.
 
 ## Table of Contents
 
@@ -16,7 +16,7 @@
 
 ## Introduction
 
-`nmap_iSpy` streamlines the process of scanning networks by allowing users to easily set up comprehensive scans using `nmap`. It automates various scanning functions and provides extensive customization options.
+`nmap_iSpy` streamlines the process of scanning networks by allowing users to easily set up comprehensive scans using [`nmap`](https://github.com/nmap/nmap). It automates various scanning functions and provides extensive customization options.
 
 ## Features
 
@@ -27,7 +27,7 @@
 
 ## Requirements
 
-- `nmap`
+- [`nmap`](https://github.com/nmap/nmap)
 - `bzip2` (Optional for compression)
 - `xz` (Optional for compression)
 
@@ -71,7 +71,9 @@ Advanced usage with optional parameters:
 
 - [GitHub Repository](https://github.com/YourUsername/nmap_iSpy)
 - [Nmap Official Site](https://nmap.org)
-- [Nmap on Stack Overflow](https://stackoverflow.com/questions/tagged/nmap)
+- [Nmap on GitHub](https://github.com/nmap/nmap)
+- [Nmap Tutorial to find Network Vulnerabilities - NetworkChuck](https://youtu.be/4t4kBkMsDbQ)
+- [Nmap Reference Guide](https://nmap.org/book/man.html)
 - [bzip2 Official Site](http://www.bzip.org)
 - [xz Official Site](https://tukaani.org/xz/)
 
