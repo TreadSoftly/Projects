@@ -151,3 +151,12 @@ progress_bar() {
         printf "$label: Progress is complete.\n"
     fi
 }
+
+# Explanation:
+# This Python script provides functionalities for logging, secure memory allocation, memory zeroization, memory analysis prevention, and anti-forensics techniques.
+# Logging Functionality: The log function handles both console and file logging, with color-coded priorities.
+# Secure Memory Allocation: The secure_memory_allocation function creates a secure memory space using tmpfs.
+# Memory Zeroization: The memory_zeroization function overwrites a given file with zeros and then deletes it.
+# Memory Analysis Prevention: The memory_analysis_prevention function contains techniques to make memory analysis more difficult, including modifying kernel parameters.
+# Anti-Forensics Techniques: The anti_forensics function applies several anti-forensics techniques, such as securely removing temporary files, clearing user bash histories, changing the MAC address, and more.
+# Command-line Arguments: The script accepts flags to apply anti-forensics techniques or memory analysis prevention techniques.
