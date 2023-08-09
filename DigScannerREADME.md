@@ -1,11 +1,17 @@
 
 <p align="center">
+  <img src="https://github.com/TreadSoftly/Projects/assets/121847455/dc32b4c0-b78d-4756-bfec-863283d9d641" alt="bug">
+</p>
 
-# 🚀 **dig_iSpy**: DNS Enumeration Bash Script
+<h1 align="center">🚀 <strong>dig_iSpy</strong>: DNS Enumeration Bash Script</h1>
 
-<strong>THIS IS JUST A TEMPLATE I USE TO DROP IN AND TEST THINGS WITH dig</strong>
+<p align="center">
+  <em>THIS IS JUST A TEMPLATE I USE TO DROP IN AND TEST THINGS WITH dig</em>
+</p>
 
-<strong>BUGGY AS HELL AS A STANDALONE SCRIPT</strong>
+<p align="center">
+  <strong>🚨 BUGGY AS HELL AS A STANDALONE SCRIPT 🚨</strong>
+</p>
 
 ![bug](https://github.com/TreadSoftly/Projects/assets/121847455/dc32b4c0-b78d-4756-bfec-863283d9d641)
 <br>
