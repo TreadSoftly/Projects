@@ -59,15 +59,23 @@
 
 
 <h3 align="center">
-  
-  [Connect with me: 🤝](https://github.com/TreadSoftly/Projects)
-![giphy](https://github.com/TreadSoftly/Projects/assets/121847455/b27fdb47-23cd-457c-8e59-31e28d6d0f35)
+  <a href="https://github.com/TreadSoftly/Projects" style="text-decoration: none; color: black;">Connect with me: 🤝</a>
 </h3>
 
 <p align="center">
-  <a href="https://github.com/TreadSoftly"><img src="https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white"></a> •
-  <a href="https://linkedin.com/in/raydraleaus/"><img src="https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white"></a> •
-  <a href="https://discord.gg/zw5fsRM9"><img src="https://img.shields.io/badge/Discord-7289DA?style=for-the-badge&logo=discord&logoColor=white"></a>
+  <img src="https://github.com/TreadSoftly/Projects/assets/121847455/b27fdb47-23cd-457c-8e59-31e28d6d0f35" alt="giphy" width="200px" style="border-radius: 10px;" />
+</p>
+
+<p align="center">
+  <a href="https://github.com/TreadSoftly">
+    <img src="https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white" alt="GitHub" />
+  </a> •
+  <a href="https://linkedin.com/in/raydraleaus/">
+    <img src="https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white" alt="LinkedIn" />
+  </a> •
+  <a href="https://discord.gg/zw5fsRM9">
+    <img src="https://img.shields.io/badge/Discord-7289DA?style=for-the-badge&logo=discord&logoColor=white" alt="Discord" />
+  </a>
 </p>
 
 
