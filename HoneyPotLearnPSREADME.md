@@ -29,6 +29,7 @@ function Handle-Client {
 function Send-EmailNotification {
     # ... (Code continues)
 }
+\`\`\`
 
 ## Links
 
