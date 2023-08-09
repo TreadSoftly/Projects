@@ -2,6 +2,9 @@
 <br>
 
 
+
+<p align="center"><strong>🔥 Some of the work I have pulled for humanitarian aid.</strong></p>
+
 <p align="center">
   <a href="https://github.com/TreadSoftly"><img src="https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white"></a> •
   <a href="https://linkedin.com/in/raydraleaus/"><img src="https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white"></a> •
@@ -14,8 +17,6 @@
 </p>
 
 
-
-<p align="center"><strong>🔥 Some of the work I have pulled for humanitarian aid.</strong></p>
 <div align="center">
 <p align="right"><img src="https://github.com/TreadSoftly/ContractSecurityProjects/assets/121847455/da6242b6-3a5b-4e75-bee6-915d5073ab1c" width="450" height="300"></p>
 <p align="center"><img src="https://github.com/TreadSoftly/ContractSecurityProjects/assets/121847455/0e7e9b1d-41a0-4104-af98-888e41f789fb" width="400" height="300"></p>
