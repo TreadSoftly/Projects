@@ -1,16 +1,18 @@
 <h2 align="center">🌍GEOSINT ARTofWAR🪖</h2>
 <br>
 
-<p align="center">
-  <img src="https://github.com/TreadSoftly/Projects/assets/121847455/995c1191-709a-44d7-910e-2b57ccb09a12" alt="globalstrike" width="500" height="300" style="border-radius: 10px; box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);">
-</p>
-
 
 <p align="center">
   <a href="https://github.com/TreadSoftly"><img src="https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white"></a> •
   <a href="https://linkedin.com/in/raydraleaus/"><img src="https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white"></a> •
   <a href="https://discord.gg/zw5fsRM9"><img src="https://img.shields.io/badge/Discord-7289DA?style=for-the-badge&logo=discord&logoColor=white"></a>
 </p>
+
+
+<p align="center">
+  <img src="https://github.com/TreadSoftly/Projects/assets/121847455/995c1191-709a-44d7-910e-2b57ccb09a12" alt="globalstrike" width="500" height="300" style="border-radius: 10px; box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);">
+</p>
+
 
 
 <p align="center"><strong>🔥 Some of the work I have pulled for humanitarian aid.</strong></p>
