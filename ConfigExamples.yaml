@@ -1,0 +1,145 @@
+# CONFIGURABLE MAIN CONFIG FILE VERSION (this allows for preset config files to be placed inside of the Main Config file ####
+
+log_config:
+  log_level: "{LOG_LEVEL}"
+  log_file: "{LOG_FILE_PATH}"
+  log_max_size: "{LOG_MAX_SIZE}"
+  log_backup_count: "{LOG_BACKUP_COUNT}"
+  log_format: "{LOG_FORMAT}"
+system_info:
+  os: "{OS_TYPE}"
+  distribution: "{OS_DISTRIBUTION}"
+  version: "{OS_VERSION}"
+  architecture: "{OS_ARCHITECTURE}"
+package_config:
+  package_manager: "{PACKAGE_MANAGER}"
+  required_packages: ["{REQUIRED_PACKAGES_LIST}"]
+  optional_packages: ["{OPTIONAL_PACKAGES_LIST}"]
+retry_config:
+  max_retries: "{MAX_RETRIES}"
+  retry_interval: "{RETRY_INTERVAL}"
+network_config:
+  ipv4_address: "{IPV4_ADDRESS}"
+  ipv6_address: "{IPV6_ADDRESS}"
+  subnet_mask: "{SUBNET_MASK}"
+  gateway: "{GATEWAY}"
+  dns_servers: ["{DNS_SERVERS_LIST}"]
+  max_pings: "{MAX_PINGS}"
+  ping_interval: "{PING_INTERVAL}"
+  max_network_retries: "{MAX_NETWORK_RETRIES}"
+database_config:
+  db_user: "{DB_USER}"
+  db_password: "{DB_PASSWORD}"
+  db_host: "{DB_HOST}"
+  db_port: "{DB_PORT}"
+  db_name: "{DB_NAME}"
+  db_max_retries: "{DB_MAX_RETRIES}"
+  db_retry_interval: "{DB_RETRY_INTERVAL}"
+  db_timeout: "{DB_TIMEOUT}"
+proxy_config:
+  proxy_enabled: "{PROXY_ENABLED}"
+  proxy_server: "{PROXY_SERVER}"
+  proxy_port: "{PROXY_PORT}"
+  proxy_retry: "{PROXY_RETRY}"
+  proxy_timeout: "{PROXY_TIMEOUT}"
+debug_mode:
+  packet_trace_enabled: "{PACKET_TRACE_ENABLED}"
+  packet_trace_file: "{PACKET_TRACE_FILE}"
+  system_trace_enabled: "{SYSTEM_TRACE_ENABLED}"
+  system_trace_file: "{SYSTEM_TRACE_FILE}"
+modules_config:
+  module_load_interval: "{MODULE_LOAD_INTERVAL}"
+  module_timeout: "{MODULE_TIMEOUT}"
+  modules:
+    package_manager: "{MODULE_PATH_PACKAGE_MANAGER}"
+    retry: "{MODULE_PATH_RETRY}"
+    dependency_check: "{MODULE_PATH_DEPENDENCY_CHECK}"
+    install_packages: "{MODULE_PATH_INSTALL_PACKAGES}"
+    cleanup: "{MODULE_PATH_CLEANUP}"
+    network_operation: "{MODULE_PATH_NETWORK_OPERATION}"
+    network_diagnostics: "{MODULE_PATH_NETWORK_DIAGNOSTICS}"
+    remediation: "{MODULE_PATH_REMEDIATION}"
+    multithread_execution: "{MODULE_PATH_MULTITHREAD_EXECUTION}"
+    anti_forensics: "{MODULE_PATH_ANTI_FORENSICS}"
+    system_profiling: "{MODULE_PATH_SYSTEM_PROFILING}"
+    self_update: "{MODULE_PATH_SELF_UPDATE}"
+    activate_virtual_env: "{MODULE_PATH_ACTIVATE_VIRTUAL_ENV}"
+    anonsurf_install: "{MODULE_PATH_ANONSURF_INSTALL}"
+    update_upgrade: "{MODULE_PATH_UPDATE_UPGRADE}"
+    proxychains4_config: "{MODULE_PATH_PROXYCHAINS4_CONFIG}"
+    dns_config: "{MODULE_PATH_DNS_CONFIG}"
+    system_info: "{MODULE_PATH_SYSTEM_INFO}"
+    route_addition: "{MODULE_PATH_ROUTE_ADDITION}"
+    tor_verification: "{MODULE_PATH_TOR_VERIFICATION}"
+    anonsurf_status: "{MODULE_PATH_ANONSURF_STATUS}"
+    mac_address_change: "{MODULE_PATH_MAC_ADDRESS_CHANGE}"
+    audit_compliance: "{MODULE_PATH_AUDIT_COMPLIANCE}"
+    encryption_secure_communication: "{MODULE_PATH_ENCRYPTION_SECURE_COMMUNICATION}"
+    file_data_integrity: "{MODULE_PATH_FILE_DATA_INTEGRITY}"
+    intrusion_detection_prevention: "{MODULE_PATH_INTRUSION_DETECTION_PREVENTION}"
+    firewall_management: "{MODULE_PATH_FIREWALL_MANAGEMENT}"
+    vulnerability_assessment: "{MODULE_PATH_VULNERABILITY_ASSESSMENT}"
+    incident_response: "{MODULE_PATH_INCIDENT_RESPONSE}"
+    backup_recovery: "{MODULE_PATH_BACKUP_RECOVERY}"
+    software_system_update: "{MODULE_PATH_SOFTWARE_SYSTEM_UPDATE}"
+    configuration_management: "{MODULE_PATH_CONFIGURATION_MANAGEMENT}"
+    resource_monitoring: "{MODULE_PATH_RESOURCE_MONITORING}"
+    api_integration: "{MODULE_PATH_API_INTEGRATION}"
+    scheduler: "{MODULE_PATH_SCHEDULER}"
+    threat_intelligence: "{MODULE_PATH_THREAT_INTELLIGENCE}"
+    network_remediation: "{MODULE_PATH_NETWORK_REMEDIATION}"
+    testing: "{MODULE_PATH_TESTING}"
+    stealth_config: "{MODULE_PATH_STEALTH_CONFIG}"
+    network_mapping: "{MODULE_PATH_NETWORK_MAPPING}"
+    exploit_detection: "{MODULE_PATH_EXPLOIT_DETECTION}"
+    threat_analysis: "{MODULE_PATH_THREAT_ANALYSIS}"
+    incident_management: "{MODULE_PATH_INCIDENT_MANAGEMENT}"
+    virus_scanning: "{MODULE_PATH_VIRUS_SCANNING}"
+    secure_tunneling: "{MODULE_PATH_SECURE_TUNNELING}"
+    data_exfiltration: "{MODULE_PATH_DATA_EXFILTRATION}"
+    intrusion_prevention: "{MODULE_PATH_INTRUSION_PREVENTION}"
+    system_hardening: "{MODULE_PATH_SYSTEM_HARDENING}"
+    secure_coding: "{MODULE_PATH_SECURE_CODING}"
+    continuous_monitoring: "{MODULE_PATH_CONTINUOUS_MONITORING}"
+monitoring_config:
+  monitoring_enabled: "{MONITORING_ENABLED}"
+  monitoring_server: "{MONITORING_SERVER}"
+  monitoring_port: "{MONITORING_PORT}"
+  monitoring_retry: "{MONITORING_RETRY}"
+  monitoring_timeout: "{MONITORING_TIMEOUT}"
+stealth_config:
+  enabled: "{STEALTH_ENABLED}"
+  parameters: "{STEALTH_PARAMETERS}"
+network_mapping_config:
+  enabled: "{NETWORK_MAPPING_ENABLED}"
+  parameters: "{NETWORK_MAPPING_PARAMETERS}"
+exploit_detection_config:
+  enabled: "{EXPLOIT_DETECTION_ENABLED}"
+  parameters: "{EXPLOIT_DETECTION_PARAMETERS}"
+threat_analysis_config:
+  enabled: "{THREAT_ANALYSIS_ENABLED}"
+  parameters: "{THREAT_ANALYSIS_PARAMETERS}"
+incident_management_config:
+  enabled: "{INCIDENT_MANAGEMENT_ENABLED}"
+  parameters: "{INCIDENT_MANAGEMENT_PARAMETERS}"
+virus_scanning_config:
+  enabled: "{VIRUS_SCANNING_ENABLED}"
+  parameters: "{VIRUS_SCANNING_PARAMETERS}"
+secure_tunneling_config:
+  enabled: "{SECURE_TUNNELING_ENABLED}"
+  parameters: "{SECURE_TUNNELING_PARAMETERS}"
+data_exfiltration_config:
+  enabled: "{DATA_EXFILTRATION_ENABLED}"
+  parameters: "{DATA_EXFILTRATION_PARAMETERS}"
+intrusion_prevention_config:
+  enabled: "{INTRUSION_PREVENTION_ENABLED}"
+  parameters: "{INTRUSION_PREVENTION_PARAMETERS}"
+system_hardening_config:
+  enabled: "{SYSTEM_HARDENING_ENABLED}"
+  parameters: "{SYSTEM_HARDENING_PARAMETERS}"
+secure_coding_config:
+  enabled: "{SECURE_CODING_ENABLED}"
+  parameters: "{SECURE_CODING_PARAMETERS}"
+continuous_monitoring_config:
+  enabled: "{CONTINUOUS_MONITORING_ENABLED}"
+  parameters: "{CONTINUOUS_MONITORING_PARAMETERS}"
