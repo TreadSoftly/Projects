@@ -10,7 +10,7 @@
    🗝️ Welcome to a Hardware Pentest Build!⚔️<br/> 
     <img src="https://github.com/TreadSoftly/Projects/assets/121847455/d6eec8dc-aafb-4461-8394-4d19a355f627" width="50" height="50" alt="label"> 
     A Fusion of 
-    <a href="https://www.linkedin.com/in/raydraleaus/">🔏Projects</a> & 
+    <a href="https://www.linkedin.com/in/raydraleaus/">Projects</a> & 
     <a href="https://github.com/TreadSoftly/Projects">Cyber</a> 
     <a href="https://github.com/TreadSoftly/Projects/blob/main/GEOSINT_WAR_GALLERY.md">Use</a> 
     <a href="https://github.com/TreadSoftly/Projects/blob/main/GhostProtocolREADME.md">Cases🏴‍☠️</a>
