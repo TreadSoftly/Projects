@@ -421,6 +421,6 @@ Whether you're a seasoned pro or an aspiring ethical hacker, this rig's blend of
 
 <div align="center">
 
-   ![ace](https://github.com/TreadSoftly/Projects/assets/121847455/7ca3ff95-b132-40c6-b216-102f5f4bee4e)
+   <im src="https://github.com/TreadSoftly/Projects/assets/121847455/7ca3ff95-b132-40c6-b216-102f5f4bee4e" width="300" height="300" />
 
 </div>
