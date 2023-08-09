@@ -1,9 +1,13 @@
-# THIS IS JUST A TEMPLATE I USE TO DROP IN AND TEST THINGS WITH dig 
-# BUGGY AS HELL AS A STANDALONE SCRIPT
+# 🚀 **dig_iSpy**: DNS Enumeration Bash Script
+
+<strong>THIS IS JUST A TEMPLATE I USE TO DROP IN AND TEST THINGS WITH dig</strong>
+
+<strong>BUGGY AS HELL AS A STANDALONE SCRIPT</strong
+
 ![bug](https://github.com/TreadSoftly/Projects/assets/121847455/dc32b4c0-b78d-4756-bfec-863283d9d641)
 <br>
 <br>
-# 🚀 **dig_iSpy**: DNS Enumeration Bash Script
+
 
 ## 📝 Table of Contents
 - [Overview](#overview)
