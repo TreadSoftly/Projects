@@ -24,7 +24,7 @@ What it does: Showcases filesystem, memory, network, device info.
 Use Case: Ideal for system diagnostics.
 
 - 🌐 Network Configuration & Anonymization
-What it does: Manages network settings, IP tunnel anonomizing, Network over Tor integration, Dynamic MAC Address Changing.
+What it does: Manages network settings, IP tunnel anonymizing, Network over Tor integration, Dynamic MAC Address Changing.
 Use Case: Privacy in online communications.
 
 - 📦 System Updates & Package Management
