@@ -338,7 +338,7 @@ Whether you're a seasoned pro or an aspiring ethical hacker, this rig's blend of
 </h2>
 
  <p align="center">
-    <img src="https://github.com/TreadSoftly/Projects/assets/121847455/a55928dc-e6c2-4013-9d05-cc289f5f9dc3" width="400" height="200" />
+    <img src="https://github.com/TreadSoftly/Projects/assets/121847455/a55928dc-e6c2-4013-9d05-cc289f5f9dc3" width="550" height="200" />
   </p>
 
 
@@ -371,7 +371,7 @@ Whether you're a seasoned pro or an aspiring ethical hacker, this rig's blend of
 <br>
 
 
-<h2 align="center">🌐 Connect and Collaborate</h2>
+<h2 align="center"><a href="https://www.linkedin.com/in/raydraleaus/">🌐Connect and Collaborate</a></h2>
 <p align="center"><i>Ready for enlightening discussions and collaborative ventures</i></p>
 
  <p align="center">
@@ -397,7 +397,7 @@ Whether you're a seasoned pro or an aspiring ethical hacker, this rig's blend of
 <h2 align="center">🔐 Dive Deeper into Cybersecurity</h2>
 
  <p align="center">
-    <img src="https://github.com/TreadSoftly/Projects/assets/121847455/e529c902-4c7c-412c-9c7a-fdd91bf23192" width="225" height="150" />
+    <img src="https://github.com/TreadSoftly/Projects/assets/121847455/e529c902-4c7c-412c-9c7a-fdd91bf23192" width="300" height="150" />
   </p>
 
 
@@ -411,14 +411,13 @@ Whether you're a seasoned pro or an aspiring ethical hacker, this rig's blend of
 <p align="center">
     In the ever-evolving world of cybersecurity, remaining stagnant isn't an option. Keep learning, keep hacking, and remember that every challenge presents a new opportunity to grow. 
 </p>
-
+<br>
+<br>
 <div align="center">
     <a href="https://www.linkedin.com/in/raydraleaus/">
         <img src="https://img.shields.io/badge/Embrace_The_Hack-⚡-blue.svg?longCache=true&style=for-the-badge">
     </a>
 </div>
-
-
  <p align="center">
-   <img src="https://github.com/TreadSoftly/Projects/assets/121847455/eefccd15-a0e5-4a51-81e8-565dff2bb1f1" width="300" height="300" />
+   <img src="https://github.com/TreadSoftly/Projects/assets/121847455/eefccd15-a0e5-4a51-81e8-565dff2bb1f1" width="500" height="500" />
   </p>
