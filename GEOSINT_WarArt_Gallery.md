@@ -1,7 +1,8 @@
 <h2 align="center">🌍GEOSINT ARTofWAR🪖</h2>
 <br>
-
-![globalstrike](https://github.com/TreadSoftly/Projects/assets/121847455/995c1191-709a-44d7-910e-2b57ccb09a12)
+<p align="center">
+  <img src="https://github.com/TreadSoftly/Projects/assets/121847455/995c1191-709a-44d7-910e-2b57ccb09a12" alt="globalstrike" width="500" height="300" style="border-radius: 10px; box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);">
+</p>
 
 <p align="center"><strong>🔥 Some of the work I have pulled for humanitarian aid.</strong></p>
 <div align="center">
