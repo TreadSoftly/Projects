@@ -153,7 +153,7 @@ Whether you're a seasoned pro or an aspiring ethical hacker, this rig's blend of
 
 
 <p align="left" style="color: #007BFF; margin-bottom: 20px;">
-    <img src="https://github.com/TreadSoftly/Projects/assets/121847455/5cda4515-3a78-45b9-abeb-f1b3558cfc8d" width="230" height="230" alt="">
+    <img src="file:///C:/Users/MrDra/Downloads/sanji.gif" width="230" height="230" alt="">
     <strong><a href="https://secure.newegg.com/wishlist/md/42242292" style="text-decoration: none; color: inherit;">Click on the product names to view or purchase the items!</a></strong>
 </p>
  
@@ -161,7 +161,7 @@ Whether you're a seasoned pro or an aspiring ethical hacker, this rig's blend of
     <a href="https://www.amazon.com/hz/wishlist/dl/invite/imXrlKn?ref_=wl_share" style="text-decoration: none; color: inherit;">
         💻Hardware & Affiliate Links to Parts🔗
     </a>
-    <img src="https://github.com/TreadSoftly/Projects/assets/121847455/f54fbdff-ea6c-4e3e-b09f-96974a12203e" width="80" height="80" alt="">
+    <img src="file:///C:/Users/MrDra/Downloads/takemymoney.gif" width="80" height="80" alt="">
 </h2>
 
 
@@ -295,7 +295,7 @@ Whether you're a seasoned pro or an aspiring ethical hacker, this rig's blend of
     <a href="https://www.youtube.com/watch?v=U1w4T03B30I" style="text-decoration: none; color: #007BFF; font-weight: bold; font-size: 36px;">Bash</a>
 </p>
   <p align="center">
-    <img src="https://github.com/TreadSoftly/Projects/assets/121847455/f677a094-c1f9-4e87-8b17-8626e89a42a0" width="600" height="180" />
+    <img src="file:///C:/Users/MrDra/Downloads/scrolling.gif" width="600" height="180" />
   </p>
   <br>
   <br>
