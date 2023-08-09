@@ -12,8 +12,6 @@
 <p align="center">
   <strong>🚨 BUGGY AS HELL AS A STANDALONE SCRIPT 🚨</strong>
 </p>
-
-![bug](https://github.com/TreadSoftly/Projects/assets/121847455/dc32b4c0-b78d-4756-bfec-863283d9d641)
 <br>
 <br>
 
