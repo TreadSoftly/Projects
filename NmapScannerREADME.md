@@ -13,7 +13,8 @@
 </h2>
 
 <p align="center">
-1. [Introduction](#introduction)
+
+  1. [Introduction](#introduction)
 2. [Features](#features)
 3. [Requirements](#requirements)
 4. [Installation](#installation)
