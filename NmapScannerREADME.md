@@ -5,7 +5,10 @@
 
 `nmap_iSpy` is a cutting-edge Bash script that integrates with [`nmap`](https://github.com/nmap/nmap) to conduct customized and automated network scans. Designed for security experts, system administrators, and developers, this tool offers a rich set of features tailored to meet diverse scanning needs.
 
-## Table of Contents
+<h1 align="center">
+
+  ## Table of Contents
+</h1>
 
 1. [Introduction](#introduction)
 2. [Features](#features)
