@@ -8,7 +8,7 @@
 
 <h1 align="center">
    🗝️ Welcome to a Hardware Pentest Build!⚔️<br/> 
-    <img src="https://github.com/TreadSoftly/Projects/assets/121847455/e9e95b59-14d5-4636-aea9-0a00478c0af6" width="50" height="50" alt="label"> 
+    <img src="https://github.com/TreadSoftly/Projects/assets/121847455/4b59ba46-cc26-4f4e-87a9-6be81aaa47d1" width="50" height="50" alt="label"> 
     A Fusion of 
     <a href="https://www.linkedin.com/in/raydraleaus/">🔏Projects</a> & 
     <a href="https://github.com/TreadSoftly/Projects">Cyber</a> 
