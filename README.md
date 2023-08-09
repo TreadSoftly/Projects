@@ -50,7 +50,7 @@
 
 
 <p align="center">
-    <img src="https://github.com/TreadSoftly/ContractSecurityProjects/assets/121847455/d111adb2-37c6-4889-b6c4-73d449f2702d" width="150" height="150" alt="label">
+    <img src="https://github.com/TreadSoftly/Projects/assets/121847455/8f972cc8-e134-4c36-b174-f3fb1ace1932" width="150" height="150" alt="label">
 </p>
 
 <h1 align="center">
