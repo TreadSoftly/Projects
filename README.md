@@ -307,6 +307,11 @@ Whether you're a seasoned pro or an aspiring ethical hacker, this rig's blend of
    
 [🖥️Environments Used🤖](https://youtu.be/8VL0K0rFgxw)
 </h1>
+
+  <p align="center">
+    <img src="https://github.com/TreadSoftly/Projects/assets/121847455/77bc8d0e-0daf-4803-9c78-2faa04927946" width="150" height="150" />
+  </p>
+
   
 - <p2 align="left"><a href="https://www.microsoft.com/en-us/windows/windows-11">📀Windows 11 (22H2)💾</a></p2>
 
@@ -331,6 +336,12 @@ Whether you're a seasoned pro or an aspiring ethical hacker, this rig's blend of
     <a href="https://youtu.be/UXyS-xofGNM">Walk</a> 
     <a href="https://youtu.be/27Wn921q_BQ">-through 🧮</a>
 </h2>
+
+ <p align="center">
+    <img src="https://github.com/TreadSoftly/Projects/assets/121847455/a55928dc-e6c2-4013-9d05-cc289f5f9dc3" width="150" height="150" />
+  </p>
+
+
 <p align="center">
   <a href="https://youtu.be/PqRVo2niA_8">Hack WiFi with a Raspberry Pi and Kali Linux</a> 🎥💻
 </p>
@@ -363,6 +374,11 @@ Whether you're a seasoned pro or an aspiring ethical hacker, this rig's blend of
 <h2 align="center">🌐 Connect and Collaborate</h2>
 <p align="center"><i>Ready for enlightening discussions and collaborative ventures</i></p>
 
+ <p align="center">
+    <img src="https://github.com/TreadSoftly/Projects/assets/121847455/8af3f926-67f9-40a2-a015-1a0a279442bc" width="150" height="150" />
+  </p>
+
+
 <p align="center">
   <a href="https://www.linkedin.com/in/raydraleaus/">
     <img alt="LinkedIn" src="https://img.shields.io/badge/LinkedIn-%230077B5.svg?&style=for-the-badge&logo=linkedin&logoColor=white"/>
@@ -376,6 +392,9 @@ Whether you're a seasoned pro or an aspiring ethical hacker, this rig's blend of
 </p>
 
 <h2 align="center">🔐 Dive Deeper into Cybersecurity</h2>
+
+https://github.com/TreadSoftly/Projects/assets/121847455/34fb43c1-392d-47db-9c29-35a5d155b0aa
+
 
 <p align="center">
     Connect with me on <a href="https://www.linkedin.com/in/raydraleaus/">LinkedIn</a> for in-depth discussions about cybersecurity, ethical hacking, and more. As a professional in the field, I believe in fostering a community that promotes learning and collaboration.
