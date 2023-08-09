@@ -4,7 +4,7 @@ if [ -z "$INTERFACE_NAME" ]; then
     log "ERROR" "Failed to retrieve the interface name."
     exit 1
 fi
-    
+
 # Required packages list
 PACKAGES=("arp-scan" "macchanger" "mtr-tiny" "mtr" "grc" "python3-venv" "tor" "proxychains4" "torsocks" "srm" "jq")
 check_and_install_packages
@@ -30,10 +30,10 @@ change_mac_address
     local LOG_FILE="${LOG_PATH}/logfile.log"
     local interface="${INTERFACE_NAME}"
 
-    create_log_directory() {
-        local log_directory=$(dirname "${LOG_FILE}")
-        [ ! -d "${log_directory}" ] && mkdir -p "${log_directory}"
-    }
+create_log_directory() {
+    local log_directory=$(dirname "${LOG_FILE}")
+    [ ! -d "${log_directory}" ] && mkdir -p "${log_directory}"
+}
 
 # Function to log messages in different formats
 log() {
@@ -290,22 +290,23 @@ func_anti_forensics() {
         shift
     done
 
-check_and_install_packages() {
-    for package in "${PACKAGES[@]}"; do
-        if ! dpkg-query -W -f='${Status}' "$package" >/dev/null 2>&1 | grep -q "install ok installed"; then
-            printf "${YELLOW}===[ Installing ${package} ]===${NC}\n"
-            log "INFO" "Installing ${package}"
-            apt -qq install -y "$package" >/dev/null 2>&1 &
-            pid=$!
-            spinner $pid
-            printf "${GREEN}===[ Installed: ${package} ]===${NC}\n"
-            log "INFO" "Installed: ${package}"
-        else
-            printf "${BLUE}===[ Already Installed: ${package} ]===${NC}\n"
-            log "INFO" "Already installed: ${package}"
-        fi
-    done
-}
+    # Check and install packages
+    check_and_install_packages() {
+        for package in "${PACKAGES[@]}"; do
+            if ! dpkg-query -W -f='${Status}' "$package" >/dev/null 2>&1 | grep -q "install ok installed"; then
+                printf "${YELLOW}===[ Installing ${package} ]===${NC}\n"
+                log "INFO" "Installing ${package}"
+                apt -qq install -y "$package" >/dev/null 2>&1 &
+                pid=$!
+                spinner $pid
+                printf "${GREEN}===[ Installed: ${package} ]===${NC}\n"
+                log "INFO" "Installed: ${package}"
+            else
+                printf "${BLUE}===[ Already Installed: ${package} ]===${NC}\n"
+                log "INFO" "Already installed: ${package}"
+            fi
+        done
+    }
 
 
     # Activate virtual environment
@@ -498,28 +499,28 @@ fi
         log "INFO" "arp-scan installed."
     fi
 
-# Function to change MAC address using ARP scanner
-change_mac_address() {
-    log "INFO" "===[ Changing MAC address using ARP scanner ]==="
-    local interface="${INTERFACE_NAME}"
-    local arp_output=$(sudo arp-scan -l)
-    local similar_mac=$(echo "$arp_output" | grep -E -o '([[:xdigit:]]{1,2}:){5}[[:xdigit:]]{1,2}' | shuf -n 1)
-    if [ -z "$similar_mac" ]; then
-        # Fallback to Random MAC if Similar MAC Not Found
-        local old_mac=$(ip link show $interface | awk '/ether/ {print $2}')
-        ip link set dev $interface down
-        macchanger -r $interface
-        ip link set dev $interface up
-        local new_mac=$(ip link show $interface | awk '/ether/ {print $2}')
-        printf "Changed MAC address of ${BLUE}${interface}${NC} from ${GREEN}${old_mac}${NC} to ${BLUE}${new_mac}${NC}\n"
-    else
-        local old_mac=$(ip link show $interface | awk '/ether/ {print $2}')
-        ip link set dev $interface down
-        ip link set dev $interface address $similar_mac
-        ip link set dev $interface up
-        printf "Changed MAC address of ${BLUE}${interface}${NC} from ${GREEN}${old_mac}${NC} to ${BLUE}${similar_mac}${NC}\n"
-    fi
-}
+    # Function to change MAC address using ARP scanner
+    change_mac_address() {
+        log "INFO" "===[ Changing MAC address using ARP scanner ]==="
+        local interface="${INTERFACE_NAME}"
+        local arp_output=$(sudo arp-scan -l)
+        local similar_mac=$(echo "$arp_output" | grep -E -o '([[:xdigit:]]{1,2}:){5}[[:xdigit:]]{1,2}' | shuf -n 1)
+        if [ -z "$similar_mac" ]; then
+            # Fallback to Random MAC if Similar MAC Not Found
+            local old_mac=$(ip link show $interface | awk '/ether/ {print $2}')
+            ip link set dev $interface down
+            macchanger -r $interface
+            ip link set dev $interface up
+            local new_mac=$(ip link show $interface | awk '/ether/ {print $2}')
+            printf "Changed MAC address of ${BLUE}${interface}${NC} from ${GREEN}${old_mac}${NC} to ${BLUE}${new_mac}${NC}\n"
+        else
+            local old_mac=$(ip link show $interface | awk '/ether/ {print $2}')
+            ip link set dev $interface down
+            ip link set dev $interface address $similar_mac
+            ip link set dev $interface up
+            printf "Changed MAC address of ${BLUE}${interface}${NC} from ${GREEN}${old_mac}${NC} to ${BLUE}${similar_mac}${NC}\n"
+        fi
+    }
 
     # Check if mtr-tiny or mtr is installed, and install if not
     if ! command -v mtr-tiny &> /dev/null; then
@@ -558,5 +559,3 @@ change_mac_address() {
     log "INFO" "Function asdf() executed successfully"
     bash
 }
-
-alias asdf='asdf'
