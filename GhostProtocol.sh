@@ -341,7 +341,7 @@ Cache=yes
 CacheSize=100M
 CacheTimeSec=300
 DNSOverTLS=yes
-DNSOverTLSPort=853
+DNSOverTLSPort=XXX
 DNSOverTLSCertificateDepth=2
 DNSOverTLSServerName=cloudflare-dns.com
 MulticastDNS=yes
@@ -422,8 +422,8 @@ fi
 
     # Add a route to bypass Anonsurf for local network traffic
     printf "\n${BLUE}Add a route to bypass Anonsurf for local network traffic${NC}\n"
-    if ! ip route show | grep -q "192.168.0.0/24 dev eth0"; then
-        ip route add 192.168.0.0/24 dev eth0
+    if ! ip route show | grep -q "1XX.XX8.0.0/24 dev eth0"; then
+        ip route add 1XX.XX8.0.0/24 dev eth0
     fi
 
     # Start Tor and verify fingerprint (fixed syntax)
