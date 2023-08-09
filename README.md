@@ -7,13 +7,13 @@
 
 <h1 align="center">
    🗝️ Welcome to a Hardware Pentest Build!⚔️<br/> 
-    <img src="https://github.com/TreadSoftly/ContractSecurityProjects/assets/121847455/75062926-764e-4d81-b345-cf273985061a" width="100" height="100" alt="label"> 
+    <img src="https://github.com/TreadSoftly/ContractSecurityProjects/assets/121847455/75062926-764e-4d81-b345-cf273985061a" width="50" height="50" alt="label"> 
     A Fusion of 
     <a href="https://www.linkedin.com/in/raydraleaus/">🔏Projects</a> & 
     <a href="https://github.com/TreadSoftly/Projects">Cyber</a> 
     <a href="https://github.com/TreadSoftly/Projects/blob/main/GEOSINT_WAR_GALLERY.md">Use</a> 
     <a href="https://github.com/TreadSoftly/Projects/blob/main/GhostProtocolREADME.md">Cases🏴‍☠️</a>
-    <img src="https://github.com/TreadSoftly/ContractSecurityProjects/assets/121847455/33cfbe17-1cfe-447e-9b8e-74e6c463a17c" width="100" height="100" alt="purpose">
+    <img src="https://github.com/TreadSoftly/ContractSecurityProjects/assets/121847455/33cfbe17-1cfe-447e-9b8e-74e6c463a17c" width="50" height="50" alt="purpose">
 </h1>
 
 <div align="center">
