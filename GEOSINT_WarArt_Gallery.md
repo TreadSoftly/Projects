@@ -1,7 +1,8 @@
-<h2 align="center">GEOSINT WAR GALLERY</h2>
+<h2 align="center">🌍 GEOSINT WAR GALLERY 🌍</h2>
 <br>
-<p align="center"><strong>Some of the work I have pulled for humanitarian aid. I will build out a credited section in a README.md later</strong></p>
+<p align="center"><strong>🔥 Some of the work I have pulled for humanitarian aid. I will build out a credited section in a README.md later 🚀</strong></p>
 
+<div align="center">
 <p align="right"><img src="https://github.com/TreadSoftly/ContractSecurityProjects/assets/121847455/da6242b6-3a5b-4e75-bee6-915d5073ab1c" width="450" height="300"></p>
 <p align="center"><img src="https://github.com/TreadSoftly/ContractSecurityProjects/assets/121847455/0e7e9b1d-41a0-4104-af98-888e41f789fb" width="400" height="300"></p>
 <p align="left"><img src="https://github.com/TreadSoftly/ContractSecurityProjects/assets/121847455/cc324719-e636-41fb-ba89-136f553ff6d1" width="350" height="300"></p>
@@ -27,8 +28,37 @@
 <p align="left"><img src="https://github.com/TreadSoftly/ContractSecurityProjects/assets/121847455/5fbca87d-0980-4410-8d61-c069d1ffd9e0" width="440" height="310"></p>
 <p align="center"><img src="https://github.com/TreadSoftly/ContractSecurityProjects/assets/121847455/4051ed57-e091-4d57-ac92-9e4b1791aad8" width="410" height="320"></p>
 <p align="left"><img src="https://github.com/TreadSoftly/ContractSecurityProjects/assets/121847455/ac3c2bf7-10c4-4288-acad-7bc6854378b7" width="360" height="320"></p>
+<!-- Additional Images -->
+</div>
 
-<h3 align="center">Connect with me:</h3>
+<h3 align="center">🔒 Professional Background 🔒</h3>
+<p align="center">💼 Dedicated to the research, development, and deployment of cutting-edge solutions in the field of cybersecurity, humanitarian aid, and more. Seeking collaboration and innovation opportunities with like-minded professionals. 💼</p>
+
+<h3 align="center">🔗 Connect with me: 🔗</h3>
 <p align="center">
-  <a href="https://github.com/TreadSoftly">GitHub Profile</a> •
-  <a href="https://stackoverflow.com/users/your-username">Stack Overflow Profile</a>
+  <a href="https://github.com/TreadSoftly"><img src="https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white"></a> •
+  <a href="https://stackoverflow.com/users/your-username"><img src="https://img.shields.io/badge/Stack_Overflow-FE7A16?style=for-the-badge&logo=stack-overflow&logoColor=white"></a> •
+  <a href="https://linkedin.com/in/raydraleaus/"><img src="https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white"></a> •
+  <a href="https://twitter.com/your-twitter-handle"><img src="https://img.shields.io/badge/Twitter-1DA1F2?style=for-the-badge&logo=twitter&logoColor=white"></a> •
+  <a href="https://discord.gg/zw5fsRM9"><img src="https://img.shields.io/badge/Discord-7289DA?style=for-the-badge&logo=discord&logoColor=white"></a>
+</p>
+
+<h3 align="center">🛠️ Technologies & Tools 🛠️</h3>
+<p align="center">
+  <strong>Python</strong> • <strong>PowerShell</strong> • <strong>Bash</strong> • <strong>Go</strong> • <strong>SQL/MySQL/PostgreSQL</strong> • <strong>Network Design</strong> • <strong>Network Security</strong> • <strong>Ethical Hacking</strong> 🧠💻🎓
+</p>
+
+<h2 align="center">🎖️ Projects 🎖️</h2>
+<p align="center">
+  <a href="https://github.com/TreadSoftly/Projects"><img src="https://img.shields.io/badge/Projects-Click_Here-green?style=for-the-badge"></a>
+</p>
+
+<h2 align="center">🚁 GEOSINT WAR GALLERY 🛸</h2>
+<br>
+<p align="center"><strong>🔥 Some of the work I have pulled for humanitarian aid. I will build out a credited section in a README.md later 🎥🔭💣🎖️</strong></p>
+
+<div align="center">
+  <p><img src="https://github.com/TreadSoftly/ContractSecurityProjects/assets/121847455/da6242b6-3a5b-4e75-bee6-915d5073ab1c" width="450" height="300"></p>
+  <p><img src="https://github.com/TreadSoftly/ContractSecurityProjects/assets/121847455/0e7e9b1d-41a0-4104-af98-888e41f789fb" width="400" height="300"></p>
+  <!-- Additional Images -->
+</div>
