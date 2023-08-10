@@ -4,7 +4,7 @@ This comprehensive document provides an in-depth guide to various configurable m
 
 ## Table of Contents
 1. [Introduction](#introduction) :book:
-2. [JSON Configuration](#json-configuration) :bracelets:
+2. [JSON Configuration](#json-configuration) ⛓️
 3. [XML Configuration](#xml-configuration) :label:
 4. [YAML Configuration](#yaml-configuration) :scroll:
 5. [INI Configuration](#ini-configuration) :floppy_disk:
