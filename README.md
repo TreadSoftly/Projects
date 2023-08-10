@@ -162,7 +162,7 @@ Whether you're a seasoned pro or an aspiring ethical hacker, this rig's blend of
 
 <h2 align="center" style="color: #007BFF; margin-bottom: 20px;">
     <a href="https://www.amazon.com/hz/wishlist/dl/invite/imXrlKn?ref_=wl_share" style="text-decoration: none; color: inherit;">
-        💻Hardware & Affiliate Links to Parts🔗
+        💻Hardware & Links to Parts🔗
     </a>
     <br>
     <img src="https://github.com/TreadSoftly/Projects/assets/121847455/f85e6b95-c537-4f89-ae19-dad755ecb9d1" width="100" height="100" alt="">
