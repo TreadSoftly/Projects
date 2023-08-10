@@ -4,12 +4,19 @@
 
 _The script does not work fully intentionally (I whisper to myself🥴)_
 
-## Function: `asdf` 🧰
+## Table of Contents
 
-The `asdf` function is a powerhouse, packed with utilities for various needs. Here's an insight into its offerings:
+- [Features](#features)
+- [Integration into `~/.bashrc` File](#integration)
+- [Usage](#usage)
+- [Contributing](#contributing)
+- [Advanced Functions](#advanced-functions)
+- [Conclusion](#conclusion)
+- [Appendix](#appendix)
+
 </div>
 
-### <p align="center">1.1 Features</p>
+## <a name="features"></a><p align="center">1.1 Features</p>
 
 - Network Interface Retrieval
 - Package Management
@@ -22,8 +29,7 @@ The `asdf` function is a powerhouse, packed with utilities for various needs. He
 
 ---
 
-
-## <p align="center">## 🖥️ Integration into `~/.bashrc` File</p>
+## <a name="integration"></a><p align="center">🖥️ Integration into `~/.bashrc` File</p>
 <div align="center">
 
 1. **Open the `~/.bashrc` File in a Text Editor (nano is default, I use and like Leafpad):**
@@ -43,54 +49,59 @@ The `asdf` function is a powerhouse, packed with utilities for various needs. He
 
 </div>
 
-## <p align="center">3. Usage</p>
+## <a name="usage"></a><p align="center">3. Usage</p>
 
 ### <p align="center">3.1 Main Function</p>
 
 You can run the main function using the following command:
 
-\`\`\`bash
+```bash
 bash asdf.sh
-\`\`\`
+```
 
 This will initiate various functionalities including:
 
+<div align="center">
+
 #### Changing MAC Address
 
-\`\`\`bash
+```bash
 change_mac_address
-\`\`\`
+```
 
 Example Output:
 
-\`\`\`bash
+```bash
 Changed MAC address of eth0 from 00:11:22:33:44:55 to 66:77:88:99:AA:BB
-\`\`\`
+```
 
 #### Monitoring Network Traffic
 
-\`\`\`bash
+```bash
 monitor_network_traffic "eth0" 60 "network_capture.pcap"
-\`\`\`
+```
 
 #### Anti-Forensics Techniques
 
-\`\`\`bash
+```bash
 func_anti_forensics
-\`\`\`
+```
 
 ... and more.
 
+</div>
+
 ---
 
-## <p align="center">4. Contributing</p>
+## <a name="contributing"></a><p align="center">4. Contributing</p>
 
 Feel free to contribute to this project by submitting pull requests or opening issues on the GitHub page.
 
 ---
 
+## <a name="advanced-functions"></a> Advanced Functions
 
-## 📝 Logging Mechanism
+### 📝 Logging Mechanism
 <div align="center">
 
 **What it does:** Tailors logs with levels like DEBUG, INFO, WARN, ERROR, FATAL 📜
@@ -104,7 +115,7 @@ Feel free to contribute to this project by submitting pull requests or opening i
 
 </div>
 
-## 🔒 Memory Analysis Prevention
+### 🔒 Memory Analysis Prevention
 <div align="center">
 
 **What it does:** Shields memory from unauthorized inspection 🔐
@@ -113,7 +124,7 @@ Feel free to contribute to this project by submitting pull requests or opening i
 
 </div>
 
-## 🕵️ Anti-Forensics Techniques
+### 🕵️ Anti-Forensics Techniques
 <div align="center">
 
 **What it does:** Erases traces, wipes history, disguises files 🧹
@@ -122,7 +133,7 @@ Feel free to contribute to this project by submitting pull requests or opening i
 
 </div>
 
-## 💻 System Information Gathering
+### 💻 System Information Gathering
 <div align="center">
 
 **What it does:** Showcases filesystem, memory, network, device info 🖥️
@@ -131,7 +142,7 @@ Feel free to contribute to this project by submitting pull requests or opening i
 
 </div>
 
-## 🌐 Network Configuration & Anonymization
+### 🌐 Network Configuration & Anonymization
 <div align="center">
 
 **What it does:** Manages network settings, IP tunnel anonymizing, Network over Tor integration, Dynamic MAC Address Changing 🕸️
@@ -140,7 +151,7 @@ Feel free to contribute to this project by submitting pull requests or opening i
 
 </div>
 
-## 📦 System Updates & Package Management
+### 📦 System Updates & Package Management
 <div align="center">
 
 **What it does:** Manages packages, updates, and upgrades 📦
@@ -149,7 +160,7 @@ Feel free to contribute to this project by submitting pull requests or opening i
 
 </div>
 
-## 🔄 Reboot Function: `reboot`
+### 🔄 Reboot Function: `reboot`
 <div align="center">
 
 **What it does:** Resets MAC, stops Anonsurf, fine-tunes GRUB, reboots 🔄
@@ -158,7 +169,7 @@ Feel free to contribute to this project by submitting pull requests or opening i
 
 </div>
 
-## 🛑 Endit Function: `endit`
+### 🛑 Endit Function: `endit`
 <div align="center">
 
 **What it does:** Randomizes MAC, cleans with BleachBit, powers off 🚫
@@ -167,11 +178,14 @@ Feel free to contribute to this project by submitting pull requests or opening i
 
 </div>
 
-## 🎓 Conclusion
+## <a name="conclusion"></a><p align="center">🎓 Conclusion</p>
 <div align="center">
 
 This script is more than a toolkit; it's a lifeline for security pros, sysadmins, ethical hackers, and privacy enthusiasts. It's crafted with attention and a flair for making complex tasks more automated at the fundamental levels. Use it, customize it, break it. 🚀
 
 </div>
 
-# 🌐 Advanced Network Security Script
+## <a name="appendix"></a>🌐 Advanced Network Security Script
+
+</div>
+
