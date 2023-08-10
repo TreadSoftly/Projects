@@ -85,6 +85,3 @@ log_level = {LOG_LEVEL}
 - [GitHub JSON Topics](https://github.com/topics/json)
 - [GitHub YAML](https://github.com/yaml/)
 - [GitHub INI Topics](https://github.com/topics/ini)
-
-## Contributing :sparkles:
-Feel free to contribute to this project! See the contributing guidelines for more details.
