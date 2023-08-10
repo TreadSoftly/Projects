@@ -99,7 +99,8 @@ Refer to the [Nmap Reference Guide](https://nmap.org/book/man.html) for a comple
 ## Links & Resources
 <div>
 <p aalign="center">
-- [GitHub Repository](https://github.com/YourUsername/nmap_iSpy)
+
+  - [GitHub Repository](https://github.com/YourUsername/nmap_iSpy)
 - [Nmap Official Site](https://nmap.org)
 - [Nmap on GitHub](https://github.com/nmap/nmap)
 - [Nmap Tutorial to find Network Vulnerabilities - NetworkChuck](https://youtu.be/4t4kBkMsDbQ)
