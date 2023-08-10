@@ -1,5 +1,5 @@
 
-# 🛠️ asdf: A Multi-purpose Toolkit
+# <p align="center">🛠️ asdf: A Multi-purpose Toolkit</p>
 <div align="center">
 
 _The script does not work fully intentionally (I whisper to myself🥴)_
@@ -8,6 +8,93 @@ _The script does not work fully intentionally (I whisper to myself🥴)_
 
 The `asdf` function is a powerhouse, packed with utilities for various needs. Here's an insight into its offerings:
 </div>
+
+### <p align="center">1.1 Features</p>
+
+- Network Interface Retrieval
+- Package Management
+- Dynamic System Update
+- Logging in Various Formats
+- Memory Analysis Prevention
+- ARP Scanning and MAC Address Changing
+- Connectivity Checks
+- And much more!
+
+---
+
+## <p align="center">2. Installation</p>
+
+### Prerequisites
+
+You will need the following packages installed:
+
+\`\`\`bash
+PACKAGES=("arp-scan" "macchanger" "mtr-tiny" "mtr" "grc" "python3-venv" "tor" "proxychains4" "torsocks" "srm" "jq")
+\`\`\`
+
+### Installation Steps
+
+Clone the repository and navigate to the directory:
+
+\`\`\`bash
+git clone https://github.com/your-repo/asdf-toolkit.git
+cd asdf-toolkit
+\`\`\`
+
+Run the installation script:
+
+\`\`\`bash
+bash install.sh
+\`\`\`
+
+---
+
+## <p align="center">3. Usage</p>
+
+### <p align="center">3.1 Main Function</p>
+
+You can run the main function using the following command:
+
+\`\`\`bash
+bash asdf.sh
+\`\`\`
+
+This will initiate various functionalities including:
+
+#### Changing MAC Address
+
+\`\`\`bash
+change_mac_address
+\`\`\`
+
+Example Output:
+
+\`\`\`bash
+Changed MAC address of eth0 from 00:11:22:33:44:55 to 66:77:88:99:AA:BB
+\`\`\`
+
+#### Monitoring Network Traffic
+
+\`\`\`bash
+monitor_network_traffic "eth0" 60 "network_capture.pcap"
+\`\`\`
+
+#### Anti-Forensics Techniques
+
+\`\`\`bash
+func_anti_forensics
+\`\`\`
+
+... and more.
+
+---
+
+## <p align="center">4. Contributing</p>
+
+Feel free to contribute to this project by submitting pull requests or opening issues on the GitHub page.
+
+---
+
 
 ## 📝 Logging Mechanism
 <div align="center">
