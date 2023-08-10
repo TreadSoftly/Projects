@@ -82,25 +82,25 @@ Sharpening my PowerShell skills while constructing a honeypot. Check out my prog
 
 #### Projects and Tools
 
-### [📦 Package Delivery Application (Datastructures and Algorithms Demo)](https://github.com/TreadSoftly/SecurityProjects)
-My take on a package delivery application demonstrating the use of data structures and algorithms in Python.
+### [📦 My Approach At Advancing Logs)](https://github.com/TreadSoftly/Projects/blob/main/LoggingTheory.py)
+My take on a enhanced logging application demonstrating the use of log structures and algorithms in Python.
 <p>
   
-[![Badge](https://img.shields.io/badge/Application_Demo-Link-blue?style=for-the-badge&logo=Python)](https://github.com/TreadSoftly/SecurityProjects)
+[![Badge](https://img.shields.io/badge/Application_Demo-Link-blue?style=for-the-badge&logo=Python)](https://github.com/TreadSoftly/Projects/blob/main/LoggingTheory.py)
 </p>
 
-### [🕵️‍♂️ This is a Host of Known Working Tools Set To Maximum Defaults and Interlinked To Feed Off of Eachother](https://github.com/The4orge/iSpyVERSION1)
+### [🕵️‍♂️ This Is Where I Drop My Projects. Some Good Script Conversions To Python](https://github.com/TreadSoftly/Projects)
 A compilation of efficient tools set to maximum defaults and interlinked for optimum performance.
 <p>
   
-[![Badge](https://img.shields.io/badge/Tools_Compilation-Link-orange?style=for-the-badge&logo=Python)](https://github.com/The4orge/iSpyVERSION1)
+[![Badge](https://img.shields.io/badge/Tools_Compilation-Link-orange?style=for-the-badge&logo=Python)](https://github.com/TreadSoftly/Projects)
 </p>
 
-### [🔀 Converting my Bash Scripts to Python for Project Learning](https://github.com/TreadSoftly/Bash2Python)
+### [🔀 Converting my Bash Scripts to Python for Project Learning](https://github.com/TreadSoftly/Projects/blob/main/Bash2Python.py)
 Join me on my journey as I convert my Bash scripts to Python for better understanding and efficiency.
 <p>
   
-[![Badge](https://img.shields.io/badge/Conversion_Project-Link-yellowgreen?style=for-the-badge&logo=Python)](https://github.com/TreadSoftly/Bash2Python)
+[![Badge](https://img.shields.io/badge/Conversion_Project-Link-yellowgreen?style=for-the-badge&logo=Python)](https://github.com/TreadSoftly/Projects/blob/main/Bash2Python.py)
 </p>
 
 </div>
