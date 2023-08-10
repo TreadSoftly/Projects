@@ -8,8 +8,7 @@
   <p>
   
   [TreadSoftly Projects](https://github.com/TreadSoftly) 
-  is a repository where I come to throw more than half completed ideas into a single place.</p>
-  <p>Please enjoy my GitHub profile.</p>
+  is a repository where I have started to compile and bring together my projects and learning to better consolidate in a more focused approach towards pentesting and cyber security aspects.</p>
   <br>
   <img src="https://github.com/TreadSoftly/Projects/assets/121847455/250904fb-3abc-4d82-8770-f12196c069ac"/>
   <br>
