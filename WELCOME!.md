@@ -65,7 +65,7 @@ Securing SaaS has never been this easy. Check out some of my security scripts fo
 
 #### Projects and Tools
 
-### [📚 Learning PowerShell While Building Out a Honeypot](https://github.com/TreadSoftly/HoneyPotBuildPowerShell)
+### [📚 Learning PowerShell While Building Out a Honeypot](https://github.com/TreadSoftly/Projects/blob/main/HoneyPotLearnPSREADME.md)
 Sharpening my PowerShell skills while constructing a honeypot. Check out my progress here.
 <p>
   
