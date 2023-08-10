@@ -105,7 +105,3 @@ Refer to the [Nmap Reference Guide](https://nmap.org/book/man.html) for a comple
 - [Nmap Reference Guide](https://nmap.org/book/man.html)
 - [bzip2 Official Site](http://www.bzip.org)
 - [xz Official Site](https://tukaani.org/xz/)
-
-## License
-
-This project is licensed under the MIT License. View the [LICENSE.md](LICENSE.md) file for details.
