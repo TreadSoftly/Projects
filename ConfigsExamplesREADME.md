@@ -1,87 +1,86 @@
 
-# Configurable Main Config File Version :gear:
-This comprehensive document provides an in-depth guide to various configurable main config file versions, covering different formats like JSON, XML, YAML, and INI.
+# Configurable Main Config File Version 🛠️
 
-## Table of Contents
-1. [Introduction](#introduction) :book:
-2. [JSON Configuration](#json-configuration) ⛓️
-3. [XML Configuration](#xml-configuration) :label:
-4. [YAML Configuration](#yaml-configuration) :scroll:
-5. [INI Configuration](#ini-configuration) :floppy_disk:
-6. [Links and Badges](#links-and-badges) :link:
-7. [Contributing](#contributing) :sparkles:
+This document provides an in-depth guide to the main configuration file, covering different formats such as XML, JSON, YAML, and INI. It outlines the structure, usage, and customization options available for various configuration styles.
 
-## Introduction :book:
-Configuration files are essential for managing various settings in an application, system, or network. This guide explores different formats that can be used for configuration.
+## Table of Contents 📝
+1. [Introduction](#introduction)
+2. [Config Formats](#config-formats)
+   - [XML](#xml)
+   - [JSON](#json)
+   - [YAML](#yaml)
+   - [INI](#ini)
+3. [Configuration Sections](#configuration-sections)
+   - [Log Configuration](#log-configuration)
+   - [System Information](#system-information)
+   ...
+4. [Resources](#resources)
+5. [Badges](#badges)
 
-## JSON Configuration :bracelets:
-JSON (JavaScript Object Notation) is widely used for configuration purposes.
+## Introduction 📚
 
-### Example
+Configuration files are essential for the operation and customization of various systems. This document offers comprehensive examples of different configuration styles, with links to official documentation and related resources.
 
-\`\`\`json
-{
-  "log_config": {
-    "log_level": "{LOG_LEVEL}",
-    "log_file": "{LOG_FILE_PATH}",
-    ...
-  },
-  ...
-}
-\`\`\`
+## Config Formats 🗂️
 
-[Learn more about JSON](https://www.json.org/json-en.html) :link:
+### XML
 
-## XML Configuration :label:
-XML (eXtensible Markup Language) is a human-readable and machine-readable markup language.
+XML is a markup language used for encoding documents in a format that is both human-readable and machine-readable. Learn more about XML from the following resources:
+- [Wikipedia](https://en.wikipedia.org/wiki/XML)
+- [W3Schools](https://www.w3schools.com/xml/xml_whatis.asp)
+- [GitHub](https://github.com/topics/xml)
+- [YouTube Tutorial](https://www.youtube.com/watch?v=KeLiQXqVgMI)
 
-### Example
+### JSON
 
-\`\`\`xml
-<config>
-  <log_config>
-    <log_level>{LOG_LEVEL}</log_level>
-    <log_file>{LOG_FILE_PATH}</log_file,
-    ...
-  </log_config>
-  ...
-</config>
-\`\`\`
+JSON is a common data format used for asynchronous browser/server communication. Here are some useful links:
+- [JSON Official Site](https://www.json.org/json-en.html)
+- [Wikipedia](https://en.wikipedia.org/wiki/JSON)
+- [GitHub](https://github.com/topics/json)
+- [YouTube Tutorial](https://www.youtube.com/watch?v=6OhMbf2v_jI)
 
-[Learn more about XML](https://www.w3schools.com/xml/xml_whatis.asp) :link:
+### YAML
 
-## YAML Configuration :scroll:
-YAML is a human-readable data serialization standard.
+YAML is a human-readable data serialization standard. Get more information here:
+- [Official YAML Site](https://yaml.org/)
+- [Wikipedia](https://en.wikipedia.org/wiki/YAML)
+- [GitHub](https://github.com/yaml/)
+- [YouTube Tutorial](https://www.youtube.com/watch?v=1uFVr15xDGg)
 
-### Example
+### INI
 
-\`\`\`yaml
-log_config:
-  log_level: "{LOG_LEVEL}"
-  ...
-\`\`\`
+INI files are simple text files with a basic structure. Explore more about INI files:
+- [Wikipedia](https://en.wikipedia.org/wiki/INI_file)
+- [Advanced Installer](https://www.advancedinstaller.com/what-is-ini-file.html)
+- [GitHub](https://github.com/topics/ini)
+- [YouTube Tutorial](https://www.youtube.com/watch?v=eBTZMn5i_n4)
 
-[Learn more about YAML](https://yaml.org/) :link:
+## Configuration Sections 🛠️
 
-## INI Configuration :floppy_disk:
-The INI file format is simple and widely used.
+The following sections provide details on various configuration options.
 
-### Example
+### Log Configuration
 
-\`\`\`ini
-[log_config]
-log_level = {LOG_LEVEL}
+**Description:** Provide a detailed explanation of the log configuration, its purpose, and how it can be customized. Include examples if necessary.
+
+**Parameters:**
+- **log_level:** `{LOG_LEVEL}`
+- **log_file:** `{LOG_FILE_PATH}`
 ...
-\`\`\`
 
-[Learn more about INI files](https://en.wikipedia.org/wiki/INI_file) :link:
+[Rest of the sections with detailed explanations]
 
-## Links and Badges :link:
-- [YouTube - XML](https://www.youtube.com/watch?v=KeLiQXqVgMI)
-- [YouTube - JSON](https://www.youtube.com/watch?v=6OhMbf2v_jI)
-- [YouTube - YAML](https://www.youtube.com/watch?v=1uFVr15xDGg)
-- [YouTube - INI](https://www.youtube.com/watch?v=eBTZMn5i_n4)
-- [GitHub XML Topics](https://github.com/topics/xml)
-- [GitHub JSON Topics](https://github.com/topics/json)
-- [GitHub YAML](https://github.com/yaml/)
-- [GitHub INI Topics](https://github.com/topics/ini)
+## Resources 🌐
+
+- YouTube: ![YouTube Badge](https://img.shields.io/badge/YouTube-FF0000?style=for-the-badge&logo=youtube&logoColor=white)
+- GitHub: ![GitHub Badge](https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white)
+- Wiki: ![Wiki Badge](https://img.shields.io/badge/Wiki-555555?style=for-the-badge&logo=wikipedia&logoColor=white)
+- Blog: ![Blog Badge](https://img.shields.io/badge/Blog-FF5722?style=for-the-badge&logo=blogger&logoColor=white)
+
+## Badges 🎖️
+
+Click the badges for direct access:
+- [![YouTube](https://img.shields.io/badge/YouTube-FF0000?style=for-the-badge&logo=youtube&logoColor=white)](https://www.youtube.com)
+- [![GitHub](https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white)](https://www.github.com)
+- [![Wiki](https://img.shields.io/badge/Wiki-555555?style=for-the-badge&logo=wikipedia&logoColor=white)](https://www.wikipedia.org)
+- [![Blog](https://img.shields.io/badge/Blog-FF5722?style=for-the-badge&logo=blogger&logoColor=white)](https://www.blogger.com)
