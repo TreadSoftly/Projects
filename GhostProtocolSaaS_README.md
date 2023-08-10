@@ -22,32 +22,26 @@ The `asdf` function is a powerhouse, packed with utilities for various needs. He
 
 ---
 
-## <p align="center">2. Installation</p>
 
-### Prerequisites
+## <p align="center">## 🖥️ Integration into `~/.bashrc` File</p>
+<div align="center">
 
-You will need the following packages installed:
+1. **Open the `~/.bashrc` File in a Text Editor (nano is default, I use and like Leafpad):**
+   ```bash
+   nano ~/.bashrc
+   ```
 
-\`\`\`bash
-PACKAGES=("arp-scan" "macchanger" "mtr-tiny" "mtr" "grc" "python3-venv" "tor" "proxychains4" "torsocks" "srm" "jq")
-\`\`\`
+2. **Source your functions here:**
+   ```bash
+   source ~/.bashrc
+   ```
 
-### Installation Steps
+3. **Type the command to run the function:**
+   ```bash
+   Type command 'asdf'
+   ```
 
-Clone the repository and navigate to the directory:
-
-\`\`\`bash
-git clone https://github.com/your-repo/asdf-toolkit.git
-cd asdf-toolkit
-\`\`\`
-
-Run the installation script:
-
-\`\`\`bash
-bash install.sh
-\`\`\`
-
----
+</div>
 
 ## <p align="center">3. Usage</p>
 
@@ -170,26 +164,6 @@ Feel free to contribute to this project by submitting pull requests or opening i
 **What it does:** Randomizes MAC, cleans with BleachBit, powers off 🚫
 
 **Use Case:** Clean slate after every shutdown 💤
-
-</div>
-
-## 🖥️ Integration into `~/.bashrc` File
-<div align="center">
-
-1. **Open the `~/.bashrc` File in a Text Editor (nano is default, I use and like Leafpad):**
-   ```bash
-   nano ~/.bashrc
-   ```
-
-2. **Source your functions here:**
-   ```bash
-   source ~/.bashrc
-   ```
-
-3. **Type the command to run the function:**
-   ```bash
-   Type command 'asdf'
-   ```
 
 </div>
 
