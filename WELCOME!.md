@@ -117,11 +117,11 @@ Join me on my journey as I convert my Bash scripts to Python for better understa
 </p>
 
 <h3 align="center">
-  <a href="https://github.com/TreadSoftly/Projects/blob/main/RaspberryPi-KaliLinux-ModularBuild.md">👨‍💻 Project Guides</a>
+  <a href="https://github.com/TreadSoftly/Projects">👨‍💻 Project Guides</a>
 </h3>
 
 <p align="center">
-  <a href="https://github.com/TreadSoftly/Projects/blob/main/RaspberryPi-KaliLinux-ModularBuild.md">
+  <a href="https://github.com/TreadSoftly/Projects">
     <img src="https://img.shields.io/badge/Guide-Mobile%20%26%20Modular%20Raspberry%20Pi%20Pentesting%20Build-brightgreen"/>
   </a>
 </p>
