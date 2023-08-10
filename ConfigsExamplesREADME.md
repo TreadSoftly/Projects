@@ -1,5 +1,5 @@
 
-# Configurable Main Config File Version 🛠️
+# A LOOK AT 4 COMMON FILE TYPES 🛠️
 
 This document provides an in-depth guide to the main configuration file, covering different formats such as XML, JSON, YAML, and INI. It outlines the structure, usage, and customization options available for various configuration styles.
 
