@@ -69,7 +69,7 @@ Securing SaaS has never been this easy. Check out some of my security scripts fo
 Sharpening my PowerShell skills while constructing a honeypot. Check out my progress here.
 <p>
   
-[![Badge](https://img.shields.io/badge/Honeypot_Project-Link-blue?style=for-the-badge&logo=PowerShell)](https://github.com/TreadSoftly/HoneyPotBuildPowerShell)
+[![Badge](https://img.shields.io/badge/Honeypot_Project-Link-blue?style=for-the-badge&logo=PowerShell)](https://github.com/TreadSoftly/Projects/blob/main/HoneyPotLearnPSREADME.md)
 </p>
 
 </div>
