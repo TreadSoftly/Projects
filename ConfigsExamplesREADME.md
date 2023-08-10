@@ -77,10 +77,3 @@ The following sections provide details on various configuration options.
 - Wiki: ![Wiki Badge](https://img.shields.io/badge/Wiki-555555?style=for-the-badge&logo=wikipedia&logoColor=white)
 - Blog: ![Blog Badge](https://img.shields.io/badge/Blog-FF5722?style=for-the-badge&logo=blogger&logoColor=white)
 
-## Badges 🎖️
-
-Click the badges for direct access:
-- [![YouTube](https://img.shields.io/badge/YouTube-FF0000?style=for-the-badge&logo=youtube&logoColor=white)](https://www.youtube.com)
-- [![GitHub](https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white)](https://www.github.com)
-- [![Wiki](https://img.shields.io/badge/Wiki-555555?style=for-the-badge&logo=wikipedia&logoColor=white)](https://www.wikipedia.org)
-- [![Blog](https://img.shields.io/badge/Blog-FF5722?style=for-the-badge&logo=blogger&logoColor=white)](https://www.blogger.com)
