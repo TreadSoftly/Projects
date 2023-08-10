@@ -131,13 +131,6 @@ Feel free to contribute to this exciting project. [Here's how you can help](CONT
 
 </div>
 
-## <p align="center">📜 License</p>
-
-<div align="center">
-
-This project is under the [MIT License](LICENSE). Feel free to use, modify, and distribute as you see fit.
-
-</div>
 
 ## <p align="center">📚 Appendix</p>
 
