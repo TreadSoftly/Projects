@@ -37,11 +37,8 @@
 <br>
 <br>
 <br>
-<br>
-
 
 <h1 align="center">🐉PenTest Kali OS On A Raspberry Pi 4 Build🐧</h1>
-<br>
 <br>
 <br>
 
