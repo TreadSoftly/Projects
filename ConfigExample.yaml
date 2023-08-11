@@ -1,4 +1,4 @@
-# CONFIGURABLE MAIN CONFIG FILE VERSION (this allows for preset config files to be placed inside of the Main Config file ####
+# Looking at structures of different things in .yaml style format
 
 log_config:
   log_level: "{LOG_LEVEL}"
