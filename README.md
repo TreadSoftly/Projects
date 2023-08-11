@@ -52,6 +52,10 @@
 <br>
 
 
+<p align="center">
+    <img src="https://github.com/TreadSoftly/Projects/assets/121847455/8f972cc8-e134-4c36-b174-f3fb1ace1932" width="200" height="200" alt="label">
+</p>
+
 <h2 align="center">🔧⚔️Modular Approach For A Raspberry Pi Kali Linux Build🛡️🔧</h2>
 <h3 align="center">Kali BriefCase: Complete Build</h3>
 <p align="center"><img src="https://github.com/TreadSoftly/Projects/assets/121847455/c67264f9-95e8-45bb-a228-2800dcea29f6" height="50%" width="50%" alt="Image of the complete setup"/></p>
@@ -105,11 +109,6 @@ Whether you're a seasoned pro or an aspiring ethical hacker, this rig's blend of
 <br>
 <br>
 
-
-
-<p align="center">
-    <img src="https://github.com/TreadSoftly/Projects/assets/121847455/8f972cc8-e134-4c36-b174-f3fb1ace1932" width="200" height="200" alt="label">
-</p>
 
 <h1 align="center">
     <a href="https://github.com/TreadSoftly">🌐Online Resources Used for Build📚</a> 
