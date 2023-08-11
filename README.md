@@ -114,6 +114,8 @@
 <br>
 
 <h2 align="center">🔧⚔️Modular Approach For A Raspberry Pi Kali Linux Build🛡️🔧</h2>
+
+![3AzJhlD](https://github.com/TreadSoftly/Projects/assets/121847455/bfe28cbb-3517-4563-afef-992f59c38afd)
 <br>
 
 <h3 align="center">Kali BriefCase: Complete Build</h3>
@@ -129,6 +131,13 @@
 <h3 align="center">Everything Broken Down: Size Comparison</h3>
 <p align="center"><img src="https://i.imgur.com/x001L8u.jpg" height="50%" width="50%" alt="Image of the device with screen attached"/></p>
 <p align="justify">The final image provides a perspective on the modularity & compact size of the build. With the Raspberry Pi and its associated hardware, it manages to fit a powerful computing system into the palm of a hand. Despite its small size, it's equipped to perform a wide range of tasks, from simple computing operations to complex network penetration tests. It's a testament to how far we've come in the realm of miniaturization and portable computing.</p>
+<br>
+
+
+
+![hpfOzG4](https://github.com/TreadSoftly/Projects/assets/121847455/4ef2a6da-d78f-4381-81ca-91c2af16b04f)
+<br>
+
 
 <h2 align="center">
   <a href="https://www.theregister.com/2023/03/21/russian_foss_contributions_blocked/"><b>🎯Summary</b></a>
