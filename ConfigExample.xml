@@ -1,4 +1,4 @@
- # CONFIGURABLE MAIN CONFIG FILE VERSION (this allows for preset config files to be placed and used in all areas of the Main Config file ####
+# Looking at structures of different things in .xml style format
 
 <config>
   <log_config>
