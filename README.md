@@ -1,8 +1,5 @@
 ![Banner](https://github.com/TreadSoftly/Projects/assets/121847455/acf6e587-b91c-43ef-90c8-70eed199a5dc)
 
-<br>
-
-
 <h1 align="center">
    🏴‍☠️Welcome to a Hardware Pentest Build!⚔️<br/> 
     <img src="https://github.com/TreadSoftly/Projects/assets/121847455/d6eec8dc-aafb-4461-8394-4d19a355f627" width="50" height="50" alt="label"> 
