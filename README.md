@@ -39,17 +39,68 @@
         <img src="https://img.shields.io/badge/Bash-Scripting-blueviolet.svg?longCache=true&style=flat-square">
     </a>
 </div>
-
-
-
-
-
 </h1>
 <br>
 <br>
 <br>
 <br>
+
+
 <h1 align="center">🐉PenTest Kali OS On A Raspberry Pi 4 Build🐧</h1>
+<br>
+<br>
+<br>
+
+
+<h2 align="center">🔧⚔️Modular Approach For A Raspberry Pi Kali Linux Build🛡️🔧</h2>
+<h3 align="center">Kali BriefCase: Complete Build</h3>
+<p align="center"><img src="https://github.com/TreadSoftly/Projects/assets/121847455/c67264f9-95e8-45bb-a228-2800dcea29f6" height="50%" width="50%" alt="Image of the complete setup"/></p>
+<br>
+
+<p align="center"><img src="https://i.imgur.com/rB9C8iS.jpg" height="50%" width="50%" alt="Image of the complete setup"/></p>
+<p align="justify">The image above is a snapshot of the fully assembled Raspberry Pi 4 Kali Linux build. This compact powerhouse is designed with portability and efficiency in mind. The build is carefully crafted with a Raspberry Pi 4, coupled with Kali Linux OS, and a host of meticulously selected components. It's equipped to run advanced penetration tests, conduct cybersecurity research, and perform a variety of other tasks. The system can be accessed remotely via SSH, perform packet injection scans with its Alfa wirelss card and has Bluetooth functionality, adding to its versatility. This build truly embodies the fusion of hardware and software, showcasing the potential of small-scale computing devices.</p>
+<br>
+
+<h3 align="center">Kali With/Without The Screen SSH Mode: Testing Process</h3>
+<p align="center"><img src="https://i.imgur.com/YUs6IMB.jpg" height="50%" width="50%" alt="Image of Raspberry Pi with accessories"/></p>
+<p align="justify">The second image encapsulates the testing phase of the build. It's a critical process where each individual component and the system as a whole are put through rigorous tests to ensure optimal performance and that it does not fail when needed. The picture shows the build without the screen, highlighting its ability to be operated remotely through an Android app using SSH. The integration of an external SSD and remote server/storage setup is also being tested here, verifying the build's expanded storage capabilities and its ability to handle network tasks efficiently.</p>
+<br>
+
+<h3 align="center">Everything Broken Down: Size Comparison</h3>
+<p align="center"><img src="https://i.imgur.com/x001L8u.jpg" height="50%" width="50%" alt="Image of the device with screen attached"/></p>
+<p align="justify">Here I want to provides a perspective on the modularity & compact size of the build. With the Raspberry Pi and its associated hardware, it manages to fit a powerful computing system into the palm of a hand. Despite its small size, it's equipped to perform a wide range of tasks, from simple computing operations to complex network penetration tests. It's a testament to how far we've come in the realm of miniaturization and portable computing.</p>
+<br>
+
+
+
+<p align="center"><img src="https://github.com/TreadSoftly/Projects/assets/121847455/4ef2a6da-d78f-4381-81ca-91c2af16b04f" height="50%" width="50%" alt="Image of Raspberry Pi with accessories"/></p>
+<br>
+
+
+<h2 align="center">
+  <a href="https://www.theregister.com/2023/03/21/russian_foss_contributions_blocked/"><b>🎯Summary</b></a>
+  & 
+  <a href="https://youtu.be/h_f9lB4i-LA"><b>Use</b></a>
+  <a href="https://youtu.be/ChtnZtTMUGU"><b>Cases🌐</b></a>
+</h2>
+
+<p align="justify">
+Always in the pursuit of mobile cybersecurity dominance. Imagine a potent blend of Raspberry Pi's computational prowess and Kali Linux's arsenal of penetration testing tools. Now, wrap that in an ultra-portable, battery-powered package. Welcome to mobile penetration testing.
+
+This rig, engineered around the Raspberry Pi 4 with Quad core Cortex-A72 (ARM v8) 64-bit SoC @ 1.8GHz & 8GB of LPDDR4-3200 SDRAM, brings Kali Linux to life on a mobile device much more powerful than its orginal intended hse on a USB drive. Along with the high-speed SanDisk 64GB Extreme microSDXC card, 2.4 GHz and 5.0 GHz IEEE 802.11ac wireless, Bluetooth 5.0, & BLE, this powerhouse ensures swift operations and efficient data retrieval, without tying you to a desk.
+
+But what's power without freedom? With the Talentcell Rechargeable 12V/5V Battery Pack, the BriefCase rig breaks free of being tied to a power plug and staying close to a wall outlet. Whether you're performing on-site audits, running security checks in the field, or just exploring the world of ethical hacking from your favorite coffee shop, this setup keeps pace with your dynamic lifestyle.
+
+Let's talk about staying connected. The BriefCase boasts dual-band wireless LAN, Bluetooth 5.0 support, and the Alfa AWUS036NHA long-range network adapter. With a maximum connection speed of 150 Mbps and a 5dBi antenna, you're now ready for long range high speed signal & frequencies inspection capabilities. And let's not forget the Alfa's packet injection capabilities – a critical feature for advanced penetration testing.
+
+User experience is paramount. The interactive Raspberry Pi 7" Display provides a touch interface, while the foldable Bluetooth keyboard ensures smooth data input, anytime, anywhere.
+
+USE CASE: You're tasked with a WiFi penetration test. You're just outside the target location. With this setup, having a setup like the BriefCase alows for scanning the network, using tools like Aircrack-ng or Wireshark. Vulnerabilities surface, and you're exploiting them, documenting your findings in real-time, all from the comfort of your vehicle.
+
+Maybe you're a cybersecurity enthusiast, eager to learn about different attack vectors. This setup transforms into a mobile hacking lab, enabling hands-on experimentation with various aspects of ethical hacking, from network sniffing to password cracking.
+
+Whether you're a seasoned pro or an aspiring ethical hacker, this rig's blend of power, connectivity, and freedom offers an unmatched platform for cybersecurity operations.
+</p>
 <br>
 <br>
 <br>
@@ -112,61 +163,8 @@
 </p>
 <br>
 <br>
-
-<h2 align="center">🔧⚔️Modular Approach For A Raspberry Pi Kali Linux Build🛡️🔧</h2>
-
-<p align="center"><img src="https://github.com/TreadSoftly/Projects/assets/121847455/c67264f9-95e8-45bb-a228-2800dcea29f6" height="50%" width="50%" alt="Image of the complete setup"/></p>
-<br>
 <br>
 
-<h3 align="center">Kali BriefCase: Complete Build</h3>
-<p align="center"><img src="https://i.imgur.com/rB9C8iS.jpg" height="50%" width="50%" alt="Image of the complete setup"/></p>
-<p align="justify">The image above is a snapshot of the fully assembled Raspberry Pi 4 Kali Linux build. This compact powerhouse is designed with portability and efficiency in mind. The build is carefully crafted with a Raspberry Pi 4, coupled with Kali Linux OS, and a host of meticulously selected components. It's equipped to run advanced penetration tests, conduct cybersecurity research, and perform a variety of other tasks. The system can be accessed remotely via SSH, perform packet injection scans with its Alfa wirelss card and has Bluetooth functionality, adding to its versatility. This build truly embodies the fusion of hardware and software, showcasing the potential of small-scale computing devices.</p>
-<br>
-
-<h3 align="center">Kali With/Without The Screen SSH Mode: Testing Process</h3>
-<p align="center"><img src="https://i.imgur.com/YUs6IMB.jpg" height="50%" width="50%" alt="Image of Raspberry Pi with accessories"/></p>
-<p align="justify">The second image encapsulates the testing phase of the build. It's a critical process where each individual component and the system as a whole are put through rigorous tests to ensure optimal performance and that it does not fail when needed. The picture shows the build without the screen, highlighting its ability to be operated remotely through an Android app using SSH. The integration of an external SSD and remote server/storage setup is also being tested here, verifying the build's expanded storage capabilities and its ability to handle network tasks efficiently.</p>
-<br>
-
-<h3 align="center">Everything Broken Down: Size Comparison</h3>
-<p align="center"><img src="https://i.imgur.com/x001L8u.jpg" height="50%" width="50%" alt="Image of the device with screen attached"/></p>
-<p align="justify">Here I want to provides a perspective on the modularity & compact size of the build. With the Raspberry Pi and its associated hardware, it manages to fit a powerful computing system into the palm of a hand. Despite its small size, it's equipped to perform a wide range of tasks, from simple computing operations to complex network penetration tests. It's a testament to how far we've come in the realm of miniaturization and portable computing.</p>
-<br>
-
-
-
-<p align="center"><img src="https://github.com/TreadSoftly/Projects/assets/121847455/4ef2a6da-d78f-4381-81ca-91c2af16b04f" height="50%" width="50%" alt="Image of Raspberry Pi with accessories"/></p>
-<br>
-
-
-<h2 align="center">
-  <a href="https://www.theregister.com/2023/03/21/russian_foss_contributions_blocked/"><b>🎯Summary</b></a>
-  & 
-  <a href="https://youtu.be/h_f9lB4i-LA"><b>Use</b></a>
-  <a href="https://youtu.be/ChtnZtTMUGU"><b>Cases🌐</b></a>
-</h2>
-
-<p align="justify">
-Always in the pursuit of mobile cybersecurity dominance. Imagine a potent blend of Raspberry Pi's computational prowess and Kali Linux's arsenal of penetration testing tools. Now, wrap that in an ultra-portable, battery-powered package. Welcome to mobile penetration testing.
-
-This rig, engineered around the Raspberry Pi 4 with Quad core Cortex-A72 (ARM v8) 64-bit SoC @ 1.8GHz & 8GB of LPDDR4-3200 SDRAM, brings Kali Linux to life on a mobile device much more powerful than its orginal intended hse on a USB drive. Along with the high-speed SanDisk 64GB Extreme microSDXC card, 2.4 GHz and 5.0 GHz IEEE 802.11ac wireless, Bluetooth 5.0, & BLE, this powerhouse ensures swift operations and efficient data retrieval, without tying you to a desk.
-
-But what's power without freedom? With the Talentcell Rechargeable 12V/5V Battery Pack, the BriefCase rig breaks free of being tied to a power plug and staying close to a wall outlet. Whether you're performing on-site audits, running security checks in the field, or just exploring the world of ethical hacking from your favorite coffee shop, this setup keeps pace with your dynamic lifestyle.
-
-Let's talk about staying connected. The BriefCase boasts dual-band wireless LAN, Bluetooth 5.0 support, and the Alfa AWUS036NHA long-range network adapter. With a maximum connection speed of 150 Mbps and a 5dBi antenna, you're now ready for long range high speed signal & frequencies inspection capabilities. And let's not forget the Alfa's packet injection capabilities – a critical feature for advanced penetration testing.
-
-User experience is paramount. The interactive Raspberry Pi 7" Display provides a touch interface, while the foldable Bluetooth keyboard ensures smooth data input, anytime, anywhere.
-
-USE CASE: You're tasked with a WiFi penetration test. You're just outside the target location. With this setup, having a setup like the BriefCase alows for scanning the network, using tools like Aircrack-ng or Wireshark. Vulnerabilities surface, and you're exploiting them, documenting your findings in real-time, all from the comfort of your vehicle.
-
-Maybe you're a cybersecurity enthusiast, eager to learn about different attack vectors. This setup transforms into a mobile hacking lab, enabling hands-on experimentation with various aspects of ethical hacking, from network sniffing to password cracking.
-
-Whether you're a seasoned pro or an aspiring ethical hacker, this rig's blend of power, connectivity, and freedom offers an unmatched platform for cybersecurity operations.
-</p>
-<br>
-<br>
-<br>
 
 
 
