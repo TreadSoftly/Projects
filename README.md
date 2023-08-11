@@ -115,7 +115,7 @@
 
 <h2 align="center">🔧⚔️Modular Approach For A Raspberry Pi Kali Linux Build🛡️🔧</h2>
 
-![3AzJhlD](https://github.com/TreadSoftly/Projects/assets/121847455/c67264f9-95e8-45bb-a228-2800dcea29f6)
+<p align="center"><img src="https://github.com/TreadSoftly/Projects/assets/121847455/c67264f9-95e8-45bb-a228-2800dcea29f6" height="50%" width="50%" alt="Image of the complete setup"/></p>
 <br>
 
 <h3 align="center">Kali BriefCase: Complete Build</h3>
