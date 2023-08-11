@@ -1,3 +1,6 @@
+# Just boxing everything up inside a function. This is full of examples and semi-working structures. 
+
+
 function asdf() {
 INTERFACE_NAME=$(ip -o link show | awk -F': ' '/state UP/ {print $2}')
 if [ -z "$INTERFACE_NAME" ]; then
