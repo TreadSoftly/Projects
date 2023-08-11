@@ -1,4 +1,4 @@
-<p align="center"><img src="https://github.com/TreadSoftly/Projects/assets/121847455/417f8eb8-034c-4b68-80fa-5c89239669cb)" height="50%" width="150%" alt="Image of the complete setup"/></p>
+<p align="center"><img src="https://github.com/TreadSoftly/Projects/assets/121847455/417f8eb8-034c-4b68-80fa-5c89239669cb)" height="20%" width="150%" alt="Image of the complete setup"/></p>
 
 
 <div align="center">
