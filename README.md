@@ -117,6 +117,7 @@
 
 <p align="center"><img src="https://github.com/TreadSoftly/Projects/assets/121847455/c67264f9-95e8-45bb-a228-2800dcea29f6" height="50%" width="50%" alt="Image of the complete setup"/></p>
 <br>
+<br>
 
 <h3 align="center">Kali BriefCase: Complete Build</h3>
 <p align="center"><img src="https://i.imgur.com/rB9C8iS.jpg" height="50%" width="50%" alt="Image of the complete setup"/></p>
@@ -130,12 +131,12 @@
 
 <h3 align="center">Everything Broken Down: Size Comparison</h3>
 <p align="center"><img src="https://i.imgur.com/x001L8u.jpg" height="50%" width="50%" alt="Image of the device with screen attached"/></p>
-<p align="justify">The final image provides a perspective on the modularity & compact size of the build. With the Raspberry Pi and its associated hardware, it manages to fit a powerful computing system into the palm of a hand. Despite its small size, it's equipped to perform a wide range of tasks, from simple computing operations to complex network penetration tests. It's a testament to how far we've come in the realm of miniaturization and portable computing.</p>
+<p align="justify">Here I want to provides a perspective on the modularity & compact size of the build. With the Raspberry Pi and its associated hardware, it manages to fit a powerful computing system into the palm of a hand. Despite its small size, it's equipped to perform a wide range of tasks, from simple computing operations to complex network penetration tests. It's a testament to how far we've come in the realm of miniaturization and portable computing.</p>
 <br>
 
 
 
-![hpfOzG4](https://github.com/TreadSoftly/Projects/assets/121847455/4ef2a6da-d78f-4381-81ca-91c2af16b04f)
+<p align="center"><img src="https://github.com/TreadSoftly/Projects/assets/121847455/4ef2a6da-d78f-4381-81ca-91c2af16b04f" height="50%" width="50%" alt="Image of Raspberry Pi with accessories"/></p>
 <br>
 
 
