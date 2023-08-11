@@ -1,5 +1,4 @@
-
-![TprVOET](https://github.com/TreadSoftly/Projects/assets/121847455/417f8eb8-034c-4b68-80fa-5c89239669cb)
+<p align="center"><img src="[ ](https://github.com/TreadSoftly/Projects/assets/121847455/417f8eb8-034c-4b68-80fa-5c89239669cb)" height="50%" width="50%" alt="Image of the complete setup"/></p>
 
 
 <div align="center">
