@@ -2,8 +2,7 @@
 # <p align="center">👻Ghost Protocol: A Multi-purpose Toolkit</p>
 <div align="center">
 
-## The script does not work intentionally 
-(I whisper to myself🥴)
+## The script does not work intentionally (I whisper to myself🥴)
 <br>
 
 ## Table of Contents
