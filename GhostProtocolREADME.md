@@ -1,16 +1,9 @@
 
-# <p align="center">🛠️ asdf: A Multi-purpose Toolkit</p>
+# <p align="center">🛠️ Ghost Protocol: A Multi-purpose Toolkit</p>
 <div align="center">
 
-_The script does not work intentionally (I whisper to myself🥴)_
-
-[img]https://i.imgur.com/QtAuhUX.mp4[/img]
-
-<a href="https://imgur.com/QtAuhUX"><img src="https://i.imgur.com/QtAuhUX.mp4" title="source: imgur.com" /></a>
-
-[Imgur](https://i.imgur.com/QtAuhUX.mp4)
-
-
+_The script does not work intentionally (I whisper to myself🥴)
+<br>
 
 ## Table of Contents
 
