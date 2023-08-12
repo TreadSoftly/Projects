@@ -6,5 +6,5 @@
 </p>
 <b>
 
-<p align="center"><img src="https://github.com/TreadSoftly/Projects/assets/121847455/64200ae7-a213-4106-b4cc-67506075c54e" width="300" height="300" style="border-radius: 10px; box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);">
+<p align="center"><img src="https://github.com/TreadSoftly/Projects/assets/121847455/64200ae7-a213-4106-b4cc-67506075c54e" width="300" height="250" style="border-radius: 10px; box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);">
 </p>
