@@ -2,7 +2,7 @@
 
 <h2 align="center">This Will Delete Your Root And Its. Essentially A "Self Destruct" Feature</h2>
 
-<p align="center"><img src="https://github.com/TreadSoftly/Projects/assets/121847455/f4f7b0d9-2830-4bf0-a31b-114f5bbfd2ad" width="500" height="500" style="border-radius: 10px; box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);">
+<p align="center"><img src="https://github.com/TreadSoftly/Projects/assets/121847455/ebf851de-2b74-4edd-864f-3db6ac30e1d5" width="500" height="500" style="border-radius: 10px; box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);">
 </p>
 <b>
 
