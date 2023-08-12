@@ -1,4 +1,5 @@
-# Just boxing everything up inside a function. This is full of examples and semi-working structures. 
+# Just boxing everything up inside a function, this isnt a full on main function script just an overview of my SaaS project. 
+# This is full of examples and semi-working structures. 
 
 
 function asdf() {
