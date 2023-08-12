@@ -1,4 +1,6 @@
-<p align="center"><img src="https://github.com/TreadSoftly/Projects/assets/121847455/417f8eb8-034c-4b68-80fa-5c89239669cb)" height="80%" width="50%" alt="Image of the complete setup"/></p>
+<p align="center"><img src="https://github.com/TreadSoftly/Projects/assets/121847455/417f8eb8-034c-4b68-80fa-5c89239669cb" height="80%" width="50%" alt="Image of the complete setup"/></p>
+
+
 
 <div align="center">
   <h1>🚀 Welcome to my GitHub Profile! </h1>
@@ -291,3 +293,4 @@ Join me on my journey as I convert my Bash scripts to Python for better understa
   🌋 Am a flamethrower enthusiast
 </p>
 
+<p align="center"><img src="https://i.imgur.com/w9Kk6Kr.jpg" height="80%" width="50%" alt="Image of the complete setup"/></p>
