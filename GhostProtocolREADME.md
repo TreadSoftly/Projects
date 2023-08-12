@@ -34,17 +34,17 @@
 <div align="center">
 
 1. **Open the `~/.bashrc` File in a Text Editor (nano is default, I use and like Leafpad):**
-   ```bash
+   ```
    nano ~/.bashrc
    ```
 
 2. **Source your functions here:**
-   ```bash
+   ```
    source ~/.bashrc
    ```
 
 3. **Type the command to run the function:**
-   ```bash
+   ```
    Type command 'asdf'
    ```
 
@@ -56,7 +56,7 @@
 
 You can run the main function using the following command:
 
-```bash
+```
 bash asdf.sh
 ```
 
@@ -66,25 +66,25 @@ This will initiate various functionalities including:
 
 #### Changing MAC Address
 
-```bash
+```
 change_mac_address
 ```
 
 Example Output:
 
-```bash
+```
 Changed MAC address of eth0 from 00:11:22:33:44:55 to 66:77:88:99:AA:BB
 ```
 
 #### Monitoring Network Traffic
 
-```bash
+```
 monitor_network_traffic "eth0" 60 "network_capture.pcap"
 ```
 
 #### Anti-Forensics Techniques
 
-```bash
+```
 func_anti_forensics
 ```
 
@@ -110,7 +110,7 @@ Feel free to contribute to this project by submitting pull requests or opening i
 **Use Case:** Monitors system events/errors 🔎
 
 **Example:** Log a warning:
-  ```bash
+  ```
   log "WARN" "Low disk space 🚨"
   ```
 
