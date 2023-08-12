@@ -1,5 +1,5 @@
 
-# <p align="center">🛠️ Ghost Protocol: A Multi-purpose Toolkit</p>
+# <p align="center">👻Ghost Protocol: A Multi-purpose Toolkit</p>
 <div align="center">
 
 _The script does not work intentionally (I whisper to myself🥴)
