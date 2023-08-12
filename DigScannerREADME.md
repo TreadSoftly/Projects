@@ -14,7 +14,7 @@
 <br>
 <br>
 
-<p align="center"><img src="https://github.com/TreadSoftly/Projects/assets/121847455/a92bae20-cfc5-4414-8d35-7e4d0a3e5ba8" width="150" height="150" style="border-radius: 10px; box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);">
+<p align="center"><img src="https://github.com/TreadSoftly/Projects/assets/121847455/a92bae20-cfc5-4414-8d35-7e4d0a3e5ba8" width="500" height="300" style="border-radius: 10px; box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);">
 </p>
 
 ## 📝 Table of Contents
