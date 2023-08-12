@@ -1,4 +1,4 @@
-<p align="center"><img src="https://github.com/TreadSoftly/Projects/assets/121847455/417f8eb8-034c-4b68-80fa-5c89239669cb" height="80%" width="50%" alt="Image of the complete setup"/></p>
+<p align="center"><img src="https://github.com/TreadSoftly/Projects/assets/121847455/417f8eb8-034c-4b68-80fa-5c89239669cb" height="80%" width="150%" alt="Image of the complete setup"/></p>
 
 
 
@@ -288,9 +288,9 @@ Join me on my journey as I convert my Bash scripts to Python for better understa
 <p align="center"><i>When I'm not in the cyber realm...</i></p>
 
 <p align="center">
-  📚 Enjoy collecting and reading old books <br>
-  🎯 Engage in overseas competitive shooting <br>
-  🌋 Am a flamethrower enthusiast
+  📚 Enjoy Collecting And Reading Old Books <br>
+  🎯 Overseas Competitive Shooting <br>
+  🌋 Flamethrowers
 </p>
 
 <p align="center"><img src="https://i.imgur.com/w9Kk6Kr.jpg" height="80%" width="50%" alt="Image of the complete setup"/></p>
