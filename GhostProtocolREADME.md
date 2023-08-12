@@ -2,8 +2,8 @@
 # <p align="center">🛠️ asdf: A Multi-purpose Toolkit</p>
 <div align="center">
 
-_The script does not work fully intentionally (I whisper to myself🥴)_
-
+_The script does not work intentionally (I whisper to myself🥴)_
+[Imgur](https://i.imgur.com/RMjH0Id.mp4)
 ## Table of Contents
 
 - [Features](#features)
