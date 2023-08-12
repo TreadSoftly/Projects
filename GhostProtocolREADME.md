@@ -3,7 +3,15 @@
 <div align="center">
 
 _The script does not work intentionally (I whisper to myself🥴)_
-[Imgur](https://i.imgur.com/RMjH0Id.mp4)
+
+[img]https://i.imgur.com/QtAuhUX.mp4[/img]
+
+<a href="https://imgur.com/QtAuhUX"><img src="https://i.imgur.com/QtAuhUX.mp4" title="source: imgur.com" /></a>
+
+[Imgur](https://i.imgur.com/QtAuhUX.mp4)
+
+
+
 ## Table of Contents
 
 - [Features](#features)
