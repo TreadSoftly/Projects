@@ -16,7 +16,6 @@ This report presents a comprehensive analysis of the HESA Shahed 136, an Iranian
 3. [GPS Guidance System](#gps-guidance-system)
 4. [Signal Analysis and Countermeasures](#signal-analysis-and-countermeasures)
 5. [Microcontroller Specifications](#microcontroller-specifications)
-6. [Conclusion](#conclusion)
 
 ---
 
