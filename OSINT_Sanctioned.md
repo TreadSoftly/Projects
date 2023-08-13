@@ -40,7 +40,7 @@ Tools involved include:
   </p>
   <p>
   
-   ## Have to get some more screen shots once I get some projects in to justify the time 
+   Have to get some more screen shots once I get some projects in to justify the time 
    </p>
 </h1>
  <br>
@@ -48,7 +48,7 @@ Tools involved include:
 
 <h1 align='center'>
 
- ## SpiderPhoot
+ SpiderPhoot
 
  - ![SPIDERFOOT_Hunt](https://github.com/TreadSoftly/Projects/assets/121847455/8d99e429-8442-48cb-8eca-4bc1e9f40bcd)
 </h1>
