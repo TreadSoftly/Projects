@@ -150,10 +150,12 @@ Feel free to contribute to this project by submitting pull requests or opening i
 <div align="center">
 
 **What it does:** Manages network settings, IP tunnel anonymizing, Network over Tor integration, Dynamic MAC Address Changing 🕸️
-![MacChangerHelp](https://github.com/TreadSoftly/Projects/assets/121847455/ec528c3a-2402-4ab2-b736-bed0b36df171)
+![ANONSURF_IP_Tunneling](https://github.com/TreadSoftly/Projects/assets/121847455/02e305d4-8247-4be3-b1fb-24f2563ef4ec)
+
 
 **Use Case:** Privacy in online communications 🤐
-![ANONSURF_IP_Status](https://github.com/TreadSoftly/Projects/assets/121847455/22339a25-aeb4-4862-9d9b-1e5edc7b9c63)
+![ANONSURF_IP_Status](https://github.com/TreadSoftly/Projects/assets/121847455/21be0e9c-a0fc-47d7-b6b2-8bb062d08d2b)
+
 
 </div>
 <br>
