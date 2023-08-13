@@ -81,11 +81,20 @@
 </h2>
 
 
+
+<div align="center">
+
 # 🛠 Mobile Penetration Testing Rig
+
+</div>
 
 Always striving for mobile cybersecurity dominance, we've engineered a **potent blend of Raspberry Pi's computational prowess and Kali Linux's arsenal of penetration testing tools** in an ultra-portable, battery-powered package. Welcome to the future of **mobile penetration testing**. 🌐
 
+<div align="center">
+
 ## 🎛 Hardware Overview
+
+</div>
 
 - **Raspberry Pi 4**: Quad-core Cortex-A72 (ARM v8) 64-bit SoC @ 1.8GHz & 8GB of LPDDR4-3200 SDRAM.
 - **Storage**: SanDisk 64GB Extreme microSDXC card.
@@ -99,21 +108,33 @@ Always striving for mobile cybersecurity dominance, we've engineered a **potent 
   - 5dBi antenna.
 - **Display & Input**: Raspberry Pi 7" Display with touch interface and foldable Bluetooth keyboard. 🎮
 
+<div align="center">
+
 ### 🎓 Freedom and Power
+
+</div>
 
 This rig ensures **swift operations and efficient data retrieval**, free from the constraints of location. Perform:
 - On-site audits.
 - Security checks in the field.
 - Explore the world of ethical hacking from anywhere.
 
+<div align="center">
+
 ### 📡 Connectivity and Capabilities
+
+</div>
 
 With **dual-band wireless LAN**, **Bluetooth 5.0 support**, and Alfa's packet injection capabilities, you're ready for:
 - Long-range, high-speed signal inspection.
 - Frequencies analysis.
 - Essential for advanced penetration testing.
 
+<div align="center">
+
 ## 🎯 Use Cases
+
+</div>
 
 ### 🏠 On-site WiFi Penetration Testing
 
@@ -123,12 +144,13 @@ Scan a network using tools like **Aircrack-ng** or **Wireshark**, exploit vulner
 
 Transform this setup into a mobile hacking lab, enabling hands-on experimentation with ethical hacking aspects, from network sniffing to password cracking. 🔐
 
+<div align="center">
+
 ## 💼 Conclusion
 
+</div>
+
 Whether a seasoned pro or an aspiring ethical hacker, this rig's blend of **power**, **connectivity**, and **freedom** offers an unmatched platform for cybersecurity operations. 🛡
-<br>
-<br>
-<br>
 
 
 <h1 align="center">
