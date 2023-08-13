@@ -9,6 +9,9 @@
 ![Before](https://github.com/TreadSoftly/Projects/assets/121847455/432e42b7-ee91-4486-858b-ac4cce70bf6a)
 <br>
 <br>
+![guts](https://github.com/TreadSoftly/Projects/assets/121847455/db1b934f-8c63-4c39-a927-0995837b0934)
+<br>
+<br>
 ![After2](https://github.com/TreadSoftly/Projects/assets/121847455/59ca91eb-4f96-4299-9a11-bf330fc802fa)
 <br>
 <br>
@@ -24,9 +27,10 @@
 ![redroom](https://github.com/TreadSoftly/Projects/assets/121847455/567ff85d-eb0b-4b5c-851f-21a2285a64e8)
 <br>
 <br>
-![guts](https://github.com/TreadSoftly/Projects/assets/121847455/db1b934f-8c63-4c39-a927-0995837b0934)
-
-
+![Zen](https://github.com/TreadSoftly/Projects/assets/121847455/fa893718-32ce-4cc3-aba5-75b9c1c9b0d9)
+<br>
+<br>
+![Inside the PC](https://github.com/TreadSoftly/Projects/assets/121847455/f891d82c-5b7e-484a-9c5d-e9645783cd04)
 
 
 
