@@ -56,7 +56,8 @@ Tools involved include:
 <br>
 
 <h1 align='center'>
-- Maltigo
-  - Have to get some more screen shots once I get some projects in to justify the time   
-    - etc...
+
+ Maltigo
+ - Have to get some more screen shots once I get some projects in to justify the time   
+ - etc...
 </h1>
