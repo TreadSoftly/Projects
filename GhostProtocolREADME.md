@@ -1,4 +1,4 @@
-![GhostProtocolGOLDENREAD](https://github.com/TreadSoftly/Projects/assets/121847455/7fa71f13-fd53-4c71-aa42-bb90d5410e7f)
+
 
 # <p align="center">👻Ghost Protocol: A Multi-purpose Toolkit</p>
 <div align="center">
@@ -70,14 +70,14 @@ This will initiate various functionalities including:
 ```
 change_mac_address
 ```
-![MacChangerHelp](https://github.com/TreadSoftly/Projects/assets/121847455/5964a1db-9625-436f-8222-9d56daa079a2)
+
 
 Example Output:
 
 ```
 Changed MAC address of eth0 from 00:11:22:33:44:55 to 66:77:88:99:AA:BB
 ```
-![MacChanger](https://github.com/TreadSoftly/Projects/assets/121847455/3f031304-4861-47d7-92af-7f1f8847daa1)
+
 
 #### Monitoring Network Traffic
 
@@ -150,11 +150,11 @@ Feel free to contribute to this project by submitting pull requests or opening i
 <div align="center">
 
 **What it does:** Manages network settings, IP tunnel anonymizing, Network over Tor integration, Dynamic MAC Address Changing 🕸️
-![ANONSURF_IP_Tunneling](https://github.com/TreadSoftly/Projects/assets/121847455/02e305d4-8247-4be3-b1fb-24f2563ef4ec)
+
 
 
 **Use Case:** Privacy in online communications 🤐
-![ANONSURF_IP_Status](https://github.com/TreadSoftly/Projects/assets/121847455/21be0e9c-a0fc-47d7-b6b2-8bb062d08d2b)
+
 
 
 </div>
