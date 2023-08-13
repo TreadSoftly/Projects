@@ -23,7 +23,11 @@ Covering some OSINT work involving files of sanctioned profiles.
 Purely to show the use cases of the OSINT tools I have used and devoled. 
 
 Tools involved include:
-- ReconNG
+<p align='center'>
+ 
+ **Recon-NG**
+</p> 
+
   - ![OSINT_ReconNG](https://github.com/TreadSoftly/Projects/assets/121847455/3b38554f-5a5c-4fe8-b8c6-1843cac82564)
 <br>
 <br>
