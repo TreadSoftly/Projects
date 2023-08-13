@@ -271,7 +271,7 @@ Whether you're a seasoned pro or an aspiring ethical hacker, this rig's blend of
     High-gain WiFi antenna that enhances wireless connectivity for the Raspberry Pi.
 </p>
   <p align="center">
-    <img src="https://www.doyler.net/wp-content/uploads/newAlfa/newAlfa-4-connected.jpg" width="150" height="150" />
+    <img src="https://github.com/TreadSoftly/Projects/assets/121847455/64564b3a-3600-4884-9e36-923b75c9d436" width="150" height="150" />
   </p>
 <br>
 
