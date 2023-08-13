@@ -82,6 +82,7 @@
 
 
 
+
 <div align="center">
 
 # 🛠 Mobile Penetration Testing Rig
@@ -106,7 +107,9 @@ Always striving for mobile cybersecurity dominance, we've engineered a **potent 
 - **Extras**: Alfa AWUS036NHA long-range network adapter.
   - 150 Mbps speed.
   - 5dBi antenna.
-- **Display & Input**: Raspberry Pi 7" Display with touch interface and foldable Bluetooth keyboard. 🎮
+- **Display & Input**: Raspberry Pi 7" Display with touch interface. 🎮
+  - Removable for remote operations.
+  - Foldable Bluetooth keyboard for on-the-go data input.
 
 <div align="center">
 
@@ -118,6 +121,7 @@ This rig ensures **swift operations and efficient data retrieval**, free from th
 - On-site audits.
 - Security checks in the field.
 - Explore the world of ethical hacking from anywhere.
+- Remote SSH use, either with battery pack or while plugged into a power outlet.
 
 <div align="center">
 
@@ -129,6 +133,7 @@ With **dual-band wireless LAN**, **Bluetooth 5.0 support**, and Alfa's packet in
 - Long-range, high-speed signal inspection.
 - Frequencies analysis.
 - Essential for advanced penetration testing.
+- Leaving the device jacked into a network for indefinite remote access.
 
 <div align="center">
 
@@ -152,57 +157,61 @@ Transform this setup into a mobile hacking lab, enabling hands-on experimentatio
 
 Whether a seasoned pro or an aspiring ethical hacker, this rig's blend of **power**, **connectivity**, and **freedom** offers an unmatched platform for cybersecurity operations. 🛡
 
+<div align="center">
 
-<h1 align="center">
+<h1>
     <a href="https://github.com/TreadSoftly">🌐Online Resources Used for Build📚</a> 
 </h1>
 
-<h2 align="center">
+<h2>
     🎥💻 <a href="https://youtu.be/5IIkGJc3T7o">Install Kali Linux 2022 on Raspberry Pi 4 B (Under 3 Minutes) - The Cyber Mentor</a>
 </h2>
-<p align="center">
+<p>
     A concise tutorial for getting Kali Linux up and running on Raspberry Pi 4 in less than 3 minutes. Ideal for those who need a quick setup.
 </p>
-<p align="center">
+<p>
     <a href="https://youtu.be/5IIkGJc3T7o">
         <img src="https://img.shields.io/badge/YouTube-Quick_Setup-blue?style=for-the-badge&logo=YouTube" alt="Quick Setup">
     </a>
 </p>
 
-<h2 align="center">
+<h2>
     🚀🔧 <a href="https://www.youtube.com/watch?v=sH20ovfcpGA">Top Things To Do After Installing Kali Linux in 2023! - Stefan Rows</a>
 </h2>
-<p align="center">
+<p>
     An in-depth guide to fine-tuning Kali Linux for performance, security, and functionality. Customize your build according to your needs.
 </p>
-<p align="center">
+<p>
     <a href="https://www.youtube.com/watch?v=sH20ovfcpGA">
         <img src="https://img.shields.io/badge/YouTube-Kali_Fine_Tuning-blue?style=for-the-badge&logo=YouTube" alt="Kali Fine Tuning">
     </a>
 </p>
 
-<h2 align="center">
+<h2>
     📚🛠️ <a href="https://null-byte.wonderhowto.com/how-to/get-started-with-kali-linux-2020-0231506/">Get Started with Kali Linux</a>
 </h2>
-<p align="center">
+<p>
     Comprehensive step-by-step guide on using Kali Linux. Provides valuable insights and tips specifically for Raspberry Pi users.
 </p>
-<p align="center">
+<p>
     <a href="https://null-byte.wonderhowto.com/how-to/get-started-with-kali-linux-2020-0231506/">
         <img src="https://img.shields.io/badge/NullByte-Step_by_Step_Guide-blue?style=for-the-badge&logo=Read-the-Docs" alt="Step by Step Guide">
     </a>
 </p>
-<h2 align="center">
+<h2>
     🍓💽 <a href="https://adamtheautomator.com/berryboot/">How to Set up Dual Boot on Raspberry Pi 4 Using BerryBoot</a>
 </h2>
-<p align="center">
+<p>
     Instructions on setting up a dual-boot system on Raspberry Pi, allowing you to run Kali Linux alongside other OS. Great for those seeking versatility.
 </p>
-<p align="center">
+<p>
     <a href="https://adamtheautomator.com/berryboot/">
         <img src="https://img.shields.io/badge/BerryBoot-Dual_Boot_Setup-blue?style=for-the-badge&logo=Raspberry-Pi" alt="Dual Boot Setup">
     </a>
 </p>
+
+</div>
+
 <br>
 <br>
 <br>
