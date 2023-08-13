@@ -1,4 +1,4 @@
-## PLEASE BE PATIENT BEFORE I POST TO THIS DIRECTORY. I AM CURRENTLY GOING THROUGH AND SANITIZING MY USE CASES OF THE TARGETS SO I CAN POST THE USE CASES WITH THE TOOLS IN A SAFER WAY
+## Just posting it when I run through a project that uses a tool specifically. Will start remembering to screen capture more :\ 
 
 Private links to sanctioned contract osint work upon approved request
   
