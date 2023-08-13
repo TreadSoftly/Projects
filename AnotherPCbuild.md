@@ -1,7 +1,7 @@
 # Have to find all the pictures for the parts to the PC build
-[Imgur](https://i.imgur.com/tbTM6fD.mp4)
+[Imgur](https://i.imgur.com/tbTM6fD.mp4) Finished Setup Video
 
-[Imgur](https://i.imgur.com/fwqg0BE.mp4)
+[Imgur](https://i.imgur.com/fwqg0BE.mp4) Finished Office Study Video
 
 ![BattleStation](https://github.com/TreadSoftly/Projects/assets/121847455/d6710ff7-9cec-40f6-808a-c30537fb81de)
 <br>
