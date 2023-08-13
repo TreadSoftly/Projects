@@ -68,25 +68,82 @@ The [HESA Shahed 136](https://www.militaryfactory.com/aircraft/detail.php?aircra
 - **Data Sources:** Various including [Wikipedia](https://en.wikipedia.org/wiki/HESA_Shahed_136) and [Army Recognition](https://www.armyrecognition.com/iran_unmanned_ground_aerial_vehicles_systems/shahed-136_loitering_munition_kamikaze-suicide_drone_iran_data.html)
 - **Analysis Tools:** Custom algorithms, reverse engineering
 
-
-... (Continuing in this fashion for the remaining sections)
-
-
   <!-- Badges as hyperlinks -->
   <a href="https://en.wikipedia.org/wiki/HESA_Shahed_136"><img src="https://img.shields.io/badge/Wikipedia-HESA_Shahed_136-blue?style=for-the-badge"></a>
   <a href="https://www.militaryfactory.com/aircraft/detail.php?aircraft_id=2520"><img src="https://img.shields.io/badge/Military_Factory-HESA_Shahed_136-green?style=for-the-badge"></a>
   <!-- More badges -->
 
-
 protection against unauthorized drone activities.
 
 
+
+
+
+
+
+
+
+### 2. American Components
+
+#### **American Chips by Texas Instruments**
+
+- **Availability:** Freely available on the market.
+- **Serial Numbers:** Allow for investigation of the entire supply chain.
+
+#### **Advice on Countermeasures**
+
+1. **Supply Chain Monitoring:** Track and control the distribution of key components.
+2. **Regulatory Compliance:** Ensure adherence to international export laws.
+3. **Technology Analysis:** Conduct reverse engineering to identify vulnerabilities.
+
+---
+
+### 3. GPS Guidance System
+
+#### **GPS Signal Prevention System**
+
+- **Functionality:** Prevents GPS signals from being replaced by electronic devices.
+- **Vulnerabilities:** Does not prevent interference, leading to navigational errors.
+
+#### **Advice on Countermeasures**
+
+1. **GPS Signal Interference:** Develop tools to exploit the interference vulnerability.
+2. **Inertial System Analysis:** Study the inertial system to find weaknesses.
+3. **Environmental Manipulation:** Utilize wind patterns to disrupt drone navigation.
+
+---
+
+### 4. Signal Analysis and Countermeasures
+
+#### **Signal Analysis Tools**
+
+- **HackRF One:** Popular SDR platform for frequency analysis.
+- **Software Tools:** SDR#, GQRX for visualization and analysis.
+- **Universal Software Radio Peripheral (USRP):** Analyzes and decodes communication protocols.
+
+#### **Advice on Countermeasures**
+
+1. **Frequency Jamming:** Utilize SDR tools to disrupt communication.
+2. **Protocol Analysis:** Identify and target specific communication protocols.
+3. **Real-time Monitoring:** Implement systems to detect and respond to drone signals.
+
+---
+
+### 5. Microcontroller Specifications
+
+#### **TMS320F2833x, TMS320F2823x Real-Time Microcontrollers**
 
 ### 6. Microcontroller Specifications
 
 
 
 The microcontroller specifications detail the core computing components that enable the drone's functionality. This insight into the hardware provides a better understanding of the drone's capabilities and potential weaknesses.
+
+
+
+
+
+
 
 
 
