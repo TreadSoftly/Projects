@@ -1,15 +1,18 @@
 ## Just posting it when I run through a project that uses a tool specifically. Will start remembering to screen capture more :\ 
-
+<br>
 Private links to sanctioned contract osint work upon approved request
-  
   - https://github.com/The4orge/OHSNIT/blob/main/README.md
+  - https://github.com/The4orge/OHSNIT/blob/main/File%239_AAGJsoAAGS.md
+  - https://github.com/The4orge/OHSNIT/blob/main/File%2311_TBsoBB
+  - https://github.com/The4orge/OHSNIT/blob/main/File%2310_MDsoMDA.md
+<br>
 
 Public link to Attack Drone Research To Help Aid With Route Safety
-
   - https://github.com/TreadSoftly/Projects/blob/main/OSINT_PaperPlanes.md
+<br>
 
-I will be covering some OSINT work involving files of sanctioned targets I was tasked with conducting reconaisance on.
-Names and other PIID will be removed. This is purely to show the use cases of the OSINT tools I have used and devoled. 
+Covering some OSINT work involving files of sanctioned profiles.
+Purely to show the use cases of the OSINT tools I have used and devoled. 
 
 Tools involved include:
 - ReconNG
