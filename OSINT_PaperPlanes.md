@@ -13,25 +13,25 @@ This report presents a comprehensive analysis of the [HESA Shahed 136](https://e
 ### Table of Contents
 
 1. [Introduction](#introduction)
-2. [American Components](#american-components)
-3. [GPS Guidance System](#gps-guidance-system)
-4. [Signal Analysis and Countermeasures](#signal-analysis-and-countermeasures)
-5. [Microcontroller Specifications](#microcontroller-specifications)
-6. [Conclusion](#conclusion)
+2. [Design and Development](#design-and-development)
+3. [American Components](#american-components)
+4. [GPS Guidance System](#gps-guidance-system)
+5. [Signal Analysis and Countermeasures](#signal-analysis-and-countermeasures)
+6. [Microcontroller Specifications](#microcontroller-specifications)
+7. [Russian Upgrades](#russian-upgrades)
+8. [Conclusion](#conclusion)
 
 ---
-
-<p align="center">
-  <img src="https://github.com/TreadSoftly/Projects/assets/121847455/b800dfda-612c-4898-b6ed-4f8ab4309172" alt="PaperAirPlaneSpecs">
-</p>
 
 ### 1. Introduction
 
 The [HESA Shahed 136](https://www.militaryfactory.com/aircraft/detail.php?aircraft_id=2520) is a sophisticated military drone. This section introduces the drone's capabilities and the methods employed in the investigation.
 
----
+### 2. Design and Development
 
-### 2. American Components
+The Shahed 136 is a prominent kamikaze UAV developed by Iran. It has been extensively detailed in various sources such as [Army Technology](https://www.army-technology.com/projects/shahed-136-kamikaze-uav-iran/), [Army Recognition](https://www.armyrecognition.com/iran_unmanned_ground_aerial_vehicles_systems/shahed-136_loitering_munition_kamikaze-suicide_drone_iran_data.html), and [Military Today](https://www.militarytoday.com/aircraft/shahed_136.htm).
+
+### 3. American Components
 
 #### **American Chips by Texas Instruments**
 
@@ -44,9 +44,7 @@ The [HESA Shahed 136](https://www.militaryfactory.com/aircraft/detail.php?aircra
 2. **Regulatory Compliance:** Ensure adherence to international export laws.
 3. **Technology Analysis:** Conduct reverse engineering to identify vulnerabilities.
 
----
-
-### 3. GPS Guidance System
+### 4. GPS Guidance System
 
 #### **GPS Signal Prevention System**
 
@@ -59,9 +57,7 @@ The [HESA Shahed 136](https://www.militaryfactory.com/aircraft/detail.php?aircra
 2. **Inertial System Analysis:** Study the inertial system to find weaknesses.
 3. **Environmental Manipulation:** Utilize wind patterns to disrupt drone navigation.
 
----
-
-### 4. Signal Analysis and Countermeasures
+### 5. Signal Analysis and Countermeasures
 
 #### **Signal Analysis Tools**
 
@@ -75,9 +71,7 @@ The [HESA Shahed 136](https://www.militaryfactory.com/aircraft/detail.php?aircra
 2. **Protocol Analysis:** Identify and target specific communication protocols.
 3. **Real-time Monitoring:** Implement systems to detect and respond to drone signals.
 
----
-
-### 5. Microcontroller Specifications
+### 6. Microcontroller Specifications
 
 #### **TMS320F2833x, TMS320F2823x Real-Time Microcontrollers**
 ‘Ts320F28234,  ‘TMS320F 26332, TMS320F28235, TMS320F28235.01  
@@ -85,19 +79,13 @@ The [HESA Shahed 136](https://www.militaryfactory.com/aircraft/detail.php?aircra
 'SPis4390 = JUNE 2007 ~ REVISED AUGUST 3022    
 TMS320F2833x, TMS320F2823x Real-Time Microcontrollers  
 
-[Detailed Specifications](https://www.ti.com/lit/ds/symlink/tms320f28335.pdf)  
+[Detailed Specifications](https://www.ti.com/lit/ds/symlink/tms320f28335.pdf)
 
----
+### 7. Russian Upgrades
 
-#### **Advice on Countermeasures**
+The Shahed 136 has been reportedly upgraded by Russia. More details can be found on [Eurasian Times](https://www.eurasiantimes.com/hitting-bulls-eye-russia-has-upgraded-iranian-shahed-136-kamikaze/) and [RUSI](https://rusi.org/explore-our-research/publications/commentary/russias-iranian-made-uavs-technical-profile).
 
-1. **Microcontroller Analysis:** Understand the microcontroller's architecture to identify potential weak points.
-2. **Software Exploitation:** Develop exploits targeting specific firmware functionalities.
-3. **Hardware Manipulation:** Design tools to physically tamper with the microcontroller.
-
----
-
-### 6. Conclusion
+### 8. Conclusion
 
 The investigation into the HESA Shahed 136 has provided actionable insights into its construction, capabilities, and weaknesses. By employing the advised countermeasures, we can develop effective strategies against this drone technology.
 
