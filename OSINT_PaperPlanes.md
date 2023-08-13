@@ -6,7 +6,7 @@
 
 ## Executive Summary
 
-This report presents a comprehensive analysis of the HESA Shahed 136, an Iranian kamikaze drone. It includes detailed specifications, potential vulnerabilities, and top-level advice on countermeasures.
+This report presents a comprehensive analysis of the [HESA Shahed 136](https://en.wikipedia.org/wiki/HESA_Shahed_136), an Iranian kamikaze drone. It includes detailed specifications, potential vulnerabilities, and top-level advice on countermeasures.
 
 ---
 
@@ -17,6 +17,7 @@ This report presents a comprehensive analysis of the HESA Shahed 136, an Iranian
 3. [GPS Guidance System](#gps-guidance-system)
 4. [Signal Analysis and Countermeasures](#signal-analysis-and-countermeasures)
 5. [Microcontroller Specifications](#microcontroller-specifications)
+6. [Conclusion](#conclusion)
 
 ---
 
@@ -26,7 +27,7 @@ This report presents a comprehensive analysis of the HESA Shahed 136, an Iranian
 
 ### 1. Introduction
 
-The HESA Shahed 136 is a sophisticated military drone. This section introduces the drone's capabilities and the methods employed in the investigation.
+The [HESA Shahed 136](https://www.militaryfactory.com/aircraft/detail.php?aircraft_id=2520) is a sophisticated military drone. This section introduces the drone's capabilities and the methods employed in the investigation.
 
 ---
 
