@@ -80,78 +80,142 @@
   <a href="https://youtu.be/ChtnZtTMUGU"><b>Cases🌐</b></a>
 </h2>
 
-<p align="justify">
-Always in the pursuit of mobile cybersecurity dominance. Imagine a potent blend of Raspberry Pi's computational prowess and Kali Linux's arsenal of penetration testing tools. Now, wrap that in an ultra-portable, battery-powered package. Welcome to mobile penetration testing.
 
-This rig, engineered around the Raspberry Pi 4 with Quad core Cortex-A72 (ARM v8) 64-bit SoC @ 1.8GHz & 8GB of LPDDR4-3200 SDRAM, brings Kali Linux to life on a mobile device much more powerful than its orginal intended hse on a USB drive. Along with the high-speed SanDisk 64GB Extreme microSDXC card, 2.4 GHz and 5.0 GHz IEEE 802.11ac wireless, Bluetooth 5.0, & BLE, this powerhouse ensures swift operations and efficient data retrieval, without tying you to a desk.
 
-But what's power without freedom? With the Talentcell Rechargeable 12V/5V Battery Pack, the BriefCase rig breaks free of being tied to a power plug and staying close to a wall outlet. Whether you're performing on-site audits, running security checks in the field, or just exploring the world of ethical hacking from your favorite coffee shop, this setup keeps pace with your dynamic lifestyle.
 
-Let's talk about staying connected. The BriefCase boasts dual-band wireless LAN, Bluetooth 5.0 support, and the Alfa AWUS036NHA long-range network adapter. With a maximum connection speed of 150 Mbps and a 5dBi antenna, you're now ready for long range high speed signal & frequencies inspection capabilities. And let's not forget the Alfa's packet injection capabilities – a critical feature for advanced penetration testing.
+<div align="center">
 
-User experience is paramount. The interactive Raspberry Pi 7" Display provides a touch interface, while the foldable Bluetooth keyboard ensures smooth data input, anytime, anywhere.
+# 🛠 Mobile Penetration Testing Rig
 
-USE CASE: You're tasked with a WiFi penetration test. You're just outside the target location. With this setup, having a setup like the BriefCase alows for scanning the network, using tools like Aircrack-ng or Wireshark. Vulnerabilities surface, and you're exploiting them, documenting your findings in real-time, all from the comfort of your vehicle.
+</div>
 
-Maybe you're a cybersecurity enthusiast, eager to learn about different attack vectors. This setup transforms into a mobile hacking lab, enabling hands-on experimentation with various aspects of ethical hacking, from network sniffing to password cracking.
+Always striving for mobile cybersecurity dominance, we've engineered a **potent blend of Raspberry Pi's computational prowess and Kali Linux's arsenal of penetration testing tools** in an ultra-portable, battery-powered package. Welcome to the future of **mobile penetration testing**. 🌐
 
-Whether you're a seasoned pro or an aspiring ethical hacker, this rig's blend of power, connectivity, and freedom offers an unmatched platform for cybersecurity operations.
-</p>
+<div align="center">
+
+## 🎛 Hardware Overview
+
+</div>
+
+- **Raspberry Pi 4**: Quad-core Cortex-A72 (ARM v8) 64-bit SoC @ 1.8GHz & 8GB of LPDDR4-3200 SDRAM.
+- **Storage**: SanDisk 64GB Extreme microSDXC card.
+- **Connectivity**: 
+  - 2.4 GHz IEEE 802.11ac wireless.
+  - 5.0 GHz IEEE 802.11ac wireless.
+  - Bluetooth 5.0, & BLE.
+- **Battery**: Talentcell Rechargeable 12V/5V Battery Pack. 🔋
+- **Extras**: Alfa AWUS036NHA long-range network adapter.
+  - 150 Mbps speed.
+  - 5dBi antenna.
+- **Display & Input**: Raspberry Pi 7" Display with touch interface. 🎮
+  - Removable for remote operations.
+  - Foldable Bluetooth keyboard for on-the-go data input.
+
+<div align="center">
+
+### 🎓 Freedom and Power
+
+</div>
+
+This rig ensures **swift operations and efficient data retrieval**, free from the constraints of location. Perform:
+- On-site audits.
+- Security checks in the field.
+- Explore the world of ethical hacking from anywhere.
+- Remote SSH use, either with battery pack or while plugged into a power outlet.
+
+<div align="center">
+
+### 📡 Connectivity and Capabilities
+
+</div>
+
+With **dual-band wireless LAN**, **Bluetooth 5.0 support**, and Alfa's packet injection capabilities, you're ready for:
+- Long-range, high-speed signal inspection.
+- Frequencies analysis.
+- Essential for advanced penetration testing.
+- Leaving the device jacked into a network for indefinite remote access.
+
+<div align="center">
+
+## 🎯 Use Cases
+
+</div>
+
+### 🏠 On-site WiFi Penetration Testing
+
+Scan a network using tools like **Aircrack-ng** or **Wireshark**, exploit vulnerabilities, and document findings in real-time, all from your vehicle's comfort. 🚗
+
+### 🧪 Mobile Hacking Lab
+
+Transform this setup into a mobile hacking lab, enabling hands-on experimentation with ethical hacking aspects, from network sniffing to password cracking. 🔐
+
+<div align="center">
+
+## 💼 Conclusion
+
+</div>
+
+Whether a seasoned pro or an aspiring ethical hacker, this rig's blend of **power**, **connectivity**, and **freedom** offers an unmatched platform for cybersecurity operations. 🛡
+
+<div align="center">
 <br>
 <br>
 <br>
 
 
-<h1 align="center">
+<h1>
     <a href="https://github.com/TreadSoftly">🌐Online Resources Used for Build📚</a> 
 </h1>
 
-<h2 align="center">
+<h2>
     🎥💻 <a href="https://youtu.be/5IIkGJc3T7o">Install Kali Linux 2022 on Raspberry Pi 4 B (Under 3 Minutes) - The Cyber Mentor</a>
 </h2>
-<p align="center">
+<p>
     A concise tutorial for getting Kali Linux up and running on Raspberry Pi 4 in less than 3 minutes. Ideal for those who need a quick setup.
 </p>
-<p align="center">
+<p>
     <a href="https://youtu.be/5IIkGJc3T7o">
         <img src="https://img.shields.io/badge/YouTube-Quick_Setup-blue?style=for-the-badge&logo=YouTube" alt="Quick Setup">
     </a>
 </p>
 
-<h2 align="center">
+<h2>
     🚀🔧 <a href="https://www.youtube.com/watch?v=sH20ovfcpGA">Top Things To Do After Installing Kali Linux in 2023! - Stefan Rows</a>
 </h2>
-<p align="center">
+<p>
     An in-depth guide to fine-tuning Kali Linux for performance, security, and functionality. Customize your build according to your needs.
 </p>
-<p align="center">
+<p>
     <a href="https://www.youtube.com/watch?v=sH20ovfcpGA">
         <img src="https://img.shields.io/badge/YouTube-Kali_Fine_Tuning-blue?style=for-the-badge&logo=YouTube" alt="Kali Fine Tuning">
     </a>
 </p>
 
-<h2 align="center">
+<h2>
     📚🛠️ <a href="https://null-byte.wonderhowto.com/how-to/get-started-with-kali-linux-2020-0231506/">Get Started with Kali Linux</a>
 </h2>
-<p align="center">
+<p>
     Comprehensive step-by-step guide on using Kali Linux. Provides valuable insights and tips specifically for Raspberry Pi users.
 </p>
-<p align="center">
+<p>
     <a href="https://null-byte.wonderhowto.com/how-to/get-started-with-kali-linux-2020-0231506/">
         <img src="https://img.shields.io/badge/NullByte-Step_by_Step_Guide-blue?style=for-the-badge&logo=Read-the-Docs" alt="Step by Step Guide">
     </a>
 </p>
-<h2 align="center">
+<h2>
     🍓💽 <a href="https://adamtheautomator.com/berryboot/">How to Set up Dual Boot on Raspberry Pi 4 Using BerryBoot</a>
 </h2>
-<p align="center">
+<p>
     Instructions on setting up a dual-boot system on Raspberry Pi, allowing you to run Kali Linux alongside other OS. Great for those seeking versatility.
 </p>
-<p align="center">
+<p>
     <a href="https://adamtheautomator.com/berryboot/">
         <img src="https://img.shields.io/badge/BerryBoot-Dual_Boot_Setup-blue?style=for-the-badge&logo=Raspberry-Pi" alt="Dual Boot Setup">
     </a>
 </p>
+
+</div>
+
 <br>
 <br>
 <br>
