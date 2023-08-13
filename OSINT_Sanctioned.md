@@ -40,7 +40,7 @@ Tools involved include:
   </p>
   <p>
   
-   Have to get some more screen shots once I get some projects in to justify the time 
+  - Have to get some more screen shots once I get some projects in to justify the time 
    </p>
 </h1>
  <br>
