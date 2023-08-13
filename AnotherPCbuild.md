@@ -24,13 +24,8 @@
 ![TheSTUDY](https://github.com/TreadSoftly/Projects/assets/121847455/c038c5c3-0f3f-46db-811c-e0f37b876bb3)
 <br>
 <br>
-![redroom](https://github.com/TreadSoftly/Projects/assets/121847455/567ff85d-eb0b-4b5c-851f-21a2285a64e8)
-<br>
-<br>
 ![Zen](https://github.com/TreadSoftly/Projects/assets/121847455/fa893718-32ce-4cc3-aba5-75b9c1c9b0d9)
 <br>
-<br>
-![Inside the PC](https://github.com/TreadSoftly/Projects/assets/121847455/f891d82c-5b7e-484a-9c5d-e9645783cd04)
 
 
 
