@@ -75,31 +75,12 @@ The HESA Shahed 136 is a sophisticated military drone. This section introduces t
 ### 5. Microcontroller Specifications
 
 #### **TMS320F2833x, TMS320F2823x Real-Time Microcontrollers**
+‘Ts320F28234,  ‘TMS320F 26332, TMS320F28235, TMS320F28235.01  
 
-Weert B bees  
-  
-documentation 2 development  
-  
-Doors, lees  
-  
-‘TMS320F28335, TMS320F28335-Q1, TMS320F28334, TMS320F28333,  
-  
-bad et  
-  
-‘Ts320F28234,  
-  
-   
-  
-‘TMS320F 26332, TMS320F28235, TMS320F28235.01  
 1, TMS320F 26232, TMS320F28232-01  
-'SPis4390 = JUNE 2007 ~ REVISED AUGUST 3022  
-  
-   
-  
+'SPis4390 = JUNE 2007 ~ REVISED AUGUST 3022    
 TMS320F2833x, TMS320F2823x Real-Time Microcontrollers  
-  
-   
-  
+
 1 Features  
   
 ‘+ High-performance static CMOS technology  
@@ -151,94 +132,60 @@ resolution
 ~ Upto 16-bit timers  
 (6 for ePWMs and 3 XINTCTRs)  
 + Three 32-bit CPU timers,  
-  
 Serial port peripherals  
-  
 = Upto2 CAN modules  
-  
 Upto 3 SCI (UART) modules  
-  
 Up to 2 McBSP modules (configurable as SPI)  
-  
 (One SPI module  
-  
 = One inter-integrated Circuit (12C) bus  
-  
 12-bit ADC, 16 channels  
-  
 = 80-ns conversion rate  
-  
 ~ 28 channel input multiplexer  
-  
 = Two sample-and-hold  
-  
 — Singlesimuitaneous conversions  
-  
 = intemal or extemal reterence  
-  
+
 Up to 88 individually programmable, multiplexed  
-  
+
 GPIO pins with input fitering  
-  
+
 STAG boundary scan support  
-  
 — IEEE Standard 1149,1-1990 Standard Test  
 ‘Access Port and Boundary Scan Architecture  
-  
 ‘Advanced debug features  
-  
 — Analysis and breakpoint functions  
-  
 = Real-time debug using hardware  
-  
+
 Development support includes  
-  
 ~ ANSI C/C++ compiler/assemblerfnker  
-  
 ~ Code Composer Stusio™ IDE  
-  
+
 DSPIBIOS™ and SYS/BIOS  
-  
 — Digital motor control and digital power sofware  
 libraries  
-  
+
 Low-power modes and power savings  
-  
 — IDLE, STANDBY, HALT modes supported  
-  
 = Disable individual peripheral clocks  
-  
 Endianness:Litle endian  
-  
+
 Package options  
-  
 ~ Leadfree, green packaging  
-  
 ~  176-ball plastic Ball Grid Array (BGA) [2JZ]  
-  
 = 179-ball MicroStar BGA” [ZHH]  
-  
 —  178:ball New Fine Pitch Ball Gra Array  
 (FBGA) [ZAY]  
-  
 —  176-pin Low-Profle Quad Flatpack (LOFP)  
-  
 (PGF  
-  
 = 176pin Thermally Enhanced Low-Profle Quad  
 Flatpack (HLOFP) [PTP]  
-  
+
 Temperature options.  
-  
 — A--40°C to 85°C (PGF, ZHH, ZAY, ZZ)  
-  
 — S:-40°C to 125°C (PTP, ZJZ)  
-  
 — Q:-40°C to 125°C (PTP, ZZ)  
 (AEC Q100 qualification for automotive  
 applications)  
-  
-   
   
 "An IMPORTANT NOTICE atte end ofthis data sheet addresses avalably waraniy, changes, use sally ciical applatons,  
 intelectual propery matters and oer Important daciamers, PRODUCTION DATA.  
@@ -259,4 +206,3 @@ The investigation into the HESA Shahed 136 has provided actionable insights into
 ---
 
 </div>
-
