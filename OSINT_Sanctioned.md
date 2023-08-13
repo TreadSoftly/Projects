@@ -28,7 +28,7 @@ Tools involved include:
 **Recon-NG**
 </h1> 
 
-  - ![OSINT_ReconNG](https://github.com/TreadSoftly/Projects/assets/121847455/3b38554f-5a5c-4fe8-b8c6-1843cac82564)
+![OSINT_ReconNG](https://github.com/TreadSoftly/Projects/assets/121847455/3b38554f-5a5c-4fe8-b8c6-1843cac82564)
 <br>
 <br>
 
@@ -50,7 +50,7 @@ Tools involved include:
 
  SpiderPhoot
 
- - ![SPIDERFOOT_Hunt](https://github.com/TreadSoftly/Projects/assets/121847455/8d99e429-8442-48cb-8eca-4bc1e9f40bcd)
+![SPIDERFOOT_Hunt](https://github.com/TreadSoftly/Projects/assets/121847455/8d99e429-8442-48cb-8eca-4bc1e9f40bcd)
 </h1>
  <br>
 <br>
