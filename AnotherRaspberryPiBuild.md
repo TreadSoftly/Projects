@@ -158,6 +158,9 @@ Transform this setup into a mobile hacking lab, enabling hands-on experimentatio
 Whether a seasoned pro or an aspiring ethical hacker, this rig's blend of **power**, **connectivity**, and **freedom** offers an unmatched platform for cybersecurity operations. 🛡
 
 <div align="center">
+<br>
+<br>
+
 
 <h1>
     <a href="https://github.com/TreadSoftly">🌐Online Resources Used for Build📚</a> 
