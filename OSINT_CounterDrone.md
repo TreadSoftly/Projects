@@ -1,69 +1,262 @@
 
-<h1>HESA Shahed 136</h1>
+# Counter-Drone Intelligence Research Report: HESA Shahed 136
 
-## https://en.wikipedia.org/wiki/HESA_Shahed_136
-<p>
+<div align="center">
+
+## Executive Summary
+
+This report presents a comprehensive analysis of the HESA Shahed 136, an Iranian kamikaze drone. It includes detailed specifications, potential vulnerabilities, and top-level advice on countermeasures.
+
+---
+
+### Table of Contents
+
+1. [Introduction](#introduction)
+2. [American Components](#american-components)
+3. [GPS Guidance System](#gps-guidance-system)
+4. [Signal Analysis and Countermeasures](#signal-analysis-and-countermeasures)
+5. [Microcontroller Specifications](#microcontroller-specifications)
+6. [Conclusion](#conclusion)
+
+---
+
+### 1. Introduction
+
+The HESA Shahed 136 is a sophisticated military drone. This section introduces the drone's capabilities and the methods employed in the investigation.
+
+---
+
+### 2. American Components
+
+#### **American Chips by Texas Instruments**
+
+- **Availability:** Freely available on the market.
+- **Serial Numbers:** Allow for investigation of the entire supply chain.
+
+#### **Advice on Countermeasures**
+
+1. **Supply Chain Monitoring:** Track and control the distribution of key components.
+2. **Regulatory Compliance:** Ensure adherence to international export laws.
+3. **Technology Analysis:** Conduct reverse engineering to identify vulnerabilities.
+
+---
+
+### 3. GPS Guidance System
+
+#### **GPS Signal Prevention System**
+
+- **Functionality:** Prevents GPS signals from being replaced by electronic devices.
+- **Vulnerabilities:** Does not prevent interference, leading to navigational errors.
+
+#### **Advice on Countermeasures**
+
+1. **GPS Signal Interference:** Develop tools to exploit the interference vulnerability.
+2. **Inertial System Analysis:** Study the inertial system to find weaknesses.
+3. **Environmental Manipulation:** Utilize wind patterns to disrupt drone navigation.
+
+---
+
+### 4. Signal Analysis and Countermeasures
+
+#### **Signal Analysis Tools**
+
+- **HackRF One:** Popular SDR platform for frequency analysis.
+- **Software Tools:** SDR#, GQRX for visualization and analysis.
+- **Universal Software Radio Peripheral (USRP):** Analyzes and decodes communication protocols.
+
+#### **Advice on Countermeasures**
+
+1. **Frequency Jamming:** Utilize SDR tools to disrupt communication.
+2. **Protocol Analysis:** Identify and target specific communication protocols.
+3. **Real-time Monitoring:** Implement systems to detect and respond to drone signals.
+
+---
+
+### 5. Microcontroller Specifications
+
+#### **TMS320F2833x, TMS320F2823x Real-Time Microcontrollers**
+
+Weert B bees  
   
-![PaperAirplane](https://github.com/TreadSoftly/Projects/assets/121847455/12b9aa6f-d363-4534-b369-22461f39b710)
-</p>
+documentation 2 development  
+  
+Doors, lees  
+  
+‘TMS320F28335, TMS320F28335-Q1, TMS320F28334, TMS320F28333,  
+  
+bad et  
+  
+‘Ts320F28234,  
+  
+   
+  
+‘TMS320F 26332, TMS320F28235, TMS320F28235.01  
+1, TMS320F 26232, TMS320F28232-01  
+'SPis4390 = JUNE 2007 ~ REVISED AUGUST 3022  
+  
+   
+  
+TMS320F2833x, TMS320F2823x Real-Time Microcontrollers  
+  
+   
+  
+1 Features  
+  
+‘+ High-performance static CMOS technology  
+— Up to 150 Mz (6 67-ns cycle time)  
+= 1.9-V/1.8-V core, 3:3-V UO design  
+‘+ High-performance 32-bit CPU (TMS320C28x)  
+~ IEEE 754 single-precision Floating-Point Unit  
+(FPU) (F2833x only)  
+= 16 « 16 and 32 x 32 MAC operations  
+16 * 16 dual MAC  
+Harvard bus architecture  
+— Fast interrupt response and processing  
+— Unified memory programming mode!  
+= Code-efficient (in C/C++ and Assembly)  
++ Six-channel DMA controller (for ADC, McBSP,  
+‘ePWM, XINTF, and SARAM)  
++ 16:it or 32-bit External Interface (XINTF)  
+= More than 2M x 16 address reach  
++ On-chip memory  
+— F28335, F28333, F28235:  
+256K * 16 flash, 34K x 16 SARAM  
+— F28334, £28234  
+128K * 16 flash, 34K « 16 SARAM  
+— F28332, F28232:  
+GaK x 16 flash, 26K * 16 SARAM  
+~ 1Kx 16 OTP ROM  
++ Boot ROM (8K x 16)  
+— With software boot modes (through SCI, SPI,  
+CAN, I2C, McBSP, XINTF, and parallel /O)  
+= Standard math tables  
++ Clock and system control  
+— On-chip oscillator  
+= Watchdog timer module  
+‘+ GPIOO to GPIO6S pins can be connected to one of  
+the eight external core interrupts  
+‘+ Peripheral interrupt Expansion (PIE) block that  
+‘supports all 58 peripheral interrupts  
++ 128-bit security key/lock  
+— Protects flast/OTP/RAM blocks  
+= Prevents firmware reverse-engineering  
+‘+ Enhanced control peripherals  
+— Upto 18 PWM outputs  
+~ Upto HRPWM outputs with 150-ps MEP  
+resolution  
+— Up to6 event capture inputs  
+= Up to2 Quadrature Encoder interfaces  
+= Upto 32-bit timers  
+(6 for eCAPS and 2 for eQEPs)  
+~ Upto 16-bit timers  
+(6 for ePWMs and 3 XINTCTRs)  
++ Three 32-bit CPU timers,  
+  
+Serial port peripherals  
+  
+= Upto2 CAN modules  
+  
+Upto 3 SCI (UART) modules  
+  
+Up to 2 McBSP modules (configurable as SPI)  
+  
+(One SPI module  
+  
+= One inter-integrated Circuit (12C) bus  
+  
+12-bit ADC, 16 channels  
+  
+= 80-ns conversion rate  
+  
+~ 28 channel input multiplexer  
+  
+= Two sample-and-hold  
+  
+— Singlesimuitaneous conversions  
+  
+= intemal or extemal reterence  
+  
+Up to 88 individually programmable, multiplexed  
+  
+GPIO pins with input fitering  
+  
+STAG boundary scan support  
+  
+— IEEE Standard 1149,1-1990 Standard Test  
+‘Access Port and Boundary Scan Architecture  
+  
+‘Advanced debug features  
+  
+— Analysis and breakpoint functions  
+  
+= Real-time debug using hardware  
+  
+Development support includes  
+  
+~ ANSI C/C++ compiler/assemblerfnker  
+  
+~ Code Composer Stusio™ IDE  
+  
+DSPIBIOS™ and SYS/BIOS  
+  
+— Digital motor control and digital power sofware  
+libraries  
+  
+Low-power modes and power savings  
+  
+— IDLE, STANDBY, HALT modes supported  
+  
+= Disable individual peripheral clocks  
+  
+Endianness:Litle endian  
+  
+Package options  
+  
+~ Leadfree, green packaging  
+  
+~  176-ball plastic Ball Grid Array (BGA) [2JZ]  
+  
+= 179-ball MicroStar BGA” [ZHH]  
+  
+—  178:ball New Fine Pitch Ball Gra Array  
+(FBGA) [ZAY]  
+  
+—  176-pin Low-Profle Quad Flatpack (LOFP)  
+  
+(PGF  
+  
+= 176pin Thermally Enhanced Low-Profle Quad  
+Flatpack (HLOFP) [PTP]  
+  
+Temperature options.  
+  
+— A--40°C to 85°C (PGF, ZHH, ZAY, ZZ)  
+  
+— S:-40°C to 125°C (PTP, ZJZ)  
+  
+— Q:-40°C to 125°C (PTP, ZZ)  
+(AEC Q100 qualification for automotive  
+applications)  
+  
+   
+  
+"An IMPORTANT NOTICE atte end ofthis data sheet addresses avalably waraniy, changes, use sally ciical applatons,  
+intelectual propery matters and oer Important daciamers, PRODUCTION DATA.  
+
 
+#### **Advice on Countermeasures**
 
+1. **Microcontroller Analysis:** Understand the microcontroller's architecture to identify potential weak points.
+2. **Software Exploitation:** Develop exploits targeting specific firmware functionalities.
+3. **Hardware Manipulation:** Design tools to physically tamper with the microcontroller.
 
+---
 
-Shahed-136. American chips by Texas Instruments were also found in it, which are freely available on the market. But in any case, serial numbers in general allow you to investigate the entire supply chain and make it stop.
-[8:50 AM]
-Finding out the processors and the chips are made in America and are pretty available, maybe most of the board too.
-[8:51 AM]
-https://www.facebook.com/photo/?fbid=5605621576162138&set=ecnf.100001430544106
-[8:51 AM]
-"although the marking on the central processor is faded, certain signs of 100 percent indicate that it is a powerful chip manufactured by ALTERA/INTEL"
+### 6. Conclusion
 
-1
-[8:52 AM]
-https://en.defence-ua.com/weapon_and_tech/an_advanced_radio_communication_device_on_american_processors_found_in_the_shahed_136-4446.html
-An Advanced Radio Communication Device on American Processors Found...
-Ukrainian specialists keep researching the Shahed-136 kamikaze drone in order to find effective countermeasures
+The investigation into the HESA Shahed 136 has provided actionable insights into its construction, capabilities, and weaknesses. By employing the advised countermeasures, we can develop effective strategies against this drone technology.
 
-[8:56 AM]
-.
-[8:56 AM]
-.
-[8:56 AM]
-Found the processor model numbers TMS320 F28335 processors from Texas Instruments (freely available on the market).
+---
 
-Ray_TheMad_Nomad — 03/14/2023 8:56 AM
-.
-[8:56 AM]
-.
-[8:56 AM]
-an unpleasant surprise was found, a system was added to GPS guidance that prevents GPS signals from being replaced by electronic devices, but, judging by the description, it does not prevent interference.
-[8:57 AM]
-GOOD NEWS MAYBE
-[8:57 AM]
-That is, when the drone flies into an area where GPS signals are suppressed, the drone begins to be blown away by the wind, and it also runs into errors of the inertial system itself.
-
-1
-[8:58 AM]
-https://www.facebook.com/AFUStratCom
-![PaperAirPlaneSpecs](https://github.com/TreadSoftly/Projects/assets/121847455/d2196f8f-401c-4e62-903e-dbf04c436328)
-
-
-
-
-https://www.ti.com/lit/ds/sprs439q/sprs439q.pdf?ts=1678757350254&ref_url=https%253A%252F%252Fwww.google.com%252F
-
-Ray_TheMad_Nomad — 03/14/2023 9:24 AM
-I might have info for your buddy on a scanner to look for and use that could help with these drones...maybe
-
-1
-[9:28 AM]
-.
-.
-HackRF One is a popular SDR platform that can be used for frequency analysis and modulation detection for various wireless communication protocols, including CAN, UART, and SPI.
-
-Software tools such as SDR# (THIS IS WRITTING IN C AND THE PROCESSOR IS ALSO C BUILT----WE MAY NEED JORDAN FOR THIS PROJECT) and GQRX can be used with the HackRF One to visualize and analyze signals in the frequency domain. These tools provide a spectrum analyzer and waterfall display that can be used to identify the frequency and modulation scheme of a signal.
-
-There are some software-defined radio (SDR) platforms that can be used to scan and analyze various communication protocols, including CAN, UART, and SPI. These platforms allow users to observe the characteristics of the transmitted signal, including the frequency range, modulation scheme, and data rate, and can be used to identify specific communication protocols being used in a system.
-
-One popular SDR platform is the Universal Software Radio Peripheral (USRP) from Ettus Research. The USRP can be used with various software tools, such as GNU Radio and MATLAB, to analyze and decode various communication protocols.
+</div>
 
