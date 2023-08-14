@@ -1,4 +1,5 @@
-# Still have to find the time to fill out purchase links and details for all the parts to the PC build and why I chose them for this build.
+# Have to find the time to fill out purchase links and details for all the parts.
+
 [Imgur](https://i.imgur.com/0htkfbS.mp4) Finished Setup Video
 
 [Imgur](https://i.imgur.com/fwqg0BE.mp4) Finished Office Study Video
