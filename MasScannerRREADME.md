@@ -23,7 +23,7 @@ This script leverages [Masscan](https://github.com/robertdavidgraham/masscan), t
 1. Clone this repository:
    ```
    git clone https://github.com/yourusername/masscan-script.git
-   \```
+   ```
 2. Make the script executable:
    ```
    chmod +x masscan-script.sh
