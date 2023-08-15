@@ -66,8 +66,3 @@ This script leverages [Masscan](https://github.com/robertdavidgraham/masscan), t
 - 🛠️ Automatic Installation of Masscan
 - 📝 Comprehensive Logging
 
-## 📜 License
-This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details.
-
-## 📞 Contact
-For any inquiries or support, please contact the maintainer at [your-email@example.com](mailto:your-email@example.com).
