@@ -25,7 +25,6 @@
   <a href="#nmap-flags--options">6. Nmap Flags & Options</a><br>
   <a href="#example-code">7. Example Code</a><br>
   <a href="#links--resources">8. Links & Resources</a><br>
-  <a href="#license">9. License</a><br>
 </p>
 <br>
 
