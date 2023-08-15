@@ -21,7 +21,7 @@
 <br>
 <br>
 
-## <a name="features"></a><p align="center">1.1 Features</p>
+## <a name="features"></a><p align="center">Features</p>
 
 - Network Interface Retrieval
 - Package Management
@@ -56,9 +56,9 @@
 
 </div>
 
-## <a name="usage"></a><p align="center">3. Usage</p>
+## <a name="usage"></a><p align="center">Usage</p>
 
-### <p align="center">3.1 Main Function</p>
+### <p align="center">Main Function</p>
 
 You can run the main function using the following command:
 
