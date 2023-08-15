@@ -40,7 +40,10 @@ chmod +x nc_iSpy.sh
 
 ## 🎲 Usage
 ```
-./nc -v -z "$target" "$port" example.com
+sudo nc_ispy -h
+sudo nc_ispy.sh <target> <port>
+nc_ispy <target> <port> 
+nc_ispy -v -z "$target" "$port" example.com
 ```
 
 ### Options
@@ -50,10 +53,10 @@ chmod +x nc_iSpy.sh
 ## 🎓 Examples
 ### Scan Default Port
 ```
-./nc -v -z "$target" "$port" example.com
+nc_ispy -v -z "$target" "$port" example.com
 ```
 
 ### Scan Custom Port
 ```
-./nc -v -z "$target" -p 8080 example.com
+nc_ispy -v -z "$target" -p 8080 example.com
 ```
