@@ -116,10 +116,7 @@ The following sections provide details on various configuration options.
 - **log_level:** `{LOG_LEVEL}`
 - **log_file:** `{LOG_FILE_PATH}`
 ...
-
-[Rest of the sections with detailed explanations]
-
-## Resources 🌐
+  
 </div>
 
 
