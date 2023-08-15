@@ -35,12 +35,12 @@ Ensure you have Nikto installed on your system. Clone the repository and make th
 ```
 git clone https://github.com/yourusername/LEVERAGE.git
 cd LEVERAGE
-chmod +x LEVERAGE.sh
+chmod +x nc_iSpy.sh
 ```
 
 ## 🎲 Usage
 ```
-./LEVERAGE.sh [options] <target>
+./nc -v -z "$target" "$port" example.com
 ```
 
 ### Options
@@ -50,10 +50,10 @@ chmod +x LEVERAGE.sh
 ## 🎓 Examples
 ### Scan Default Port
 ```
-./LEVERAGE.sh example.com
+./nc -v -z "$target" "$port" example.com
 ```
 
 ### Scan Custom Port
 ```
-./LEVERAGE.sh -p 8080 example.com
+./nc -v -z "$target" -p 8080 example.com
 ```
