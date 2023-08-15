@@ -6,7 +6,7 @@ This repository contains examples of advanced techniques in C++ related to compr
 
 1. [Compression and Encryption Techniques](#compression-and-encryption-techniques)<br>
    a. [Gzip Compression](#gzip-compression)
-   b. [OpenSSL Encryption](#openssl-encryption)
+   <p>b. [OpenSSL Encryption](#openssl-encryption)</p>
 2. [Anti-Forensics Techniques](#anti-forensics-techniques)<br>
    a. [Securely Wipe Free Space](#securely-wipe-free-space)
 3. [Data Obfuscation](#data-obfuscation)
