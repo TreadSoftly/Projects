@@ -14,10 +14,11 @@ This repository contains examples of advanced techniques in C++ related to compr
 3. [Data Obfuscation](#data-obfuscation)
 <br>
 <br>
-```
-## 1. Compression and Encryption Techniques
 
-### a. Gzip Compression
+```
+1. Compression and Encryption Techniques
+
+a. Gzip Compression
 
 ```cpp
 #include <boost/iostreams/filtering_streambuf.hpp>
