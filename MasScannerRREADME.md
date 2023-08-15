@@ -21,18 +21,18 @@ This script leverages [Masscan](https://github.com/robertdavidgraham/masscan), t
 
 ## 🔧 Installation
 1. Clone this repository:
-   \```bash
+   ```
    git clone https://github.com/yourusername/masscan-script.git
    \```
 2. Make the script executable:
-   \```bash
+   ```
    chmod +x masscan-script.sh
-   \```
+   ```
 
 ## 🎮 Usage
-\```bash
+```
 ./masscan-script.sh [target] [options]
-\```
+```
 
 ### 🧩 Options
 - **-p, --port PORT_RANGE**: Set the port range to scan (default: 0-65535)
@@ -42,19 +42,19 @@ This script leverages [Masscan](https://github.com/robertdavidgraham/masscan), t
 
 ## 📖 Examples
 ### Basic Scan
-\```bash
+```
 ./masscan-script.sh example.com
-\```
+```
 
 ### Scan with Custom Port Range
-\```bash
+```
 ./masscan-script.sh example.com -p 22-443
-\```
+```
 
 ### Scan with Custom Rate and Duration
-\```bash
+```
 ./masscan-script.sh example.com -r 500 -d 10m
-\```
+```
 
 <p align="center">
   <img src="https://path/to/usage-examples.png" alt="Usage Examples"> <!-- Add a screenshot of examples -->
