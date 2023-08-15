@@ -18,8 +18,6 @@
   <a href="#installation">Installation</a> •
   <a href="#usage">Usage</a> •
   <a href="#examples">Examples</a> •
-  <a href="#contact">Contact</a> •
-  <a href="#contribute">Contribute</a>
 </p>
 
 ## 🌐 Overview
