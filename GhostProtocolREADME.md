@@ -34,6 +34,8 @@
 
 ---
 
+<br>
+
 ## <a name="integration"></a><p align="center">🖥️ Integration into `~/.bashrc` File</p>
 <div align="center">
 
