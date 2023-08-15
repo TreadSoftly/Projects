@@ -13,7 +13,7 @@ This script represents an advanced connection handling system, designed to manag
 - **Integrations:** SIEM and Machine Learning integration.
 
 
-\`\`\` 
+``` 
 # Load Configuration File JSON
 $config = ConvertFrom-Json (Get-Content -Path 'config.json')
 
@@ -30,7 +30,7 @@ function Send-EmailNotification {
     # ... (Code continues)
 }
 
-\`\`\`
+```
 
 ## Links
 
