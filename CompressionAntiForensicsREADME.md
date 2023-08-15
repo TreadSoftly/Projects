@@ -11,6 +11,7 @@ This repository contains examples of advanced techniques in C++ related to compr
    a. [Securely Wipe Free Space](#securely-wipe-free-space)
 3. [Data Obfuscation](#data-obfuscation)
 
+```
 ## 1. Compression and Encryption Techniques
 
 ### a. Gzip Compression
@@ -64,8 +65,3 @@ void obfuscate_data(const std::string& input_file, const std::string& output_fil
     // ... XOR obfuscation process
 }
 This code snippet demonstrates a simple XOR obfuscation technique applied to a file. It reads the content of the input file and performs an XOR operation with a given key on each byte. The obfuscated data is then written to the output file.
-
-Conclusion
-This repository offers practical insights into various advanced C++ techniques that can be beneficial for developers working in fields such as security, data processing, and more.
-
-Feel free to explore, contribute, or raise issues!
