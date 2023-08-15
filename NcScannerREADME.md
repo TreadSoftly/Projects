@@ -29,16 +29,16 @@
 ## 🛠 Installation
 To run this script, ensure you have Netcat installed on your system. Clone the repository and make the script executable:
 
-\```bash
+```
 git clone https://github.com/yourusername/nc_iSpy.git
 cd nc_iSpy
 chmod +x nc_iSpy.sh
-\```
+```
 
 ## 🎮 Usage
-\```bash
+```
 ./nc_iSpy.sh [options] TARGET
-\```
+```
 
 ### 🧩 Options
 - **-h, --help**: Display the help message
@@ -47,26 +47,16 @@ chmod +x nc_iSpy.sh
 
 ## 📖 Examples
 ### Standard Scan
-\```bash
+```
 ./nc_iSpy.sh example.com
-\```
+```
 
 ### Custom Port Range
-\```bash
+```
 ./nc_iSpy.sh -p 80-443 example.com
-\```
+```
 
 ### Custom Output Directory
-\```bash
+```
 ./nc_iSpy.sh -o ~/my_scans example.com
-\```
-
-## 📜 License
-Licensed under the MIT License. See the [LICENSE.md](LICENSE.md) file for details.
-
-## 📞 Contact
-For inquiries, collaboration, or support, please reach out to me at [your-email@example.com](mailto:your-email@example.com).
-
-<p align="center">
-  <em>Building bridges through code. Committed to excellence.</em>
-</p>
+```
