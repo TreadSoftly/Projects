@@ -42,10 +42,9 @@ This report presents a comprehensive analysis of the [HESA Shahed 136](https://e
    2. [Impact](#impact)
 8. [Conclusion](#conclusion)
 </p>
+<br>
 
 ---
-
-
 
 ### 1. Introduction
 <a href="https://en.wikipedia.org/wiki/HESA_Shahed_136"><img src="https://img.shields.io/badge/Wikipedia-HESA_Shahed_136-blue?style=for-the-badge"></a>
@@ -75,6 +74,8 @@ The [HESA Shahed 136](https://www.militaryfactory.com/aircraft/detail.php?aircra
 protection against unauthorized drone activities.
 <br>
 
+---
+
 ### 2. American Components
 
 #### **American Chips by Texas Instruments**
@@ -89,6 +90,7 @@ protection against unauthorized drone activities.
 3. **Technology Analysis:** Conduct reverse engineering to identify vulnerabilities.
 
 ---
+
 <br>
 
 ### 3. GPS Guidance System
@@ -121,12 +123,15 @@ protection against unauthorized drone activities.
 3. **Real-time Monitoring:** Implement systems to detect and respond to drone signals.
 
 ---
+
 <br>
 
 ### 5. Microcontroller Specifications
 
 #### **TMS320F2833x, TMS320F2823x Real-Time Microcontrollers**
 <br>
+
+---
 
 ### 6. Microcontroller Specifications
 
@@ -148,6 +153,8 @@ The microcontroller specifications detail the core computing components that ena
 
 <br>
 
+---
+
 ### 7. Russian Upgrades
 The section on Russian upgrades explores the collaboration between Iran and Russia in enhancing the Shahed 136. It provides insights into the technological advancements, impact on capabilities, and strategic relevance in the region.
 
@@ -159,6 +166,8 @@ The section on Russian upgrades explores the collaboration between Iran and Russ
 - **Enhanced Capabilities:** Upgrades have led to more destructive power and increased range, making the drone a formidable asset in military operations.
 - **Strategic Relevance:** Understanding the upgrades and their impact provides critical insights into regional stability and potential counter-strategies.
 <br>
+
+---
 
 ### 8. Conclusion
 The investigation into the HESA Shahed 136 has provided actionable insights into its construction, capabilities, and weaknesses. By employing the advised countermeasures, effective strategies against this drone technology can be developed, contributing to national and international security efforts.
