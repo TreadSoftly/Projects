@@ -100,15 +100,12 @@ func_anti_forensics
 
 ---
 
-## <a name="contributing"></a><p align="center">4. Contributing</p>
-
-Feel free to contribute to this project by submitting pull requests or opening issues on the GitHub page.
-
 ---
 
 ## <a name="advanced-functions"></a> Advanced Functions
 
 ### 📝 Logging Mechanism
+
 <div align="center">
 
 **What it does:** Tailors logs with levels like DEBUG, INFO, WARN, ERROR, FATAL 📜
