@@ -31,9 +31,9 @@ This script leverages [Masscan](https://github.com/robertdavidgraham/masscan), t
 
 ## 🎮 Usage
 1. Option flags:
-```
-./masscan-script.sh [target] [options]
-```
+  ```
+  ./masscan-script.sh [target] [options]
+  ```
 
 ### 🧩 Options
 - **-p, --port PORT_RANGE**: Set the port range to scan (default: 0-65535)
