@@ -44,24 +44,24 @@ Meet your new best friend in data validation—the Targeting Function Toolkit. C
 <div align="center">
 
 1. **Clone the Repository:**
-   \```bash
+   ```
    git clone https://github.com/yourusername/targeting-function.git
-   \```
+   ```
 
 2. **Navigate to the Directory:**
-   \```bash
+   ```
    cd targeting-function
-   \```
+   ```
 
 3. **Install Requirements:**
-   \```bash
+   ```
    pip install -r requirements.txt
-   \```
+   ```
 
 4. **Run the Script:**
-   \```bash
+   ```
    python target.py
-   \```
+   ```
 
 </div>
 
@@ -73,20 +73,20 @@ Meet your new best friend in data validation—the Targeting Function Toolkit. C
 
 Run the script directly from the command line and follow the prompt:
 
-\```bash
+```
 python target.py
-\```
+```
 
 ### Integrating with Python Script
 
 Import the `target_input_type` function into your Python script:
 
-\```python
+```
 from target import target_input_type
 
 target = target_input_type("192.168.1.1")
 print(f"Target type: {target}")
-\```
+```
 
 </div>
 
@@ -96,17 +96,17 @@ print(f"Target type: {target}")
 
 ### Validating an IP Address
 
-\```python
+```
 target = target_input_type("192.168.1.1")
 print(f"Target type: {target}") # Output: ip
-\```
+```
 
 ### Checking a Domain
 
-\```python
+```
 target = target_input_type("example.com")
 print(f"Target type: {target}") # Output: domain
-\```
+```
 
 ... [More Examples](EXAMPLES.md)
 
@@ -123,19 +123,12 @@ print(f"Target type: {target}") # Output: domain
 
 </div>
 
-## <p align="center">🤝 Contributing</p>
-
-<div align="center">
-
-Feel free to contribute to this exciting project. [Here's how you can help](CONTRIBUTING.md).
-
-</div>
-
 
 ## <p align="center">📚 Appendix</p>
 
 <div align="center">
 
+# PLACE HOLDER TO TEST OUT BUILDING ADDED LIBRARIES AND APPENDIX ETC..
 Check out the [Appendix](APPENDIX.md) for more details on regular expressions used, additional examples, and advanced configurations.
 
 </div>
