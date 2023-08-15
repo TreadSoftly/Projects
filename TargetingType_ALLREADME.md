@@ -13,9 +13,7 @@ _The Targeting Function Toolkit offers precision and intelligence in identifying
 4. [Usage](#-usage)
 5. [Examples](#-examples)
 6. [API Reference](#-api-reference)
-7. [Contributing](#-contribution)
-8. [License](#-license)
-9. [Appendix](#-appendix)
+
 
 </div>
 
