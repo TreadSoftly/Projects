@@ -61,7 +61,7 @@
 
 
 <h3 align="center">
-  <a href="https://github.com/TreadSoftly/Projects" style="text-decoration: none; color: black;">Connect with me: 🤝</a>
+  <a href="https://www.linkedin.com/in/raydraleaus/" style="text-decoration: none; color: black;">Connect with me: 🤝</a>
 </h3>
 
 <p align="center">
