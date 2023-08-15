@@ -47,7 +47,7 @@
 
 3. **Type the command to run the function:**
    ```
-   Type command 'asdf'
+   'asdf'
    ```
 
 </div>
@@ -59,7 +59,7 @@
 You can run the main function using the following command:
 
 ```
-bash asdf.sh
+asdf.sh
 ```
 
 This will initiate various functionalities including:
