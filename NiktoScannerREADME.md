@@ -34,16 +34,16 @@
 ## 📦 Installation
 Ensure you have Nikto installed on your system. Clone the repository and make the script executable:
 
-\```bash
+```
 git clone https://github.com/yourusername/LEVERAGE.git
 cd LEVERAGE
 chmod +x LEVERAGE.sh
-\```
+```
 
 ## 🎲 Usage
-\```bash
+```
 ./LEVERAGE.sh [options] <target>
-\```
+```
 
 ### Options
 - **-p, --port <port>**: Specify the port (default: 80)
@@ -51,21 +51,11 @@ chmod +x LEVERAGE.sh
 
 ## 🎓 Examples
 ### Scan Default Port
-\```bash
+```
 ./LEVERAGE.sh example.com
-\```
+```
 
 ### Scan Custom Port
-\```bash
+```
 ./LEVERAGE.sh -p 8080 example.com
-\```
-
-## 📞 Contact
-Reach out for inquiries, collaboration, or support: [your-email@example.com](mailto:your-email@example.com).
-
-## 🤝 Contribute
-Contributions are welcomed! Feel free to fork, enhance, and submit pull requests. Together, we can shape the future of web security scanning.
-
-<p align="center">
-  <em>Designed with ❤️ by [Your Name], where innovation meets excellence.</em>
-</p>
+```
