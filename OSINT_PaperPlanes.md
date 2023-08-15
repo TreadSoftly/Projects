@@ -90,6 +90,7 @@ protection against unauthorized drone activities.
 
 ---
 <br>
+
 ### 3. GPS Guidance System
 
 #### **GPS Signal Prevention System**
@@ -106,6 +107,7 @@ protection against unauthorized drone activities.
 ---
 
 ### 4. Signal Analysis and Countermeasures
+
 #### **Signal Analysis Tools**
 
 - **HackRF One:** Popular SDR platform for frequency analysis.
@@ -113,6 +115,7 @@ protection against unauthorized drone activities.
 - **Universal Software Radio Peripheral (USRP):** Analyzes and decodes communication protocols.
 
 #### **Advice on Countermeasures**
+
 1. **Frequency Jamming:** Utilize SDR tools to disrupt communication.
 2. **Protocol Analysis:** Identify and target specific communication protocols.
 3. **Real-time Monitoring:** Implement systems to detect and respond to drone signals.
@@ -121,22 +124,28 @@ protection against unauthorized drone activities.
 <br>
 
 ### 5. Microcontroller Specifications
+
 #### **TMS320F2833x, TMS320F2823x Real-Time Microcontrollers**
 <br>
 
 ### 6. Microcontroller Specifications
+
 ![PaperAirPlaneSpecs](https://github.com/TreadSoftly/Projects/assets/121847455/7670c9cd-05c9-4654-8a13-c1eeca60f010)
 
 The microcontroller specifications detail the core computing components that enable the drone's functionality. This insight into the hardware provides a better understanding of the drone's capabilities and potential weaknesses.
 <br>
+
 #### 6a. Details
+
 - **TMS320F2833x, TMS320F2823x Real-Time Microcontrollers**: These microcontrollers are part of the digital signal processor (DSP) family, capable of rapid signal processing required for real-time control.
 - ‘Ts320F28234, ‘TMS320F 26332, TMS320F28235, TMS320F28235.01  
 - 1, TMS320F 26232, TMS320F28232-01  
 - 'SPis4390 = JUNE 2007 ~ REVISED AUGUST 3022    
 
 #### 6b. Specifications
+
 - [Detailed Specifications](https://www.ti.com/lit/ds/symlink/tms320f28335.pdf): These specifications offer insights into the processing power, architecture, and capabilities of the microcontrollers, essential for understanding the drone's performance and potential vulnerabilities.
+
 <br>
 
 ### 7. Russian Upgrades
