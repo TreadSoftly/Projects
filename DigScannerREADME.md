@@ -62,12 +62,6 @@ chmod +x dig_iSpy.sh
 ## 🤝 Contributing
 If you'd like to contribute, please fork the repository and make changes as you'd like. Pull requests are warmly welcomed.
 
-## 📜 License
-This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details.
-
-## 📞 Contact
-For any inquiries or support, please contact the maintainer at [your-email@example.com](mailto:your-email@example.com).
-
 ## 📜 SPECIFICALLY FOR THIS SCRIPT
 ![image](https://github.com/TreadSoftly/Projects/assets/121847455/9c14ba37-8dd6-4ae8-a452-f916e10287f7)
 <br>
