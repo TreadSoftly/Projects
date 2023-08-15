@@ -45,7 +45,6 @@ This report presents a comprehensive analysis of the [HESA Shahed 136](https://e
 
 ---
 
-![PaperAirPlaneSpecs](https://github.com/TreadSoftly/Projects/assets/121847455/7670c9cd-05c9-4654-8a13-c1eeca60f010)
 
 
 ### 1. Introduction
@@ -74,14 +73,7 @@ The [HESA Shahed 136](https://www.militaryfactory.com/aircraft/detail.php?aircra
   <!-- More badges -->
 
 protection against unauthorized drone activities.
-
-
-
-
-
-
-
-
+<br>
 
 ### 2. American Components
 
@@ -97,7 +89,7 @@ protection against unauthorized drone activities.
 3. **Technology Analysis:** Conduct reverse engineering to identify vulnerabilities.
 
 ---
-
+<br>
 ### 3. GPS Guidance System
 
 #### **GPS Signal Prevention System**
@@ -114,7 +106,6 @@ protection against unauthorized drone activities.
 ---
 
 ### 4. Signal Analysis and Countermeasures
-
 #### **Signal Analysis Tools**
 
 - **HackRF One:** Popular SDR platform for frequency analysis.
@@ -122,84 +113,48 @@ protection against unauthorized drone activities.
 - **Universal Software Radio Peripheral (USRP):** Analyzes and decodes communication protocols.
 
 #### **Advice on Countermeasures**
-
 1. **Frequency Jamming:** Utilize SDR tools to disrupt communication.
 2. **Protocol Analysis:** Identify and target specific communication protocols.
 3. **Real-time Monitoring:** Implement systems to detect and respond to drone signals.
 
 ---
+<br>
 
 ### 5. Microcontroller Specifications
-
 #### **TMS320F2833x, TMS320F2823x Real-Time Microcontrollers**
+<br>
 
 ### 6. Microcontroller Specifications
-
-
+![PaperAirPlaneSpecs](https://github.com/TreadSoftly/Projects/assets/121847455/7670c9cd-05c9-4654-8a13-c1eeca60f010)
 
 The microcontroller specifications detail the core computing components that enable the drone's functionality. This insight into the hardware provides a better understanding of the drone's capabilities and potential weaknesses.
-
-
-
-
-
-
-
-
-
+<br>
 #### 6a. Details
-
-
-
 - **TMS320F2833x, TMS320F2823x Real-Time Microcontrollers**: These microcontrollers are part of the digital signal processor (DSP) family, capable of rapid signal processing required for real-time control.
 - ‘Ts320F28234, ‘TMS320F 26332, TMS320F28235, TMS320F28235.01  
 - 1, TMS320F 26232, TMS320F28232-01  
 - 'SPis4390 = JUNE 2007 ~ REVISED AUGUST 3022    
 
-
-
 #### 6b. Specifications
-
-
-
 - [Detailed Specifications](https://www.ti.com/lit/ds/symlink/tms320f28335.pdf): These specifications offer insights into the processing power, architecture, and capabilities of the microcontrollers, essential for understanding the drone's performance and potential vulnerabilities.
-
-
+<br>
 
 ### 7. Russian Upgrades
-
-
-
 The section on Russian upgrades explores the collaboration between Iran and Russia in enhancing the Shahed 136. It provides insights into the technological advancements, impact on capabilities, and strategic relevance in the region.
 
-
-
 #### 7a. Upgrades
-
-
-
 - **Collaboration with Russia:** As reported by [Eurasian Times](https://www.eurasiantimes.com/hitting-bulls-eye-russia-has-upgraded-iranian-shahed-136-kamikaze/)
 - **Technical Profile:** Information found on [RUSI](https://rusi.org/explore-our-research/publications/commentary/russias-iranian-made-uavs-technical-profile) reveals the nature of the upgrades, their impact on performance, and potential implications on regional security.
 
-
-
 #### 7b. Impact
-
-
-
 - **Enhanced Capabilities:** Upgrades have led to more destructive power and increased range, making the drone a formidable asset in military operations.
 - **Strategic Relevance:** Understanding the upgrades and their impact provides critical insights into regional stability and potential counter-strategies.
-
-
+<br>
 
 ### 8. Conclusion
-
-
-
 The investigation into the HESA Shahed 136 has provided actionable insights into its construction, capabilities, and weaknesses. By employing the advised countermeasures, effective strategies against this drone technology can be developed, contributing to national and international security efforts.
 
 ![HESA](https://github.com/TreadSoftly/Projects/assets/121847455/19c8ab35-d1bd-4afe-86ff-3dc1aadd4ca6)
-
 
 ---
 
