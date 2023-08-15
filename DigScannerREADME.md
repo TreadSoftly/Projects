@@ -21,8 +21,6 @@
 - [Overview](#overview)
 - [Installation](#installation)
 - [Usage](#usage)
-- [Contributing](#contributing)
-- [License](#license)
 
 ## 📋 Overview
 `dig_iSpy` is a powerful shell script designed for DNS enumeration, leveraging `dig` and other compression tools. It provides extensive flexibility with customizable timeouts and retry attempts. Get insights into your target's DNS setup with ease and save the results in multiple compressed formats!
