@@ -2,9 +2,6 @@
 
 [Imgur](https://i.imgur.com/0htkfbS.mp4) Finished Setup Video. Pull video and image to github later
 
-[Imgur](https://i.imgur.com/fwqg0BE.mp4) Finished Office Study Video. Pull video and image to github later
-
-![BattleStation](https://github.com/TreadSoftly/Projects/assets/121847455/d6710ff7-9cec-40f6-808a-c30537fb81de)
 <br>
 <br>
 ![Before](https://github.com/TreadSoftly/Projects/assets/121847455/432e42b7-ee91-4486-858b-ac4cce70bf6a)
