@@ -193,11 +193,7 @@ func_anti_forensics
 ## <a name="conclusion"></a><p align="center">🎓 Conclusion</p>
 <div align="center">
 
-This script is more than a toolkit; it's a lifeline for security pros, sysadmins, ethical hackers, and privacy enthusiasts. It's crafted with attention and a flair for making complex tasks more automated at the fundamental levels. Use it, customize it, break it. 🚀
-
-</div>
-
-## <a name="appendix"></a>🌐 Advanced Network Security Script
+This script is a toolkit for security pros, sysadmins, ethical hackers, and privacy enthusiasts. It's crafted with attention for making complex tasks more automated at the fundamental levels. Use it, customize it, break it. 🚀
 
 </div>
 
