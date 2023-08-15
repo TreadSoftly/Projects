@@ -30,6 +30,7 @@ This script leverages [Masscan](https://github.com/robertdavidgraham/masscan), t
    ```
 
 ## 🎮 Usage
+1. Option flags:
 ```
 ./masscan-script.sh [target] [options]
 ```
