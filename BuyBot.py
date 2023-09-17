@@ -521,8 +521,6 @@ def dispatch_tasks():
 # Modify your existing logging setup
 logger.addHandler(logging.handlers.TimedRotatingFileHandler('auto_scaling.log', when="midnight", interval=1, backupCount=10))
 
-
-
 from time import sleep
 adaptive_sleep_time = 1  # in seconds
 MIN_SLEEP_TIME = 0.5  # The minimum time to sleep in seconds
@@ -567,8 +565,6 @@ def make_purchase(product_id):
 
         # Increase adaptive_sleep_time due to failed request
         adaptive_sleep_time = min(MAX_SLEEP_TIME, adaptive_sleep_time * FAILURE_INCREASE_FACTOR)
-
-
 
 # Simulated geographic locations of the servers (latitude, longitude)
 geo_locations = {
