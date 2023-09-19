@@ -110,6 +110,11 @@ class User(UserMixin):
 def load_user(user_id):
     return User(user_id)
 
+
+
+
+########################################################################## FIX AND MERGE OR SEPERATE audit trail and failover purchase ###################################################################
+########################################################################## FIX AND MERGE OR SEPERATE audit trail and failover purchase ###################################################################
 # Create Audit Trail
 @app.task
 def create_audit_trail(action, status, user_id=None, extra_info=None):
@@ -122,11 +127,6 @@ def create_audit_trail(action, status, user_id=None, extra_info=None):
     }
     mongo_db['audit_trails'].insert_one(audit_data)
 
-
-
-
-########################################################################## FIX AND MERGE OR SEPERATE audit trail and failover purchase ###################################################################
-########################################################################## FIX AND MERGE OR SEPERATE audit trail and failover purchase ###################################################################
 # Make Purchase with Failover and Audit Trail
 @app.task
 def make_purchase_with_failover(product_id):
