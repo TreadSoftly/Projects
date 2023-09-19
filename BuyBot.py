@@ -111,10 +111,6 @@ def load_user(user_id):
     return User(user_id)
 
 
-
-
-########################################################################## FIX AND MERGE OR SEPERATE audit trail and failover purchase ###################################################################
-########################################################################## FIX AND MERGE OR SEPERATE audit trail and failover purchase ###################################################################
 # Create Audit Trail
 @app.task
 def create_audit_trail(action, status, user_id=None, extra_info=None):
@@ -127,47 +123,43 @@ def create_audit_trail(action, status, user_id=None, extra_info=None):
     }
     mongo_db['audit_trails'].insert_one(audit_data)
 
-# Make Purchase with Failover and Audit Trail
+# Additional function for processing decision and updating analytics
+def process_decision_and_update_analytics(product_id, features):
+    decision = get_decision(features)
+    status = 'success' if decision > 0.5 else 'fail'
+    with threading.Lock():  # Ensuring thread safety for analytics_data
+        analytics_data[status] += 1
+    create_audit_trail.apply_async(args=["make_purchase", status, None, {"product_id": product_id, "decision": decision}])
+
+# Modified create_audit_trail function with added validation (if needed)
+@app.task
+def create_audit_trail(action, status, user_id=None, extra_info=None):
+    audit_data = {
+        "timestamp": datetime.utcnow().strftime('%Y-%m-%dT%H:%M:%S.%f')[:-3] + 'Z',
+        "action": action,
+        "status": status,
+        "user_id": user_id,
+        "extra_info": extra_info
+    }
+    # Additional validation or logging can be added here
+    mongo_db['audit_trails'].insert_one(audit_data)
+
+# Modified make_purchase_with_failover function
 @app.task
 def make_purchase_with_failover(product_id):
     try:
         response = requests.get(f'https://api.example.com/products/{mask_data(str(product_id))}')
         response.raise_for_status()
         features = [1, 2, 3, 4]
-    except RequestException:
+    except RequestException as e:
         features = api_failover(product_id) or [None, None, None, None]
-
+    
     if not all(features):
-        analytics_data['fail'] += 1
+        with threading.Lock():  # Ensuring thread safety for analytics_data
+            analytics_data['fail'] += 1
         return
 
-    decision = get_decision(features)
-    analytics_data['success' if decision > 0.5 else 'fail'] += 1
-
-#CODE BLOCK 1
-########################################################################## THESE TWO CODE BLOCKES NEED TO BE FIXED AND MERGE OR SEPERATED ###################################################################
-#CODE BLOCK 2
-
-
-decision = get_decision([1, 2, 3, 4])  # Replace with actual features
-    status = 'success' if decision > 0.5 else 'fail'
-    analytics_data[status] += 1
-    create_audit_trail.apply_async(args=["make_purchase", status, None, {"product_id": product_id, "decision": decision}])
-
-# Flask Endpoint for Audit Trails
-@flask_app.route('/audit_trails', methods=['GET'])
-@login_required
-def get_audit_trails():
-    audit_trails = list(mongo_db['audit_trails'].find({}))
-    return jsonify(audit_trails), 200
-
-# Run Flask App
-if __name__ == '__main__':
-    flask_app.run(host='0.0.0.0', port=5000)
-########################################################################## FIX AND MERGE OR SEPERATE audit trail and failover purchase ###################################################################
-########################################################################## FIX AND MERGE OR SEPERATE audit trail and failover purchase ###################################################################
-
-
+    process_decision_and_update_analytics(product_id, features)  # Calling the new function
 
 
 class User(UserMixin):
