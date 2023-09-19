@@ -144,9 +144,9 @@ def make_purchase_with_failover(product_id):
     decision = get_decision(features)
     analytics_data['success' if decision > 0.5 else 'fail'] += 1
 
-
-########################################################################## FIX AND MERGE OR SEPERATE audit trail and failover purchase ###################################################################
-
+#CODE BLOCK 1
+########################################################################## THESE TWO CODE BLOCKES NEED TO BE FIXED AND MERGE OR SEPERATED ###################################################################
+#CODE BLOCK 2
 
 
 decision = get_decision([1, 2, 3, 4])  # Replace with actual features
