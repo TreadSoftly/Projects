@@ -592,6 +592,10 @@ def health_endpoint():
     status = health_check()
     return jsonify(status), 200 if all(status.values()) else 500
 
+
+
+
+############################################################### IS THIS DUPLICATE? OR SPECIFIC TO THIS SECTION? ###################################################################################
 # Audit Trail
 def create_audit_trail(action, status, user_id=None, extra_info=None):
     audit_data = {
@@ -609,6 +613,10 @@ def create_audit_trail(action, status, user_id=None, extra_info=None):
 def get_audit_trails():
     audits = list(mongo_db['audit_trails'].find({}))
     return jsonify(audits), 200
+############################################################### IS THIS DUPLICATE? OR SPECIFIC TO THIS SECTION? ###################################################################################
+
+
+
 
 # Collect User Feedback
 @flask_app.route('/collect_feedback', methods=['POST'])
@@ -690,7 +698,11 @@ def make_purchase(product_id):
 def make_purchase_geo(product_id, user_geo_location=user_location):
     closest_server = min(geo_locations, key=lambda x: ((user_geo_location[0] - geo_locations[x][0]) ** 2 + (user_geo_location[1] - geo_locations[x][1]) ** 2) ** 0.5)
     # Your existing task logic here, taking into account the closest server
-    
+
+
+
+
+############################################################### IS THIS DUPLICATE? OR SPECIFIC TO THIS SECTION? ###################################################################################
 # Audit Trail Functionality
 @app.task
 def create_audit_trail(action, status, user_id=None, extra_info=None):
@@ -709,6 +721,10 @@ def create_audit_trail(action, status, user_id=None, extra_info=None):
 def get_audit_trails():
     audits = list(mongo_db['audit_trails'].find({}))
     return jsonify(audits)
+############################################################### IS THIS DUPLICATE? OR SPECIFIC TO THIS SECTION? ###################################################################################
+
+
+
 
 # User Feedback Collection and Model Retraining
 @app.task
