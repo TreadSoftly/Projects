@@ -241,7 +241,7 @@ Whether a seasoned pro or an aspiring ethical hacker, this rig's blend of **powe
 <br>
 
 <h2 align="center">
-    🛠️ <a href="https://www.amazon.com/CanaKit-Raspberry-Pi-Extreme-Kit/dp/B08NZ4JK26/ref=sr_1_4?crid=2Q6WG7YOFAP7V&keywords=raspberry+pi+kit+4+8gb&qid=1691532441&sprefix=raspberry+pi+kit+4+8gb%2Caps%2C71&sr=8-4&ufe=app_do%3Aamzn1.fos.18ed3cb5-28d5-4975-8bc7-93deae8f9840">CanaKit Raspberry Pi 4 Extreme Kit</a>
+    🛠️ <a href="https://amzn.to/49JjqkW">CanaKit Raspberry Pi 4 Extreme Kit from Amazon</a>
 </h2>
 <p align="center">
     Comprehensive kit for Raspberry Pi 4 that contains essential components for building a Raspberry Pi system.
