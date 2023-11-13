@@ -233,7 +233,7 @@ Whether a seasoned pro or an aspiring ethical hacker, this rig's blend of **powe
 
 <p align="center" style="color: #007BFF; margin-bottom: 20px;">
     <img src="https://github.com/TreadSoftly/Projects/assets/121847455/2c6bace9-61b3-4aa3-afde-4adb7ef7897a" width="160" height="120" alt="">
-    <strong><a href="https://secure.newegg.com/wishlist/md/42242292" style="text-decoration: none; color: inherit;">Click on the product names to view or purchase the items!</a></strong><img src="https://github.com/TreadSoftly/Projects/assets/121847455/3762cf32-fe14-446a-8b58-f04f73fa7304" width="100" height="100" alt="">
+    <strong><a href="https://secure.newegg.com/wishlist/md/42242292" style="text-decoration: none; color: inherit;">Click on the product's Amazon Affiliated Links to view more details or purchase the items!</a></strong><img src="https://github.com/TreadSoftly/Projects/assets/121847455/3762cf32-fe14-446a-8b58-f04f73fa7304" width="100" height="100" alt="">
 </p>
 
 
@@ -241,7 +241,7 @@ Whether a seasoned pro or an aspiring ethical hacker, this rig's blend of **powe
 <br>
 
 <h2 align="center">
-    🛠️ <a href="https://amzn.to/49JjqkW">CanaKit Raspberry Pi 4 Extreme Kit from Amazon</a>
+    🛠️ <a href="https://amzn.to/49JjqkW">CanaKit Raspberry Pi 4 Extreme Kit</a>
 </h2>
 <p align="center">
     Comprehensive kit for Raspberry Pi 4 that contains essential components for building a Raspberry Pi system.
@@ -252,7 +252,7 @@ Whether a seasoned pro or an aspiring ethical hacker, this rig's blend of **powe
 <br>
 
 <h2 align="center">
-    🌍 <a href="https://www.amazon.com/gp/product/B004Y6MIXS/ref=ppx_yo_dt_b_asin_title_o05_s00?ie=UTF8&psc=1">Alfa AWUS036NHA</a>
+    🌍 <a href="https://amzn.to/3suEURB">Alfa AWUS036NHA</a>
 </h2>
 <p align="center">
     A long-range wireless USB adaptor that enhances network connectivity for the Raspberry Pi, vital for tasks that require strong and stable internet access.
@@ -263,7 +263,7 @@ Whether a seasoned pro or an aspiring ethical hacker, this rig's blend of **powe
 <br>
 
 <h2 align="center">
-    🍓💽 <a href="https://www.amazon.com/gp/product/B07FCMBLV6/ref=ppx_yo_dt_b_asin_title_o09_s00?ie=UTF8&psc=1">SanDisk 64GB</a>
+    🍓💽 <a href="https://amzn.to/47smnEh">SanDisk 64GB</a>
 </h2>
 <p align="center">
     This high-speed memory card is used for data storage. It serves as the primary storage for the Kali Linux OS and other essential files, ensuring smooth OS operation and efficient data retrieval.
@@ -274,7 +274,7 @@ Whether a seasoned pro or an aspiring ethical hacker, this rig's blend of **powe
 <br>
 
 <h2 align="center">
-    ⌨️ <a href="https://www.amazon.com/iClever-Backlight-Tri-Folding-Bluetooth-Smartphones/dp/B018K5EJCQ/ref=sr_1_1_sspa?crid=CDLB4DOLQUC8&keywords=iClever+Foldable+Keyboard%2C+BK08+Bluetooth+Keyboard+with+Sensitive+Touchpad&qid=1691550656&s=electronics&sprefix=iclever+foldable+keyboard%2C+bk08+bluetooth+keyboard+with+sensitive+touchpad%2Celectronics%2C80&sr=1-1-spons&ufe=app_do%3Aamzn1.fos.18ed3cb5-28d5-4975-8bc7-93deae8f9840&sp_csd=d2lkZ2V0TmFtZT1zcF9hdGY&psc=1">Foldable Bluetooth Keyboard</a>
+    ⌨️ <a href="https://amzn.to/47xb9P9">Foldable Bluetooth Keyboard</a>
 </h2>
 <p align="center">
     A portable Bluetooth-enabled keyboard with a touchpad mouse that acts as the input device for the Raspberry Pi setup, offering convenience for on-the-go use and compact storage.
@@ -286,7 +286,7 @@ Whether a seasoned pro or an aspiring ethical hacker, this rig's blend of **powe
 
 
 <h2 align="center">
-    🖥️ <a href="https://www.amazon.com/gp/product/B0153R2A9I/ref=ppx_yo_dt_b_asin_title_o09_s00?ie=UTF8&psc=1">Raspberry Pi 7" Display</a>
+    🖥️ <a href="https://amzn.to/49uAs61">Raspberry Pi 7" Display</a>
 </h2>
 <p align="center">
     A 7-inch touchscreen that serves as the primary display, allowing touch input and enhancing user interaction with the system.
@@ -297,7 +297,7 @@ Whether a seasoned pro or an aspiring ethical hacker, this rig's blend of **powe
 <br>
 
 <h2 align="center">
-    🌐 <a href="https://www.amazon.com/gp/product/B01HGHV98G/ref=ppx_yo_dt_b_asin_title_o02_s00?ie=UTF8&psc=1">iSeekerKit Short Micro USB Cable</a>
+    🌐 <a href="https://amzn.to/3MEXNYR">iSeekerKit Short Micro USB Cable</a>
 </h2>
 <p align="center">
     Durable and fast USB charging cable used for charging and power supply for Raspberry Pi and accessories.
@@ -308,7 +308,7 @@ Whether a seasoned pro or an aspiring ethical hacker, this rig's blend of **powe
 <br>
 
 <h2 align="center">
-    🏠 <a href="https://www.amazon.com/SmartiPi-Touch-Official-Raspberry-Touchscreen/dp/B07WXK38YM/ref=sr_1_1?crid=78I6U1VTVH50&keywords=SmartiPi+Touch+1+-+Case+for+The+Official+Raspberry+Pi+7%22+Touchscreen+Display+-+Adjustable+Angle&qid=1691532095&s=electronics&sprefix=smartipi+touch+1+-+case+for+the+official+raspberry+pi+7+touchscreen+display+-+adjustable+angle%2Celectronics%2C64&sr=1-1">SmartiPi Touch 1</a>
+    🏠 <a href="https://amzn.to/3SCX1j6">SmartiPi Touch 1</a>
 </h2>
 <p align="center">
     Adjustable case for Raspberry Pi touchscreen that offers protection and adjustable viewing angles.
@@ -319,7 +319,7 @@ Whether a seasoned pro or an aspiring ethical hacker, this rig's blend of **powe
 <br>
 
 <h2 align="center">
-    🔋 <a href="https://www.amazon.com/gp/product/B00ME3ZH7C/ref=ppx_yo_dt_b_asin_title_o03_s01?ie=UTF8&psc=1">Talentcell Rechargeable 12V/5V Battery Pack</a>
+    🔋 <a href="https://amzn.to/3SE8e2O">Talentcell Rechargeable 12V/5V Battery Pack</a>
 </h2>
 <p align="center">
     Rechargeable battery pack that provides portable power to the Raspberry Pi setup.
@@ -330,7 +330,7 @@ Whether a seasoned pro or an aspiring ethical hacker, this rig's blend of **powe
 <br>
 
 <h2 align="center">
-    📡 <a href="https://www.amazon.com/gp/product/B00NVG5YZG/ref=ppx_yo_dt_b_asin_title_o04_s00?ie=UTF8&psc=1">TECHTOO 9dBi Omni WiFi Antenna</a>
+    📡 <a href="https://amzn.to/46djJl5">TECHTOO 9dBi Omni WiFi Antenna</a>
 </h2>
 <p align="center">
     High-gain WiFi antenna that enhances wireless connectivity for the Raspberry Pi.
@@ -341,7 +341,7 @@ Whether a seasoned pro or an aspiring ethical hacker, this rig's blend of **powe
 <br>
 
 <h2 align="center">
-    📺 <a href="https://www.amazon.com/dp/B09QG349ZL/ref=emc_b_5_i">ElectroCookie Raspberry Pi 4 Case</a>
+    📺 <a href="https://amzn.to/49vFAqF">ElectroCookie Raspberry Pi 4 Case</a>
 </h2>
 <p align="center">
     Mini tower case with cooling and ambient light that houses and cools the Raspberry Pi with aesthetic lighting.
