@@ -59,3 +59,48 @@ SAMSUNG 980 PRO SSD 1TB, PCIe 4.0 M.2 2280, Speeds Up-to 7,000MB/s Best for High
 ASUS ROG STRIX 850G 850W Gold Power Supply, ROG Heatsinks, Axial-tech Fan Design, Dual Ball Fan Bearings, 0dB Technology, 80 PLUS Gold Certification, Fully Modular Cables, 10-Year Warranty - https://amzn.to/3ugSQiU
 
 CORSAIR Vengeance 32GB (2 x 16GB) 288-Pin PC RAM DDR5 4800 (PC5 38400) Desktop Memory Model CMK32GX5M2A4800C40 - https://amzn.to/3QxfVVX
+
+ikuai USB 3.0 Switch Selector for 2 Computer Sharing 4 USB Device + 1 Audio Output, One-Button Control Aluminum Switcher Box for Printer Keyboard Mouse Headset PC Peripherals with 2 Pack USB Cables - https://amzn.to/3QW2TT9
+
+High-Speed USB3.0 WiFi Adapter Extension Cable with Pedestal- Desktop Vertical Base Extension Cable Cradle 3.0 USB Base Dock Holder for USB WiFi Adapter,Wireless Network Adapter,Wi-Fi Antenna - https://amzn.to/478hhgZ
+
+Panda Wireless PAU09 N600 Dual Band (2.4GHz and 5GHz) Wireless N USB Adapter W/Dual 5dBi Antennas - Windows XP/Vista/7/8/8.1/10/11, Mint, Ubuntu, openSUSE, Fedora, Centos, Kali Linux and Raspbian - https://amzn.to/3SHgG1d
+
+Tounee Book Stand for Reading, Adjustable Book Holder with 360° Swivel Base, Foldable Cookbook Stand Recipe Book Holder with Elastic Page Clips for Music Scores, Recipe, Tablet, Laptop, Textbook - https://amzn.to/3Qv3IB0
+
+Mount-It! Laptop Desk Arm | Swivel Laptop Stand with Gas Spring Arm | Height Adjustable Laptop Arm Mount for MacBook, Dell, HP & 11-17 Inch Laptops - https://amzn.to/3FWHOSo
+
+2.4Ghz 5GHz 5.8G Omnidirectional Small WiFi Bluetooth Mini RP SMA Antenna Dual Band Antenna for Router, WiFi Booster, PC USB Adapter Security IP Camera Video Surveillance Monitor FPV TX Transmitter - https://amzn.to/46aoITA
+
+Eightwood 2.4GHz 5GHz 5.8GHz Dual Band WiFi Antenna 5dBi RP-SMA Antenna (2-Pack) for PC Desktop, WiFi Router, PCIe Network Card, USB Adapter, Wireless Range Extender, IP Camera - https://amzn.to/3u8JntL
+
+10dbi 2X High Gain Dual Band MIMO Wi-Fi 6E Omni Directional 802.11ax RP-SMA Male Antenna with Strong Magnetic Base for PC Desktop Computer PCI PCIe WiFi Bluetooth Card Wireless WiFi 6E Network Router - https://amzn.to/3FWE5UJ
+
+
+
+
+
+
+FOR THE LAPTOP:
+ASUS ROG Strix Scar 15 Gaming Laptop, 15.6” 240Hz IPS QHD Display, NVIDIA GeForce RTX 3070 Ti, Intel Core i9 12900H, 16GB DDR5, 1TB SSD, Per-Key RGB Keyboard, Windows 11 Home, G533ZW-AS94Q,Black - https://amzn.to/3ugTyg4
+
+Crucial RAM 64GB Kit (2x32GB) DDR5 4800MT/s CL40 Laptop Memory CT2K32G48C40S5 - https://amzn.to/479VVzI
+
+High-Speed USB3.0 WiFi Adapter Extension Cable with Pedestal- Desktop Vertical Base Extension Cable Cradle 3.0 USB Base Dock Holder for USB WiFi Adapter,Wireless Network Adapter,Wi-Fi Antenna - https://amzn.to/478hhgZ
+
+Panda Wireless PAU09 N600 Dual Band (2.4GHz and 5GHz) Wireless N USB Adapter W/Dual 5dBi Antennas - Windows XP/Vista/7/8/8.1/10/11, Mint, Ubuntu, openSUSE, Fedora, Centos, Kali Linux and Raspbian - https://amzn.to/3SHgG1d
+
+Tounee Book Stand for Reading, Adjustable Book Holder with 360° Swivel Base, Foldable Cookbook Stand Recipe Book Holder with Elastic Page Clips for Music Scores, Recipe, Tablet, Laptop, Textbook - https://amzn.to/3Qv3IB0
+
+Mount-It! Laptop Desk Arm | Swivel Laptop Stand with Gas Spring Arm | Height Adjustable Laptop Arm Mount for MacBook, Dell, HP & 11-17 Inch Laptops - https://amzn.to/3FWHOSo
+
+2.4Ghz 5GHz 5.8G Omnidirectional Small WiFi Bluetooth Mini RP SMA Antenna Dual Band Antenna for Router, WiFi Booster, PC USB Adapter Security IP Camera Video Surveillance Monitor FPV TX Transmitter - https://amzn.to/46aoITA
+
+Eightwood 2.4GHz 5GHz 5.8GHz Dual Band WiFi Antenna 5dBi RP-SMA Antenna (2-Pack) for PC Desktop, WiFi Router, PCIe Network Card, USB Adapter, Wireless Range Extender, IP Camera - https://amzn.to/3u8JntL
+
+10dbi 2X High Gain Dual Band MIMO Wi-Fi 6E Omni Directional 802.11ax RP-SMA Male Antenna with Strong Magnetic Base for PC Desktop Computer PCI PCIe WiFi Bluetooth Card Wireless WiFi 6E Network Router - https://amzn.to/3FWE5UJ
+
+AX1690i | Double Connect WiFi 6E CNVi Tri Band 2.4 | 5 | & 6GHz DCT Wireless CRF Card AX411NGW 802.11ax 2.4Gbps Bluetooth 5.2 Compatible - https://amzn.to/478pfqo
+
+Samsung 990 PRO Series - 2TB PCIe Gen4. X4 NVMe 2.0c - M.2 Internal SSD (MZ-V9P2T0B/AM) - https://amzn.to/465yyG8
+
