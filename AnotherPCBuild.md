@@ -82,6 +82,7 @@ Eightwood 2.4GHz 5GHz 5.8GHz Dual Band WiFi Antenna 5dBi RP-SMA Antenna (2-Pack)
 *************************************************************************FOR THE LAPTOP:**********************************
 *************************************************************************FOR THE LAPTOP:**********************************
 *************************************************************************FOR THE LAPTOP:**********************************
+<br>
 ASUS ROG Strix Scar 15 Gaming Laptop, 15.6” 240Hz IPS QHD Display, NVIDIA GeForce RTX 3070 Ti, Intel Core i9 12900H, 16GB DDR5, 1TB SSD, Per-Key RGB Keyboard, Windows 11 Home, G533ZW-AS94Q,Black - https://amzn.to/3ugTyg4
 
 Crucial RAM 64GB Kit (2x32GB) DDR5 4800MT/s CL40 Laptop Memory CT2K32G48C40S5 - https://amzn.to/479VVzI
