@@ -2,7 +2,7 @@
 <div align="center">
 
 ## The script does not work intentionally (I whisper to myself🥴)
-This is an anonimizer for a Linux system more specifically a Debian Kali Linux environment
+This is an anonymizer for a Linux system more specifically a Debian Kali Linux environment
 <br>
 
 
