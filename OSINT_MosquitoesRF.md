@@ -15,6 +15,8 @@ Starter Guide
 PLEASE REFERENCE RASPBERRY PI BUILD IN GITHUB REPO FOR AN INDEPTH UNDERSTANDING ON COMPONENTS AND CONFIGURATIONS
 https://github.com/TreadSoftly/Projects/blob/main/AnotherRaspberryPiBuild.md
 ![image](https://github.com/TreadSoftly/Projects/assets/121847455/bbcc2a1e-83e6-48f4-832a-141d2d3810bc)
+![image](https://github.com/TreadSoftly/Projects/assets/121847455/33ac017e-37da-41b1-afd0-c2ae6bb89930)
+
 
 
 Scrappy "cheap-ish" RaspberryPi Build based off of AeroSpace White Page 2022 report
