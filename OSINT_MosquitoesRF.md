@@ -1,52 +1,27 @@
-COUNTER RF & SIGINT AI/LM RESEARCH/LABS 
-(messy repo for now)
+# COUNTER RF & SIGINT AI/LM RESEARCH/LABS
 
+Welcome to the Counter RF & SIGINT AI/LM Research/Labs - a collaborative hub dedicated to advancing knowledge and technology in counter-drone strategies and signal intelligence (SIGINT) capabilities. Inspired by the urgent need to address the proliferation of drones and the nuisances they represent, this repository aims to be your premier destination for cutting-edge research, comprehensive guides, and practical applications in the realm of counter RF and SIGINT.
 
+## About
 
+Driven by the relentless buzz of drones overhead - reminiscent of the annoyance of mosquitoes but with far greater implications for privacy and security - we're here to develop solutions. Our mission is to dissect and counteract the frequencies and technologies that power these aerial intruders. From hobbyist drones to more advanced unmanned aerial vehicles (UAVs), our focus is on demystifying their operations and empowering the community with the knowledge and tools to counteract.
 
+## Starter Guide
 
+While currently under organization, this section aims to provide a quick launchpad for engaging with our projects and understanding the core components and configurations essential to our research. For an in-depth understanding, please refer to our comprehensive Raspberry Pi build guide, which serves as a cornerstone for many of our projects.
 
-Basically this is PaperPlanes in depth. The damned noise of the mosquito irritates me about as much as hearing those damned drones overhead when I was on patrol in country. 
-Instantly hate the sound/noise/frequencies and want to take them out. So lets build some things to do just that...for the drones of course, Bill Gates is the one working on the mosquitoes still.
+- [AnotherRaspberryPiBuild](https://github.com/TreadSoftly/Projects/blob/main/AnotherRaspberryPiBuild.md)
 
+### Featured Projects
 
-Starter Guide
-(FOR NOW this will be a resource dump until I can organize this repo into a well laid out document)
+1. **Scrappy Raspberry Pi Build**
+   - Inspired by the latest Aerospace White Page report, this build is a testament to what can be achieved with ingenuity and a modest budget. Dive into the details [here](https://www.mdpi.com/journal/aerospace).
+   - ![Raspberry Pi Build](https://github.com/TreadSoftly/Projects/assets/121847455/c8747ec0-4e4a-4781-9b97-e4b19b4adb8b)
 
-PLEASE REFERENCE RASPBERRY PI BUILD IN GITHUB REPO FOR AN INDEPTH UNDERSTANDING ON COMPONENTS AND CONFIGURATIONS
-https://github.com/TreadSoftly/Projects/blob/main/AnotherRaspberryPiBuild.md
-![image](https://github.com/TreadSoftly/Projects/assets/121847455/bbcc2a1e-83e6-48f4-832a-141d2d3810bc)
-![image](https://github.com/TreadSoftly/Projects/assets/121847455/33ac017e-37da-41b1-afd0-c2ae6bb89930)
+2. **Gqrx SDR**
+   - Explore the potential of open-source software-defined radio with Gqrx SDR, a cornerstone tool for our signal interception and analysis efforts. Learn more about setting up Gqrx on the Raspberry Pi [here](https://www.gqrx.dk/download/gqrx-sdr-for-the-raspberry-pi).
+   - ![Gqrx SDR](https://github.com/TreadSoftly/Projects/assets/121847455/310d9fce-338e-4a51-8cff-4ec1639feb89)
 
+## Continuous Improvement
 
-
-Scrappy "cheap-ish" RaspberryPi Build based off of AeroSpace White Page 2022 report
-https://www.mdpi.com/journal/aerospace
-https://www.mdpi.com/2226-4310/9/12/738
-
-Referencing my AnotherRaspberryPiBuild Repo will show a very similar pi build to the one below with similar components and links.
-![image](https://github.com/TreadSoftly/Projects/assets/121847455/c8747ec0-4e4a-4781-9b97-e4b19b4adb8b)
-
-
-https://www.mdpi.com/2226-4310/9/12/738
-![image](https://github.com/TreadSoftly/Projects/assets/121847455/13a4d9ef-e76c-48e9-8ac4-17520701102f)
-
-
-Gqrx SDR
-https://www.gqrx.dk/
-https://www.gqrx.dk/download/gqrx-sdr-for-the-raspberry-pi
-
-Open source software defined radio by Alexandru Csete OZ9AEC
-
-![image](https://github.com/TreadSoftly/Projects/assets/121847455/310d9fce-338e-4a51-8cff-4ec1639feb89)
-![image](https://github.com/TreadSoftly/Projects/assets/121847455/66947de1-0139-4071-894a-103e4e5d721f)
-
-
-
-DJI more advanced hardware and software drones paired with updated resources. 
-(Contractors mentioned seeing newer drones in the field and concerned with updates or outdated tech)
-https://www.youtube.com/watch?v=fT4xAdfLYcY
-![image](https://github.com/TreadSoftly/Projects/assets/121847455/1e34ec02-524c-4d0a-9bef-6c37a26303a6)
-![image](https://github.com/TreadSoftly/Projects/assets/121847455/cb5a9443-e099-43ba-83f7-20c9416edce8)
-
-
+This repository is a living project. We're committed to regular updates, reflecting the latest advancements in Counter RF & SIGINT technologies and AI/LM applications. Stay tuned for updates, and don't hesitate to share your insights and feedback.
