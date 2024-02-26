@@ -1,9 +1,9 @@
 ## Table of Contents 📚
 - [Introduction](#introduction)
 - [Script Breakdown](#script-breakdown)
-    - [Logging and Configuration](#logging-and-configuration)
-    - [Main Classes and Methods](#main-classes-and-methods)
-    - [Execution Flow](#execution-flow)
+- [Logging and Configuration](#logging-and-configuration)
+- [Main Classes and Methods](#main-classes-and-methods)
+- [Execution Flow](#execution-flow)
 - [Usage Guide](#usage-guide)
 - [Contributing](#contributing)
 - [License](#license)
