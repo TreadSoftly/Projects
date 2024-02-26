@@ -9,7 +9,7 @@ So let's build some things to do just that...for the drones of course, Bill Gate
 
 ##
   
-# Counter RF & SIGINT AI/LM Research/Labs
+# C-RF & SIGINT AI/LM Research/Labs
 
 ## 🔰 Starter Guide
 Establish a basic fundamental understanding of RF and SIGINT technologies through research and testing. 
