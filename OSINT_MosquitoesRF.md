@@ -59,11 +59,6 @@ Tools and equipment that form SIGINT and Counter RF operations.
 
 ![Tools and Equipment](https://github.com/TreadSoftly/Projects/assets/121847455/c8747ec0-4e4a-4781-9b97-e4b19b4adb8b)
 
-## 📄 Research Papers
-Research papers that dig into the integration and leveraging of machine learning for drone detection and classification.
-
-![Research Paper](https://github.com/TreadSoftly/Projects/assets/121847455/13a4d9ef-e76c-48e9-8ac4-17520701102f)
-
 ## 🔬 RF Analysis in Action
 Visualize RF analysis with detailed imagery that captures the utility and application of the featured tools in real-world scenarios.
 
@@ -74,7 +69,9 @@ SDR with with visual aids for achieving precise signal analysis.
 
 ![SDR Configuration](https://github.com/TreadSoftly/Projects/assets/121847455/cb5a9443-e099-43ba-83f7-20c9416edce8)
 
-## 🤖 📖 Detailed Guides and Documentation AI/ML Integration 
+## 🤖 📖 📄 Research PapersDetailed Guides and Documentation AI/ML Integration 
+Research papers that dig into the integration and leveraging of machine learning for drone detection and classification.
+
 AI/ML in UAS detection and classification systems. Helping refine detection accuracy and response times.
 This section is for understanding the practical and theoretical aspects of SIGINT and Counter RF operations.
 
