@@ -19,7 +19,7 @@ Scrappy "cheap-ish" RaspberryPi Build based off of AeroSpace White Page 2022 rep
 https://www.mdpi.com/journal/aerospace
 https://www.mdpi.com/2226-4310/9/12/738
 
-Referencing my AnotherRaspberryPiBuild Repo will show a very similar pi build to the one below with similar components and links for purchasing.
+Referencing my AnotherRaspberryPiBuild Repo will show a very similar pi build to the one below with similar components and links.
 ![image](https://github.com/TreadSoftly/Projects/assets/121847455/c8747ec0-4e4a-4781-9b97-e4b19b4adb8b)
 
 
