@@ -59,11 +59,14 @@ Reference the [AnotherRaspberryPiBuild](https://github.com/TreadSoftly/Projects/
 #
   
 ### 📡 Gqrx SDR
-Utilize [Gqrx SDR](https://www.gqrx.dk/), a sophisticated, open-source platform for real-time signal acquisition and analysis.
+[Gqrx SDR](https://www.gqrx.dk/), a sophisticated, open-source platform for real-time signal acquisition and analysis, pivotal for understanding the airwaves and electronic landscapes.
 
 ![Gqrx SDR Interface](https://github.com/TreadSoftly/Projects/assets/121847455/310d9fce-338e-4a51-8cff-4ec1639feb89)
 
 ![RF Analysis](https://github.com/TreadSoftly/Projects/assets/121847455/66947de1-0139-4071-894a-103e4e5d721f)
+
+VIDEO SOURCE: YouTube -->
+[![DragonOS Video](https://img.youtube.com/vi/fT4xAdfLYcY/0.jpg)](https://www.youtube.com/watch?v=fT4xAdfLYcY "DragonOS Focal - YouTube")
 
 </div>
 
