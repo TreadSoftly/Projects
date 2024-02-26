@@ -74,10 +74,8 @@ Access research papers focusing on machine learning for enhanced drone detection
 ![Guides and Documentation](https://github.com/TreadSoftly/Projects/assets/121847455/13a4d9ef-e76c-48e9-8ac4-17520701102f)  
 **SOURCE:** [Read the Research Paper on MDPI](https://www.mdpi.com/2226-4310/9/12/738)
 
-### IMAGES SOURCED: AeroSpace MDPI
-For a deeper dive into our methodologies and findings, click the spectrogram image below to redirect to the official documentation.
-
-[![AeroSpace Article](https://github.com/TreadSoftly/Projects/blob/main/assets/aerospace-logo.webp)](https://www.mdpi.com/2226-4310/9/12/738 "Low-Cost Raspberry-Pi-Based UAS Detection and Classification System Using Machine Learning")
+**IMAGES SOURCED: AeroSpace MDPI**
+[AeroSpace Article](https://www.mdpi.com/2226-4310/9/12/738)
 ##
 
 ## 🚀 Living Document for Continous Growth in this Area of Tech
