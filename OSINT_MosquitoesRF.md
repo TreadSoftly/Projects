@@ -33,9 +33,10 @@ Develop a custom Raspberry Pi platform designed for meticulous RF analysis, draw
 ![Raspberry Pi Setup](https://github.com/TreadSoftly/Projects/assets/121847455/bbcc2a1e-83e6-48f4-832a-141d2d3810bc)
 Reference the [AnotherRaspberryPiBuild](https://github.com/TreadSoftly/Projects/blob/main/AnotherRaspberryPiBuild.md) for granular details on assembly and configuration.
 
-# SOURCE Picture bleow: https://www.mdpi.com/2226-4310/9/12/738
-![Layout](https://github.com/TreadSoftly/Projects/assets/121847455/bbcc2a1e-83e6-48f4-832a-141d2d3810bc)
 
+# 
+![Setup](https://github.com/TreadSoftly/Projects/assets/121847455/c8747ec0-4e4a-4781-9b97-e4b19b4adb8b)
+SOURCE Picture: https://www.mdpi.com/2226-4310/9/12/738
 
 ### 📡 Gqrx SDR
 [Gqrx SDR](https://www.gqrx.dk/), a sophisticated, open-source platform for real-time signal acquisition and analysis, pivotal for understanding the airwaves and electronic landscapes.
