@@ -43,6 +43,7 @@ SOURCE Picture: https://www.mdpi.com/2226-4310/9/12/738
 [Gqrx SDR](https://www.gqrx.dk/), a sophisticated, open-source platform for real-time signal acquisition and analysis, pivotal for understanding the airwaves and electronic landscapes.
 
 ![Gqrx SDR Interface](https://github.com/TreadSoftly/Projects/assets/121847455/310d9fce-338e-4a51-8cff-4ec1639feb89)
+
 VIDEO SOURCE: https://www.youtube.com/watch?v=fT4xAdfLYcY
 #
 ### 🚁 Advanced Drone Countermeasures
