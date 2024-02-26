@@ -1,4 +1,5 @@
-COUNTER RF & SIGINT AI/LM RESEARCH/LABS (messy repo for now)
+COUNTER RF & SIGINT AI/LM RESEARCH/LABS 
+(messy repo for now)
 
 
 
@@ -39,3 +40,13 @@ Open source software defined radio by Alexandru Csete OZ9AEC
 
 ![image](https://github.com/TreadSoftly/Projects/assets/121847455/310d9fce-338e-4a51-8cff-4ec1639feb89)
 ![image](https://github.com/TreadSoftly/Projects/assets/121847455/66947de1-0139-4071-894a-103e4e5d721f)
+
+
+
+DJI more advanced hardware and software drones paired with updated resources. 
+(Contractors mentioned seeing newer drones in the field and concerned with updates or outdated tech)
+https://www.youtube.com/watch?v=fT4xAdfLYcY
+![image](https://github.com/TreadSoftly/Projects/assets/121847455/1e34ec02-524c-4d0a-9bef-6c37a26303a6)
+![image](https://github.com/TreadSoftly/Projects/assets/121847455/cb5a9443-e099-43ba-83f7-20c9416edce8)
+
+
