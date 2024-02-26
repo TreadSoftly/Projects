@@ -31,7 +31,7 @@ Begin with comprehensive guides that establish a fundamental understanding of RF
 Develop a custom Raspberry Pi platform designed for meticulous RF analysis, drawing from the insights of the Aerospace 2022 report. These builds provide a hands-on approach to monitoring and signal interception.
 
 ![Raspberry Pi Setup](https://github.com/TreadSoftly/Projects/assets/121847455/bbcc2a1e-83e6-48f4-832a-141d2d3810bc)
-# 
+ 
 Reference the [AnotherRaspberryPiBuild](https://github.com/TreadSoftly/Projects/blob/main/AnotherRaspberryPiBuild.md) for granular details on assembly and configuration.
 # 
 ![Setup](https://github.com/TreadSoftly/Projects/assets/121847455/c8747ec0-4e4a-4781-9b97-e4b19b4adb8b)
