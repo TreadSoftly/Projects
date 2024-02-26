@@ -1,79 +1,90 @@
 # Counter RF & SIGINT AI/LM Research/Labs
 
 ## 🌐 Overview
-This repository serves as a comprehensive guide and toolkit for Counter RF and SIGINT research, with a specific focus on AI/LM applications for drone technology interception and neutralization.
+The study and tactical application of Counter RF and SIGINT strategies, this repository emphasizes the integration of Artificial Intelligence (AI) and Machine Learning (ML) for the disruption and neutralization of unauthorized drone operations.
 
-## 📚 Table of Contents
-- [Overview](#overview)
-- [Starter Guide](#starter-guide)
-- [Project Highlights](#project-highlights)
-- [Installation and Usage](#installation-and-usage)
-- [Tools and Equipment](#tools-and-equipment)
-- [Research Papers](#research-papers)
-- [RF Analysis in Action](#rf-analysis-in-action)
-- [SDR Configuration](#sdr-configuration)
-- [AI/ML Integration](#aiml-integration)
-- [Detailed Guides and Documentation](#detailed-guides-and-documentation)
-- [Aesthetic and Functional Layout](#aesthetic-and-functional-layout)
-- [Experimental Setups](#experimental-setups)
+## 📑 Table of Contents
+- [🔍 Overview](#-overview)
+- [🔰 Starter Guide](#-starter-guide)
+- [🚀 Project Highlights](#-project-highlights)
+- [⚙️ Installation and Usage](#-installation-and-usage)
+- [🛠️ Tools and Equipment](#-tools-and-equipment)
+- [📄 Research Papers](#-research-papers)
+- [🔬 RF Analysis in Action](#-rf-analysis-in-action)
+- [🎚️ SDR Configuration](#-sdr-configuration)
+- [🤖 AI/ML Integration](#-aiml-integration)
+- [📘 Detailed Guides and Documentation](#-detailed-guides-and-documentation)
+- [🎨 Aesthetic and Functional Layout](#-aesthetic-and-functional-layout)
+- [🧪 Experimental Setups](#-experimental-setups)
 
-## 🛠 Starter Guide
-Dive deep into our resources with guides that lay a solid foundation in RF and SIGINT technologies. Our materials are designed for both beginners and experts to navigate the field of counter-drone measures effectively.
+## 🔰 Starter Guide
+Begin with comprehensive guides that establish a fundamental understanding of RF and SIGINT technologies.
 
-## 📈 Project Highlights
+## 🚀 Project Highlights
 
-### Raspberry Pi Builds
-Embark on creating your own Raspberry Pi setup for RF analysis leveraging insights from the Aerospace 2022 report.
+### 🥧 Raspberry Pi Builds
+Develop a custom Raspberry Pi platform designed for meticulous RF analysis, drawing from the insights of the Aerospace 2022 report. These builds provide a hands-on approach to monitoring and signal interception.
 
-![Raspberry Pi Setup](assets/raspberry_pi_setup.png)
+![Raspberry Pi Setup](https://github.com/TreadSoftly/Projects/assets/121847455/bbcc2a1e-83e6-48f4-832a-141d2d3810bc)
 
-For an in-depth understanding of components and configurations, refer to the [AnotherRaspberryPiBuild](https://github.com/TreadSoftly/Projects/blob/main/AnotherRaspberryPiBuild.md) documentation.
+Reference the [AnotherRaspberryPiBuild](https://github.com/TreadSoftly/Projects/blob/main/AnotherRaspberryPiBuild.md) for granular details on assembly and configuration.
 
-### Gqrx SDR
-Master the art of software-defined radio with [Gqrx SDR](https://www.gqrx.dk/), an open-source tool perfect for capturing and analyzing RF signals.
+### 📡 Gqrx SDR
+[Gqrx SDR](https://www.gqrx.dk/), a sophisticated, open-source platform for real-time signal acquisition and analysis, pivotal for understanding the airwaves and electronic landscapes.
 
-![Gqrx SDR Interface](assets/gqrx_sdr_interface.png)
+![Gqrx SDR Interface](https://github.com/TreadSoftly/Projects/assets/121847455/310d9fce-338e-4a51-8cff-4ec1639feb89)
 
-### Advanced Drone Countermeasures
-Stay ahead in the field with the latest updates and resources on DJI's advanced hardware and software drones.
+### 🚁 Advanced Drone Countermeasures
+Recent advancements in DJI and other high-end drone hardware and software, preparing for both current and emergent threats.
 
-![DJI Drone](assets/dji_drone.png)
+![High-End Drone](https://github.com/TreadSoftly/Projects/assets/121847455/1e34ec02-524c-4d0a-9bef-6c37a26303a6)
 
-## 🔧 Installation and Usage
-Each project comes with a detailed setup and usage guide. Follow our step-by-step documentation to get up and running quickly.
+## ⚙️ Installation and Usage
+Setup and usage documentation for each project, move from setup to operation.
 
 ## 🛠️ Tools and Equipment
-Leverage the provided images to understand the tools and equipment necessary for your SIGINT and Counter RF projects.
+Tools and equipment that form SIGINT and Counter RF operations.
 
-![Tools and Equipment](assets/tools_and_equipment.png)
+![Tools and Equipment](https://github.com/TreadSoftly/Projects/assets/121847455/c8747ec0-4e4a-4781-9b97-e4b19b4adb8b)
 
-## 🧠 Research Papers
-Gain insights from our collection of research papers to enhance your understanding of machine learning applications in drone detection.
+## 📄 Research Papers
+Research papers that dig into the integration and leveraging of machine learning for drone detection and classification.
 
-![Research Paper](assets/research_paper.png)
+![Research Paper](https://github.com/TreadSoftly/Projects/assets/121847455/13a4d9ef-e76c-48e9-8ac4-17520701102f)
 
-## 📡 RF Analysis in Action
-Witness RF analysis in action through our detailed screenshots, illustrating the practical application of the tools featured in this repository.
+## 🔬 RF Analysis in Action
+Visualize RF analysis with detailed imagery that captures the utility and application of the featured tools in real-world scenarios.
 
-![RF Analysis](assets/rf_analysis.png)
+![RF Analysis](https://github.com/TreadSoftly/Projects/assets/121847455/66947de1-0139-4071-894a-103e4e5d721f)
 
 ## 🎚️ SDR Configuration
-Fine-tune your SDR settings for optimal performance with our configuration guides, complete with screenshots for visual aid.
+SDR with with visual aids for achieving precise signal analysis.
 
-![SDR Configuration](assets/sdr_configuration.png)
+![SDR Configuration](https://github.com/TreadSoftly/Projects/assets/121847455/cb5a9443-e099-43ba-83f7-20c9416edce8)
 
 ## 🤖 AI/ML Integration
-Explore the integration of AI/ML in UAS detection and classification systems, supported by TensorFlow and Raspberry Pi.
+AI/ML in UAS detection and classification systems. Helping refine detection accuracy and response times.
 
-![AI/ML Integration](assets/ai_ml_integration.png)
+![Integration](https://github.com/TreadSoftly/Projects/assets/121847455/1e34ec02-524c-4d0a-9bef-6c37a26303a6)
 
 ## 📖 Detailed Guides and Documentation
-Deepen your technical understanding with our comprehensive guides and documentation, detailing the purpose, installation, and usage of each tool and script.
+This section is for understanding the practical and theoretical aspects of SIGINT and Counter RF operations.
 
-## 🖼️ Aesthetic and Functional Layout
-Navigate our repository with ease, thanks to a thoughtfully designed layout complete with images, badges, and clearly defined navigation links.
+![Guides and Documentation](https://github.com/TreadSoftly/Projects/assets/121847455/13a4d9ef-e76c-48e9-8ac4-17520701102f)
 
-## 🧪 Experimental Setups
-Our repository includes images and descriptions of experimental setups, showcasing practical examples and real-world applications.
+![Layout](https://github.com/TreadSoftly/Projects/assets/121847455/bbcc2a1e-83e6-48f4-832a-141d2d3810bc)
 
-![Experimental Setup](assets/experimental_setup.png)
+## 🧪 Setups
+Practical applications of our research and tools in real-world scenarios.
+
+![Setup](https://github.com/TreadSoftly/Projects/assets/121847455/c8747ec0-4e4a-4781-9b97-e4b19b4adb8b)
+
+## 🛠️ Toolkit and Equipment
+Executing SIGINT and Counter RF operations. The provided images offer insight into the hardware and gadgets for field operations.
+
+![Toolkit and Equipment](https://github.com/TreadSoftly/Projects/assets/121847455/66947de1-0139-4071-894a-103e4e5d721f)
+
+![Continuous Intel Update](https://github.com/TreadSoftly/Projects/assets/121847455/cb5a9443-e099-43ba-83f7-20c9416edce8)
+
+## 🚀 Living Document for Continous Growth in this Area of Tech
+With all the tools, guides, and resources provided, you're now ready to embark on your mission to secure the skies from unauthorized drones and signals. Harness the power of AI/ML, leverage advanced SDR techniques, and join a community dedicated to innovation in Counter RF and SIGINT strategies.
