@@ -22,11 +22,9 @@ The study and tactical application of Counter RF and SIGINT strategies, this rep
   <li><a href="#overview">🌐 Overview</a></li>
   <li><a href="#starter-guide">🔰 Starter Guide</a></li>
   <li><a href="#project-highlights">🚀 Project Highlights</a></li>
-    <ul>
-      <li><a href="#raspberry-pi-builds">🥧 Raspberry Pi Builds 🛠️ Tools and Equipment</a></li>
-      <li><a href="#gqrx-sdr">📡 Gqrx SDR</a></li>
-      <li><a href="#advanced-drone-countermeasures">🚁 Advanced Drone Countermeasures & 🎚️ SDR Configuration</a></li>
-    </ul>
+  <li><a href="#raspberry-pi-builds">🥧 Raspberry Pi Builds 🛠️ Tools and Equipment</a></li>
+  <li><a href="#gqrx-sdr">📡 Gqrx SDR</a></li>
+  <li><a href="#advanced-drone-countermeasures">🚁 Advanced Drone Countermeasures & 🎚️ SDR Configuration</a></li>
   <li><a href="#research-papers">🧠 Research Papers & 📚 Detailed Guides - AI/ML Integration</a></li>
   <li><a href="#continuous-learning--growth">🚀 Continuous Learning & Growth</a></li>
 </ul>
