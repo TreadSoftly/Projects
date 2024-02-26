@@ -153,7 +153,7 @@ progress_bar() {
 }
 
 # Explanation:
-# This Python script provides functionalities for logging, secure memory allocation, memory zeroization, memory analysis prevention, and anti-forensics techniques.
+# This BASH script provides functionalities for logging, secure memory allocation, memory zeroization, memory analysis prevention, and anti-forensics techniques.
 # Logging Functionality: The log function handles both console and file logging, with color-coded priorities.
 # Secure Memory Allocation: The secure_memory_allocation function creates a secure memory space using tmpfs.
 # Memory Zeroization: The memory_zeroization function overwrites a given file with zeros and then deletes it.
