@@ -16,7 +16,6 @@ Begin with comprehensive guides that establish a fundamental understanding of RF
 The study and tactical application of Counter RF and SIGINT strategies, this repository emphasizes the integration of Artificial Intelligence (AI) and Machine Learning (ML) for the disruption and neutralization of unauthorized drone operations.
 
 ## 📑 Table of Contents
-
 <ul style="list-style-type: none; padding: 0; text-align: left;">
   <li><a href="#-overview">🔍 Overview</a></li>
   <li><a href="#-starter-guide">🔰 Starter Guide</a></li>
@@ -53,6 +52,8 @@ Reference the [AnotherRaspberryPiBuild](https://github.com/TreadSoftly/Projects/
 
 <div align="center">
 
+#
+  
 ### 📡 Gqrx SDR
 Utilize [Gqrx SDR](https://www.gqrx.dk/), a sophisticated, open-source platform for real-time signal acquisition and analysis.
 
@@ -63,6 +64,8 @@ Utilize [Gqrx SDR](https://www.gqrx.dk/), a sophisticated, open-source platform 
 </div>
 
 <div align="center">
+
+#
 
 ### 🚁 Advanced Drone Countermeasures & 🎚️ SDR Configuration
 Stay ahead with the latest updates in drone technology and prepare for both current and emergent threats with advanced SDR techniques.
