@@ -38,14 +38,8 @@ Reference the [AnotherRaspberryPiBuild](https://github.com/TreadSoftly/Projects/
 
 ![Setup](https://github.com/TreadSoftly/Projects/assets/121847455/c8747ec0-4e4a-4781-9b97-e4b19b4adb8b)
 
-IMAGES SOURCE (click picture to go to AeroSpace documentation site):
 
-[![AeroSpace Article](https://www.mdpi.com/2226-4310/9/12/738 "Low-Cost Raspberry-Pi-Based UAS Detection and Classification System Using Machine Learning")
-
-Low-Cost Raspberry-Pi-Based UAS Detection and Classification System Using Machine Learning
-by Carolyn J. Swinney & John C. Woods
-
-# 
+##
 
 ### 📡 Gqrx SDR
 [Gqrx SDR](https://www.gqrx.dk/), a sophisticated, open-source platform for real-time signal acquisition and analysis, pivotal for understanding the airwaves and electronic landscapes.
@@ -86,6 +80,9 @@ This section is for understanding the practical and theoretical aspects of SIGIN
 
 ![Guides and Documentation](https://github.com/TreadSoftly/Projects/assets/121847455/13a4d9ef-e76c-48e9-8ac4-17520701102f)
 SOURCE: https://www.mdpi.com/2226-4310/9/12/738
+
+IMAGES SOURCED AeroSpace MDPI (Click the Spectogram Image to Redirect to Documentation)
+[![AeroSpace Article](https://github.com/TreadSoftly/Projects/blob/main/assets/aerospace-logo.webp)](https://www.mdpi.com/2226-4310/9/12/738 "Low-Cost Raspberry-Pi-Based UAS Detection and Classification System Using Machine Learning")
 
 ## 
 
