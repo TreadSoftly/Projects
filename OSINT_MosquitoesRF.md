@@ -1,8 +1,8 @@
-###Basically this is PaperPlanes in depth. The damned noise of the mosquito irritates me about as much as hearing those damned drones overhead when I was on patrol in country. 
+##Basically this is PaperPlanes in depth. The damned noise of the mosquito irritates me about as much as hearing those damned drones overhead when I was on patrol in country. 
 Instantly hate the sound/noise/frequencies and want to take them out. So lets build some things to do just that...for the drones of course, Bill Gates is the one working on the mosquitoes still.
 
 
-###Starter Guide
+##Starter Guide
 ##(FOR NOW this will be a resource dump until I can organize this repo into a well laid out document)
 
 # Counter RF & SIGINT AI/LM Research/Labs
