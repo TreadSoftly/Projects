@@ -19,18 +19,16 @@ The study and tactical application of Counter RF and SIGINT strategies, this rep
 
 ## 📑 Table of Contents
 <ul style="list-style-type: none; padding: 0; text-align: left;">
-  <li><a href="#-overview">🔍 Overview</a></li>
-  <li><a href="#-starter-guide">🔰 Starter Guide</a></li>
-  <li><a href="#-project-highlights">🚀 Project Highlights</a></li>
-  <li><a href="#-installation-and-usage">⚙️ Installation and Usage</a></li>
-  <li><a href="#-tools-and-equipment">🛠️ Tools and Equipment</a></li>
-  <li><a href="#-research-papers">📄 Research Papers</a></li>
-  <li><a href="#-rf-analysis-in-action">🔬 RF Analysis in Action</a></li>
-  <li><a href="#-sdr-configuration">🎚️ SDR Configuration</a></li>
-  <li><a href="#-aiml-integration">🤖 AI/ML Integration</a></li>
-  <li><a href="#-detailed-guides-and-documentation">📘 Detailed Guides and Documentation</a></li>
-  <li><a href="#-aesthetic-and-functional-layout">🎨 Aesthetic and Functional Layout</a></li>
-  <li><a href="#-experimental-setups">🧪 Experimental Setups</a></li>
+## 📑 Table of Contents
+- [🌐 Overview](#overview)
+- [🔰 Starter Guide](#starter-guide)
+- [🚀 Project Highlights](#project-highlights)
+  - [🥧 Raspberry Pi Builds](#raspberry-pi-builds)
+  - [📡 Gqrx SDR](#gqrx-sdr)
+  - [🚁 Advanced Drone Countermeasures](#advanced-drone-countermeasures)
+- [📰 Research Papers](#research-papers)
+- [🧑‍🏫 Detailed Guides - AI/ML Integration](#detailed-guides---aiml-integration)
+- [🚀 Continuous Learning & Growth](#continuous-learning--growth)
 </ul>
   
 </div>
