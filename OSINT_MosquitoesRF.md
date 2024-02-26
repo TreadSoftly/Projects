@@ -38,7 +38,7 @@ Reference the [AnotherRaspberryPiBuild](https://github.com/TreadSoftly/Projects/
 
 ![Setup](https://github.com/TreadSoftly/Projects/assets/121847455/c8747ec0-4e4a-4781-9b97-e4b19b4adb8b)
 
-[![AeroSpace Article](https://www.mdpi.com/aerospace/aerospace-09-00738/article_deploy/html/images/aerospace-09-00738-g001-550.jpg)](https://www.mdpi.com/2226-4310/9/12/738 "Low-Cost Raspberry-Pi-Based UAS Detection and Classification System Using Machine Learning")
+[![AeroSpace Article](https://github.com/TreadSoftly/Projects/blob/main/assets/aerospace-logo.webp)](https://www.mdpi.com/2226-4310/9/12/738 "Low-Cost Raspberry-Pi-Based UAS Detection and Classification System Using Machine Learning")
 
 # 
 
