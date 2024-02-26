@@ -31,8 +31,11 @@ Begin with comprehensive guides that establish a fundamental understanding of RF
 Develop a custom Raspberry Pi platform designed for meticulous RF analysis, drawing from the insights of the Aerospace 2022 report. These builds provide a hands-on approach to monitoring and signal interception.
 
 ![Raspberry Pi Setup](https://github.com/TreadSoftly/Projects/assets/121847455/bbcc2a1e-83e6-48f4-832a-141d2d3810bc)
-
 Reference the [AnotherRaspberryPiBuild](https://github.com/TreadSoftly/Projects/blob/main/AnotherRaspberryPiBuild.md) for granular details on assembly and configuration.
+
+# SOURCE Picture bleow: https://www.mdpi.com/2226-4310/9/12/738
+![Layout](https://github.com/TreadSoftly/Projects/assets/121847455/bbcc2a1e-83e6-48f4-832a-141d2d3810bc)
+
 
 ### 📡 Gqrx SDR
 [Gqrx SDR](https://www.gqrx.dk/), a sophisticated, open-source platform for real-time signal acquisition and analysis, pivotal for understanding the airwaves and electronic landscapes.
