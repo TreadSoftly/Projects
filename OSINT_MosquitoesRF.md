@@ -12,10 +12,10 @@ So let's build some things to do just that...for the drones of course, Bill Gate
 # Counter RF & SIGINT AI/LM Research/Labs
 
 ## 🔰 Starter Guide
-Begin with comprehensive guides that establish a fundamental understanding of RF and SIGINT technologies.
+Establish a basic fundamental understanding of RF and SIGINT technologies through research and testing. 
 
 ## 🌐 Overview
-The study and tactical application of Counter RF and SIGINT strategies, this repository emphasizes the integration of Artificial Intelligence (AI) and Machine Learning (ML) for the disruption and neutralization of unauthorized drone operations.
+The study and tactical application of Counter RF and SIGINT strategies, this repository focuses on the configuration and integration of cheap and semi-affordable hardware, software and Artificial Intelligence (AI) along with Machine Learning (ML) for the disruption and neutralization of unauthorized drone operations.
 
 ## 📑 Table of Contents
 <ul style="list-style-type: none; padding: 0; text-align: left;">
