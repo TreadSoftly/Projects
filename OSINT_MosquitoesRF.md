@@ -73,28 +73,16 @@ SDR with with visual aids for achieving precise signal analysis.
 
 ![SDR Configuration](https://github.com/TreadSoftly/Projects/assets/121847455/cb5a9443-e099-43ba-83f7-20c9416edce8)
 
-## 🤖 AI/ML Integration
+## 🤖 📖 Detailed Guides and Documentation AI/ML Integration 
 AI/ML in UAS detection and classification systems. Helping refine detection accuracy and response times.
+This section is for understanding the practical and theoretical aspects of SIGINT and Counter RF operations.
 
 ![Integration](https://github.com/TreadSoftly/Projects/assets/121847455/1e34ec02-524c-4d0a-9bef-6c37a26303a6)
 
-## 📖 Detailed Guides and Documentation
-This section is for understanding the practical and theoretical aspects of SIGINT and Counter RF operations.
-
 ![Guides and Documentation](https://github.com/TreadSoftly/Projects/assets/121847455/13a4d9ef-e76c-48e9-8ac4-17520701102f)
+SOURCE: https://www.mdpi.com/2226-4310/9/12/738
 
-
-## 🧪 Setups
-Practical applications of our research and tools in real-world scenarios.
-![Layout](https://github.com/TreadSoftly/Projects/assets/121847455/bbcc2a1e-83e6-48f4-832a-141d2d3810bc)
-![Setup](https://github.com/TreadSoftly/Projects/assets/121847455/c8747ec0-4e4a-4781-9b97-e4b19b4adb8b)
-
-## 🛠️ Toolkit and Equipment
-Executing SIGINT and Counter RF operations. The provided images offer insight into the hardware and gadgets for field operations.
-
-![Toolkit and Equipment](https://github.com/TreadSoftly/Projects/assets/121847455/66947de1-0139-4071-894a-103e4e5d721f)
-
-![Continuous Intel Update](https://github.com/TreadSoftly/Projects/assets/121847455/cb5a9443-e099-43ba-83f7-20c9416edce8)
+## 
 
 ## 🚀 Living Document for Continous Growth in this Area of Tech
 With all the tools, guides, and resources provided, you're now ready to embark on your mission to secure the skies from unauthorized drones and signals. Harness the power of AI/ML, leverage advanced SDR techniques, and join a community dedicated to innovation in Counter RF and SIGINT strategies.
