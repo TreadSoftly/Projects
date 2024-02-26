@@ -38,7 +38,7 @@ Reference the [AnotherRaspberryPiBuild](https://github.com/TreadSoftly/Projects/
 
 ![Setup](https://github.com/TreadSoftly/Projects/assets/121847455/c8747ec0-4e4a-4781-9b97-e4b19b4adb8b)
 
-[![AeroSpace Article](https://github.com/TreadSoftly/Projects/blob/main/assets/aerospace-logo.webp)](https://www.mdpi.com/2226-4310/9/12/738 "Low-Cost Raspberry-Pi-Based UAS Detection and Classification System Using Machine Learning")
+IMAGES SOURCE: [![AeroSpace Article](https://www.mdpi.com/aerospace/aerospace-09-00738/article_deploy/html/images/aerospace-09-00738-g001-550.jpg)](https://www.mdpi.com/2226-4310/9/12/738 "Low-Cost Raspberry-Pi-Based UAS Detection and Classification System Using Machine Learning")
 
 # 
 
@@ -49,7 +49,7 @@ Reference the [AnotherRaspberryPiBuild](https://github.com/TreadSoftly/Projects/
 
 ![RF Analysis](https://github.com/TreadSoftly/Projects/assets/121847455/66947de1-0139-4071-894a-103e4e5d721f)
 
-VIDEO SOURCE: [![DragonOS](http://img.youtube.com/vi/fT4xAdfLYcY/0.jpg)](https://www.youtube.com/watch?v=fT4xAdfLYcY "DragonOS Tutorial")
+VIDEO SOURCE: [![DragonOS Video](https://img.youtube.com/vi/fT4xAdfLYcY/0.jpg)](https://www.youtube.com/watch?v=fT4xAdfLYcY "DragonOS Focal - YouTube")
 
 #
 
