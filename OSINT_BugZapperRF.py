@@ -72,7 +72,7 @@ if __name__ == '__main__':
     
     ### UPDATED TO TEST FOR 2023 Leveraging AI For Research and Study
     ### More Options For Updated Drone RF Tech
-    import threading
+import threading
 import logging
 from scapy.all import *
 from scapy.layers.dot11 import RadioTap, Dot11, Dot11Deauth
