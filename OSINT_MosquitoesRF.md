@@ -32,8 +32,10 @@ https://www.mdpi.com/2226-4310/9/12/738
 
 
 Gqrx SDR
-Open source software defined radio by Alexandru Csete OZ9AEC
 https://www.gqrx.dk/
 https://www.gqrx.dk/download/gqrx-sdr-for-the-raspberry-pi
+
+Open source software defined radio by Alexandru Csete OZ9AEC
+
 ![image](https://github.com/TreadSoftly/Projects/assets/121847455/310d9fce-338e-4a51-8cff-4ec1639feb89)
 ![image](https://github.com/TreadSoftly/Projects/assets/121847455/66947de1-0139-4071-894a-103e4e5d721f)
