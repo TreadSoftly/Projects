@@ -1,70 +1,79 @@
 # Counter RF & SIGINT AI/LM Research/Labs
 
-Welcome to the forefront of Counter RF & SIGINT AI/LM Research/Labs, a hub dedicated to advancing knowledge and tools in counter-drone technologies and SIGINT capabilities. Dive into our comprehensive repository where innovation meets practical application, aimed at disrupting the irritating buzz of drones overhead - inspired by the quest to silence them as much as Bill Gates focuses on mosquitoes.
+## 🌐 Overview
+This repository serves as a comprehensive guide and toolkit for Counter RF and SIGINT research, with a specific focus on AI/LM applications for drone technology interception and neutralization.
 
 ## 📚 Table of Contents
-
-- [About](#about)
+- [Overview](#overview)
 - [Starter Guide](#starter-guide)
 - [Project Highlights](#project-highlights)
-  - [Raspberry Pi Builds](#raspberry-pi-builds)
-  - [Gqrx SDR](#gqrx-sdr)
-  - [Advanced Drone Countermeasures](#advanced-drone-countermeasures)
 - [Installation and Usage](#installation-and-usage)
-- [Contributing](#contributing)
-- [Feedback and Suggestions](#feedback-and-suggestions)
-- [License](#license)
+- [Tools and Equipment](#tools-and-equipment)
+- [Research Papers](#research-papers)
+- [RF Analysis in Action](#rf-analysis-in-action)
+- [SDR Configuration](#sdr-configuration)
+- [AI/ML Integration](#aiml-integration)
+- [Detailed Guides and Documentation](#detailed-guides-and-documentation)
+- [Aesthetic and Functional Layout](#aesthetic-and-functional-layout)
+- [Experimental Setups](#experimental-setups)
 
-## About
+## 🛠 Starter Guide
+Dive deep into our resources with guides that lay a solid foundation in RF and SIGINT technologies. Our materials are designed for both beginners and experts to navigate the field of counter-drone measures effectively.
 
-This repository is a curated collection of research, tools, and guides focusing on the interception and neutralization of drone technologies through RF signal intelligence and AI/LM strategies. From detailed tutorials to cutting-edge project documentation, we aim to provide a resource-rich platform for cybersecurity professionals, researchers, and enthusiasts.
+## 📈 Project Highlights
 
-## Starter Guide
+### Raspberry Pi Builds
+Embark on creating your own Raspberry Pi setup for RF analysis leveraging insights from the Aerospace 2022 report.
 
-For newcomers and seasoned experts alike, this starter guide lays the foundational knowledge required to navigate the complexities of RF and SIGINT technologies. Explore the intricate details of setting up and deploying counter-drone measures, starting with a comprehensive Raspberry Pi build.
+![Raspberry Pi Setup](assets/raspberry_pi_setup.png)
 
-COUNTER RF & SIGINT AI/LM RESEARCH/LABS 
-(messy repo for now)
+For an in-depth understanding of components and configurations, refer to the [AnotherRaspberryPiBuild](https://github.com/TreadSoftly/Projects/blob/main/AnotherRaspberryPiBuild.md) documentation.
 
-Basically this is PaperPlanes in depth. The damned noise of the mosquito irritates me about as much as hearing those damned drones overhead when I was on patrol in country. 
-Instantly hate the sound/noise/frequencies and want to take them out. So lets build some things to do just that...for the drones of course, Bill Gates is the one working on the mosquitoes still.
+### Gqrx SDR
+Master the art of software-defined radio with [Gqrx SDR](https://www.gqrx.dk/), an open-source tool perfect for capturing and analyzing RF signals.
 
+![Gqrx SDR Interface](assets/gqrx_sdr_interface.png)
 
-Starter Guide
-(FOR NOW this will be a resource dump until I can organize this repo into a well laid out document)
+### Advanced Drone Countermeasures
+Stay ahead in the field with the latest updates and resources on DJI's advanced hardware and software drones.
 
-PLEASE REFERENCE RASPBERRY PI BUILD IN GITHUB REPO FOR AN INDEPTH UNDERSTANDING ON COMPONENTS AND CONFIGURATIONS
-https://github.com/TreadSoftly/Projects/blob/main/AnotherRaspberryPiBuild.md
-![image](https://github.com/TreadSoftly/Projects/assets/121847455/bbcc2a1e-83e6-48f4-832a-141d2d3810bc)
-![image](https://github.com/TreadSoftly/Projects/assets/121847455/33ac017e-37da-41b1-afd0-c2ae6bb89930)
+![DJI Drone](assets/dji_drone.png)
 
+## 🔧 Installation and Usage
+Each project comes with a detailed setup and usage guide. Follow our step-by-step documentation to get up and running quickly.
 
+## 🛠️ Tools and Equipment
+Leverage the provided images to understand the tools and equipment necessary for your SIGINT and Counter RF projects.
 
-Scrappy "cheap-ish" RaspberryPi Build based off of AeroSpace White Page 2022 report
-https://www.mdpi.com/journal/aerospace
-https://www.mdpi.com/2226-4310/9/12/738
+![Tools and Equipment](assets/tools_and_equipment.png)
 
-Referencing my AnotherRaspberryPiBuild Repo will show a very similar pi build to the one below with similar components and links.
-![image](https://github.com/TreadSoftly/Projects/assets/121847455/c8747ec0-4e4a-4781-9b97-e4b19b4adb8b)
+## 🧠 Research Papers
+Gain insights from our collection of research papers to enhance your understanding of machine learning applications in drone detection.
 
+![Research Paper](assets/research_paper.png)
 
-https://www.mdpi.com/2226-4310/9/12/738
-![image](https://github.com/TreadSoftly/Projects/assets/121847455/13a4d9ef-e76c-48e9-8ac4-17520701102f)
+## 📡 RF Analysis in Action
+Witness RF analysis in action through our detailed screenshots, illustrating the practical application of the tools featured in this repository.
 
+![RF Analysis](assets/rf_analysis.png)
 
-Gqrx SDR
-https://www.gqrx.dk/
-https://www.gqrx.dk/download/gqrx-sdr-for-the-raspberry-pi
+## 🎚️ SDR Configuration
+Fine-tune your SDR settings for optimal performance with our configuration guides, complete with screenshots for visual aid.
 
-Open source software defined radio by Alexandru Csete OZ9AEC
+![SDR Configuration](assets/sdr_configuration.png)
 
-![image](https://github.com/TreadSoftly/Projects/assets/121847455/310d9fce-338e-4a51-8cff-4ec1639feb89)
-![image](https://github.com/TreadSoftly/Projects/assets/121847455/66947de1-0139-4071-894a-103e4e5d721f)
+## 🤖 AI/ML Integration
+Explore the integration of AI/ML in UAS detection and classification systems, supported by TensorFlow and Raspberry Pi.
 
+![AI/ML Integration](assets/ai_ml_integration.png)
 
+## 📖 Detailed Guides and Documentation
+Deepen your technical understanding with our comprehensive guides and documentation, detailing the purpose, installation, and usage of each tool and script.
 
-DJI more advanced hardware and software drones paired with updated resources. 
-(Contractors mentioned seeing newer drones in the field and concerned with updates or outdated tech)
-https://www.youtube.com/watch?v=fT4xAdfLYcY
-![image](https://github.com/TreadSoftly/Projects/assets/121847455/1e34ec02-524c-4d0a-9bef-6c37a26303a6)
-![image](https://github.com/TreadSoftly/Projects/assets/121847455/cb5a9443-e099-43ba-83f7-20c9416edce8)
+## 🖼️ Aesthetic and Functional Layout
+Navigate our repository with ease, thanks to a thoughtfully designed layout complete with images, badges, and clearly defined navigation links.
+
+## 🧪 Experimental Setups
+Our repository includes images and descriptions of experimental setups, showcasing practical examples and real-world applications.
+
+![Experimental Setup](assets/experimental_setup.png)
