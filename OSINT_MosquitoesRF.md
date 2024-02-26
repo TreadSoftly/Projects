@@ -31,6 +31,9 @@ Begin with comprehensive guides that establish a fundamental understanding of RF
 Tools and equipment that form SIGINT and Counter RF operations.
 Develop a custom Raspberry Pi platform designed for RF analysis, utilizing one of many materials one of which being of the Aerospace 2022 report. These builds provide a hands-on approach to monitoring and signal interception.
 
+![Components](https://github.com/TreadSoftly/Projects/assets/121847455/d6fc686b-5f21-4abb-90a3-70854975be75)
+
+
 ![Raspberry Pi Setup](https://github.com/TreadSoftly/Projects/assets/121847455/bbcc2a1e-83e6-48f4-832a-141d2d3810bc)
  
 Reference the [AnotherRaspberryPiBuild](https://github.com/TreadSoftly/Projects/blob/main/AnotherRaspberryPiBuild.md) for granular details on assembly and configuration.
@@ -74,7 +77,7 @@ This section is for understanding the practical and theoretical aspects of SIGIN
 SOURCE: https://www.mdpi.com/2226-4310/9/12/738
 
 IMAGES SOURCED AeroSpace MDPI (Click the Spectogram Image to Redirect to Documentation)
-[![AeroSpace Article](https://github.com/TreadSoftly/Projects/blob/main/assets/aerospace-logo.webp)](https://www.mdpi.com/2226-4310/9/12/738 "Low-Cost Raspberry-Pi-Based UAS Detection and Classification System Using Machine Learning")
+![AeroSpace Article](https://github.com/TreadSoftly/Projects/blob/main/assets/aerospace-logo.webp)[(https://www.mdpi.com/2226-4310/9/12/738 "Low-Cost Raspberry-Pi-Based UAS Detection and Classification System Using Machine Learning")]
 
 ## 
 
