@@ -40,7 +40,7 @@ Reference the [AnotherRaspberryPiBuild](https://github.com/TreadSoftly/Projects/
 
 IMAGES SOURCE (click picture to go to AeroSpace documentation site):
 
-[![AeroSpace Article](https://www.mdpi.com/aerospace/aerospace-09-00738/article_deploy/html/images/aerospace-09-00738-g001-550.jpg)](https://www.mdpi.com/2226-4310/9/12/738 "Low-Cost Raspberry-Pi-Based UAS Detection and Classification System Using Machine Learning")
+[![AeroSpace Article](https://www.mdpi.com/2226-4310/9/12/738 "Low-Cost Raspberry-Pi-Based UAS Detection and Classification System Using Machine Learning")
 
 Low-Cost Raspberry-Pi-Based UAS Detection and Classification System Using Machine Learning
 by Carolyn J. Swinney & John C. Woods
