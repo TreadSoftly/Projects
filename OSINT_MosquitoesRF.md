@@ -1,4 +1,4 @@
-<p align="center">
+<div align="center">
   
 ## The noise of mosquitoes irritates me about as much as hearing drones overhead when I was on patrol in country. 
 (Was it a good guy drone? Was it a bad guy drone? Who knows, cross your fingers!) 
@@ -29,9 +29,9 @@ The study and tactical application of Counter RF and SIGINT strategies, this rep
 - [🎨 Aesthetic and Functional Layout](#-aesthetic-and-functional-layout)
 - [🧪 Experimental Setups](#-experimental-setups)
   
-</p>
+</div>
 
-<p align="center">
+<div align="center">
 
 ## 🚀 Project Highlights
 
@@ -44,9 +44,9 @@ Reference the [AnotherRaspberryPiBuild](https://github.com/TreadSoftly/Projects/
 
 ![Setup](https://github.com/TreadSoftly/Projects/assets/121847455/c8747ec0-4e4a-4781-9b97-e4b19b4adb8b)
 
-</p>
+</div>
 
-<p align="center">
+<div align="center">
 
 ### 📡 Gqrx SDR
 Utilize [Gqrx SDR](https://www.gqrx.dk/), a sophisticated, open-source platform for real-time signal acquisition and analysis.
@@ -55,9 +55,9 @@ Utilize [Gqrx SDR](https://www.gqrx.dk/), a sophisticated, open-source platform 
 
 ![RF Analysis](https://github.com/TreadSoftly/Projects/assets/121847455/66947de1-0139-4071-894a-103e4e5d721f)
 
-</p>
+</div>
 
-<p align="center">
+<div align="center">
 
 ### 🚁 Advanced Drone Countermeasures & 🎚️ SDR Configuration
 Stay ahead with the latest updates in drone technology and prepare for both current and emergent threats with advanced SDR techniques.
@@ -66,9 +66,9 @@ Stay ahead with the latest updates in drone technology and prepare for both curr
 
 ![SDR Configuration](https://github.com/TreadSoftly/Projects/assets/121847455/cb5a9443-e099-43ba-83f7-20c9416edce8)
 
-</p>
+</div>
 
-<p align="center">
+<div align="center">
 
 ## 🧠 Research Papers & 📚 Detailed Guides - AI/ML Integration 
 Access in-depth research and comprehensive guides focusing on AI/ML for enhanced drone detection and classification.
@@ -76,11 +76,11 @@ Access in-depth research and comprehensive guides focusing on AI/ML for enhanced
 ![Research Paper](https://github.com/TreadSoftly/Projects/assets/121847455/13a4d9ef-e76c-48e9-8ac4-17520701102f)  
 **SOURCE:** [Read the Research Paper on MDPI](https://www.mdpi.com/2226-4310/9/12/738)
 
-</p>
+</div>
 
-<p align="center">
+<div align="center">
 
 ## 🚀 Continuous Learning & Growth
 This repository is a living document, continuously updated with the latest advancements in Counter RF & SIGINT AI/LM technologies.
 
-</p>
+</div>
