@@ -38,7 +38,7 @@ Reference the [AnotherRaspberryPiBuild](https://github.com/TreadSoftly/Projects/
 
 ![Setup](https://github.com/TreadSoftly/Projects/assets/121847455/c8747ec0-4e4a-4781-9b97-e4b19b4adb8b)
 
-SOURCE Picture ![AeroSpace](https://www.mdpi.com/2226-4310/9/12/738)
+[![AeroSpace Article](https://www.mdpi.com/aerospace/aerospace-09-00738/article_deploy/html/images/aerospace-09-00738-g001-550.jpg)](https://www.mdpi.com/2226-4310/9/12/738 "Low-Cost Raspberry-Pi-Based UAS Detection and Classification System Using Machine Learning")
 
 # 
 
@@ -49,8 +49,10 @@ SOURCE Picture ![AeroSpace](https://www.mdpi.com/2226-4310/9/12/738)
 
 ![RF Analysis](https://github.com/TreadSoftly/Projects/assets/121847455/66947de1-0139-4071-894a-103e4e5d721f)
 
-VIDEO SOURCE: ![DragonOS](https://www.youtube.com/watch?v=fT4xAdfLYcY)
+VIDEO SOURCE: [![DragonOS](http://img.youtube.com/vi/fT4xAdfLYcY/0.jpg)](https://www.youtube.com/watch?v=fT4xAdfLYcY "DragonOS Tutorial")
+
 #
+
 ### 🚁 Advanced Drone Countermeasures
 Recent advancements in DJI and other high-end drone hardware and software, preparing for both current and emergent threats.
 
