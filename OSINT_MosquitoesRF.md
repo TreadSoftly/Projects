@@ -94,7 +94,10 @@ Access in-depth research and comprehensive guides focusing on AI/ML for enhanced
 
 #
   
-## 🚀 Continuous Learning & Growth
+## 🚀 Continuous Learning & Growth (Snapshots of some of the core counter UAV programming code came from below. Alot of testing is still underway for the code I am working on from these and other coding refrences. For now, just some pictures of the source starting point ideas)
 This repository is a living document, continuously updated with the latest advancements in Counter RF & SIGINT AI/LM technologies.
+![image](https://github.com/TreadSoftly/Projects/assets/121847455/00fc0626-7c49-4bec-b627-ceaa003c017c)
+![image](https://github.com/TreadSoftly/Projects/assets/121847455/9467d8bb-8d8c-4f8d-8c19-74ff5900aaae)
+![image](https://github.com/TreadSoftly/Projects/assets/121847455/0c30c924-9fb0-4ce9-aa8b-1f7ba4423381)
 
 </div>
