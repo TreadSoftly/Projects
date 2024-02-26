@@ -72,11 +72,10 @@ This section is for understanding the practical and theoretical aspects of SIGIN
 
 ![Guides and Documentation](https://github.com/TreadSoftly/Projects/assets/121847455/13a4d9ef-e76c-48e9-8ac4-17520701102f)
 
-![Layout](https://github.com/TreadSoftly/Projects/assets/121847455/bbcc2a1e-83e6-48f4-832a-141d2d3810bc)
 
 ## 🧪 Setups
 Practical applications of our research and tools in real-world scenarios.
-
+![Layout](https://github.com/TreadSoftly/Projects/assets/121847455/bbcc2a1e-83e6-48f4-832a-141d2d3810bc)
 ![Setup](https://github.com/TreadSoftly/Projects/assets/121847455/c8747ec0-4e4a-4781-9b97-e4b19b4adb8b)
 
 ## 🛠️ Toolkit and Equipment
