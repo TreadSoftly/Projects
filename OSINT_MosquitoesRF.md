@@ -1,5 +1,4 @@
 <p align="center">
-
 # Counter RF & SIGINT AI/LM Research/Labs
 
 ## 🔰 Starter Guide
@@ -21,7 +20,6 @@ The study and tactical application of Counter RF and SIGINT strategies, this rep
 - [📘 Detailed Guides and Documentation](#-detailed-guides-and-documentation)
 - [🎨 Aesthetic and Functional Layout](#-aesthetic-and-functional-layout)
 - [🧪 Experimental Setups](#-experimental-setups)
-
 </p>
 
 <p align="center">
