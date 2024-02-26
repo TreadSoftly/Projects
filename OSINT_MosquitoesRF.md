@@ -44,10 +44,12 @@ The study and tactical application of Counter RF and SIGINT strategies, this rep
 ### 🥧 Raspberry Pi Builds 🛠️ Tools and Equipment
 Develop a custom Raspberry Pi platform designed for RF analysis, utilizing insights from the Aerospace 2022 report. These builds provide a hands-on approach to monitoring and signal interception.
 
+![Components](https://github.com/TreadSoftly/Projects/assets/121847455/4895358d-550e-4eb1-a232-7e61b0e0ec73)
+#
 ![Raspberry Pi Setup](https://github.com/TreadSoftly/Projects/assets/121847455/bbcc2a1e-83e6-48f4-832a-141d2d3810bc)
-
+#
 Reference the [AnotherRaspberryPiBuild](https://github.com/TreadSoftly/Projects/blob/main/AnotherRaspberryPiBuild.md) for granular details on assembly and configuration.
-
+#
 ![Setup](https://github.com/TreadSoftly/Projects/assets/121847455/c8747ec0-4e4a-4781-9b97-e4b19b4adb8b)
 
 </div>
