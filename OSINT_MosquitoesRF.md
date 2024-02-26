@@ -8,5 +8,8 @@ Instantly hate the sound/noise/frequencies and want to take them out. So lets bu
 Starter Guide
 (resource dump until I can organize this repo into a well laid out document)
 
+PLEASE REFERENCE RASPBERRY PI BUILD IN GITHUB REPO FOR AN INDEPTH UNDERSTANDING ON COMPONENTS AND CONFIGURATIONS
+https://github.com/TreadSoftly/Projects/blob/main/AnotherRaspberryPiBuild.md
+
 Scrappy "cheap-ish" RaspberryPi Build based off of AeroSpace White Page 2022 report
 ![image](https://github.com/TreadSoftly/Projects/assets/121847455/c8747ec0-4e4a-4781-9b97-e4b19b4adb8b)
