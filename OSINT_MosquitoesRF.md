@@ -58,15 +58,17 @@ VIDEO SOURCE: YouTube -->
 Recent advancements in DJI and other high-end drone hardware and software, preparing for both current and emergent threats.
 SDR with with visual aids for achieving precise signal analysis.
 
+![Integration](https://github.com/TreadSoftly/Projects/assets/121847455/1e34ec02-524c-4d0a-9bef-6c37a26303a6)
+
 ![SDR Configuration](https://github.com/TreadSoftly/Projects/assets/121847455/cb5a9443-e099-43ba-83f7-20c9416edce8)
+
+#
 
 ## 🤖 📖 📄 Research PapersDetailed Guides and Documentation AI/ML Integration 
 Research papers that dig into the integration and leveraging of machine learning for drone detection and classification.
 
 AI/ML in UAS detection and classification systems. Helping refine detection accuracy and response times.
 This section is for understanding the practical and theoretical aspects of SIGINT and Counter RF operations.
-
-![Integration](https://github.com/TreadSoftly/Projects/assets/121847455/1e34ec02-524c-4d0a-9bef-6c37a26303a6)
 
 ![Guides and Documentation](https://github.com/TreadSoftly/Projects/assets/121847455/13a4d9ef-e76c-48e9-8ac4-17520701102f)
 SOURCE: https://www.mdpi.com/2226-4310/9/12/738
