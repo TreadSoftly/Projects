@@ -27,19 +27,18 @@ Begin with comprehensive guides that establish a fundamental understanding of RF
 
 ## 🚀 Project Highlights
 
-### 🥧 Raspberry Pi Builds
-Develop a custom Raspberry Pi platform designed for meticulous RF analysis, drawing from the insights of the Aerospace 2022 report. These builds provide a hands-on approach to monitoring and signal interception.
+### 🥧 Raspberry Pi Builds 🛠️ Tools and Equipment
+Tools and equipment that form SIGINT and Counter RF operations.
+Develop a custom Raspberry Pi platform designed for RF analysis, utilizing one of many materials one of which being of the Aerospace 2022 report. These builds provide a hands-on approach to monitoring and signal interception.
 
 ![Raspberry Pi Setup](https://github.com/TreadSoftly/Projects/assets/121847455/bbcc2a1e-83e6-48f4-832a-141d2d3810bc)
  
 Reference the [AnotherRaspberryPiBuild](https://github.com/TreadSoftly/Projects/blob/main/AnotherRaspberryPiBuild.md) for granular details on assembly and configuration.
-
 #
-
 ![Setup](https://github.com/TreadSoftly/Projects/assets/121847455/c8747ec0-4e4a-4781-9b97-e4b19b4adb8b)
 
-
 ##
+
 
 ### 📡 Gqrx SDR
 [Gqrx SDR](https://www.gqrx.dk/), a sophisticated, open-source platform for real-time signal acquisition and analysis, pivotal for understanding the airwaves and electronic landscapes.
@@ -51,19 +50,14 @@ Reference the [AnotherRaspberryPiBuild](https://github.com/TreadSoftly/Projects/
 VIDEO SOURCE: YouTube -->
 [![DragonOS Video](https://img.youtube.com/vi/fT4xAdfLYcY/0.jpg)](https://www.youtube.com/watch?v=fT4xAdfLYcY "DragonOS Focal - YouTube")
 
+
 #
+
 
 ### 🚁 Advanced Drone Countermeasures
 Recent advancements in DJI and other high-end drone hardware and software, preparing for both current and emergent threats.
 
 ![High-End Drone](https://github.com/TreadSoftly/Projects/assets/121847455/1e34ec02-524c-4d0a-9bef-6c37a26303a6)
-
-
-## 🛠️ Tools and Equipment
-Tools and equipment that form SIGINT and Counter RF operations.
-
-![Tools and Equipment](https://github.com/TreadSoftly/Projects/assets/121847455/c8747ec0-4e4a-4781-9b97-e4b19b4adb8b)
-
 
 
 ## 🎚️ SDR Configuration
