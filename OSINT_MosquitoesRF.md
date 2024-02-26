@@ -38,7 +38,7 @@ Reference the [AnotherRaspberryPiBuild](https://github.com/TreadSoftly/Projects/
 
 ![Setup](https://github.com/TreadSoftly/Projects/assets/121847455/c8747ec0-4e4a-4781-9b97-e4b19b4adb8b)
 
-SOURCE Picture [AeroSpace]([https://www.mdpi.com/2226-4310/9/12/738](https://www.mdpi.com/2226-4310/9/12/738))
+SOURCE Picture ![AeroSpace](https://www.mdpi.com/2226-4310/9/12/738)
 
 # 
 
@@ -49,15 +49,13 @@ SOURCE Picture [AeroSpace]([https://www.mdpi.com/2226-4310/9/12/738](https://www
 
 ![RF Analysis](https://github.com/TreadSoftly/Projects/assets/121847455/66947de1-0139-4071-894a-103e4e5d721f)
 
-VIDEO SOURCE: https://www.youtube.com/watch?v=fT4xAdfLYcY
+VIDEO SOURCE: ![DragonOS](https://www.youtube.com/watch?v=fT4xAdfLYcY)
 #
 ### 🚁 Advanced Drone Countermeasures
 Recent advancements in DJI and other high-end drone hardware and software, preparing for both current and emergent threats.
 
 ![High-End Drone](https://github.com/TreadSoftly/Projects/assets/121847455/1e34ec02-524c-4d0a-9bef-6c37a26303a6)
 
-## ⚙️ Installation and Usage
-Setup and usage documentation for each project, move from setup to operation.
 
 ## 🛠️ Tools and Equipment
 Tools and equipment that form SIGINT and Counter RF operations.
