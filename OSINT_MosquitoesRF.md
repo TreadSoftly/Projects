@@ -66,8 +66,28 @@ SDR with with visual aids for achieving precise signal analysis.
 ![SDR Configuration](https://github.com/TreadSoftly/Projects/assets/121847455/cb5a9443-e099-43ba-83f7-20c9416edce8)
 
 #
+#
+#
+#
 
-## 🤖 📖 📄 Research PapersDetailed Guides and Documentation AI/ML Integration 
+
+## 🧠 Research Papers & 📚 Documentation - AI/ML Integration 
+Access research papers focusing on machine learning for enhanced drone detection and classification, alongside comprehensive guides for SIGINT and Counter RF operations.
+
+![Research Paper](https://github.com/TreadSoftly/Projects/assets/121847455/13a4d9ef-e76c-48e9-8ac4-17520701102f)
+[Read the full paper](https://www.mdpi.com/2226-4310/9/12/738)
+
+## 📡 AeroSpace MDPI Article
+For detailed insights on UAS detection systems, view the AeroSpace MDPI article. Click the image for the full read.
+
+[![AeroSpace MDPI](https://github.com/TreadSoftly/Projects/blob/main/assets/aerospace-logo.webp)](https://www.mdpi.com/2226-4310/9/12/738 "Low-Cost Raspberry-Pi-Based UAS Detection and Classification System Using Machine Learning")
+
+
+
+#
+#
+#
+## 🤖 📖 📄 Research Papers Detailed Guides and Documentation AI/ML Integration 
 Research papers that dig into the integration and leveraging of machine learning for drone detection and classification.
 
 AI/ML in UAS detection and classification systems. Helping refine detection accuracy and response times.
