@@ -3,7 +3,7 @@
 ## The noise of mosquitoes irritates me about as much as hearing drones overhead when I was on patrol in country. 
 (Was it a good guy drone? Was it a bad guy drone? Who knows, cross your fingers!) 
 I have always instantly hated the sound/noise/frequencies and want to take them down. 
-So lets build some things to do just that...for the drones of course, Bill Gates is the one working on the mosquitoes still.
+So let's build some things to do just that...for the drones of course, Bill Gates is the one working on the mosquitoes still.
 
 ## (FOR NOW this will be a resource dump until I can organize this repo into a well laid out document)
 
@@ -16,18 +16,21 @@ Begin with comprehensive guides that establish a fundamental understanding of RF
 The study and tactical application of Counter RF and SIGINT strategies, this repository emphasizes the integration of Artificial Intelligence (AI) and Machine Learning (ML) for the disruption and neutralization of unauthorized drone operations.
 
 ## 📑 Table of Contents
-- [🔍 Overview](#-overview)
-- [🔰 Starter Guide](#-starter-guide)
-- [🚀 Project Highlights](#-project-highlights)
-- [⚙️ Installation and Usage](#-installation-and-usage)
-- [🛠️ Tools and Equipment](#-tools-and-equipment)
-- [📄 Research Papers](#-research-papers)
-- [🔬 RF Analysis in Action](#-rf-analysis-in-action)
-- [🎚️ SDR Configuration](#-sdr-configuration)
-- [🤖 AI/ML Integration](#-aiml-integration)
-- [📘 Detailed Guides and Documentation](#-detailed-guides-and-documentation)
-- [🎨 Aesthetic and Functional Layout](#-aesthetic-and-functional-layout)
-- [🧪 Experimental Setups](#-experimental-setups)
+
+<ul style="list-style-type: none; padding: 0; text-align: left;">
+  <li><a href="#-overview">🔍 Overview</a></li>
+  <li><a href="#-starter-guide">🔰 Starter Guide</a></li>
+  <li><a href="#-project-highlights">🚀 Project Highlights</a></li>
+  <li><a href="#-installation-and-usage">⚙️ Installation and Usage</a></li>
+  <li><a href="#-tools-and-equipment">🛠️ Tools and Equipment</a></li>
+  <li><a href="#-research-papers">📄 Research Papers</a></li>
+  <li><a href="#-rf-analysis-in-action">🔬 RF Analysis in Action</a></li>
+  <li><a href="#-sdr-configuration">🎚️ SDR Configuration</a></li>
+  <li><a href="#-aiml-integration">🤖 AI/ML Integration</a></li>
+  <li><a href="#-detailed-guides-and-documentation">📘 Detailed Guides and Documentation</a></li>
+  <li><a href="#-aesthetic-and-functional-layout">🎨 Aesthetic and Functional Layout</a></li>
+  <li><a href="#-experimental-setups">🧪 Experimental Setups</a></li>
+</ul>
   
 </div>
 
