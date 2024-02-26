@@ -1,4 +1,11 @@
 <p align="center">
+  ## The noise of mosquitoes irritates me about as much as hearing drones overhead when I was on patrol in country. 
+(Was it a good guy drone? Was it a bad guy drone? Who knows, cross your fingers!) 
+I have always instantly hated the sound/noise/frequencies and want to take them down. 
+So lets build some things to do just that...for the drones of course, Bill Gates is the one working on the mosquitoes still.
+
+## (FOR NOW this will be a resource dump until I can organize this repo into a well laid out document)
+
 # Counter RF & SIGINT AI/LM Research/Labs
 
 ## 🔰 Starter Guide
