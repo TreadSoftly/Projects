@@ -75,7 +75,7 @@ Access research papers focusing on machine learning for enhanced drone detection
 **SOURCE:** [Read the Research Paper on MDPI](https://www.mdpi.com/2226-4310/9/12/738)
 
 **IMAGES SOURCED: AeroSpace MDPI**
-[AeroSpace Article](https://www.mdpi.com/2226-4310/9/12/738)
+[![AeroSpace Article](https://www.mdpi.com/aerospace/aerospace-09-00738/article_deploy/html/images/aerospace-09-00738-g001-550.jpg)](https://www.mdpi.com/2226-4310/9/12/738 "Low-Cost Raspberry-Pi-Based UAS Detection and Classification System Using Machine Learning")
 ##
 
 ## 🚀 Living Document for Continous Growth in this Area of Tech
