@@ -38,7 +38,7 @@ Reference the [AnotherRaspberryPiBuild](https://github.com/TreadSoftly/Projects/
 
 ![Setup](https://github.com/TreadSoftly/Projects/assets/121847455/c8747ec0-4e4a-4781-9b97-e4b19b4adb8b)
 
-SOURCE Picture ![AeroSpace]([https://www.mdpi.com/2226-4310/9/12/738](https://www.mdpi.com/2226-4310/9/12/738))
+SOURCE Picture [AeroSpace]([https://www.mdpi.com/2226-4310/9/12/738](https://www.mdpi.com/2226-4310/9/12/738))
 
 # 
 
@@ -46,6 +46,8 @@ SOURCE Picture ![AeroSpace]([https://www.mdpi.com/2226-4310/9/12/738](https://ww
 [Gqrx SDR](https://www.gqrx.dk/), a sophisticated, open-source platform for real-time signal acquisition and analysis, pivotal for understanding the airwaves and electronic landscapes.
 
 ![Gqrx SDR Interface](https://github.com/TreadSoftly/Projects/assets/121847455/310d9fce-338e-4a51-8cff-4ec1639feb89)
+
+![RF Analysis](https://github.com/TreadSoftly/Projects/assets/121847455/66947de1-0139-4071-894a-103e4e5d721f)
 
 VIDEO SOURCE: https://www.youtube.com/watch?v=fT4xAdfLYcY
 #
@@ -62,10 +64,7 @@ Tools and equipment that form SIGINT and Counter RF operations.
 
 ![Tools and Equipment](https://github.com/TreadSoftly/Projects/assets/121847455/c8747ec0-4e4a-4781-9b97-e4b19b4adb8b)
 
-## 🔬 RF Analysis in Action
-Visualize RF analysis with detailed imagery that captures the utility and application of the featured tools in real-world scenarios.
 
-![RF Analysis](https://github.com/TreadSoftly/Projects/assets/121847455/66947de1-0139-4071-894a-103e4e5d721f)
 
 ## 🎚️ SDR Configuration
 SDR with with visual aids for achieving precise signal analysis.
