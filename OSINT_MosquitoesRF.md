@@ -54,13 +54,8 @@ VIDEO SOURCE: YouTube -->
 #
 
 
-### 🚁 Advanced Drone Countermeasures
+### 🚁 🎚️ SDR Configuration & Advanced Drone Countermeasures
 Recent advancements in DJI and other high-end drone hardware and software, preparing for both current and emergent threats.
-
-![High-End Drone](https://github.com/TreadSoftly/Projects/assets/121847455/1e34ec02-524c-4d0a-9bef-6c37a26303a6)
-
-
-## 🎚️ SDR Configuration
 SDR with with visual aids for achieving precise signal analysis.
 
 ![SDR Configuration](https://github.com/TreadSoftly/Projects/assets/121847455/cb5a9443-e099-43ba-83f7-20c9416edce8)
