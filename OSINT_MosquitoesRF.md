@@ -4,9 +4,10 @@
 (Was it a good guy drone? Was it a bad guy drone? Who knows, cross your fingers!) 
 I have always instantly hated the sound/noise/frequencies and want to take them down. 
 So let's build some things to do just that...for the drones of course, Bill Gates is the one working on the mosquitoes still.
+(FOR NOW this will be a resource dump until I can organize this repo into a well laid out document)
 
-## (FOR NOW this will be a resource dump until I can organize this repo into a well laid out document)
-
+#
+  
 # Counter RF & SIGINT AI/LM Research/Labs
 
 ## 🔰 Starter Guide
@@ -78,6 +79,8 @@ Stay ahead with the latest updates in drone technology and prepare for both curr
 
 <div align="center">
 
+#
+  
 ## 🧠 Research Papers & 📚 Detailed Guides - AI/ML Integration 
 Access in-depth research and comprehensive guides focusing on AI/ML for enhanced drone detection and classification.
 
@@ -88,6 +91,8 @@ Access in-depth research and comprehensive guides focusing on AI/ML for enhanced
 
 <div align="center">
 
+#
+  
 ## 🚀 Continuous Learning & Growth
 This repository is a living document, continuously updated with the latest advancements in Counter RF & SIGINT AI/LM technologies.
 
