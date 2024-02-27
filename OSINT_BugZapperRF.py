@@ -67,8 +67,15 @@ def main():
         uavIntercept.emergencyland()
 
 if __name__ == '__main__':
-    
-    
+
+
+
+
+
+
+
+################################################################################
+    #Currently working based off of previous core code
     
     ### UPDATED TO TEST FOR 2023 Leveraging AI For Research and Study
     ### More Options For Updated Drone RF Tech
