@@ -1,3 +1,6 @@
+**PROGRESS OF WORK FOR THE BUGZAPPER SCRIPTS CURRENTLY BEING WORKED ON**
+
+
 ## Table of Contents 📚
 - [Introduction](#introduction)
 - [Script Breakdown](#script-breakdown)
