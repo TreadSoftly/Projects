@@ -4,13 +4,35 @@
 
 ## *GPTS I will cover include:*
 
-**1st ~ Hephaestus (Maker/DIY) Try it> https://chat.openai.com/g/g-UFGHgXtLd-hephaistos**
+**1st ~ Hephaestus (Maker/DIY) Try it>** [https://chat.openai.com/g/g-UFGHgXtLd-hephaistos](https://chat.openai.com/g/g-UFGHgXtLd-hephaistos)
 
-**2nd ~ Prometheus (Data Analysis, Programming & Higher Education) Try it> https://chat.openai.com/g/g-17aLBY4Iw-prome-theus**
+<p align="center">
+  <img src="https://github.com/TreadSoftly/Projects/assets/121847455/bb562900-1e15-4c2d-98f4-b6b8cbdfff50" alt="Hephaestus" width="100"/>
+</p>
 
-**3rd ~ Adonis (All things Fitness, Voice Health/Life Coach, Images) Try it> https://chat.openai.com/g/g-OBvYd2KHw-adones**
+#
 
-**4th ~ Diogenes (Dickhead Philosopher) Try it> https://chat.openai.com/g/g-5phe0BAuc-daiadzini-z**
+**2nd ~ Prometheus (Data Analysis, Programming & Higher Education) Try it>** [https://chat.openai.com/g/g-17aLBY4Iw-prome-theus](https://chat.openai.com/g/g-17aLBY4Iw-prome-theus)
+
+<p align="center">
+  <img src="https://github.com/TreadSoftly/Projects/assets/121847455/096402bf-f3fe-42d7-a46a-58e3c7057dc8" alt="Prometheus" width="100"/>
+</p>
+
+#
+
+**3rd ~ Adonis (All things Fitness, Voice Health/Life Coach, Images) Try it>** [https://chat.openai.com/g/g-OBvYd2KHw-adones](https://chat.openai.com/g/g-OBvYd2KHw-adones)
+
+<p align="center">
+  <img src="https://github.com/TreadSoftly/Projects/assets/121847455/114ba9d7-d57f-4962-af78-5bcebac2c330" alt="Adonis" width="100"/>
+</p>
+
+#
+
+**4th ~ Diogenes (Dickhead Philosopher) Try it>** [https://chat.openai.com/g/g-5phe0BAuc-daiadzini-z](https://chat.openai.com/g/g-5phe0BAuc-daiadzini-z)
+
+<p align="center">
+  <img src="https://github.com/TreadSoftly/Projects/assets/121847455/3703dc34-f696-4efe-b106-462d50b444b3" alt="Diogenes" width="100"/>
+</p>
 
 #
 
