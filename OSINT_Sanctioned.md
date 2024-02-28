@@ -25,6 +25,23 @@ Purely to show the use cases of the OSINT tools I have used and devoled.
 
 Tools involved include:
 <h1 align='center'>
+
+
+
+**NMAP IS KING (zenmap is pretty)**
+</h1> 
+
+![NMAP](https://github.com/TreadSoftly/Projects/assets/121847455/dcbbccc3-7f32-4e21-bb61-2da706ccd6a7)
+![ZenMAP_kbx_Installing](https://github.com/TreadSoftly/Projects/assets/121847455/72d18e33-891e-4bc7-990e-784bf697983f)
+![ZenMAP](https://github.com/TreadSoftly/Projects/assets/121847455/a3e4e7d7-7ace-4b98-9248-32a019c7da66)
+
+<br>
+<br>
+
+<h1 align='center'>
+
+ <p>
+
  
 **Recon-NG**
 </h1> 
