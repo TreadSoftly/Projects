@@ -14,8 +14,8 @@
 
 #
 
-# I createed Hephaestus because I wanted to see if I could start designing amature micro jet engines (I have absolutely no training or hands on experience at all in this...I may lose some fingers in the future, but I'm cool with that)
-
+ # I created Hephaestus because I wanted to see if I could start designing amature micro jet engines (I have absolutely no training or hands on experience at all in this...I may lose some fingers in the future, but I'm cool with that)
+ 
 ## 1st Hephaestus 
 
 ![Screenshot 2024-02-28 020131](https://github.com/TreadSoftly/Projects/assets/121847455/0c78ac86-2a92-4cbe-9160-05f3d36ef936)
