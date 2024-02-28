@@ -62,7 +62,7 @@ Tools involved include:
 
 <h1 align='center'>
 
- SpiderPhoot
+ **SpiderFoot**
 
 ![SPIDERFOOT_Hunt](https://github.com/TreadSoftly/Projects/assets/121847455/8d99e429-8442-48cb-8eca-4bc1e9f40bcd)
 ![SPIDERFOOT-LINKS](https://github.com/TreadSoftly/Projects/assets/121847455/07e9c9d4-be52-4782-bf2c-95091a2a2858)
