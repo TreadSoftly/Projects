@@ -1,5 +1,5 @@
 # Custom GPTs this will cover structuring APIs from the document page to testing
-## **GPTS I will cover include: 1st Hephaestus (Maker/DIY) AI | 2nd Prometheus (Data Analysis, Programming & Higher Education) | 3rd Adonis (All things Fitness, Voice Health/Life Coach, Images) | 4th Diagonese (Dickhead Philosopher)**
+## **GPTS I will cover include: 1st Hephaestus (Maker/DIY) AI | 2nd Prometheus (Data Analysis, Programming & Higher Education) | 3rd Adonis (All things Fitness, Voice Health/Life Coach, Images) | 4th Diogenes (Dickhead Philosopher)**
 # I createed Hephaestus because I wanted to see if I could start designing amature micro jet engines (I have absolutely no training or hands on experience at all in this...I may lose some fingers in the future, but I'm cool with that)
 
 ## 1st Hephaestus 
