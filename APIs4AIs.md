@@ -29,7 +29,7 @@
 #
 
 **4th ~ Diogenes (Jerk Philosopher) Try it>** [https://chat.openai.com/g/g-5phe0BAuc-daiadzini-z](https://chat.openai.com/g/g-5phe0BAuc-daiadzini-z)
-
+If you get the chicken joke, points for you!
 <p align="center">
   <img src="https://github.com/TreadSoftly/Projects/assets/121847455/3703dc34-f696-4efe-b106-462d50b444b3" alt="Diogenes" width="100"/>
 </p>
