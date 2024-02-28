@@ -1,6 +1,8 @@
 # Custom GPTs this will cover structuring APIs from the document page to testing
+## **GPTS I will cover include: 1st Hephaestus (Maker/DIY) AI | 2nd Prometheus (Data Analysis, Programming & Higher Education) | 3rd Adonis (All things Fitness, Voice Health/Life Coach, Images) | 4th Diagonese (Dickhead Philosopher)
 # I createed Hephaestus because I wanted to see if I could start designing amature micro jet engines (I have absolutely no training or hands on experience at all in this...I may lose some fingers in the future, but I'm cool with that)
 
+## 1st Hephaestus 
 # **Hephaestus is my Maker/DIY AI I use for everything from woodworking, autocad, 3D, Imaging and now Fashion with Pinterest (I'm kidding Pinterest is actually incredible resource for Makers and DYers)**
 
 ![PinterestAPI](https://github.com/TreadSoftly/Projects/assets/121847455/59fe2743-ac69-4e78-bea5-ba0bcbfea853)
