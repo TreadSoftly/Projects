@@ -59,7 +59,7 @@
 
 ##
 
-# **I'm too tired right now to finish this it'll just be more in depth of what Hepheastus has been made only a larger deep dive into the actual APIs and configurations since Prometheus is the core build of my AIs**
+# **I'm too tired right now to finish this it'll just be more in depth of what Hephaestus has been made only a larger deep dive into the actual APIs and configurations since Prometheus is the core build of my AIs**
 
 #
 
