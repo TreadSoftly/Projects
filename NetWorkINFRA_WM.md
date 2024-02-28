@@ -4,5 +4,4 @@ Get into topology, the components, setting them up, configuring and securing wit
 
 #
 **The Big View**
-![WallMart Infrastructure Build](https://github.com/TreadSoftly/Projects/assets/121847455/d9ebfd22-1b24-430f-87f9-972ab095d474)
 ![WallyWorld](https://github.com/TreadSoftly/Projects/assets/121847455/55aa8ff4-f716-408c-9c9f-a95a220d99fb)
