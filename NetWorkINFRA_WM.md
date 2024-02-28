@@ -14,3 +14,6 @@ root@Toolbox-1:~# whoami
 #
 Root is Daddy
 ![image](https://github.com/TreadSoftly/Projects/assets/121847455/054c03bb-074d-45cc-a94d-cd5175ef6274)
+
+ALL those tabs are devices that need to and will be givin startup & running configs
+#
