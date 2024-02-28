@@ -1,4 +1,5 @@
 # Recently updated, still trying to make the version 1 open source code better as it will be the core code for setting up and running Kali Boxes for in field use
+# Working on a forced prompt to input and update new admin ID and password as well as changing the default ssh keys and anything else posing as an initial vulnerability risk mitigated right out the gate. 
 
 function asdf() {
     # Set colors for formatting output
