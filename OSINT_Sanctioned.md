@@ -19,6 +19,7 @@ Public link to Attack Drone Research To Help Aid With Route Safety
   - https://github.com/TreadSoftly/Projects/blob/main/OSINT_PaperPlanes.md
 <br>
 
+
 Covering some OSINT work involving files of sanctioned profiles.
 Purely to show the use cases of the OSINT tools I have used and devoled. 
 
@@ -29,6 +30,8 @@ Tools involved include:
 </h1> 
 
 ![OSINT_ReconNG](https://github.com/TreadSoftly/Projects/assets/121847455/3b38554f-5a5c-4fe8-b8c6-1843cac82564)
+![OSINT_ReconNG_ReconComplete](https://github.com/TreadSoftly/Projects/assets/121847455/7bc11662-d59b-4d27-995f-e34fd1d7dec2)
+
 <br>
 <br>
 
