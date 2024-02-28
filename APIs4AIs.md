@@ -48,5 +48,25 @@
 
 
 
+## 2nd: Prometheus
+
+![Screenshot 2024-02-28 020234](https://github.com/TreadSoftly/Projects/assets/121847455/eccc81f3-e611-4dd8-99d6-faa794c0e8cd)
+![Screenshot 2024-02-28 020220](https://github.com/TreadSoftly/Projects/assets/121847455/24862656-ff63-483f-98e7-63adcfcc4912)
+
+#
+
+# **Prometheus is my all around smarty pants AI I use for everything from number crunching, data analysis, programming and anytime I want to ask Google something I first turn to this guy now instead and get much more potent and thorough answers. He's a gem**
+
+##
+
+# **I'm too tired right now to finish this it'll just be more in depth of what Hepheastus has been made only a larger deep dive into the actual APIs and configurations since Prometheus is the core build of my AIs**
+
+#
+
+
+
+
+
+
 
 
