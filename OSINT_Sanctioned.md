@@ -51,6 +51,9 @@ Tools involved include:
  SpiderPhoot
 
 ![SPIDERFOOT_Hunt](https://github.com/TreadSoftly/Projects/assets/121847455/8d99e429-8442-48cb-8eca-4bc1e9f40bcd)
+![SPIDERFOOT-LINKS](https://github.com/TreadSoftly/Projects/assets/121847455/07e9c9d4-be52-4782-bf2c-95091a2a2858)
+![SPIDERFOOT-DigitalFootPrint](https://github.com/TreadSoftly/Projects/assets/121847455/dd53fa53-ef01-4d50-ba42-a9715c01dfe6)
+
 </h1>
  <br>
 <br>
