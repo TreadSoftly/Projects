@@ -1,7 +1,7 @@
 #Custom GPTs this will cover structuring APIs from the document page to testing
-## I createed Hephaestus because I wanted to see if I could start designing amature micro jet engines (I have absolutely no training or hands on experience at all in this...I may lose some fingers in the future, but I'm cool with that)
+#I createed Hephaestus because I wanted to see if I could start designing amature micro jet engines (I have absolutely no training or hands on experience at all in this...I may lose some fingers in the future, but I'm cool with that)
 
-**Hephaestus is my Maker/DIY AI I use for everything from woodworking, autocad, 3D, Imaging and now Fashion with Pinterest (I'm kidding Pinterest is actually incredible resource for Makers and DYers)**
+#Hephaestus is my Maker/DIY AI I use for everything from woodworking, autocad, 3D, Imaging and now Fashion with Pinterest (I'm kidding Pinterest is actually incredible resource for Makers and DYers)**
 
 ![PinterestAPI](https://github.com/TreadSoftly/Projects/assets/121847455/59fe2743-ac69-4e78-bea5-ba0bcbfea853)
 
@@ -16,7 +16,7 @@
 ![Screenshot 2024-02-28 020458](https://github.com/TreadSoftly/Projects/assets/121847455/97e06422-6e92-4253-9f94-95a9315ef740)
 
 #
-**He's got the idea, this is all fantazy pictures but I wanted to see if he could detail tiny parts and make something LOOK like something. It didnt have to be accurate at this stage**
+**He's got the idea, this is all fantasy pictures but I wanted to see if he could detail tiny parts and make something LOOK like something. It didn't have to be accurate at this stage**
 
 ![Screenshot 2024-02-28 020447](https://github.com/TreadSoftly/Projects/assets/121847455/33dcc59e-3bef-49e4-93bc-9719d29bd1ac)
 ![Screenshot 2024-02-28 020518](https://github.com/TreadSoftly/Projects/assets/121847455/caaee078-9f2d-49d9-a913-23dfc3595044)
