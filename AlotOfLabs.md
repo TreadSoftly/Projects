@@ -10,6 +10,7 @@
 <h1 align="center"> MR. ROBOT </h1>
 
 ![mrROBOT](https://github.com/TreadSoftly/Projects/assets/121847455/3317b223-840f-4ac8-a0d8-25e5fc52d26b)
+![image](https://github.com/TreadSoftly/Projects/assets/121847455/6104501f-5be9-4998-88ce-74afeff347bb)
 
 <p>Instillation is pretty straight forward with this. </p>
 <p>ISSUE: Ran into virus detected and canceled anytime tried to download</p>
