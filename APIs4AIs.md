@@ -1,4 +1,6 @@
-# Custom GPTs this will cover structuring APIs from the document page to testing (please know that these get tinkered on periodically so if stuff doesnt work or its just frustrating, I dont know - Welcome to Ai?
+# Custom GPTs this will cover structuring APIs from the document page to testing 
+
+## Please know that these get tinkered on periodically so if stuff doesnt work or its just frustrating, I dont know - Welcome to Ai?
 
 ## *GPTS I will cover include:*
 
