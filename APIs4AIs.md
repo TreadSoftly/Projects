@@ -26,3 +26,15 @@
 **Hephaestus getting some actual APIs plugged and configured so he can start making ideas come into a more accurate light**
 
 ![Screenshot 2024-02-28 020541](https://github.com/TreadSoftly/Projects/assets/121847455/d8121540-c6b1-4cb6-a1c2-263516003ed7)
+
+#
+
+**For the core instructions I see almost every single person writing paragraphs and all that nonsense trying to give the best instructions for the AI to follow.**
+**Well an ai doesnt need to read things like humans and you can actually compact more potent and powerful instructions by just writing it out like machine code, no spaces and no filler words.**
+
+![Screenshot 2024-02-28 020434](https://github.com/TreadSoftly/Projects/assets/121847455/8f301bf3-e41a-46fd-8c16-55913f2ce0bd)
+
+
+
+
+
