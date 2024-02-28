@@ -23,6 +23,7 @@
 ![Screenshot 2024-02-28 020458](https://github.com/TreadSoftly/Projects/assets/121847455/97e06422-6e92-4253-9f94-95a9315ef740)
 
 #
+
 **He's got the idea, this is all fantasy pictures but I wanted to see if he could detail tiny parts and make something LOOK like something. It didn't have to be accurate at this stage**
 
 ![Screenshot 2024-02-28 020447](https://github.com/TreadSoftly/Projects/assets/121847455/33dcc59e-3bef-49e4-93bc-9719d29bd1ac)
@@ -31,6 +32,12 @@
 **Hephaestus getting some actual APIs plugged and configured so he can start making ideas come into a more accurate light**
 
 ![Screenshot 2024-02-28 020541](https://github.com/TreadSoftly/Projects/assets/121847455/d8121540-c6b1-4cb6-a1c2-263516003ed7)
+
+#
+
+**Hephaestus and the rest of my GPT AIs now getting some terminal love through my Kali box because I wanted to involve them into more programming issues.**
+
+![Screenshot 2024-02-28 020404](https://github.com/TreadSoftly/Projects/assets/121847455/9aa49f73-a4fc-450e-8ae2-5f641b069f6f)
 
 #
 
