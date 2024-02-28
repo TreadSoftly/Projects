@@ -35,7 +35,7 @@
 
 #
 
-**Hephaestus and the rest of my GPT AIs now getting some terminal love through my Kali box because I wanted to involve them into more programming issues.**
+**Hephaestus and the rest of my GPT AIs now getting some terminal love through my Kali box because I wanted to involve them into more programming issues when testing programs/projects down the road.**
 
 ![Screenshot 2024-02-28 020404](https://github.com/TreadSoftly/Projects/assets/121847455/9aa49f73-a4fc-450e-8ae2-5f641b069f6f)
 
