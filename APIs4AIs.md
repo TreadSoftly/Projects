@@ -4,7 +4,7 @@
 
 ## *GPTS I will cover include:*
 
-**1st ~ #Hephaestus (Maker/DIY) Try it>** [https://chat.openai.com/g/g-UFGHgXtLd-hephaistos](https://chat.openai.com/g/g-UFGHgXtLd-hephaistos)
+**1st ~ Hephaestus (Maker/DIY) Try it>** [https://chat.openai.com/g/g-UFGHgXtLd-hephaistos](https://chat.openai.com/g/g-UFGHgXtLd-hephaistos)
 
 <p align="center">
   <img src="https://github.com/TreadSoftly/Projects/assets/121847455/bb562900-1e15-4c2d-98f4-b6b8cbdfff50" alt="Hephaestus" width="100"/>
