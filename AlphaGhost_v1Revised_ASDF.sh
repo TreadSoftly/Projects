@@ -1,3 +1,5 @@
+# Recently updated, still trying to make the version 1 open source code better as it will be the core code for setting up and running Kali Boxes for in field use
+
 function asdf() {
     # Set colors for formatting output
     GREEN='\033[0;32m'
