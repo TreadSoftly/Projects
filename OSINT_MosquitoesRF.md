@@ -4,7 +4,8 @@
 I have always instantly hated the sound/noise/frequencies and want to take them down. 
 So let's build some things to do just that...for the drones of course, Bill Gates is the one working on the mosquitoes still.
 (FOR NOW this will be a resource dump until I can organize this repo into a well laid out document)
-
+# While technically yes this would fall into SIGINT I labeled these as I am using open source information to FIND all this stuff.
+# Sorry for the confusion it might cause some. I'm literally just trying to create open source information not pick through the weeds
 <div align="center">
 
 ##
