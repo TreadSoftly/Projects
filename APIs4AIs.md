@@ -1,12 +1,14 @@
 # Custom GPTs this will cover structuring APIs from the document page to testing (please know that these get tinkered on periodically so if stuff doesnt work or its just frustrating, I dont know - Welcome to Ai?
+
 ## *GPTS I will cover include:*
-**1st Hephaestus (Maker/DIY) Try it> https://chat.openai.com/g/g-UFGHgXtLd-hephaistos**
 
-**2nd Prometheus (Data Analysis, Programming & Higher Education) Try it> https://chat.openai.com/g/g-17aLBY4Iw-prome-theus**
+**1st ~ Hephaestus (Maker/DIY) Try it> https://chat.openai.com/g/g-UFGHgXtLd-hephaistos**
 
-**3rd Adonis (All things Fitness, Voice Health/Life Coach, Images) Try it> https://chat.openai.com/g/g-OBvYd2KHw-adones**
+**2nd ~ Prometheus (Data Analysis, Programming & Higher Education) Try it> https://chat.openai.com/g/g-17aLBY4Iw-prome-theus**
 
-**4th Diogenes (Dickhead Philosopher) Try it> https://chat.openai.com/g/g-5phe0BAuc-daiadzini-z**
+**3rd ~ Adonis (All things Fitness, Voice Health/Life Coach, Images) Try it> https://chat.openai.com/g/g-OBvYd2KHw-adones**
+
+**4th ~ Diogenes (Dickhead Philosopher) Try it> https://chat.openai.com/g/g-5phe0BAuc-daiadzini-z**
 
 #
 
