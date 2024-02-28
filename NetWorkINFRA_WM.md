@@ -8,5 +8,6 @@ Get into topology, the components, setting them up, configuring and securing wit
 
 
 **CONFIGS OF DEVICES (routers, switches, firewalls, end-point devices etc..)**
-#ROOT is Daddy
+#
+ROOT is Daddy
 ![image](https://github.com/TreadSoftly/Projects/assets/121847455/054c03bb-074d-45cc-a94d-cd5175ef6274)
