@@ -36,7 +36,7 @@
 
 This will be an open-source research journey into all things antennas. After busting my new shiny antenna and managing to fix it, I was left pondering. The simple 'plug and test' method showed it worked, but why? How can I evaluate its performance metrics like effectiveness, range, and efficiency? Is there any way to manipulate these?
 
-(The 'cantenna' scene from mr.ROBOT has a good example although alittle more technical know how goes into the proper construction of one)
+(The 'cantenna' scene from mr.ROBOT has a good example although alittle more technical know-how goes into the proper construction of one)
 
 ## Undressing the casing of the antenna
 
