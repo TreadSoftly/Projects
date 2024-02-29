@@ -54,7 +54,7 @@ I employed a hair dryer to loosen the heat-fitted end cap. It's a neat trick; th
 
 ## Exposed (Post Fixed) - Wire came free/loosened from the traces
 
-Cold solder fixed it. Why did it work again? How can we measure its functionality beyond the simple 'plug and play'?
+A quick cold solder fixed it right up. But the question remains: Why did it work again? How can we measure its functionality beyond the simple 'plug and play'?
 
 <p align="center">
   <img src="https://github.com/TreadSoftly/Projects/assets/121847455/851f1784-e2df-48b5-9f4f-fa8e7f7e1687" width="50%" height="50%">
@@ -62,37 +62,53 @@ Cold solder fixed it. Why did it work again? How can we measure its functionalit
 
 ## Size Matters in dBi and shielding 
 
-  <p align="center">
+<p align="center">
   
-  Top tiny ~ 3-5dBi (802.1a/b/g/n ac ax) Omnidirectional Small Wifi/Bluetooth Mini RP-SAMA Antenna Dual Band.
+  Descriptions for each antenna, detailing their dBi ratings and specific applications.
   
-  Middle ~ 10dBi (802.11ax RP-SMA) MIMO Wi-Fi 6E Omnidirectional High Gain Dual Band
+</p>
 
-  Bottom ~ 5-8dBi (802.11a/b/g/n ac) Dual Band
+<p align="center">
+  
+  Top tiny ~ 3-5dBi Omnidirectional Small Wifi/Bluetooth Mini RP-SMA Antenna Dual Band.
+  
+</p>
 
-  <p align="center">
-    
+<p align="center">
+  
   <img src="https://github.com/TreadSoftly/Projects/assets/121847455/21cac5a6-76dc-456f-90d5-0922ca08c938" width="50%" height="50%">
+  
+</p>
 
-  </p>
+<p align="center">
+  
+  Middle ~ 10dBi MIMO Wi-Fi 6E Omnidirectional High Gain Dual Band
+  
+</p>
 
-  <p align="center">
+<p align="center">
   
   <img src="https://github.com/TreadSoftly/Projects/assets/121847455/6b123335-9334-4b91-8a68-0dd8097cbc93" width="50%" height="50%">
+  
+</p>
 
-  </p>
-
-  <p align="center">
+<p align="center">
     
-  An image of my 9 dBi antenna that is so long it can actually be used to spank the bottom of a naughty nephew that liked to bend it :\ 
+  Bottom ~ 5-8dBi Dual Band
+  
+</p>
 
-  </p>
-
-  <p align="center">
+<p align="center">
     
   <img src="https://github.com/TreadSoftly/Projects/assets/121847455/cd259862-cb65-48f6-a6b5-101571dd8ef3" width="50%" height="50%">
   
-  </p>
+</p>
+
+<p align="center">
+    
+  An image of my 9dBi antenna which has a significant length and gain, useful for extended range applications.
+  
+</p>
 
 ## What the letters mean and how they matter
 
