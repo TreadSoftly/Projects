@@ -179,11 +179,7 @@ A quick cold solder fixed it right up. But the question remains: Why did it work
 
 </p>
 
-2.4 GHz Radiation Patterns: This frequency is common for Wi-Fi and other wireless communication systems. The radiation patterns shown indicate how the antenna radiates energy at this frequency. It's often used due to its range capabilities and wall penetration.
+- 2.4 GHz Radiation Patterns: This frequency is common for Wi-Fi and other wireless communication systems. The radiation patterns shown indicate how the antenna radiates energy at this frequency. It's often used due to its range capabilities and wall penetration.
 
-5 GHz Radiation Patterns: This higher frequency typically offers faster data rates and less interference compared to 2.4 GHz but at the cost of shorter range and less ability to penetrate solid objects.
-
-<p align="center">
-  <img src="https://github.com/TreadSoftly/Projects/assets/121847455/IMG_8401.jpg" width="50%" height="50%">
-</p>
+- 5 GHz Radiation Patterns: This higher frequency typically offers faster data rates and less interference compared to 2.4 GHz but at the cost of shorter range and less ability to penetrate solid objects.
 
