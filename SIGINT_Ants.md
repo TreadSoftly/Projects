@@ -1,4 +1,4 @@
-# Antennae...ants...same thing, right?
+# Antennas
 
 **First some inspiration on antennas and how powerful they can be**
 
