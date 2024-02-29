@@ -100,8 +100,17 @@ A quick cold solder fixed it right up. But the question remains: Why did it work
   <img src="https://github.com/TreadSoftly/Projects/assets/121847455/7fa571a8-52e0-4a9d-98eb-4f274aa5fc74" width="50%" height="50%">
 </p>
 
+<p align="center">
 
 ## Antenna Radiation Patter Reading Chart
+
+## **E-Plane and H-Plane**
+
+E-Plane (Electrical Plane): This plane contains the electric field vector and the direction of maximum radiation. It often coincides with the plane in which the main lobe of the antenna radiation pattern lies.
+
+H-Plane (Magnetic Plane): This plane contains the magnetic field vector and is orthogonal to the E-plane. It's defined by the direction of the current flow and the direction of maximum radiation.
+
+</p>
 
 <p align="center">
   
@@ -109,11 +118,7 @@ A quick cold solder fixed it right up. But the question remains: Why did it work
 
 </p>
 
-## **E-Plane and H-Plane**
 
-E-Plane (Electrical Plane): This plane contains the electric field vector and the direction of maximum radiation. It often coincides with the plane in which the main lobe of the antenna radiation pattern lies.
-
-H-Plane (Magnetic Plane): This plane contains the magnetic field vector and is orthogonal to the E-plane. It's defined by the direction of the current flow and the direction of maximum radiation.
 
 
 
