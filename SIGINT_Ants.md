@@ -60,7 +60,15 @@ A quick cold solder fixed it right up. But the question remains: Why did it work
   <img src="https://github.com/TreadSoftly/Projects/assets/121847455/851f1784-e2df-48b5-9f4f-fa8e7f7e1687" width="50%" height="50%">
 </p>
 
+<p align="center">
+  
 ## Size Matters in dBi and shielding 
+
+</p>
+
+<p align="center">
+  <img src="https://github.com/TreadSoftly/Projects/assets/121847455/21cac5a6-76dc-456f-90d5-0922ca08c938" width="50%" height="50%">
+</p>
 
 <p align="center">
   
@@ -87,8 +95,6 @@ A quick cold solder fixed it right up. But the question remains: Why did it work
 </p>
 
 <p align="center">
-  <img src="https://github.com/TreadSoftly/Projects/assets/121847455/21cac5a6-76dc-456f-90d5-0922ca08c938" width="50%" height="50%">
-
   <img src="https://github.com/TreadSoftly/Projects/assets/121847455/6b123335-9334-4b91-8a68-0dd8097cbc93" width="50%" height="50%">
 </p>
 
