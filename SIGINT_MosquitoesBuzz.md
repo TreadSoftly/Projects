@@ -6,7 +6,7 @@ Cloaking and encryption of frequencies is becoming more prevalent but through a 
 
 **A little build to try and capture signals with a panda usb device for intercepting and packet injection (you'll have to do your own research for this device since it is primarily used for "ethical" hacking) and a RODE mic for acustic listening**
 
-## Forgive me for not having my HackRF One device as I have let a friend borrow it for their Cyber Security Degree they are currently pursuing, also they are pricey as hell and I'm not about to go pick one up for a demonstration.
+## Forgive me for not having my HackRF One device currently. A friend is borrowing it currently for their Cyber Security Degree and projects. Also, damn things are pricey as hell and I'm not about to go pick a spare up for a demonstration.
 
 #
 
