@@ -64,17 +64,13 @@ A quick cold solder fixed it right up. But the question remains: Why did it work
 
 <p align="center">
   
-  Top tiny ~ 3-5dBi (802.1a/b/g/n ac ax) Omnidirectional Small Wifi/Bluetooth Mini RP-SAMA Antenna Dual Band.
-
-  #
+  # Top tiny ~ 3-5dBi (802.1a/b/g/n ac ax) Omnidirectional Small Wifi/Bluetooth Mini RP-SAMA Antenna Dual Band.
   
   ~ Frequency Bands: This antenna supports dual-band frequencies, typically operating in the 2.4 GHz and 5 GHz bands, catering to standards like 802.11a/b/g/n/ac/ax. The dual-band nature ensures compatibility with a wide range of devices and networks, from older Wi-Fi standards to the latest Wi-Fi 6 (802.11ax).
   
   ~ Gain: With a gain range of 3-5dBi, it's designed for short to medium range communication, providing a balance between signal range and spatial coverage. This gain level is optimal for devices requiring modest signal enhancement without the need for extensive range, such as handheld devices, IoT sensors, or small access points.
   
-  Middle ~ 10dBi (802.11ax RP-SMA) MIMO Wi-Fi 6E Omnidirectional High Gain Dual Band
-
-  #
+  # Middle ~ 10dBi (802.11ax RP-SMA) MIMO Wi-Fi 6E Omnidirectional High Gain Dual Band
 
   ~ Frequency Bands and Standard: This antenna is engineered for Wi-Fi 6E (802.11ax), which includes the newly opened 6 GHz band, alongside the traditional 2.4 GHz and 5 GHz bands. This tri-band capability allows for less congested airwaves and significantly faster data rates.
   
@@ -82,13 +78,11 @@ A quick cold solder fixed it right up. But the question remains: Why did it work
   
   ~ MIMO Technology: The inclusion of Multiple Input Multiple Output (MIMO) technology implies that the antenna can handle multiple data streams simultaneously, boosting throughput and efficiency. This is critical for high-density environments and for supporting multiple users or devices.
 
-  Bottom ~ 5-8dBi (802.11a/b/g/n ac) Dual Band
+  # Bottom ~ 5-8dBi (802.11a/b/g/n ac) Dual Band
 
-  #
-
-  Frequency Bands: Supports both 2.4 GHz and 5 GHz bands, compatible with a broad array of Wi-Fi standards excluding the latest Wi-Fi 6E. This makes it suitable for general-purpose applications across a variety of devices.
+  ~ Frequency Bands: Supports both 2.4 GHz and 5 GHz bands, compatible with a broad array of Wi-Fi standards excluding the latest Wi-Fi 6E. This makes it suitable for general-purpose applications across a variety of devices.
   
-  Gain: The gain range of 5-8dBi offers a good compromise between range and coverage area, making it suitable for both indoor and outdoor applications where moderate range enhancement is needed without overly sacrificing signal dispersion.
+  ~ Gain: The gain range of 5-8dBi offers a good compromise between range and coverage area, making it suitable for both indoor and outdoor applications where moderate range enhancement is needed without overly sacrificing signal dispersion.
 
 </p>
 
