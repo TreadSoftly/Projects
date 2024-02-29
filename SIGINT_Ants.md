@@ -186,7 +186,9 @@ A quick cold solder fixed it right up. But the question remains: Why did it work
 
 ## Types Of Antennas (This does seem like its backwards being all the way down here but we will get to making sense out of dollars soon)
 
-- *Yagi-Uda Antenna:* A directional antenna consisting of multiple parallel elements in a line, usually half-wave dipoles made of metal rods. Yagi antennas are widely used for radio and television reception and can be modified for increased gain, making them suitable for long-range detection of drones by focusing the RF energy in a specific direction.
+- *Yagi-Uda Antenna:*
+  
+  A directional antenna consisting of multiple parallel elements in a line, usually half-wave dipoles made of metal rods. Yagi antennas are widely used for radio and television reception and can be modified for increased gain, making them suitable for long-range detection of drones by focusing the RF energy in a specific direction.
 
 - *Parabolic Dish Antenna:* This type of antenna uses a parabolic reflector to direct the radio waves. It can be modified for extreme directionality and high gain, making it ideal for tracking and communication with distant drones or for focusing jamming signals on a specific target while minimizing interference.
 
