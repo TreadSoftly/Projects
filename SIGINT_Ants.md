@@ -1,3 +1,4 @@
+
 <p align="center">
   
 # Antennas
@@ -79,6 +80,10 @@ A quick cold solder fixed it right up. But the question remains: Why did it work
 <p align="center">
   
  ## Image of my 9 dBi antenna that is so long it can actually be used to spank the bottom of a naughty nephew that liked to bend it :\ 
+
+</p>
+
+<p align="center">
     
   <img src="https://github.com/TreadSoftly/Projects/assets/121847455/cd259862-cb65-48f6-a6b5-101571dd8ef3" width="50%" height="50%">
   
