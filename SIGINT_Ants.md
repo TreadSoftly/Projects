@@ -190,10 +190,6 @@ A quick cold solder fixed it right up. But the question remains: Why did it work
   
   A directional antenna consisting of multiple parallel elements in a line, usually half-wave dipoles made of metal rods. Yagi antennas are widely used for radio and television reception and can be modified for increased gain, making them suitable for long-range detection of drones by focusing the RF energy in a specific direction.
 
-- # *Parabolic Dish Antenna:*
-  
-  This type of antenna uses a parabolic reflector to direct the radio waves. It can be modified for extreme directionality and high gain, making it ideal for tracking and communication with distant drones or for focusing jamming signals on a specific target while minimizing interference.
-
 - # *Loop Antenna:*
   
   A coil of wire or loop of metal that forms a closed circuit. These antennas can be modified to improve magnetic field sensitivity, making them effective for detecting the RF signatures of drones in environments where electric field detection is challenging.
