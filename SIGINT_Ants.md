@@ -36,7 +36,7 @@
 
 This will be an open-source research journey into all things antennas. After busting my new shiny antenna and managing to fix it, I was left pondering. The simple 'plug and test' method showed it worked, but why? How can I evaluate its performance metrics like effectiveness, range, and efficiency? Is there any way to manipulate these?
 
-(The 'cantenna' scene from mr.ROBOT has a good example although alittle more technical know-how goes into the proper construction of one)
+- (The 'cantenna' scene from mr.ROBOT has a good example although alittle more technical know-how goes into the proper construction of one)
 
 ## Undressing the casing of the antenna
 
@@ -46,7 +46,7 @@ This will be an open-source research journey into all things antennas. After bus
 
 ## Tools used to get the casing off
 
-I employed a hair dryer to loosen the heat-fitted end cap. It's a neat trick; the hair dryer doesn't get hot enough to cause damage, but it does soften the plastic just enough.
+- I broke out the hair dryer to loosen the heat-fitted end cap (and then watched my hair wave and pretended I was in a convertable with the top down) It's a neat trick; the hair dryer doesn't get hot enough to cause damage, but it does soften the plastic just enough.
 
 <p align="center">
   <img src="https://github.com/TreadSoftly/Projects/assets/121847455/90f49791-a55b-414b-9231-406d20388771" width="50%" height="50%">
