@@ -1,7 +1,9 @@
 # Antennae...ants...same thing, right?
 
 **First some inspiration on antenas and how powerful they can be**
+
 The Thing
+
 https://www.youtube.com/watch?v=QH9Ec_Q5gP0
 
 #
