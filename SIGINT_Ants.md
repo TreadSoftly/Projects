@@ -72,13 +72,9 @@ A quick cold solder fixed it right up. But the question remains: Why did it work
 </p>
 
 <p align="center">
-  
   <img src="https://github.com/TreadSoftly/Projects/assets/121847455/21cac5a6-76dc-456f-90d5-0922ca08c938" width="50%" height="50%">
 
   <img src="https://github.com/TreadSoftly/Projects/assets/121847455/6b123335-9334-4b91-8a68-0dd8097cbc93" width="50%" height="50%">
-  
-<p align="center">
-  
 </p>
 
 <p align="center">
@@ -87,7 +83,9 @@ A quick cold solder fixed it right up. But the question remains: Why did it work
   <img src="https://github.com/TreadSoftly/Projects/assets/121847455/cd259862-cb65-48f6-a6b5-101571dd8ef3" width="50%" height="50%">
 </p>
 
+<p align="center">
 ## What the letters mean and how they matter
+</p>
 
 <p align="center">
   <img src="https://github.com/TreadSoftly/Projects/assets/121847455/c8bff814-7a0d-4b0e-8888-1735582344a4" width="50%" height="50%">
