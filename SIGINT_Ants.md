@@ -24,7 +24,8 @@
 
 <p align="center">
 
-*Click on the image above to watch a video on "The Thing" - Still one of the coolest and creepiest antenna documentaries I've ever learned about spying and specifically antenna capabilities.*
+*Click on the image above to watch a video on "The Thing" 
+- Still one of the coolest and creepiest antenna documentaries I've ever learned about spying and specifically antenna capabilities.*
 
 </p>
 
