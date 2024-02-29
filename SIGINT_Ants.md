@@ -117,7 +117,8 @@ H-Plane (Magnetic Plane): This plane contains the magnetic field vector and is o
 </p>
 
 <p align="center">
-# **2.4 GHz vs. 5 GHz*
+  
+## **2.4 GHz vs. 5 GHz*
 
 </p>
 
