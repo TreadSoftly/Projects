@@ -140,15 +140,13 @@ A quick cold solder fixed it right up. But the question remains: Why did it work
   - Max Speed: Up to 600 Mbps
   - Characteristics: Introduces Multiple Input Multiple Output (MIMO) technology, significantly increasing speed and range. It operates on both frequencies, offering greater flexibility and performance.
  
-  - 802.11ac (Wi-Fi 5)
-
+- **802.11ac (Wi-Fi 5)**
   - Launched: 2014
   - Frequency: 5 GHz
   - Max Speed: Up to 3.46 Gbps
   - Characteristics: Provides wider channel bandwidths and more MIMO spatial streams, with higher QAM, greatly increasing throughput. Operates exclusively in the 5 GHz band, reducing interference.
 
-  - 802.11ax (Wi-Fi 6)
-
+- **802.11ax (Wi-Fi 6)**
   - Launched: 2019
   - Frequency: 2.4 GHz & 5 GHz
   - Max Speed: Up to 9.6 Gbps
