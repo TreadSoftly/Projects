@@ -82,11 +82,9 @@ A quick cold solder fixed it right up. But the question remains: Why did it work
 </p>
 
 <p align="center">
-  
   An image of my 9dBi antenna which has a significant length and gain, useful for extended range applications.
     
   <img src="https://github.com/TreadSoftly/Projects/assets/121847455/cd259862-cb65-48f6-a6b5-101571dd8ef3" width="50%" height="50%">
-  
 </p>
 
 ## What the letters mean and how they matter
