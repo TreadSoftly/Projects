@@ -1,7 +1,7 @@
 
 <p align="center">
   
-# **Antennas** Better to ride the digital waves dude
+# **Antennas** - Better to ride the digital waves dude
 </p>
 
 <p align="center">
