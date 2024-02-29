@@ -6,7 +6,7 @@
 
 https://www.youtube.com/watch?v=QH9Ec_Q5gP0
 
-Still the coolest and creepiest antenna story I've ever learned
+Still the coolest and creepiest antenna story I've ever learned on spying and specifically antena capabilities 
 
 #
 
