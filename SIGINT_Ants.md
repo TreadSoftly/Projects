@@ -37,8 +37,17 @@ A quick cold solder fixed it right up. But the question remains: Why did it work
 ## Size Matters in dBi and shielding 
 
 <p align="center">
+  Top tiny ~ 3-5dBi (802.1a/b/g/n ac ax) Omnidirectional Small Wifi/Bluetooth Mini RP-SAMA Antenna Dual Band.
+  
+  Middle ~ 10dBi (802.11ax RP-SMA) MIMO Wi-Fi 6E Omnidirectional High Gain Dual Band
+
+  Bottom ~ 5-8dBi (802.11a/b/g/n ac) Dual Band
   <img src="https://github.com/TreadSoftly/Projects/assets/121847455/21cac5a6-76dc-456f-90d5-0922ca08c938" width="50%" height="50%">
+  
   <img src="https://github.com/TreadSoftly/Projects/assets/121847455/6b123335-9334-4b91-8a68-0dd8097cbc93" width="50%" height="50%">
+
+An image of my 9 dBi antenna that is so long it can actually be used to spank the bottom of a naughty nephew that liked to bend it :\ 
+
   <img src="https://github.com/TreadSoftly/Projects/assets/121847455/cd259862-cb65-48f6-a6b5-101571dd8ef3" width="50%" height="50%">
 </p>
 
