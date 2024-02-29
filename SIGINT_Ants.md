@@ -6,7 +6,7 @@
 
 [![The Thing - Coolest and Creepiest Antenna Story](https://img.youtube.com/vi/QH9Ec_Q5gP0/0.jpg)](https://www.youtube.com/watch?v=QH9Ec_Q5gP0)
 
-*Click on the image above to watch a video on "The Thing" - still the coolest and creepiest antenna story I've ever learned about spying and specifically antenna capabilities.*
+*Click on the image above to watch a video on "The Thing" - Still one of the coolest and creepiest antenna documentaries I've ever learned about spying and specifically antenna capabilities.*
 
 #
 
