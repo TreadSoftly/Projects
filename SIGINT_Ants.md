@@ -215,37 +215,37 @@ A quick cold solder fixed it right up. But the question remains: Why did it work
 
 - # *Cantenna*
 
-  - ## *Description:*
+  - *Description:*
 
-   Essentially a DIY directional antenna made by using an empty can as a waveguide, the cantenna is celebrated for its simplicity and effectiveness in extending Wi-Fi signals.
+    Essentially a DIY directional antenna made by using an empty can as a waveguide, the cantenna is celebrated for its simplicity and effectiveness in extending Wi-Fi signals.
 
-  - ## *Modification:*
+  - *Modification:*
 
-   The can's dimensions are critical; they are calculated to resonate at specific frequencies, predominantly Wi-Fi bands around 2.4 GHz or 5 GHz.
+    The can's dimensions are critical; they are calculated to resonate at specific frequencies, predominantly Wi-Fi bands around 2.4 GHz or 5 GHz.
 
- - ## * Advantages:*
+  - *Advantages:*
 
-   This modification significantly improves the antenna's directional gain, focusing the signal power in a specific direction, which enhances the range and signal quality.
+    This modification significantly improves the antenna's directional gain, focusing the signal power in a specific direction, which enhances the range and signal quality.
 
-  - ## *Application:
+  - *Application:*
 
     Ideal for long-range Wi-Fi reception, point-to-point links between networks, and as a cost-effective tool for RF exploration, including drone communication channels.
   
 
 - # *Umbrellatenna* or the dumber name *Parabolic Dish Antenna*
 
-  - ## *Description:*
+  - *Description:*
 
     Features a parabolic reflector with a feed antenna at its focal point, focusing radio waves into a narrow beam.
 
-  - ## *Modification:*
+  - *Modification:*
 
     Altering the size of the dish and the curvature of the parabolic reflector to increase focus and gain.
 
-  - ## *Advantages:*
+  - *Advantages:*
 
     Such modifications enable high precision in signal direction, allowing for targeted communication and interference management, crucial for jamming specific drones without affecting other devices.
 
-  - ## *Application:*
+  - *Application:*
 
     Used in tracking and communicating with distant drones and in high-gain jamming applications.
