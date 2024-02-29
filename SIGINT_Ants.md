@@ -103,7 +103,6 @@ A quick cold solder fixed it right up. But the question remains: Why did it work
 <p align="center">
 
 ## Antenna Radiation Patter Reading Chart
-
 ## **E-Plane and H-Plane**
 
 E-Plane (Electrical Plane): This plane contains the electric field vector and the direction of maximum radiation. It often coincides with the plane in which the main lobe of the antenna radiation pattern lies.
