@@ -1,7 +1,5 @@
 <p align="center">
-
 # Antennas
-
 </p>
 
 <p align="center">
