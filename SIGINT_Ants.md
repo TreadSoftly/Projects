@@ -64,11 +64,12 @@ A quick cold solder fixed it right up. But the question remains: Why did it work
 
 <p align="center">
   
-  Top tiny ~ 3-5dBi Omnidirectional Small Wifi/Bluetooth Mini RP-SMA Antenna Dual Band.
+  Top tiny ~ 3-5dBi (802.1a/b/g/n ac ax) Omnidirectional Small Wifi/Bluetooth Mini RP-SAMA Antenna Dual Band.
   
-  Middle ~ 10dBi MIMO Wi-Fi 6E Omnidirectional High Gain Dual Band
+  Middle ~ 10dBi (802.11ax RP-SMA) MIMO Wi-Fi 6E Omnidirectional High Gain Dual Band
+
+  Bottom ~ 5-8dBi (802.11a/b/g/n ac) Dual Band
   
-  Bottom ~ 5-8dBi Dual Band
 </p>
 
 <p align="center">
