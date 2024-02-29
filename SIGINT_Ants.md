@@ -63,8 +63,11 @@ A quick cold solder fixed it right up. But the question remains: Why did it work
 ## Size Matters in dBi and shielding 
 
 <p align="center">
+  
   Top tiny ~ 3-5dBi Omnidirectional Small Wifi/Bluetooth Mini RP-SMA Antenna Dual Band.
+  
   Middle ~ 10dBi MIMO Wi-Fi 6E Omnidirectional High Gain Dual Band
+  
   Bottom ~ 5-8dBi Dual Band
 </p>
 
