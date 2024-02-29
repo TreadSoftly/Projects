@@ -57,8 +57,6 @@ chmod +x dig_iSpy.sh
 - 📂 Output in Various Compressed Formats
 - 📝 Clean and Efficient Logging
 
-## 🤝 Contributing
-If you'd like to contribute, please fork the repository and make changes as you'd like. Pull requests are warmly welcomed.
 
 ## 📜 SPECIFICALLY FOR THIS SCRIPT
 ![image](https://github.com/TreadSoftly/Projects/assets/121847455/9c14ba37-8dd6-4ae8-a452-f916e10287f7)
