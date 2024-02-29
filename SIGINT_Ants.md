@@ -2,15 +2,15 @@
 
 **First some inspiration on antennas and how powerful they can be**
 
-*The Thing* 
+*The Thing*
 
-https://www.youtube.com/watch?v=QH9Ec_Q5gP0
+[![The Thing - Coolest and Creepiest Antenna Story](https://img.youtube.com/vi/QH9Ec_Q5gP0/0.jpg)](https://www.youtube.com/watch?v=QH9Ec_Q5gP0)
 
-Still the coolest and creepiest antenna story I've ever learned on spying and specifically antena capabilities 
+*Click on the image above to watch a video on "The Thing" - still the coolest and creepiest antenna story I've ever learned about spying and specifically antenna capabilities.*
 
 #
 
-This will be an open-source research into all things antennas. Since I busted my new shiny antenna and just had to fix it, I tested it, and it worked. But I started to question that the test of just plugging it in and it working didn't satisfy me. Why did it work, and how? How can I measure its effectiveness, range, efficiency, how can I make it better or "hack" it to manipulate it? Something so tiny as an antenna made my brain itch.
+This will be an open-source research journey into all things antennas. After busting my new shiny antenna and managing to fix it, I was left pondering. The simple 'plug and test' method showed it worked, but why? How can I evaluate its performance metrics like effectiveness, range, and efficiency? And how can I possibly enhance or 'hack' it? The minutiae of antenna technology sparked a cascade of curiosity.
 
 ## Undressing the casing of the antenna
 
@@ -19,7 +19,8 @@ This will be an open-source research into all things antennas. Since I busted my
 </p>
 
 ## Tools used to get the casing off
-I did use a hair dryer for the end cap that was heat form fitted. A hair dryer can get "overly-warm" so not hot enough to destroy things but it will let you loosen plastic form fittings in order to help them release or fit back in.
+
+I employed a hair dryer to loosen the heat-fitted end cap. It's a neat trick; the hair dryer doesn't get hot enough to cause damage, but it does soften the plastic just enough.
 
 <p align="center">
   <img src="https://github.com/TreadSoftly/Projects/assets/121847455/90f49791-a55b-414b-9231-406d20388771" width="50%" height="50%">
@@ -27,23 +28,23 @@ I did use a hair dryer for the end cap that was heat form fitted. A hair dryer c
 
 ## Exposed (Post Fixed) - Wire came free/loosened from the traces
 
-Cold solder and plugged back in and worked. I want to know why it works again and how to measure instead of just plug and play.
+A quick cold solder fixed it right up. But the question remains: Why did it work again? How can we measure its functionality beyond the simple 'plug and play'?
 
 <p align="center">
   <img src="https://github.com/TreadSoftly/Projects/assets/121847455/851f1784-e2df-48b5-9f4f-fa8e7f7e1687" width="50%" height="50%">
 </p>
 
-Size Matters in dBi and sheilding 
-![IMG_8395](https://github.com/TreadSoftly/Projects/assets/121847455/21cac5a6-76dc-456f-90d5-0922ca08c938)
+## Size Matters in dBi and shielding 
 
-![IMG_8396](https://github.com/TreadSoftly/Projects/assets/121847455/6b123335-9334-4b91-8a68-0dd8097cbc93)
+<p align="center">
+  <img src="https://github.com/TreadSoftly/Projects/assets/121847455/21cac5a6-76dc-456f-90d5-0922ca08c938" width="50%" height="50%">
+  <img src="https://github.com/TreadSoftly/Projects/assets/121847455/6b123335-9334-4b91-8a68-0dd8097cbc93" width="50%" height="50%">
+  <img src="https://github.com/TreadSoftly/Projects/assets/121847455/cd259862-cb65-48f6-a6b5-101571dd8ef3" width="50%" height="50%">
+</p>
 
-![IMG_8397](https://github.com/TreadSoftly/Projects/assets/121847455/cd259862-cb65-48f6-a6b5-101571dd8ef3)
+## What the letters mean and how they matter
 
-What the funny words mean and how they matter
-
-![IMG_8398](https://github.com/TreadSoftly/Projects/assets/121847455/c8bff814-7a0d-4b0e-8888-1735582344a4)
-
-![IMG_8400](https://github.com/TreadSoftly/Projects/assets/121847455/7fa571a8-52e0-4a9d-98eb-4f274aa5fc74)
-
-
+<p align="center">
+  <img src="https://github.com/TreadSoftly/Projects/assets/121847455/c8bff814-7a0d-4b0e-8888-1735582344a4" width="50%" height="50%">
+  <img src="https://github.com/TreadSoftly/Projects/assets/121847455/7fa571a8-52e0-4a9d-98eb-4f274aa5fc74" width="50%" height="50%">
+</p>
