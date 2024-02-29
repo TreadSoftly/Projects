@@ -9,6 +9,7 @@ This will be an open-source research into all things antennas. Since I busted my
 </p>
 
 ## Tools used to get the casing off
+I did use a hair dryer for the end cap that was heat form fitted. A hair dryer can get "overly-warm" so not hot enough to destroy things but it will let you loosen plastic form fittings in order to help them release or fit back in.
 
 <p align="center">
   <img src="https://github.com/TreadSoftly/Projects/assets/121847455/90f49791-a55b-414b-9231-406d20388771" width="50%" height="50%">
