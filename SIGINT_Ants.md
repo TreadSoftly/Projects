@@ -1,5 +1,8 @@
-# **Antennas**
+<p align="center">
+  # **Antennas**
+</p>
 
+<p align="center">
 **First some inspiration on antennas and how powerful they can be**
 
 *The Thing*
@@ -9,6 +12,7 @@
 *Click on the image above to watch a video on "The Thing" - Still one of the coolest and creepiest antenna documentaries I've ever learned about spying and specifically antenna capabilities.*
 
 #
+</p>
 
 This will be an open-source research journey into all things antennas. After busting my new shiny antenna and managing to fix it, I was left pondering. The simple 'plug and test' method showed it worked, but why? How can I evaluate its performance metrics like effectiveness, range, and efficiency? And how can I possibly enhance or 'hack' it? The minutiae of antenna technology sparked a cascade of curiosity.
 
