@@ -186,33 +186,50 @@ A quick cold solder fixed it right up. But the question remains: Why did it work
 
 # Types Of Antennas (This does seem like its backwards being all the way down here but we will get to making sense out of dollars soon)
 
-- *Yagi-Uda Antenna:*
+- # *Yagi-Uda Antenna:*
   
   A directional antenna consisting of multiple parallel elements in a line, usually half-wave dipoles made of metal rods. Yagi antennas are widely used for radio and television reception and can be modified for increased gain, making them suitable for long-range detection of drones by focusing the RF energy in a specific direction.
 
-- *Parabolic Dish Antenna:*
+- # *Parabolic Dish Antenna:*
   
   This type of antenna uses a parabolic reflector to direct the radio waves. It can be modified for extreme directionality and high gain, making it ideal for tracking and communication with distant drones or for focusing jamming signals on a specific target while minimizing interference.
 
-- *Loop Antenna:*
+- # *Loop Antenna:*
   
   A coil of wire or loop of metal that forms a closed circuit. These antennas can be modified to improve magnetic field sensitivity, making them effective for detecting the RF signatures of drones in environments where electric field detection is challenging.
 
-- *Helical Antenna:*
+- # *Helical Antenna:*
   
   Consists of a conducting wire wound in the form of a helix and is used primarily for satellite communication. Modifications can focus on circular polarization, making them suitable for communicating with drones that may be using circularly polarized RF signals for control or data transmission.
 
-- *Patch Antenna (Microstrip Antenna):*
+- # *Patch Antenna (Microstrip Antenna):*
   
   A type of radio antenna with a low profile, which can be mounted on a flat surface. They can be modified to enhance bandwidth or polarization characteristics, useful for drone detection systems that need to monitor a wide range of frequencies or differentiate between drone signals and other RF noise.
 
-- *Fractal Antenna:*
+- # *Fractal Antenna:*
   
   Uses a fractal, self-similar design to maximize the length, or increase the perimeter of material that can receive or transmit electromagnetic radiation within a given total surface area or volume. Such modifications can make antennas more compact and broadband, useful for portable drone detection devices that need to be both efficient and discreet.
 
 
-## Building Your Own Antenna / Modifying An Antenna For A Different Range Or Effectiveness
+# Building Your Own Antenna / Modifying An Antenna For A Different Range Or Effectiveness
 
-- Cantenna
+- # *Cantenna*
+
+  - ## *Description:*
+
+    Essentially a DIY directional antenna made by using an empty can as a waveguide, the cantenna is celebrated for its simplicity and effectiveness in extending Wi-Fi signals.
+
+  - ## *Modification:*
+
+    The can's dimensions are critical; they are calculated to resonate at specific frequencies, predominantly Wi-Fi bands around 2.4 GHz or 5 GHz.
+
+ - ## * Advantages:*
+
+   This modification significantly improves the antenna's directional gain, focusing the signal power in a specific direction, which enhances the range and signal quality.
+
+  - ## *Application:
+
+    Ideal for long-range Wi-Fi reception, point-to-point links between networks, and as a cost-effective tool for RF exploration, including drone communication channels.
+  
 
 - Umbrellatenna
