@@ -32,3 +32,18 @@ Cold solder and plugged back in and worked. I want to know why it works again an
 <p align="center">
   <img src="https://github.com/TreadSoftly/Projects/assets/121847455/851f1784-e2df-48b5-9f4f-fa8e7f7e1687" width="50%" height="50%">
 </p>
+
+Size Matters in dBi and sheilding 
+![IMG_8395](https://github.com/TreadSoftly/Projects/assets/121847455/21cac5a6-76dc-456f-90d5-0922ca08c938)
+
+![IMG_8396](https://github.com/TreadSoftly/Projects/assets/121847455/6b123335-9334-4b91-8a68-0dd8097cbc93)
+
+![IMG_8397](https://github.com/TreadSoftly/Projects/assets/121847455/cd259862-cb65-48f6-a6b5-101571dd8ef3)
+
+What the funny words mean and how they matter
+
+![IMG_8398](https://github.com/TreadSoftly/Projects/assets/121847455/c8bff814-7a0d-4b0e-8888-1735582344a4)
+
+![IMG_8400](https://github.com/TreadSoftly/Projects/assets/121847455/7fa571a8-52e0-4a9d-98eb-4f274aa5fc74)
+
+
