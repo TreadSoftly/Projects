@@ -1,20 +1,42 @@
 <p align="center">
-  # **Antennas**
+
+# Antennas
+
 </p>
 
 <p align="center">
+
 **First some inspiration on antennas and how powerful they can be**
+
+</p>
+
+<p align="center">
 
 *The Thing*
 
+</p>
+
+<p align="center">
+
 [![The Thing - Coolest and Creepiest Antenna Story](https://img.youtube.com/vi/QH9Ec_Q5gP0/0.jpg)](https://www.youtube.com/watch?v=QH9Ec_Q5gP0)
+
+</p>
+
+<p align="center">
 
 *Click on the image above to watch a video on "The Thing" - Still one of the coolest and creepiest antenna documentaries I've ever learned about spying and specifically antenna capabilities.*
 
-#
 </p>
 
-This will be an open-source research journey into all things antennas. After busting my new shiny antenna and managing to fix it, I was left pondering. The simple 'plug and test' method showed it worked, but why? How can I evaluate its performance metrics like effectiveness, range, and efficiency? And how can I possibly enhance or 'hack' it? The minutiae of antenna technology sparked a cascade of curiosity.
+<p align="center">
+
+#
+
+</p>
+
+This will be an open-source research journey into all things antennas. After busting my new shiny antenna and managing to fix it, I was left pondering. The simple 'plug and test' method showed it worked, but why? How can I evaluate its performance metrics like effectiveness, range, and efficiency? Is there any way to manipulate these?
+
+(The 'cantenna' scene from mr.ROBOT has a good example although alittle more technical know how goes into the proper construction of one)
 
 ## Undressing the casing of the antenna
 
@@ -32,7 +54,7 @@ I employed a hair dryer to loosen the heat-fitted end cap. It's a neat trick; th
 
 ## Exposed (Post Fixed) - Wire came free/loosened from the traces
 
-A quick cold solder fixed it right up. But the question remains: Why did it work again? How can we measure its functionality beyond the simple 'plug and play'?
+Cold solder fixed it. Why did it work again? How can we measure its functionality beyond the simple 'plug and play'?
 
 <p align="center">
   <img src="https://github.com/TreadSoftly/Projects/assets/121847455/851f1784-e2df-48b5-9f4f-fa8e7f7e1687" width="50%" height="50%">
