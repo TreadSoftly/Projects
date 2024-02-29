@@ -114,6 +114,44 @@ A quick cold solder fixed it right up. But the question remains: Why did it work
   
 ## What the letters mean and how they matter
 
+- **802.11a**
+  - Launched: 1999
+  - Frequency: 5 GHz
+  - Max Speed: Up to 54 Mbps
+  - Characteristics: First to use the higher-frequency 5 GHz band, less prone to interference but with shorter range compared to 2.4 GHz technologies.
+
+- **802.11b**
+  - Launched: 1999
+  - Frequency: 2.4 GHz
+  - Max Speed: Up to 11 Mbps
+  - Characteristics: Offers better range than 802.11a due to the lower frequency but is more susceptible to interference from other devices like microwaves and cordless phones.
+
+- **802.11g**
+  - Launched: 2003
+  - Frequency: 2.4 GHz
+  - Max Speed: Up to 54 Mbps
+  - Characteristics: Combines the best of both 802.11a and 802.11b, offering higher speeds at the more commonly used 2.4 GHz frequency.
+
+- **802.11n (Wi-Fi 4)**
+  - Launched: 2009
+  - Frequency: 2.4 GHz & 5 GHz
+  - Max Speed: Up to 600 Mbps
+  - Characteristics: Introduces Multiple Input Multiple Output (MIMO) technology, significantly increasing speed and range. It operates on both frequencies, offering greater flexibility and performance.
+ 
+  - 802.11ac (Wi-Fi 5)
+
+  - Launched: 2014
+  - Frequency: 5 GHz
+  - Max Speed: Up to 3.46 Gbps
+  - Characteristics: Provides wider channel bandwidths and more MIMO spatial streams, with higher QAM, greatly increasing throughput. Operates exclusively in the 5 GHz band, reducing interference.
+
+802.11ax (Wi-Fi 6)
+
+  - Launched: 2019
+  - Frequency: 2.4 GHz & 5 GHz
+  - Max Speed: Up to 9.6 Gbps
+  - Characteristics: Introduces OFDMA (Orthogonal Frequency Division Multiple Access), improving efficiency and capacity, especially in crowded environments. Supports both frequencies, enhancing performance and range.
+    
 </p>
 
 <p align="center">
@@ -125,39 +163,27 @@ A quick cold solder fixed it right up. But the question remains: Why did it work
 
 ## **Antenna Radiation Patter Reading Chart (E-Plane & H-Plane)**
 
-E-Plane (Electrical Plane): This plane contains the electric field vector and the direction of maximum radiation. It often coincides with the plane in which the main lobe of the antenna radiation pattern lies.
+*E-Plane* (Electrical Plane): This plane contains the electric field vector and the direction of maximum radiation. It often coincides with the plane in which the main lobe of the antenna radiation pattern lies.
 
-H-Plane (Magnetic Plane): This plane contains the magnetic field vector and is orthogonal to the E-plane. It's defined by the direction of the current flow and the direction of maximum radiation.
-
-</p>
-
-<p align="center">
-  
- <img src="https://github.com/TreadSoftly/Projects/assets/121847455/ddc53bd7-21ef-4341-81c6-ccc71704933f" width="50%" height="50%">
+*H-Plane* (Magnetic Plane): This plane contains the magnetic field vector and is orthogonal to the E-plane. It's defined by the direction of the current flow and the direction of maximum radiation.
 
 </p>
 
 <p align="center">
-  
-## **2.4 GHz vs. 5 GHz**
-
+  <img src="https://github.com/TreadSoftly/Projects/assets/121847455/ddc53bd7-21ef-4341-81c6-ccc71704933f" width="50%" height="50%">
 </p>
 
 <p align="center">
-  
+
+## 2.4 GHz vs. 5 GHz
+
+</p>
+
 2.4 GHz Radiation Patterns: This frequency is common for Wi-Fi and other wireless communication systems. The radiation patterns shown indicate how the antenna radiates energy at this frequency. It's often used due to its range capabilities and wall penetration.
 
 5 GHz Radiation Patterns: This higher frequency typically offers faster data rates and less interference compared to 2.4 GHz but at the cost of shorter range and less ability to penetrate solid objects.
 
+<p align="center">
+  <img src="https://github.com/TreadSoftly/Projects/assets/121847455/IMG_8401.jpg" width="50%" height="50%">
 </p>
-
-
-
-
-
-
-
-
-
-
 
