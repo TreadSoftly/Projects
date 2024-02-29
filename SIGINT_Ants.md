@@ -184,7 +184,7 @@ A quick cold solder fixed it right up. But the question remains: Why did it work
 - 5 GHz Radiation Patterns: This higher frequency typically offers faster data rates and less interference compared to 2.4 GHz but at the cost of shorter range and less ability to penetrate solid objects.
 
 
-## Types Of Antennas (This does seem like its backwards being all the way down here but we will get to making sense out of dollars soon)
+# Types Of Antennas (This does seem like its backwards being all the way down here but we will get to making sense out of dollars soon)
 
 - *Yagi-Uda Antenna:*
   
