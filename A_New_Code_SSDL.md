@@ -12,7 +12,7 @@ Example 1:
 
 #
 <div align="center">
-## Prometheus Core Instructions written with SSDL
+### Prometheus Core Instructions written with SSDL
 </div>
 
    ```
