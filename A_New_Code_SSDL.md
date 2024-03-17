@@ -106,3 +106,31 @@ Example 4: Αδώνης
 ### Understanding the structure, syntax and workding of SSDL
 
 </div>
+
+
+1) Syntax Rules: These define the structure of how code is written in SSDL.
+~ Example: For defining a module, you might use:
+Module DataAnalysis { ... } where { ... } contains the module's code. Functions could be defined as Function calculateMean(DataSet data): Float { ... }, specifying input types and the return type.
+
+3) Compiler/Interpreter Specifications: This involves how SSDL code is translated or executed.
+~ Example: The compiler could be designed to first parse module declarations, followed by function definitions, ensuring dependencies are resolved in order. Pseudocode for a compiler step might include: if line.startsWith("Module") { parseModule(line) }.
+
+4) Standard Libraries: Libraries for common tasks reduce the need for repetitive code.
+~ Example: A standard library for mathematical operations might include Library:
+Math { Function sqrt(Float number): Float { ... } }, providing a square root function.
+
+5) Error Handling Mechanisms: Proper error management ensures robust applications.
+~ Example: SSDL could implement try-catch blocks as:
+Try { riskyOperation() } Catch (ErrorType specificError) { handleSpecificError() }.
+
+6) Type System: Whether SSDL is statically or dynamically typed affects variable declaration and function design.
+~ Example: In a statically typed system, variable declaration might look like:
+Int number = 5;.
+
+7) Concurrency Model: Defines how SSDL handles simultaneous operations.
+~ Example: For asynchronous operations, SSDL might use Async Function:
+fetchData(): Data { ... } Await fetchData();.
+
+8) Memory Management: Outlines how SSDL deals with memory allocation and cleanup.
+~ Example: If automatic, you wouldn't need to manually allocate or free memory. In manual management, functions like:
+allocate(size) and free(pointer) might be necessary.
