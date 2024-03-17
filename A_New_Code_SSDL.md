@@ -140,6 +140,7 @@ fetchData(): Data { ... } Await fetchData();.
 
 9) Memory Management: Outlines how SSDL deals with memory allocation and cleanup.
 ~ Example: If automatic, you wouldn't need to manually allocate or free memory. In manual management, functions like:
+
 allocate(size) and free(pointer) might be necessary.
 
 #
