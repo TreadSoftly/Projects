@@ -1,8 +1,6 @@
-<p align="center">
-
-## The approach to Structured System Design Language (SSDL) aims to create a more machine-efficient, potent form of coding instructions for Custom GPTs. Emphasizing direct, compact instructions devoid of human-readable fluff, this method bridges the gap between machine efficiency and human understandability. The premise is to improve Custom GPTs' adherence and performance by streamlining instructions into a format that AI can process more swiftly and accurately, potentially introducing a novel coding paradigm that enhances the functionality and specificity of AI-driven tasks.
-
-</p>
+<div align="center">
+### The approach to Structured System Design Language (SSDL) aims to create a more machine-efficient, potent form of coding instructions for Custom GPTs. Emphasizing direct, compact instructions devoid of human-readable fluff, this method bridges the gap between machine efficiency and human understandability. The premise is to improve Custom GPTs' adherence and performance by streamlining instructions into a format that AI can process more swiftly and accurately, potentially introducing a novel coding paradigm that enhances the functionality and specificity of AI-driven tasks.
+</div>
 
 #
 
