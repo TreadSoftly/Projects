@@ -6,6 +6,15 @@
 
 #
 
+This is an introduction to SSDL: SSDL is designed to optimize communication between humans and AI, focusing on efficiency and directness. It strips away unnecessary human-readable elements to make instructions clearer and more machine-efficient.
+
+Basic Syntax: The syntax of SSDL is structured yet concise, involving key-value pairs and semicolon-separated directives that describe the task, parameters, and the execution environment.
+
+Building Blocks: Understand the fundamental components, such as modes, categories, API integration, and user roles. Each plays a crucial role in defining how the AI interprets and acts on the instructions.
+
+Application in Various Domains: Practice writing SSDL instructions for different scenarios, like the provided examples of Prometheus, Diogenes, Hῆphaistos, and Αδώνης, focusing on their unique requirements and goals.
+
+
 <p align="center">
 Example 1: Prometheus
 </p>
