@@ -14,6 +14,7 @@ Building Blocks: Understand the fundamental components, such as modes, categorie
 
 Application in Various Domains: Practice writing SSDL instructions for different scenarios, like the provided examples of Prometheus, Diogenes, Hῆphaistos, and Αδώνης, focusing on their unique requirements and goals.
 
+#
 
 <p align="center">
 Example 1: Prometheus
