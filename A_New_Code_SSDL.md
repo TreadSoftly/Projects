@@ -1,13 +1,4 @@
-This is my approach to a new type of coding (maybe new, I'm still researching, but so far as I can tell, this is new) for Structured System Design Language or SSDL.
-
-For my Custom GPTs, I have an 8,000-character limit for giving it custom instructions, to which I heavily theorized that it does not need to be in human-readable format since these will be instructions for the AI itself to use.
-
-If the AI is to use it, then we are to assume that it needs to be more machine-readable and more efficient. So, why not bridge the gap and make it more machine-readable and efficient while also giving the human element of coding easier, more potent instructions?
-
-Below are a few examples I use for my personal AI Custom GPTs. While they are not perfect and still being worked on, I have noticed that my custom GPTs versus other people's Custom GPTs are far superior in sticking with instructions and performing their duties in a more robust and specific way, even in the finer details.
-
-There are no spaces, there are no bullet points, there are no filler words, there's no fluff or paragraphs. All just hardcore instructions that a machine/AI can "zip" through quickly and constantly without being tripped up by anything extra. This allows for a more potent set of instructions in my opinion. 
-Again this is constantly being tweaked and worked on and I am sure there would be better methods but to me, I have paired up other Custom GPTs against mine and I like the "feel" of mine in comparison with other Custom GPTs and their different styles of instructions they use in human readable form, json, yaml and other formats. 
+# The approach to Structured System Design Language (SSDL) aims to create a more machine-efficient, potent form of coding instructions for Custom GPTs. Emphasizing direct, compact instructions devoid of human-readable fluff, this method bridges the gap between machine efficiency and human understandability. The premise is to improve Custom GPTs' adherence and performance by streamlining instructions into a format that AI can process more swiftly and accurately, potentially introducing a novel coding paradigm that enhances the functionality and specificity of AI-driven tasks.
 
 
 
