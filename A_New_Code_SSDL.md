@@ -10,7 +10,6 @@
 Example 1: Prometheus
 </p>
 
-#
 
 <div align="center">
 
