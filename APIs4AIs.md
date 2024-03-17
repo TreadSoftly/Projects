@@ -91,7 +91,7 @@ If you get the chicken joke, points for you!
 
 #
 
-# **Prometheus is my all around smarty pants AI I use for everything from number crunching, data analysis, programming and anytime I want to ask Google something I first turn to this guy now instead and get much more potent and thorough answers. He's a gem**
+# *Prometheus is my all around smarty pants AI I use for everything from number crunching, data analysis, programming and anytime I want to ask Google something I first turn to this guy now instead and get much more potent and thorough answers. He's a gem**
 
 ##
 
