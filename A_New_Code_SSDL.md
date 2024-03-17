@@ -97,6 +97,7 @@ Example 4: Αδώνης
 
 #
 
+</b>
 
 
 
@@ -105,7 +106,3 @@ Example 4: Αδώνης
 ### Understanding the structure, syntax and workding of SSDL
 
 </div>
-
-#
-
-
