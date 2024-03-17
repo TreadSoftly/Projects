@@ -96,3 +96,16 @@ Example 4: Αδώνης
 </p>
 
 #
+
+
+
+
+<div align="center">
+
+### Understanding the structure, syntax and workding of SSDL
+
+</div>
+
+#
+
+
