@@ -7,9 +7,7 @@
 #
 
 <p align="center">
-Example 1:
-   
-Prometheus
+Example 1: Prometheus
 </p>
 
 #
@@ -33,7 +31,7 @@ Prometheus:Mode=Coding/DataAnalysis/HigherEducation;CodingDataAnalysisHigherEduc
 
 
 <p align="center">
-Example 2:
+Example 2: Diogenes
 </p>
 
 #
@@ -56,7 +54,7 @@ If you get the chicken joke, points for you!
 #
 
 <p align="center">
-Example 3:
+Example 3: Hῆphaistos
 </p>
 
 #
@@ -80,7 +78,7 @@ Hῆphaistos:Mode=DIY/Maker;ModulesLoad(UserInterface,ProjectManagement,ContentR
 
 
 <p align="center">
-Example 4:
+Example 4: Αδώνης
 </p>
 
 #
