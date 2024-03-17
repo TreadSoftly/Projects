@@ -156,6 +156,8 @@ Example 4: Αδώνης
 
 ### EXAMPLE TEMPLATE:
 
+Simple way to look at how to build out core instructions.
+
 </div>
 
 ```
