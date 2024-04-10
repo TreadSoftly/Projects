@@ -175,57 +175,63 @@ def main(): # Defining the main function to orchestrate the network scanning pro
         json.dump(detailed_results, json_file, indent=4) # Writing the detailed scan results to the JSON file with indentation
     print(f"{Fore.YELLOW}{Style.BRIGHT}Detailed report saved to {Fore.GREEN}{Style.BRIGHT}{results_json_path}{Style.RESET_ALL}") # Printing the filename of the saved JSON file for the vulnerability scanning script with indentation and indent level of 4
 
-    # Prompt user to initiate vulnerability scanning
-    user_input = input("Do you want to proceed with vulnerability scan? (y/n): ") # Prompting the user to initiate the vulnerability scan with y/n parameter values (y/n):
-    if user_input.lower() == 'y' or user_input.upper() == 'Y': # Checking if the user input is 'y' or 'Y'
-        print("Proceeding with vulnerability scan...") # Prompting the user to proceed with the vulnerability scan
-        # Assuming `results_json_path` holds the path to the JSON file from nmap scan
-        vulnscan_script_path = os.path.join(os.path.dirname(__file__), "vulnscan.py") # Path to the vulnerability scanning script file
-        output_dir = os.path.join(os.path.dirname(vulnscan_script_path), "vulnscan_results") # Directory to store the vulnerability scanning results file
+########################################################################################################################################################################
+  #THIS IS WHERE THE VULNSCAN.PY SCRIPT WOULD TAKE THE JSON FILE FROM THE NMAPSCAN.PY SCAN AND WORK ON THE FINDINGS USING NVD API URL TO DIG FURTHER
+  #WILL FINISH CREATING AND TESTING THIS BUT FOR NOW IF YOU CREATE A VULNSCAN.PY SCRIPT THIS WILL WORK WITH THAT AND TAKE IN THE JSON FILE THAT THE NMAPSCAN.PY CREATES
+  #FOR NOW IT WILL BE COMMENTED OUT BUT THE NMAPSCAN.PY WORKS FINE AS A STANDALONE
+########################################################################################################################################################################
 
-        # Create the output directory if it doesn't exist
-        os.makedirs(output_dir, exist_ok=True)
+#    # Prompt user to initiate vulnerability scanning
+#    user_input = input("Do you want to proceed with vulnerability scan? (y/n): ") # Prompting the user to initiate the vulnerability scan with y/n parameter values (y/n):
+#    if user_input.lower() == 'y' or user_input.upper() == 'Y': # Checking if the user input is 'y' or 'Y'
+#        print("Proceeding with vulnerability scan...") # Prompting the user to proceed with the vulnerability scan
+#        # Assuming `results_json_path` holds the path to the JSON file from nmap scan
+#        vulnscan_script_path = os.path.join(os.path.dirname(__file__), "vulnscan.py") # Path to the vulnerability scanning script file
+#        output_dir = os.path.join(os.path.dirname(vulnscan_script_path), "vulnscan_results") # Directory to store the vulnerability scanning results file
 
-        # Execute vulnscan.py script with real-time output
-        try: # Running vulnscan.py script with real-time output
-            command = ["python", vulnscan_script_path, results_json_path, output_dir] # Creating a command to execute the vulnerability scanning script with the JSON file path and output directory
-            with subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, universal_newlines=True) as process: # Using the subprocess module to execute the vulnerability scanning script with real-time output instead of using the os.system() function
-                while process.stdout is not None: # Checking if the output directory is not empty before reading the line from the output directory
-                    line = process.stdout.readline() # Read the line from the output directory and convert it to a string
-                    if not line: # Checking if the line is empty is not necessary as the loop will
-                        break # Ignore error and continue processing further lines from the output directory
-                    print(line, end='') # print line from the output directory if it exists and is not empty
-            process.wait()  # Wait for the process to complete
+#        # Create the output directory if it doesn't exist
+#        os.makedirs(output_dir, exist_ok=True)
 
-            if process.returncode != 0: # Something went wrong during the execution of the vulnerability scanning script
-                print(f"{Fore.RED}{Style.BRIGHT}Vulnerability scan encountered an error.{Style.RESET_ALL}") # Reset all variables to their initial values before continuing to run vulnerability scanning script with real-time output
-        except Exception as e: # pylint: disable=broad-except instead of returning an exception
-            print(f"{Fore.RED}{Style.BRIGHT}Failed to execute vulnscan.py: {e}{Style.RESET_ALL}") # Error handling is not necessary as the user input is validated before proceeding with the vulnerability scan
+#        # Execute vulnscan.py script with real-time output
+#        try: # Running vulnscan.py script with real-time output
+#            command = ["python", vulnscan_script_path, results_json_path, output_dir] # Creating a command to execute the vulnerability scanning script with the JSON file path and output directory
+#            with subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, universal_newlines=True) as process: # Using the subprocess module to execute the vulnerability scanning script with real-time output instead of using the os.system() function
+#                while process.stdout is not None: # Checking if the output directory is not empty before reading the line from the output directory
+#                    line = process.stdout.readline() # Read the line from the output directory and convert it to a string
+#                    if not line: # Checking if the line is empty is not necessary as the loop will
+#                        break # Ignore error and continue processing further lines from the output directory
+#                    print(line, end='') # print line from the output directory if it exists and is not empty
+#            process.wait()  # Wait for the process to complete
 
-        # Assuming `results_json_path` holds the path to the JSON file from nmap scan
-        vulnscan_script_path = os.path.join(os.path.dirname(__file__), "vulnscan.py") # Path to the vulnerability scanning script file
-        output_dir = os.path.join(os.path.dirname(vulnscan_script_path), "vulnscan_results") # Directory to store the vulnerability scanning results file
+#            if process.returncode != 0: # Something went wrong during the execution of the vulnerability scanning script
+#                print(f"{Fore.RED}{Style.BRIGHT}Vulnerability scan encountered an error.{Style.RESET_ALL}") # Reset all variables to their initial values before continuing to run vulnerability scanning script with real-time output
+#        except Exception as e: # pylint: disable=broad-except instead of returning an exception
+#            print(f"{Fore.RED}{Style.BRIGHT}Failed to execute vulnscan.py: {e}{Style.RESET_ALL}") # Error handling is not necessary as the user input is validated before proceeding with the vulnerability scan
 
-        # Create the output directory if it doesn't exist
-        os.makedirs(output_dir, exist_ok=True) # Make sure output directory exists before running the vulnerability scanning script
+#        # Assuming `results_json_path` holds the path to the JSON file from nmap scan
+#        vulnscan_script_path = os.path.join(os.path.dirname(__file__), "vulnscan.py") # Path to the vulnerability scanning script file
+#        output_dir = os.path.join(os.path.dirname(vulnscan_script_path), "vulnscan_results") # Directory to store the vulnerability scanning results file
 
-        # Execute vulnscan.py script with real-time output
-        try: # Using a try block to handle exceptions that may occur while executing the vulnerability scanning script
-            command = ["python", vulnscan_script_path, results_json_path, output_dir] # Creating a command to execute the vulnerability scanning script with the JSON file path and output directory
-            with subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, universal_newlines=True) as process: # Using the subprocess module to execute the vulnerability scanning script with real-time output instead of using the os.system() function
-                while process.stdout is not None: # Checking if the output directory is not empty before reading the line from the output directory
-                    line = process.stdout.readline() # Read the line from the output directory and convert it to a string
-                    if not line: # Checking if the line is empty is not necessary as the loop will break if the line is empty
-                        break # Ignore error and continue processing further lines from the output directory
-                    print(line, end='') # print line from the output directory if it exists and is not empty
-            process.wait()  # Wait for the process to complete
+#        # Create the output directory if it doesn't exist
+#        os.makedirs(output_dir, exist_ok=True) # Make sure output directory exists before running the vulnerability scanning script
 
-            if process.returncode != 0: # Checking if the process return code is not 0 means that the process encountered an error
-                print(f"{Fore.RED}Vulnerability scan encountered an error.{Style.RESET_ALL}") # Reset all variables to their initial values before continuing to run vulnerability scanning script
-        except Exception as e: # Handling exceptions that may occur while executing the vulnerability scanning script
-            print(f"{Fore.RED}Failed to execute vulnscan.py: {e}{Style.RESET_ALL}") # Error handling is not necessary as the user input is validated before proceeding with the vulnerability scan
-    else: # Error handling is not necessary as the user input is validated before proceeding with the vulnerability scan
-        print("Vulnerability scan aborted.") # Printing a message if the user chooses not to proceed with the vulnerability scan
+#        # Execute vulnscan.py script with real-time output
+#        try: # Using a try block to handle exceptions that may occur while executing the vulnerability scanning script
+#            command = ["python", vulnscan_script_path, results_json_path, output_dir] # Creating a command to execute the vulnerability scanning script with the JSON file path and output directory
+#            with subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, universal_newlines=True) as process: # Using the subprocess module to execute the vulnerability scanning script with real-time output instead of using the os.system() function
+#                while process.stdout is not None: # Checking if the output directory is not empty before reading the line from the output directory
+#                    line = process.stdout.readline() # Read the line from the output directory and convert it to a string
+#                    if not line: # Checking if the line is empty is not necessary as the loop will break if the line is empty
+#                        break # Ignore error and continue processing further lines from the output directory
+#                    print(line, end='') # print line from the output directory if it exists and is not empty
+#            process.wait()  # Wait for the process to complete
+
+#            if process.returncode != 0: # Checking if the process return code is not 0 means that the process encountered an error
+#                print(f"{Fore.RED}Vulnerability scan encountered an error.{Style.RESET_ALL}") # Reset all variables to their initial values before continuing to run vulnerability scanning script
+#        except Exception as e: # Handling exceptions that may occur while executing the vulnerability scanning script
+#            print(f"{Fore.RED}Failed to execute vulnscan.py: {e}{Style.RESET_ALL}") # Error handling is not necessary as the user input is validated before proceeding with the vulnerability scan
+#    else: # Error handling is not necessary as the user input is validated before proceeding with the vulnerability scan
+#        print("Vulnerability scan aborted.") # Printing a message if the user chooses not to proceed with the vulnerability scan
 
     # Timing and final message
     elapsed_time = time.time() - start_time # Time difference between start_time and end_time for the last scan in seconds since the last time the script was run
