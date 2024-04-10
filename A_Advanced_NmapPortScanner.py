@@ -12,7 +12,6 @@
   #WILL FINISH CREATING AND TESTING THIS BUT FOR NOW IF YOU CREATE A VULNSCAN.PY SCRIPT THIS WILL WORK WITH THAT AND TAKE IN THE JSON FILE THAT THE NMAPSCAN.PY CREATES
   #FOR NOW IT WILL BE COMMENTED OUT BUT THE NMAPSCAN.PY WORKS FINE AS A STANDALONE
 ########################################################################################################################################################################
-
 import nmap  # Importing the nmap library for network scanning
 import concurrent.futures  # Importing the concurrent.futures module for parallel execution
 import os  # Importing the os module for interacting with the operating system
@@ -27,7 +26,7 @@ from colorama import Fore, Style, init  # Importing the colorama library for col
 init(autoreset=True) # Initializing colorama for auto-resetting colors after each print statement
 import json # Importing the json module for serialization and deserialization of objects and functions from JSON files
 import subprocess # Importing the subprocess module for serialization and deserialization of objects and functions from JSON files
-import progressbar # Importing the progressbar module for serialization and deserialization
+# import progressbar # Importing the progressbar module for serialization and deserialization
 from halo import Halo  # type: ignore
 from multiprocessing import cpu_count, Pool
 from concurrent.futures import ThreadPoolExecutor, as_completed
@@ -64,7 +63,7 @@ def get_local_ip() -> str: # Defining a function to get the local IP address of 
     return local_ip # Returning the local IP address as a string
 
 def scan_port(ip: str, port: int, proto: str, nm: nmap.PortScanner) -> Tuple[int, Optional[Dict[str, Union[str, List[str], Dict[str, str]]]]]:
-    arguments = "-T4 -sV -sC -A -O --version-intensity 9 --script=default,vuln,banner,http-headers,http-title"
+    arguments = "-T4 -sV -sC -A -O -vv --version-intensity 9 --script=default,vuln,banner,http-headers,http-title"
     nm.scan(hosts=ip, ports=str(port), arguments=arguments, sudo=True if proto == 'udp' else False)
     scan_info = nm[ip].get(proto, {}).get(port, {})
     result = {
@@ -74,26 +73,37 @@ def scan_port(ip: str, port: int, proto: str, nm: nmap.PortScanner) -> Tuple[int
         "version": scan_info.get('version', ''),
         "extrainfo": scan_info.get('extrainfo', ''),
         "reason": scan_info.get('reason', ''),
+        "osclass": scan_info.get('osclass', ''),
+        "osmatch": scan_info.get('osmatch', ''),
+        "osfamily": scan_info.get('osfamily', ''),
         "script": scan_info.get('script', {})
     } if scan_info else None
     return port, result
 
 def quick_scan(ip: str, nm: nmap.PortScanner) -> Dict[str, List[int]]:
-    print(f"{Fore.YELLOW}{Style.BRIGHT}Performing Initial Scan For {Fore.RED}{Style.BRIGHT}Open Ports:{Style.RESET_ALL}")
-    arguments = "-T4 --open"
+    print(f"{Fore.YELLOW}{Style.BRIGHT}Setting Up Initial Scan On {Fore.RED}{Style.BRIGHT}{Fore.GREEN}{Style.BRIGHT}[{Style.RESET_ALL}{Fore.RED}{Style.BRIGHT}SYSTEM{Style.RESET_ALL}{Fore.GREEN}{Style.BRIGHT}]{Style.RESET_ALL}")
+    arguments = "-T3 --open"
     nm.scan(hosts=ip, ports="1-65535", arguments=arguments)
     open_ports: Dict[str, List[int]] = {'tcp':[],'udp':[]}
+    spinner = Halo(text='Scanning ports', spinner='dots')
+    spinner.start() # type: ignore
     for proto in nm[ip].all_protocols():
         ports = sorted(nm[ip][proto].keys())
-        bar = progressbar.ProgressBar(max_value=len(ports))
+        total_ports = len(ports)
+        completed = 0
         with ThreadPoolExecutor(max_workers=cpu_count() or 1) as executor:
             futures = {executor.submit(nm[ip][proto].get, port): port for port in ports}
-            for i, future in enumerate(as_completed(futures)):
+            for future in futures:
+                port = future
+                spinner.text = f'{Fore.GREEN}{Style.BRIGHT}Scan Submitted For{Style.RESET_ALL} [{Fore.BLUE}{Style.BRIGHT}Port{Style.RESET_ALL}{Fore.GREEN}{Style.BRIGHT}:{Style.RESET_ALL}{Style.RESET_ALL}{Fore.RED}{Style.BRIGHT}{port}{Style.RESET_ALL}]'
+            for future in as_completed(futures):
                 port = futures[future]
                 if future.result()['state'] == 'open':
                     open_ports[proto].append(port)
-                bar.update(i) # type: ignore
-            bar.finish()
+                completed += 1
+                percentage = (completed / total_ports) * 100
+                spinner.text = f'Scanned {completed} of {total_ports} ports ({percentage:.2f}%)'
+    spinner.stop()
     return open_ports
 
 def scan_all_open_ports(ip: str):
@@ -148,71 +158,91 @@ def distribute_work(ip: str, open_ports: Dict[str, List[int]]) -> Dict[str, Dict
         spinner.text = '{Fore.GREEN}{Style.BRIGHT}Finished Scanning All Ports{Style.RESET_ALL}'
         spinner.stop()
 
+    def print_warning(message: str):
+        if sys.stdout.isatty():
+            print(f"{Fore.RED}{Style.BRIGHT}{message}{Style.RESET_ALL}")
+        else:
+            print(f"WARNING: {message}")
+
     # Print the detailed scan results
-    for proto, ports_info in detailed_results.items(): # Iterating over the detailed scan results for each protocol
-        for port, info in ports_info.items(): # Iterating over the port information for the protocol
-            print(f"Port {port}:")  # Printing the port number
-            print(f"  State: {info.get('state')}")  # Printing the state of the port
-            print(f"  Name: {info.get('name')}")  # Printing the name of the service running on the port
-            print(f"  Product: {info.get('product')}")  # Printing the product information of the service
-            print(f"  Version: {info.get('version')}")  # Printing the version information of the service
-            print(f"  Extra Info: {info.get('extrainfo')}")  # Printing additional information about the service
-            print(f"  Reason: {info.get('reason')}")  # Printing the reason for the port state
-            print(f"  Script Output:")  # Printing the script output for the port
-            script_info = info.get('script') # The script output for the port state machine
-            if isinstance(script_info, dict): # Checking if the script output is a dictionary
-                for key, value in script_info.items(): # Iterating over the script output
-                    if 'vuln' in key.lower() or 'cve' in key.lower(): # Checking if the key contains 'vuln' or 'cve'
-                        print(f"    {Fore.RED}{Style.BRIGHT}{key}: {value}{Style.RESET_ALL}")  # Printing the script output with highlighting for vulnerabilities or CVEs
-                print() # Printing a new line after the script output
-            else: # Handling the case where the script output is not a dictionary
-                print(f"    No script output\n")  # Printing a message if there is no script output
-    return detailed_results # Returning the detailed scan results as a dictionary
+    for proto, ports_info in detailed_results.items():
+        for port, info in ports_info.items():
+            print(f"{Fore.BLUE}{Style.BRIGHT}Port{Style.RESET_ALL} {Fore.GREEN}{Style.BRIGHT}[{Style.RESET_ALL}{Fore.RED}{Style.BRIGHT}{port}{Style.RESET_ALL}{Fore.GREEN}{Style.BRIGHT}]{Style.RESET_ALL}")
+            print(f"  State: {info.get('state')}")
+            print(f"  Name: {info.get('name')}")
+            print(f"  Product: {info.get('product')}")
+            print(f"  Version: {info.get('version')}")
+            print(f"  Extra Info: {info.get('extrainfo')}")
+            print(f"  Reason: {info.get('reason')}")
+            print(f"  OS Class: {info.get('osclass')}")
+            print(f"  OS Match: {info.get('osmatch')}")
+            print(f"  OS Family: {info.get('osfamily')}")
+            print(f"  Script Output:")
+            script_info = info.get('script')
+            if isinstance(script_info, dict):
+                for key, value in script_info.items():
+                    if 'vuln' in key.lower() or 'cve' in key.lower():
+                        print_warning(f"{key}: {value}")
+                    else:
+                        print(f"{key}: {value}")
+                print()
+            else:
+                print(f"No script output\n")
+    return detailed_results
 
 def main(): # Defining the main function to orchestrate the network scanning process
     ip = get_local_ip()  # Getting the local IP address
-    print(f"{Fore.RED}{Style.BRIGHT}Scanning {Fore.GREEN}{Style.BRIGHT}{ip} {Fore.RED}{Style.BRIGHT}Using Optimal System Resources{Style.RESET_ALL}")  # Printing a message indicating the start of the scan
+    print(f"{Fore.RED}{Style.BRIGHT}Scanning {Fore.GREEN}{Style.BRIGHT}{ip}{Style.RESET_ALL} {Fore.GREEN}{Style.BRIGHT}[{Style.RESET_ALL}{Fore.BLUE}{Style.BRIGHT}With Optimal System Resources{Style.RESET_ALL}{Fore.GREEN}{Style.BRIGHT}]{Style.RESET_ALL}")  # Printing a message indicating the start of the scan
     open_ports: Dict[str, List[int]] = {'tcp': [], 'udp': []}  # Initializing a dictionary to store the open ports
     distribute_work(ip, open_ports)  # Performing the distributed work to update the open_ports dictionary
 
     # Quick Scan
     open_ports = quick_scan(ip, nm)  # Performing the quick scan and getting the open ports
-    print(f"{Fore.GREEN}{Style.BRIGHT}Quick Scan Completed. {Fore.CYAN}{Style.BRIGHT}Identified Open Ports: {Fore.RED}{Style.BRIGHT}{', '.join(map(str, open_ports['tcp']))}{Style.RESET_ALL}{Fore.GREEN}{Style.BRIGHT}(TCP),{Fore.RED}{Style.BRIGHT}{', '.join(map(str, open_ports['udp']))}{Style.RESET_ALL}{Fore.GREEN}{Style.BRIGHT}(UDP){Style.RESET_ALL}")  # Printing the identified open ports
+    print(f"{Fore.GREEN}{Style.BRIGHT}Quick Scan Completed.{Style.RESET_ALL} {Fore.CYAN}{Style.BRIGHT}Identified Open Ports:{Style.RESET_ALL} {Fore.RED}{Style.BRIGHT}{', '.join(map(str, open_ports['tcp']))}{Style.RESET_ALL}{Fore.GREEN}{Style.BRIGHT}(TCP),{Fore.RED}{Style.BRIGHT}{', '.join(map(str, open_ports['udp']))}{Style.RESET_ALL}{Fore.GREEN}{Style.BRIGHT}(UDP){Style.RESET_ALL}")  # Printing the identified open ports
 
     # Detailed Scan on Open Ports
     detailed_results = {} # Initializing a dictionary to store the detailed scan results in a dictionary object containing the details of the open ports discovered in the database
     if open_ports: # Initializing a dictionary to store the detailed scan results in a dictionary object containing the details of the open ports discovered in the database
         detailed_results = distribute_work(ip, open_ports)  # Performing the distributed work on the identified open ports
 
-    # Output results to a file
-    report_filename = os.path.join("C:\\Users\\MrDra\\OneDrive\\Desktop\\PythonTools", f"nmapscan_report_{time.strftime('%Y%m%d%H%M%S')}.txt")  # Generating the report filename with the current timestamp
-    with open(report_filename, "w") as report_file: # Opening the report file in write mode
-        for proto, ports_info in detailed_results.items(): # Iterating over the detailed scan results for each protocol
-            report_file.write(f"{proto.upper()} Ports:{Style.RESET_ALL}\n")  # Writing the protocol name to the report file
-            for port, info in ports_info.items(): # Iterating over the port information for the protocol
-                if info:  # Ensure there's information to write
-                    state = info.get("state", "N/A")  # Getting the state of the port
-                    service = info.get("name", "Unknown service")  # Getting the name of the service running on the port
-                    product = info.get("product", "")  # Getting the product information of the service
-                    version = info.get("version", "")  # Getting the version information of the service
-                    extra = info.get("extrainfo", "")  # Getting additional information about the service
-                    reason = info.get("reason", "")  # Getting the reason for the port state
-                    script_info = info.get("script", {})  # Getting the script output for the port
-                    if isinstance(script_info, dict): # Checking if the script output is a dictionary
-                        script_output = "\n".join([f"{str(k)}: {str(v)}" if 'vuln' not in str(k).lower() and 'cve' not in str(k).lower() else f"{Fore.RED}{Style.BRIGHT}{str(k)}: {str(v)}{Style.RESET_ALL}" for k, v in script_info.items()])  # Formatting the script output
-                    else: # Handling the case where the script output is not a dictionary
-                        script_output = "" # Setting the script output to an empty string
-                    report_line = f"Port {port}/TCP {state}: {service} {product} {version} {extra} {reason}{script_info}\nScript Output:\n{script_output}\n\n"  # Generating the report line
-                    if 'vuln' in script_output.lower() or 'cve' in script_output.lower(): # Checking if vulnerabilities or CVEs are detected in the script output
-                        report_file.write(f"WARNING: Vulnerabilities or CVEs detected!\n")  # Writing a warning message to the report file if vulnerabilities or CVEs are detected
-                    report_file.write(report_line)  # Writing the report line to the report file
-    print(f"{Fore.BLUE}{Style.BRIGHT}Detailed report saved to {report_filename}{Style.RESET_ALL}")  # Printing the filename of the saved report
+    def print_warning(message: str):
+        if sys.stdout.isatty():
+            print(f"{message}")
+        else:
+            print(f"WARNING: {message}")
+
+    report_filename = os.path.join("C:\\Users\\MrDra\\OneDrive\\Desktop\\PythonTools", f"nmapscan_report_{time.strftime('%Y%m%d%H%M%S')}.txt")
+    with open(report_filename, "w") as report_file:
+        for proto, ports_info in detailed_results.items():
+            report_file.write(f"{proto.upper()} Ports:\n")
+            for port, info in ports_info.items():
+                if info:
+                    state = info.get("state", "N/A")
+                    service = info.get("name", "Unknown service")
+                    product = info.get("product", "")
+                    version = info.get("version", "")
+                    extra = info.get("extrainfo", "")
+                    reason = info.get("reason", "")
+                    osclass = info.get("osclass", "")
+                    osmatch = info.get("osmatch", "")
+                    osfamily = info.get("osfamily", "")
+                    script_info = info.get("script", {})
+                    if isinstance(script_info, dict):
+                        script_output = "\n".join([f"{str(k)}: {str(v)}" if 'vuln' not in str(k).lower() and 'cve' not in str(k).lower() else f"{str(k)}: {str(v)}" for k, v in script_info.items()])  # Formatting the script output
+                    else:
+                        script_output = ""
+                    report_line = f"Port {port} {state}: {service} {product} {version} {extra} {reason} {osclass} {osmatch} {osfamily}\nScript Output:\n{script_output}\n\n"
+                    if 'vuln' in script_output.lower() or 'cve' in script_output.lower():
+                        report_file.write(f"WARNING: Vulnerabilities or CVEs detected!\n")
+                        print_warning("Vulnerabilities or CVEs detected!")
+                    report_file.write(report_line)
+    print(f"{Fore.CYAN}{Style.BRIGHT}Detailed report saved to{Style.RESET_ALL} {Fore.RED}{Style.BRIGHT}{report_filename}{Style.RESET_ALL}")
 
     # Save scan results in JSON format for the vulnerability scanning script
     results_json_path = os.path.join("C:\\Users\\MrDra\\OneDrive\\Desktop\\PythonTools", f"nmapscan_results_{time.strftime('%Y%m%d%H%M%S')}.json") # Generating the JSON file path for the vulnerability scanning script
     with open(results_json_path, 'w') as json_file: # Opening the JSON file in write mode
         json.dump(detailed_results, json_file, indent=4) # Writing the detailed scan results to the JSON file with indentation
-    print(f"{Fore.YELLOW}{Style.BRIGHT}Detailed report saved to {Fore.GREEN}{Style.BRIGHT}{results_json_path}{Style.RESET_ALL}") # Printing the filename of the saved JSON file for the vulnerability scanning script with indentation and indent level of 4
+    print(f"{Fore.BLUE}{Style.BRIGHT}Detailed report saved to {Fore.YELLOW}{Style.BRIGHT}{results_json_path}{Style.RESET_ALL}") # Printing the filename of the saved JSON file for the vulnerability scanning script with indentation and indent level of 4
     
 ########################################################################################################################################################################
   #THIS IS WHERE THE VULNSCAN.PY SCRIPT WOULD TAKE THE JSON FILE FROM THE NMAPSCAN.PY SCAN AND WORK ON THE FINDINGS USING NVD API URL TO DIG FURTHER
@@ -220,7 +250,6 @@ def main(): # Defining the main function to orchestrate the network scanning pro
   #FOR NOW IT WILL BE COMMENTED OUT BUT THE NMAPSCAN.PY WORKS FINE AS A STANDALONE
 ########################################################################################################################################################################
 
-  
 #    # Prompt user to initiate vulnerability scanning
 #    user_input = input("Do you want to proceed with vulnerability scan? (y/n): ") # Prompting the user to initiate the vulnerability scan with y/n parameter values (y/n):
 #    if user_input.lower() == 'y' or user_input.upper() == 'Y': # Checking if the user input is 'y' or 'Y'
