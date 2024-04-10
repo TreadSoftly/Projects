@@ -20,7 +20,6 @@ import socket  # Importing the socket module for network communication
 import sys  # Importing the sys module for system-specific parameters and functions
 import multiprocessing  # Importing the multiprocessing module for utilizing multiple CPU cores
 import contextlib  # Importing the contextlib module for context management utilities
-from tqdm import tqdm  # Importing the tqdm library for creating progress bars
 import time  # Importing the time module for time-related functions
 from typing import Dict, List, Tuple, Union, Optional  # Importing type hints for function signatures
 import copy  # Importing the copy module for creating deep copies of objects
@@ -29,6 +28,9 @@ init(autoreset=True) # Initializing colorama for auto-resetting colors after eac
 import json # Importing the json module for serialization and deserialization of objects and functions from JSON files
 import subprocess # Importing the subprocess module for serialization and deserialization of objects and functions from JSON files
 import progressbar # Importing the progressbar module for serialization and deserialization
+from halo import Halo  # type: ignore
+from multiprocessing import cpu_count, Pool
+from concurrent.futures import ThreadPoolExecutor, as_completed
 
 # Ensure Nmap is available
 try: # Using a try block to handle exceptions in Python exceptions that are not caught by the standard exception handler module
@@ -48,7 +50,7 @@ def suppress_stdout_stderr(): # Defining a function to suppress stdout and stder
         try: # Using a try block to handle exceptions
             yield # Yielding to the context manager to execute the code within the context
         finally: # Using a finally block to ensure cleanup
-            sys.stdout, sys.stderr = old_stdout, old_stderr # Restoring the original stdout and stderr streams
+            sys.stdout, sys.stderr = old_stdout, old_stderr # Restoring the original stdout and stderr streamswith ThreadPoolExecutor(max_workers=cpu_count() or 1) as executor:
 
 CPU_CORES = multiprocessing.cpu_count() or 1  # Getting the number of CPU cores or defaulting to 1 if not available
 
@@ -61,68 +63,90 @@ def get_local_ip() -> str: # Defining a function to get the local IP address of 
         local_ip = '127.0.0.1'  # Defaulting to localhost IP if an error occurs
     return local_ip # Returning the local IP address as a string
 
-def quick_scan(ip: str, nm: nmap.PortScanner) -> Dict[str, List[int]]: # Checking if scan information is available and returning the detailed scan results if available otherwise returning None
-    print(f"{Fore.YELLOW}{Style.BRIGHT}Performing Initial Scan For {Fore.RED}{Style.BRIGHT}Open Ports:{Style.RESET_ALL}") # Checking for open ports in the specified IP address range and printing a message to indicate the start of the scan
-    arguments = "-T4 --open" # Setting the Nmap scan arguments for quick scanning on TCP and UDP ports with open ports
-    nm.scan(hosts=ip, ports="1-65535", arguments=arguments) # Checking for open ports in the specified IP address range
-    open_ports: Dict[str, List[int]] = {'tcp':[],'udp':[]} # List of open ports for each protocol
-    for proto in nm[ip].all_protocols(): # Iterating over the protocols to check for open ports
+def scan_port(ip: str, port: int, proto: str, nm: nmap.PortScanner) -> Tuple[int, Optional[Dict[str, Union[str, List[str], Dict[str, str]]]]]:
+    arguments = "-T4 -sV -sC -A -O --version-intensity 9 --script=default,vuln,banner,http-headers,http-title"
+    nm.scan(hosts=ip, ports=str(port), arguments=arguments, sudo=True if proto == 'udp' else False)
+    scan_info = nm[ip].get(proto, {}).get(port, {})
+    result = {
+        "state": scan_info.get('state', 'closed'),
+        "name": scan_info.get('name', ''),
+        "product": scan_info.get('product', ''),
+        "version": scan_info.get('version', ''),
+        "extrainfo": scan_info.get('extrainfo', ''),
+        "reason": scan_info.get('reason', ''),
+        "script": scan_info.get('script', {})
+    } if scan_info else None
+    return port, result
+
+def quick_scan(ip: str, nm: nmap.PortScanner) -> Dict[str, List[int]]:
+    print(f"{Fore.YELLOW}{Style.BRIGHT}Performing Initial Scan For {Fore.RED}{Style.BRIGHT}Open Ports:{Style.RESET_ALL}")
+    arguments = "-T4 --open"
+    nm.scan(hosts=ip, ports="1-65535", arguments=arguments)
+    open_ports: Dict[str, List[int]] = {'tcp':[],'udp':[]}
+    for proto in nm[ip].all_protocols():
         ports = sorted(nm[ip][proto].keys())
-        bar = progressbar.ProgressBar(max_value=len(ports)) # Creating a progress bar to track the scanning progress
-        for i, port in enumerate(ports): # Iterating over the ports to check if they are open
-            if nm[ip][proto][port]['state'] == 'open': # Checking if the port is open
-                open_ports[proto].append(port) # Adding the open port to the open_ports dictionary
-            bar.update(i) # type: ignore
-        bar.finish()
-    return open_ports # Returning the open ports as a dictionary
+        bar = progressbar.ProgressBar(max_value=len(ports))
+        with ThreadPoolExecutor(max_workers=cpu_count() or 1) as executor:
+            futures = {executor.submit(nm[ip][proto].get, port): port for port in ports}
+            for i, future in enumerate(as_completed(futures)):
+                port = futures[future]
+                if future.result()['state'] == 'open':
+                    open_ports[proto].append(port)
+                bar.update(i) # type: ignore
+            bar.finish()
+    return open_ports
 
-def scan_port(ip: str, port: int, proto: str, nm: nmap.PortScanner) -> Tuple[int, Optional[Dict[str, Union[str, List[str], Dict[str, str]]]]]: # Defining a function to scan a specific port on the specified IP address and return detailed information about the port
-    arguments = "-T4 -sV -sC -A -O --version-intensity 9 --script=banner,vuln"  # Setting the Nmap scan arguments for detailed scanning
-    nm.scan(hosts=ip, ports=str(port), arguments=arguments, sudo=True if proto == 'udp' else False)  # Scanning the specified port for detailed information
-    scan_info = nm[ip].get(proto, {}).get(port, {})  # Getting the scan information for the port
-    result = { # Creating a dictionary to store the detailed scan results
-        "state": scan_info.get('state', 'closed'),  # Getting the state of the port (open or closed)
-        "name": scan_info.get('name', ''),  # Getting the name of the service running on the port
-        "product": scan_info.get('product', ''),  # Getting the product information of the service
-        "version": scan_info.get('version', ''),  # Getting the version information of the service
-        "extrainfo": scan_info.get('extrainfo', ''),  # Getting additional information about the service
-        "reason": scan_info.get('reason', ''),  # Getting the reason for the port state
-        "script": scan_info.get('script', {})  # Getting the script output for the port
-    } if scan_info else None  # Checking if scan information is available and returning the detailed scan results if available
-    return port, result # Returning the port number and detailed scan results as a tuple
+def scan_all_open_ports(ip: str):
+    nm = nmap.PortScanner()
+    open_ports = quick_scan(ip, nm)
+    with Pool(processes=cpu_count() or 1) as pool:
+        results: List[Tuple[int, Optional[Dict[str, Union[str, List[str], Dict[str, str]]]]]] = pool.starmap(scan_port, [(ip, port, proto) for proto, ports in open_ports.items() for port in ports])
+        for port, result in results:
+            print(f"Port: {port}, Result: {result}")
 
-def worker(ip: str, ports: List[int], proto: str, nm: nmap.PortScanner) -> Dict[int, Optional[Dict[str, Union[str, List[str], Dict[str, str]]]]]: # Checking if scan information is available and returning the detailed scan results if available
-    results: Dict[int, Optional[Dict[str, Union[str, List[str], Dict[str, str]]]]] = {} # Dictionary of ports and ports that are available for the worker to scan
-    for port in ports: # Iterating over the ports to scan
-        port_result = scan_port(ip, port, proto, nm) # Checking if scan information is available and returning the detailed scan results if available
-        if port_result[1]: # Checking if the detailed scan results are available
-            results[port_result[0]] = port_result[1] # The port number and detailed scan results are stored in the results dictionary
-    return results # Returning the port number and detailed scan results as a dictionary
+def worker(ip: str, ports: List[int], proto: str, nm: nmap.PortScanner, spinner: Halo, completed: Dict[str, int]) -> Dict[int, Optional[Dict[str, Union[str, List[str], Dict[str, str]]]]]:
+    results: Dict[int, Optional[Dict[str, Union[str, List[str], Dict[str, str]]]]] = {}
+    def scan_and_update(port: int, ip: str, proto: str, nm: nmap.PortScanner, spinner: Halo, completed: Dict[str, int], results: Dict[int, Optional[Dict[str, Union[str, List[str], Dict[str, str]]]]]):
+        spinner.text = f'{Fore.YELLOW}{Style.BRIGHT}Initializing Scan On{Style.RESET_ALL} [{Fore.CYAN}{Style.BRIGHT}Port{Style.RESET_ALL}{Fore.GREEN}{Style.BRIGHT}:{Style.RESET_ALL}{Style.RESET_ALL}{Fore.RED}{Style.BRIGHT}{port}{Style.RESET_ALL}]'
+        port_result = scan_port(ip, port, proto, nm)
+        percentage = 0
+        if port_result[1]:
+            results[port_result[0]] = port_result[1]
+            completed['count'] += 1
+            percentage = (completed['count'] / completed['total']) * 100
+            spinner.text = f'{Fore.GREEN}{Style.BRIGHT}Finished Scan On {Style.RESET_ALL}[{Fore.BLUE}{Style.BRIGHT}Port:{Style.RESET_ALL} {Fore.RED}{Style.BRIGHT}{port}{Style.RESET_ALL}] [Completion:[{completed["count"]}/{completed["total"]}]{Fore.GREEN}{Style.BRIGHT} {percentage:.2f}%{Style.RESET_ALL}]'
+            time.sleep(5)
+        else:
+            spinner.text = f'{Fore.RED}{Style.BRIGHT}No Results On{Style.RESET_ALL} [{Fore.GREEN}{Style.BRIGHT}Port{Style.RESET_ALL}{Fore.GREEN}{Style.BRIGHT}:{Style.RESET_ALL}{Style.RESET_ALL}{Fore.RED}{Style.BRIGHT}{port}{Style.RESET_ALL}]'
+        spinner.text = f'{Fore.GREEN}{Style.BRIGHT}Scan In Progress On{Style.RESET_ALL} [{Fore.BLUE}{Style.BRIGHT}Port{Style.RESET_ALL}{Fore.GREEN}{Style.BRIGHT}:{Style.RESET_ALL}{Style.RESET_ALL}{Fore.RED}{Style.BRIGHT}{port}{Style.RESET_ALL}] [Completion:[{completed["count"]}/{completed["total"]}]{Fore.GREEN}{Style.BRIGHT} {percentage:.2f}%{Style.RESET_ALL}]'
+        time.sleep(15)
+    with ThreadPoolExecutor(max_workers=5) as executor:
+        executor.map(scan_and_update, ports, [ip]*len(ports), [proto]*len(ports), [nm]*len(ports), [spinner]*len(ports), [completed]*len(ports), [results]*len(ports))
 
-def distribute_work(ip: str, open_ports: Dict[str, List[int]]) -> Dict[str, Dict[int, Dict[str, Union[str, List[str], Dict[str, str]]]]]: # Defining a function to distribute the detailed scanning work across multiple threads for parallel execution
+    return results
+
+def distribute_work(ip: str, open_ports: Dict[str, List[int]]) -> Dict[str, Dict[int, Dict[str, Union[str, List[str], Dict[str, str]]]]]:
     detailed_results: Dict[str, Dict[int, Dict[str, Union[str, List[str], Dict[str, str]]]]] = {'tcp': {}, 'udp': {}}
-    proto = None # Initializing the protocol to None
-    with concurrent.futures.ThreadPoolExecutor(max_workers=CPU_CORES) as executor: # Using a ThreadPoolExecutor to distribute the work across multiple threads for parallel execution
+    proto = None
+    total_ports = sum(len(ports) for ports in open_ports.values())
+    completed = {'total': total_ports, 'count': 0}
+    spinner = Halo(text=f'{Fore.GREEN}{Style.BRIGHT}Initializing', spinner='dots')  # Initialize spinner here
+    with concurrent.futures.ThreadPoolExecutor(max_workers=CPU_CORES) as executor:
         futures: List[concurrent.futures.Future[Dict[int, Optional[Dict[str, Union[str, List[str], Dict[str, str]]]]]]] = []
-        for proto, ports in open_ports.items(): # Iterating over the open ports for each protocol
-            if ports: # Checking if there are open ports for the protocol
-                print(f"{Fore.BLUE}{Style.BRIGHT}Performing Detailed Scan On Open Ports:{Style.RESET_ALL}") # Printing a message to indicate the start of the detailed scanning process
-                for port in ports: # Iterating over the open ports for detailed scanning
-                    nm_copy = copy.deepcopy(nm) # Creating a deep copy of the nmap.PortScanner object to avoid
-                    futures.append(executor.submit(worker, ip, [port], proto, nm_copy)) # Submitting the worker task to the executor
-        pbar = tqdm(total=len(futures), # Creating a progress bar to track the detailed scanning progress
-                desc=f"{Fore.RED}{Style.BRIGHT}Detailed Scanning Progress{Fore.GREEN}{Style.BRIGHT}:Initializing:{Style.RESET_ALL}", # Setting the description of the progress bar to indicate the detailed scanning progress
-                unit="port", # Setting the unit of the progress bar to 'port'
-                leave=False, # Leave the progress bar after completion
-                bar_format="{l_bar}\033[95m{bar}\033[0m{r_bar}[Remaining:{remaining}][Elapsed:{elapsed}]{rate_fmt}/[{n_fmt}|{total_fmt}]") # Creating a progress bar to track the detailed scanning progress
-        for future in concurrent.futures.as_completed(futures): # Iterating over the completed futures
-            proto_results: Dict[int, Optional[Dict[str, Union[str, List[str], Dict[str, str]]]]] = future.result() # Getting the results of the future task
+        for proto, ports in open_ports.items():
+            if ports:
+                print(f"{Fore.CYAN}{Style.BRIGHT}Performing Detailed Scan On {Fore.RED}{Style.BRIGHT}Open Ports:{Style.RESET_ALL}")
+                spinner.start()  # type: ignore # Start spinner here
+                for port in ports:
+                    nm_copy = copy.deepcopy(nm)
+                    futures.append(executor.submit(worker, ip, [port], proto, nm_copy, spinner, completed))
+        for future in concurrent.futures.as_completed(futures):
+            proto_results: Dict[int, Optional[Dict[str, Union[str, List[str], Dict[str, str]]]]] = future.result()
             for port, result in proto_results.items():
-                if proto is not None and result is not None: # Checking if the protocol and result are not None
+                if proto is not None and result is not None:
                     detailed_results[proto][port] = result
-                    pbar.set_description(f"{Fore.GREEN}{Style.BRIGHT}Scanning Port: {Fore.RED}{Style.BRIGHT}{port}{Style.RESET_ALL}") # Setting the description of the progress bar to indicate the port being scanned
-                    pbar.update() # update the progress bar
-        pbar.close() # Closing the progress bar
+        spinner.text = '{Fore.GREEN}{Style.BRIGHT}Finished Scanning All Ports{Style.RESET_ALL}'
+        spinner.stop()
 
     # Print the detailed scan results
     for proto, ports_info in detailed_results.items(): # Iterating over the detailed scan results for each protocol
@@ -153,7 +177,7 @@ def main(): # Defining the main function to orchestrate the network scanning pro
 
     # Quick Scan
     open_ports = quick_scan(ip, nm)  # Performing the quick scan and getting the open ports
-    print(f"{Fore.GREEN}{Style.BRIGHT}Quick Scan Completed. Identified Open Ports: {Fore.RED}{Style.BRIGHT}{', '.join(map(str, open_ports['tcp']))}{Style.RESET_ALL}{Fore.GREEN}{Style.BRIGHT}(TCP),{Fore.RED}{Style.BRIGHT}{', '.join(map(str, open_ports['udp']))}{Style.RESET_ALL}{Fore.GREEN}{Style.BRIGHT}(UDP){Style.RESET_ALL}")  # Printing the identified open ports
+    print(f"{Fore.GREEN}{Style.BRIGHT}Quick Scan Completed. {Fore.CYAN}{Style.BRIGHT}Identified Open Ports: {Fore.RED}{Style.BRIGHT}{', '.join(map(str, open_ports['tcp']))}{Style.RESET_ALL}{Fore.GREEN}{Style.BRIGHT}(TCP),{Fore.RED}{Style.BRIGHT}{', '.join(map(str, open_ports['udp']))}{Style.RESET_ALL}{Fore.GREEN}{Style.BRIGHT}(UDP){Style.RESET_ALL}")  # Printing the identified open ports
 
     # Detailed Scan on Open Ports
     detailed_results = {} # Initializing a dictionary to store the detailed scan results in a dictionary object containing the details of the open ports discovered in the database
@@ -161,7 +185,7 @@ def main(): # Defining the main function to orchestrate the network scanning pro
         detailed_results = distribute_work(ip, open_ports)  # Performing the distributed work on the identified open ports
 
     # Output results to a file
-    report_filename = os.path.join("C:\\Users\\YOU\\SET\\YOU\\DIRECTORYPATH", f"nmapscan_report_{time.strftime('%Y%m%d%H%M%S')}.txt")  # Generating the report filename with the current timestamp
+    report_filename = os.path.join("C:\\Users\\MrDra\\OneDrive\\Desktop\\PythonTools", f"nmapscan_report_{time.strftime('%Y%m%d%H%M%S')}.txt")  # Generating the report filename with the current timestamp
     with open(report_filename, "w") as report_file: # Opening the report file in write mode
         for proto, ports_info in detailed_results.items(): # Iterating over the detailed scan results for each protocol
             report_file.write(f"{proto.upper()} Ports:{Style.RESET_ALL}\n")  # Writing the protocol name to the report file
@@ -178,9 +202,9 @@ def main(): # Defining the main function to orchestrate the network scanning pro
                         script_output = "\n".join([f"{str(k)}: {str(v)}" if 'vuln' not in str(k).lower() and 'cve' not in str(k).lower() else f"{Fore.RED}{Style.BRIGHT}{str(k)}: {str(v)}{Style.RESET_ALL}" for k, v in script_info.items()])  # Formatting the script output
                     else: # Handling the case where the script output is not a dictionary
                         script_output = "" # Setting the script output to an empty string
-                    report_line = f"Port {port}/TCP {state}: {service} {product} {version} {extra} {reason}\nScript Output:\n{script_output}\n\n"  # Generating the report line
+                    report_line = f"Port {port}/TCP {state}: {service} {product} {version} {extra} {reason}{script_info}\nScript Output:\n{script_output}\n\n"  # Generating the report line
                     if 'vuln' in script_output.lower() or 'cve' in script_output.lower(): # Checking if vulnerabilities or CVEs are detected in the script output
-                        report_file.write(f"WARNING: Vulnerabilities or CVEs detected!{Style.RESET_ALL}\n")  # Writing a warning message to the report file if vulnerabilities or CVEs are detected
+                        report_file.write(f"WARNING: Vulnerabilities or CVEs detected!\n")  # Writing a warning message to the report file if vulnerabilities or CVEs are detected
                     report_file.write(report_line)  # Writing the report line to the report file
     print(f"{Fore.BLUE}{Style.BRIGHT}Detailed report saved to {report_filename}{Style.RESET_ALL}")  # Printing the filename of the saved report
 
@@ -188,9 +212,8 @@ def main(): # Defining the main function to orchestrate the network scanning pro
     results_json_path = os.path.join("C:\\Users\\MrDra\\OneDrive\\Desktop\\PythonTools", f"nmapscan_results_{time.strftime('%Y%m%d%H%M%S')}.json") # Generating the JSON file path for the vulnerability scanning script
     with open(results_json_path, 'w') as json_file: # Opening the JSON file in write mode
         json.dump(detailed_results, json_file, indent=4) # Writing the detailed scan results to the JSON file with indentation
-    print(f"{Fore.YELLOW}{Style.BRIGHT}Detailed report saved to {results_json_path}{Style.RESET_ALL}") # Printing the filename of the saved JSON file for the vulnerability scanning script with indentation and indent level of 4
-
-
+    print(f"{Fore.YELLOW}{Style.BRIGHT}Detailed report saved to {Fore.GREEN}{Style.BRIGHT}{results_json_path}{Style.RESET_ALL}") # Printing the filename of the saved JSON file for the vulnerability scanning script with indentation and indent level of 4
+    
 ########################################################################################################################################################################
   #THIS IS WHERE THE VULNSCAN.PY SCRIPT WOULD TAKE THE JSON FILE FROM THE NMAPSCAN.PY SCAN AND WORK ON THE FINDINGS USING NVD API URL TO DIG FURTHER
   #WILL FINISH CREATING AND TESTING THIS BUT FOR NOW IF YOU CREATE A VULNSCAN.PY SCRIPT THIS WILL WORK WITH THAT AND TAKE IN THE JSON FILE THAT THE NMAPSCAN.PY CREATES
