@@ -211,7 +211,7 @@ def main(): # Defining the main function to orchestrate the network scanning pro
         else:
             print(f"WARNING: {message}")
 
-    report_filename = os.path.join("C:\\Users\\MrDra\\OneDrive\\Desktop\\PythonTools", f"nmapscan_report_{time.strftime('%Y%m%d%H%M%S')}.txt")
+    report_filename = os.path.join("C:\\Users\\YOU\\CREATE\\YOU\\FILEPATH", f"nmapscan_report_{time.strftime('%Y%m%d%H%M%S')}.txt")
     with open(report_filename, "w") as report_file:
         for proto, ports_info in detailed_results.items():
             report_file.write(f"{proto.upper()} Ports:\n")
@@ -239,7 +239,7 @@ def main(): # Defining the main function to orchestrate the network scanning pro
     print(f"{Fore.CYAN}{Style.BRIGHT}Detailed report saved to{Style.RESET_ALL} {Fore.RED}{Style.BRIGHT}{report_filename}{Style.RESET_ALL}")
 
     # Save scan results in JSON format for the vulnerability scanning script
-    results_json_path = os.path.join("C:\\Users\\MrDra\\OneDrive\\Desktop\\PythonTools", f"nmapscan_results_{time.strftime('%Y%m%d%H%M%S')}.json") # Generating the JSON file path for the vulnerability scanning script
+    results_json_path = os.path.join("C:\\Users\\YOU\\CREATE\\YOUR\\FILEPATH", f"nmapscan_results_{time.strftime('%Y%m%d%H%M%S')}.json") # Generating the JSON file path for the vulnerability scanning script
     with open(results_json_path, 'w') as json_file: # Opening the JSON file in write mode
         json.dump(detailed_results, json_file, indent=4) # Writing the detailed scan results to the JSON file with indentation
     print(f"{Fore.BLUE}{Style.BRIGHT}Detailed report saved to {Fore.YELLOW}{Style.BRIGHT}{results_json_path}{Style.RESET_ALL}") # Printing the filename of the saved JSON file for the vulnerability scanning script with indentation and indent level of 4
