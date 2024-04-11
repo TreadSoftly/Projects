@@ -3,7 +3,7 @@
 #Below you will have to set your own path to where the script is held in your directory: 
 # LOOKE FOR AND EDIT> 
     # Output results to a file
-    # report_filename = os.path.join("C:\\Users\\YOU\\SET\\YOU\\DIRECTORYPATH", f"nmapscan_report_{time.strftime('%Y%m%d%H%M%S')}.txt")
+    # report_filename = os.path.join("C:\\Users\\YOU\\CREATE\\YOUR\\FILEPATH", f"nmapscan_report_{time.strftime('%Y%m%d%H%M%S')}.txt")
 
 #The vulnscan at the end is being built out and worked on currently
 
@@ -12,6 +12,7 @@
   #WILL FINISH CREATING AND TESTING THIS BUT FOR NOW IF YOU CREATE A VULNSCAN.PY SCRIPT THIS WILL WORK WITH THAT AND TAKE IN THE JSON FILE THAT THE NMAPSCAN.PY CREATES
   #FOR NOW IT WILL BE COMMENTED OUT BUT THE NMAPSCAN.PY WORKS FINE AS A STANDALONE
 ########################################################################################################################################################################
+
 import nmap  # Importing the nmap library for network scanning
 import concurrent.futures  # Importing the concurrent.futures module for parallel execution
 import os  # Importing the os module for interacting with the operating system
