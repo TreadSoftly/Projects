@@ -64,7 +64,7 @@ def suppress_stdout_stderr(): # Defining a function to suppress stdout and stder
         finally: # Using a finally block to ensure cleanup
             sys.stdout, sys.stderr = old_stdout, old_stderr # Restoring the original stdout and stderr streamswith ThreadPoolExecutor(max_workers=cpu_count() or 1) as executor:
 
-CPU_CORES = multiprocessing.cpu_count() or 1  # Getting the number of CPU cores or defaulting to 1 if not available
+CPU_CORES = multiprocessing.cpu_count() or 1 + 4  # Getting the number of CPU cores or defaulting to 1 if not available
 
 def get_local_ip() -> str: # Defining a function to get the local IP address of the current process and return it as a string in the format expected by the current process and previous process manager
     try: # Using a try block to handle exceptions
@@ -104,7 +104,8 @@ def quick_scan(ip: str, nm: nmap.PortScanner) -> Dict[str, List[int]]:
         ports = sorted(nm[ip][proto].keys())
         total_ports = len(ports)
         completed = 0
-        with ThreadPoolExecutor(max_workers=cpu_count() or 1) as executor:
+        max_workers = (os.cpu_count() or 1) + 4
+        with ThreadPoolExecutor(max_workers=max_workers) as executor:
             futures = {executor.submit(nm[ip][proto].get, port): port for port in ports}
             for future in futures:
                 port = future
@@ -122,7 +123,7 @@ def quick_scan(ip: str, nm: nmap.PortScanner) -> Dict[str, List[int]]:
 def scan_all_open_ports(ip: str):
     nm = nmap.PortScanner()
     open_ports = quick_scan(ip, nm)
-    with Pool(processes=cpu_count() or 1) as pool:
+    with Pool(processes=(cpu_count() or 1) + 4) as pool:
         results: List[Tuple[int, Optional[Dict[str, Union[str, List[str], Dict[str, str]]]]]] = pool.starmap(scan_port, [(ip, port, proto) for proto, ports in open_ports.items() for port in ports])
         for port, result in results:
             print(f"Port: {port}, Result: {result}")
@@ -143,7 +144,8 @@ def worker(ip: str, ports: List[int], proto: str, nm: nmap.PortScanner, spinner:
             spinner.text = f'{Fore.RED}{Style.BRIGHT}No Results On{Style.RESET_ALL} [{Fore.GREEN}{Style.BRIGHT}Port{Style.RESET_ALL}{Fore.GREEN}{Style.BRIGHT}:{Style.RESET_ALL}{Style.RESET_ALL}{Fore.RED}{Style.BRIGHT}{port}{Style.RESET_ALL}]'
         spinner.text = f'{Fore.GREEN}{Style.BRIGHT}Scan In Progress On{Style.RESET_ALL} [{Fore.BLUE}{Style.BRIGHT}Port{Style.RESET_ALL}{Fore.GREEN}{Style.BRIGHT}:{Style.RESET_ALL}{Style.RESET_ALL}{Fore.RED}{Style.BRIGHT}{port}{Style.RESET_ALL}] [Completion:[{completed["count"]}/{completed["total"]}]{Fore.GREEN}{Style.BRIGHT} {percentage:.2f}%{Style.RESET_ALL}]'
         time.sleep(15)
-    with ThreadPoolExecutor(max_workers=5) as executor:
+    max_workers = (cpu_count() or 1) + 4
+    with ThreadPoolExecutor(max_workers=max_workers) as executor:
         executor.map(scan_and_update, ports, [ip]*len(ports), [proto]*len(ports), [nm]*len(ports), [spinner]*len(ports), [completed]*len(ports), [results]*len(ports))
 
     return results
@@ -298,63 +300,38 @@ def main():
     except Exception as e:
         print(f"{Fore.RED}{Style.BRIGHT}An error occurred while saving the detailed report: {str(e)}{Style.RESET_ALL}")
 
-########################################################################################################################################################################
-  #THIS IS WHERE THE VULNSCAN.PY SCRIPT WOULD TAKE THE JSON FILE FROM THE NMAPSCAN.PY SCAN AND WORK ON THE FINDINGS USING NVD API URL TO DIG FURTHER
-  #WILL FINISH CREATING AND TESTING THIS BUT FOR NOW IF YOU CREATE A VULNSCAN.PY SCRIPT THIS WILL WORK WITH THAT AND TAKE IN THE JSON FILE THAT THE NMAPSCAN.PY CREATES
-  #FOR NOW IT WILL BE COMMENTED OUT BUT THE NMAPSCAN.PY WORKS FINE AS A STANDALONE
-########################################################################################################################################################################
-  
-    # # Prompt user to initiate vulnerability scanning
-    # user_input = input("Do you want to proceed with vulnerability scan? (y/n): ") # Prompting the user to initiate the vulnerability scan with y/n parameter values (y/n):
-    # if user_input.lower() == 'y' or user_input.upper() == 'Y': # Checking if the user input is 'y' or 'Y'
-    #     print("Proceeding with vulnerability scan...") # Prompting the user to proceed with the vulnerability scan
-    #     # Assuming `results_json_path` holds the path to the JSON file from nmap scan
-    #     vulnscan_script_path = os.path.join(os.path.dirname(__file__), "vulnscan.py") # Path to the vulnerability scanning script file
-    #     output_dir = os.path.join(os.path.dirname(vulnscan_script_path), "vulnscan_results") # Directory to store the vulnerability scanning results file
+    # Prompt user to initiate vulnerability scanning
+    user_input = input("Do you want to proceed with vulnerability scan? (y/n): ") # Prompting the user to initiate the vulnerability scan with y/n parameter values (y/n):
+    if user_input.lower() == 'y' or user_input.upper() == 'Y': # Checking if the user input is 'y' or 'Y'
+        print("Proceeding with vulnerability scan...") # Prompting the user to proceed with the vulnerability scan
+        # Assuming `results_json_path` holds the path to the JSON file from nmap scan
+        vulnscan_script_path = os.path.join(os.path.dirname(__file__), "vulnscan.py") # Path to the vulnerability scanning script file
+        output_dir = os.path.join(os.path.dirname(vulnscan_script_path), "vulnscan_results") # Directory to store the vulnerability scanning results file
 
-    #     # Create the output directory if it doesn't exist
-    #     os.makedirs(output_dir, exist_ok=True)
+        # Execute vulnscan.py script with real-time output
+        try: # Using a try block to handle exceptions that may occur while executing the vulnerability scanning script
+            command = ["python", vulnscan_script_path, results_json_path, output_dir] # Creating a command to execute the vulnerability scanning script with the JSON file path and output directory
+            with subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, universal_newlines=True) as process: # Using the subprocess module to execute the vulnerability scanning script with real-time output instead of using the os.system() function
+                while process.stdout is not None: # Checking if the output directory is not empty before reading the line from the output directory
+                    line = process.stdout.readline() # Read the line from the output directory and convert it to a string
+                    if not line: # Checking if the line is empty is not necessary as the loop will break if the line is empty
+                        break # Ignore error and continue processing further lines from the output directory
+                    print(line, end='') # print line from the output directory if it exists and is not empty
+            process.wait()  # Wait for the process to complete
 
-    #     # Execute vulnscan.py script with real-time output
-    #     try: # Running vulnscan.py script with real-time output
-    #         command = ["python", vulnscan_script_path, results_json_path, output_dir] # Creating a command to execute the vulnerability scanning script with the JSON file path and output directory
-    #         with subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, universal_newlines=True) as process: # Using the subprocess module to execute the vulnerability scanning script with real-time output instead of using the os.system() function
-    #             while process.stdout is not None: # Checking if the output directory is not empty before reading the line from the output directory
-    #                 line = process.stdout.readline() # Read the line from the output directory and convert it to a string
-    #                 if not line: # Checking if the line is empty is not necessary as the loop will
-    #                     break # Ignore error and continue processing further lines from the output directory
-    #                 print(line, end='') # print line from the output directory if it exists and is not empty
-    #         process.wait()  # Wait for the process to complete
+            if process.returncode != 0: # Checking if the process return code is not 0 means that the process encountered an error
+                print(f"{Fore.RED}Vulnerability scan encountered an error.{Style.RESET_ALL}") # Reset all variables to their initial values before continuing to run vulnerability scanning script
+        except Exception as e: # Handling exceptions that may occur while executing the vulnerability scanning script
+            print(f"{Fore.RED}Failed to execute vulnscan.py: {e}{Style.RESET_ALL}") # Error handling is not necessary as the user input is validated before proceeding with the vulnerability scan
+    else: # Error handling is not necessary as the user input is validated before proceeding with the vulnerability scan
+        print("Vulnerability scan aborted.") # Printing a message if the user chooses not to proceed with the vulnerability scan
 
-    #         if process.returncode != 0: # Something went wrong during the execution of the vulnerability scanning script
-    #             print(f"{Fore.RED}{Style.BRIGHT}Vulnerability scan encountered an error.{Style.RESET_ALL}") # Reset all variables to their initial values before continuing to run vulnerability scanning script with real-time output
-    #     except Exception as e: # pylint: disable=broad-except instead of returning an exception
-    #         print(f"{Fore.RED}{Style.BRIGHT}Failed to execute vulnscan.py: {e}{Style.RESET_ALL}") # Error handling is not necessary as the user input is validated before proceeding with the vulnerability scan
+                # Assuming `results_json_path` holds the path to the JSON file from nmap scan
+        vulnscan_script_path = os.path.join(os.path.dirname(__file__), "vulnscan.py") # Path to the vulnerability scanning script file
+        output_dir = os.path.join(os.path.dirname(vulnscan_script_path), "vulnscan_results") # Directory to store the vulnerability scanning results file
 
-    #     # Assuming `results_json_path` holds the path to the JSON file from nmap scan
-    #     vulnscan_script_path = os.path.join(os.path.dirname(__file__), "vulnscan.py") # Path to the vulnerability scanning script file
-    #     output_dir = os.path.join(os.path.dirname(vulnscan_script_path), "vulnscan_results") # Directory to store the vulnerability scanning results file
-
-    #     # Create the output directory if it doesn't exist
-    #     os.makedirs(output_dir, exist_ok=True) # Make sure output directory exists before running the vulnerability scanning script
-
-    #     # Execute vulnscan.py script with real-time output
-    #     try: # Using a try block to handle exceptions that may occur while executing the vulnerability scanning script
-    #         command = ["python", vulnscan_script_path, results_json_path, output_dir] # Creating a command to execute the vulnerability scanning script with the JSON file path and output directory
-    #         with subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, universal_newlines=True) as process: # Using the subprocess module to execute the vulnerability scanning script with real-time output instead of using the os.system() function
-    #             while process.stdout is not None: # Checking if the output directory is not empty before reading the line from the output directory
-    #                 line = process.stdout.readline() # Read the line from the output directory and convert it to a string
-    #                 if not line: # Checking if the line is empty is not necessary as the loop will break if the line is empty
-    #                     break # Ignore error and continue processing further lines from the output directory
-    #                 print(line, end='') # print line from the output directory if it exists and is not empty
-    #         process.wait()  # Wait for the process to complete
-
-    #         if process.returncode != 0: # Checking if the process return code is not 0 means that the process encountered an error
-    #             print(f"{Fore.RED}Vulnerability scan encountered an error.{Style.RESET_ALL}") # Reset all variables to their initial values before continuing to run vulnerability scanning script
-    #     except Exception as e: # Handling exceptions that may occur while executing the vulnerability scanning script
-    #         print(f"{Fore.RED}Failed to execute vulnscan.py: {e}{Style.RESET_ALL}") # Error handling is not necessary as the user input is validated before proceeding with the vulnerability scan
-    # else: # Error handling is not necessary as the user input is validated before proceeding with the vulnerability scan
-    #     print("Vulnerability scan aborted.") # Printing a message if the user chooses not to proceed with the vulnerability scan
+                # Create the output directory if it doesn't exist
+        os.makedirs(output_dir, exist_ok=True) # Make sure output directory exists before running the vulnerability scanning script
 
     # Timing and final message
     elapsed_time = time.time() - start_time # Time difference between start_time and end_time for the last scan in seconds since the last time the script was run
