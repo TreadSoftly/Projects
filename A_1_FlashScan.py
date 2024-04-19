@@ -1,4 +1,4 @@
-#The file is called nmapscan.py
+#The file is called nmapscan.py I'll get around to making it into something thats not so monstorously monolithic and ghastly. It works though.
 
 #Below you will have to set your own path to where the script is held in your directory: 
 # LOOKE FOR AND EDIT> 
@@ -8,20 +8,21 @@
 #The vulnscan at the end is being built out and worked on currently
 
 ########################################################################################################################################################################
-  #BELOW COMMENTED OUT IS WHERE THE VULNSCAN.PY SCRIPT WOULD TAKE THE JSON FILE FROM THE NMAPSCAN.PY SCAN AND WORK ON THE FINDINGS USING NVD API URL TO DIG FURTHER
-  #WILL FINISH CREATING AND TESTING THIS BUT FOR NOW IF YOU CREATE A VULNSCAN.PY SCRIPT THIS WILL WORK WITH THAT AND TAKE IN THE JSON FILE THAT THE NMAPSCAN.PY CREATES
-  #FOR NOW IT WILL BE COMMENTED OUT BUT THE NMAPSCAN.PY WORKS FINE AS A STANDALONE
+  # BELOW TOWARDS THE VERY BOTTOM COMMENTED OUT IS WHERE THE VULNSCAN.PY SCRIPT WOULD TAKE THE JSON FILE FROM THE NMAPSCAN.PY SCAN AND WORK ON THE FINDINGS USING NVD 
+  # API URL TO DIG FURTHER. 
+  # WILL FINISH CREATING AND TESTING THIS BUT FOR NOW IF YOU CREATE A VULNSCAN.PY SCRIPT THIS WILL WORK WITH THAT AND TAKE IN THE JSON FILE THAT THE NMAPSCAN.PY CREATES
+  # FOR NOW IT WILL BE COMMENTED OUT BUT THE NMAPSCAN.PY WORKS FINE AS A STANDALONE
 ########################################################################################################################################################################
 
 import nmap  # Importing the nmap library for network scanning
 import concurrent.futures  # Importing the concurrent.futures module for parallel execution
-import os  # Importing the os module for interacting with the operating system
 import socket  # Importing the socket module for network communication
+import os  # Importing the os module for interacting with the operating system
 import sys  # Importing the sys module for system-specific parameters and functions
 import multiprocessing  # Importing the multiprocessing module for utilizing multiple CPU cores
 import contextlib  # Importing the contextlib module for context management utilities
 import time  # Importing the time module for time-related functions
-from typing import Dict, List, Tuple, Union, Optional  # Importing type hints for function signatures
+from typing import Dict, List, Tuple, Union, Optional # Importing type hints for function signatures
 import copy  # Importing the copy module for creating deep copies of objects
 import json # Importing the json module for serialization and deserialization of objects and functions from JSON files
 import subprocess # Importing the subprocess module for serialization and deserialization of objects and functions from JSON files
@@ -30,19 +31,6 @@ from multiprocessing import cpu_count, Pool
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from colorama import Fore, Style, init  # Importing the colorama library for colored terminal output
 init(autoreset=True) # Initializing colorama for auto-resetting colors after each print statement
-
-def print_warning(message: str):
-    """Prints warnings in red."""
-    print(f"{Fore.RED}{Style.BRIGHT}{message}{Style.RESET_ALL}")
-
-def print_certificate(cert_text: str):
-    """Prints certificate details, highlighting the BEGIN and END markers."""
-    cert_lines = cert_text.split('\n')
-    for line in cert_lines:
-        if "BEGIN CERTIFICATE" in line or "END CERTIFICATE" in line:
-            print(f"{Fore.YELLOW}{Style.BRIGHT}{line}{Style.RESET_ALL}")
-        else:
-            print(f"{Fore.CYAN}{line}{Style.RESET_ALL}")
 
 # Ensure Nmap is available
 try: # Using a try block to handle exceptions in Python exceptions that are not caught by the standard exception handler module
@@ -64,7 +52,7 @@ def suppress_stdout_stderr(): # Defining a function to suppress stdout and stder
         finally: # Using a finally block to ensure cleanup
             sys.stdout, sys.stderr = old_stdout, old_stderr # Restoring the original stdout and stderr streamswith ThreadPoolExecutor(max_workers=cpu_count() or 1) as executor:
 
-CPU_CORES = multiprocessing.cpu_count() or 1 + 4  # Getting the number of CPU cores or defaulting to 1 if not available
+CPU_CORES = multiprocessing.cpu_count() or 1 + 4  # Getting the number of CPU cores or defaulting to 1 if Not Available
 
 def get_local_ip() -> str: # Defining a function to get the local IP address of the current process and return it as a string in the format expected by the current process and previous process manager
     try: # Using a try block to handle exceptions
@@ -75,31 +63,122 @@ def get_local_ip() -> str: # Defining a function to get the local IP address of 
         local_ip = '127.0.0.1'  # Defaulting to localhost IP if an error occurs
     return local_ip # Returning the local IP address as a string
 
-def scan_port(ip: str, port: int, proto: str, nm: nmap.PortScanner) -> Tuple[int, Optional[Dict[str, Union[str, List[str], Dict[str, str]]]]]:
-    arguments = "-T3 -sV -sC -A -O -vvv --version-intensity 9 --script=default,vuln,banner,http-headers,http-title"
+def scan_port(ip: str, port: int, proto: str, nm: nmap.PortScanner) -> Tuple[int, Dict[str, Union[str, List[str], Dict[str, str]]]]:
+    def get_field_name(key: str, synonyms_dict: Dict[str, List[str]]) -> Optional[str]:
+        for field, synonyms in synonyms_dict.items():
+            if key.lower() in [synonym.lower() for synonym in synonyms]:
+                return field
+        return None
+    def process_certificate(cert_text: str) -> List[str]:
+        """Process the SSL certificate output from nmap."""
+        return cert_text.splitlines()
+    def process_scripts(scripts: Dict[str, str]) -> Dict[str, Union[str, List[str], Dict[str, str]]]:
+        """Process and return structured data from script outputs."""
+        processed_scripts: Dict[str, Union[str, List[str], Dict[str, str]]] = {}
+        for script_name, output in scripts.items():
+            if 'vuln' in script_name:
+                processed_scripts['vulnerabilities'] = parse_vuln_output(output)
+            else:
+                processed_scripts[script_name] = output
+        return processed_scripts
+    def parse_vuln_output(output: str) -> str:
+        """Extract and format vulnerability data from script output."""
+        return output
+    arguments = "-T3 -sV -A -O --version-intensity 9 --script=default,vuln,banner,http-headers,http-title,vulners -vvv"
     nm.scan(hosts=ip, ports=str(port), arguments=arguments, sudo=True if proto == 'udp' else False)
     scan_info = nm[ip].get(proto, {}).get(port, {})
+    field_synonyms = {
+        "state": ["state", "status", "condition", "stature", "standing", "state_of_play", "context", "situation", "phase"],
+        "name": ["name", "moniker", "denomination", "appellation", "nomenclature", "term", "designation", "title", "alias"],
+        "product": ["product", "item", "goods", "merchandise", "commodity", "article", "unit", "model", "make"],
+        "version": ["version", "revision", "variant", "edit", "update", "upgrade", "release", "edition", "build"],
+        "address": ["address", "location", "place", "point", "site", "spot", "locale", "position", "setting"],
+        "machine": ["machine", "engine", "apparatus", "mechanism", "contraption", "device", "gadget", "instrument", "tool"],
+        "memory": ["memory", "storage", "capacity", "cache", "buffer", "bank", "reservoir", "store", "repository"],
+        "mac": ["mac", "media_access_control", "ethernet_address", "network_address", "physical_address", "hardware_id", "nic_address", "adapter_address", "link_address"],
+        "mac_vendor": ["mac_vendor", "manufacturer", "brand", "producer", "maker", "fabricator", "builder", "creator", "supplier"],
+        "device": ["device", "gadget", "appliance", "instrument", "tool", "machinery", "equipment", "apparatus", "hardware"],
+        "network": ["network", "net", "system", "grid", "web", "mesh", "matrix", "plexus", "complex"],
+        "extrainfo": ["extrainfo", "details", "data", "particulars", "information", "insights", "specifics", "facts", "figures"],
+        "reason": ["reason", "cause", "basis", "rationale", "motive", "justification", "grounds", "explanation", "purpose"],
+        "osclass": ["osclass", "operating_system_class", "os_family", "os_type", "os_category", "system_type", "platform_type", "os_group", "os_series"],
+        "osfamily": ["osfamily", "os_lineage", "os_kind", "system_family", "platform_family", "os_branch", "os_grouping", "os_genus", "os_order"],
+        "hostname": ["hostname", "host_id", "server_name", "node_name", "machine_name", "dns_name", "computer_name", "system_name", "network_name"],
+        "hostnames": ["hostnames", "host_ids", "server_names", "node_names", "machine_names", "dns_names", "computer_names", "system_names", "network_names"],
+        "hostname_type": ["hostname_type", "host_category", "server_class", "machine_kind", "node_type", "name_category", "system_class", "network_type", "domain_type"],
+        "ipv4": ["ipv4", "ipv4_address", "inet4_address", "ipv4_loc", "ipv4_site", "ipv4_node", "ipv4_zone", "ipv4_region", "ipv4_sector"],
+        "ipv6": ["ipv6", "ipv6_address", "inet6_address", "ipv6_loc", "ipv6_site", "ipv6_node", "ipv6_zone", "ipv6_region", "ipv6_sector"],
+        "ipv4_id": ["ipv4_id", "ipv4_ident", "ipv4_tag", "ipv4_code", "ipv4_mark", "ipv4_num", "ipv4_ref", "ipv4_index", "ipv4_label"],
+        "ipv6_id": ["ipv6_id", "ipv6_ident", "ipv6_tag", "ipv6_code", "ipv6_mark", "ipv6_num", "ipv6_ref", "ipv6_index", "ipv6_label"],
+        "osgen": ["osgen", "os_generation", "os_release", "os_version", "os_build", "os_revision", "os_cycle", "os_wave", "os_period"],
+        "osaccuracy": ["osaccuracy", "os_precision", "os_certainty", "os_exactness", "os_fidelity", "os_reliability", "os_precision_level", "os_accuracy_grade", "os_exact_measure"],
+        "osmatch": ["osmatch", "os_compatibility", "os_correspondence", "os_conformity", "os_alignment", "os_agreement", "os_parallels", "os_similarity", "os_congruence"],
+        "vlan_id": ["vlan_id", "vlan_tag", "vlan_code", "vlan_mark", "vlan_label", "vlan_number", "vlan_index", "vlan_identifier", "vlan_ref"],
+        "vlan_name": ["vlan_name", "vlan_designation", "vlan_title", "vlan_alias", "vlan_nomenclature", "vlan_label", "vlan_denomination", "vlan_term", "vlan_identifier"],
+        "distance": ["distance", "range", "span", "reach", "length", "stretch", "expanse", "interval", "separation"],
+        "tcp_sequence": ["tcp_sequence", "tcp_seq", "sequence_number", "tcp_order", "tcp_progression", "tcp_chain", "tcp_series", "tcp_succession", "tcp_continuum"],
+        "tcp_options": ["tcp_options", "tcp_prefs", "tcp_settings", "tcp_choices", "tcp_flags", "tcp_configurations", "tcp_parameters", "tcp_modes", "tcp_alternatives"],
+        "service_info": ["service_info", "service_data", "service_details", "service_facts", "service_specifics", "service_statistics", "service_insights", "service_intelligence", "service_records"],
+        "script": ["script", "script_code", "nse_output", "automation_code", "routine", "procedure", "batch_script", "script_file", "executable_script"]
+    }
+    # Process and map nmap results to fields dynamically
+    result: Dict[str, Union[str, List[str], Dict[str, str]]] = {}
+    for key, value in scan_info.items():
+        field_name = get_field_name(key, field_synonyms)
+        if field_name:
+            result[field_name] = value
+        else:
+            result[key] = value  # Keep original if no synonym found
+    if 'ssl-cert' in scan_info:
+        cert_details = process_certificate(scan_info['ssl-cert'])
+        result['cert'] = cert_details
+    if 'script' in scan_info:
+        script_outputs = process_scripts(scan_info['script'])
+        result.update(script_outputs)
     result = {
         "state": scan_info.get('state', 'closed'),
         "name": scan_info.get('name', ''),
         "product": scan_info.get('product', ''),
         "version": scan_info.get('version', ''),
+        "address": scan_info.get('address', ''),
+        "machine": scan_info.get('machine', ''),
+        "memory": scan_info.get('memory', ''),
+        "mac": scan_info.get('mac', ''),
+        "mac_vendor": scan_info.get('mac_vendor', ''),
+        "device": scan_info.get('device', ''),
+        "network": scan_info.get('network', ''),
         "extrainfo": scan_info.get('extrainfo', ''),
         "reason": scan_info.get('reason', ''),
         "osclass": scan_info.get('osclass', ''),
-        "osmatch": scan_info.get('osmatch', ''),
         "osfamily": scan_info.get('osfamily', ''),
+        "hostname": scan_info.get('hostname', ''),
+        "hostnames": scan_info.get('hostnames', ''),
+        "hostname_type": scan_info.get('hostname_type', ''),
+        "ipv4": scan_info.get('ipv4', ''),
+        "ipv6": scan_info.get('ipv6', ''),
+        "ipv4_id": scan_info.get('ipv4_id', ''),
+        "ipv6_id": scan_info.get('ipv6_id', ''),
+        "osgen": scan_info.get('osgen', ''),
+        "osaccuracy": scan_info.get('osaccuracy', ''),
+        "osmatch": scan_info.get('osmatch', ''),
+        "vlan_id": scan_info.get('vlan_id', ''),
+        "vlan_name": scan_info.get('vlan_name', ''),
+        "distance": scan_info.get('distance', ''),
+        "tcp_sequence": scan_info.get('tcp_sequence', ''),
+        "tcp_options": scan_info.get('tcp_options', ''),
+        "service_info": scan_info.get('service_info', ''),
         "script": scan_info.get('script', {})
-    } if scan_info else None
+    } if scan_info else {}
     return port, result
 
 def quick_scan(ip: str, nm: nmap.PortScanner) -> Dict[str, List[int]]:
     print(f"{Fore.YELLOW}{Style.BRIGHT}Setting Up Initial Scan On {Fore.RED}{Style.BRIGHT}{Fore.GREEN}{Style.BRIGHT}[{Style.RESET_ALL}{Fore.RED}{Style.BRIGHT}SYSTEM{Style.RESET_ALL}{Fore.GREEN}{Style.BRIGHT}]{Style.RESET_ALL}")
-    arguments = "-T4 --open"
+    # Updated arguments to include multiple ICMP probes
+    arguments = "-T3 --version-intensity 2 --open -PE -PP -PM -PS21,23,80,3389 -PA80,443,8080"
     nm.scan(hosts=ip, ports="1-65535", arguments=arguments)
-    open_ports: Dict[str, List[int]] = {'tcp':[],'udp':[]}
+    open_ports: Dict[str, List[int]] = {'tcp': [], 'udp': []}
     spinner = Halo(text='Scanning ports', spinner='dots')
-    spinner.start() # type: ignore
+    spinner.start(text=None)  # type: ignore
     for proto in nm[ip].all_protocols():
         ports = sorted(nm[ip][proto].keys())
         total_ports = len(ports)
@@ -147,10 +226,10 @@ def worker(ip: str, ports: List[int], proto: str, nm: nmap.PortScanner, spinner:
     max_workers = (cpu_count() or 1) + 4
     with ThreadPoolExecutor(max_workers=max_workers) as executor:
         executor.map(scan_and_update, ports, [ip]*len(ports), [proto]*len(ports), [nm]*len(ports), [spinner]*len(ports), [completed]*len(ports), [results]*len(ports))
-
     return results
 
-def distribute_work(ip: str, open_ports: Dict[str, List[int]]) -> Dict[str, Dict[int, Dict[str, Union[str, List[str], Dict[str, str]]]]]:
+scan_info = {}  # Add this line at the appropriate place in your code
+def distribute_work(ip: str, open_ports: Dict[str, List[int]]) -> Dict[str, Dict[int, Dict[str, Union[str, List[str], Dict[str, str]]]]]:# Define scan_info here or get its value from somewhere
     init()
     detailed_results: Dict[str, Dict[int, Dict[str, Union[str, List[str], Dict[str, str]]]]] = {'tcp': {}, 'udp': {}}
     proto = None
@@ -162,7 +241,7 @@ def distribute_work(ip: str, open_ports: Dict[str, List[int]]) -> Dict[str, Dict
         for proto, ports in open_ports.items():
             if ports:
                 print(f"{Fore.CYAN}{Style.BRIGHT}Performing Detailed Scan On {Fore.RED}{Style.BRIGHT}Open Ports:{Style.RESET_ALL}")
-                spinner.start()  # type: ignore # Start spinner here
+                spinner.start(text=None) # type: ignore
                 for port in ports:
                     nm_copy = copy.deepcopy(nm)
                     futures.append(executor.submit(worker, ip, [port], proto, nm_copy, spinner, completed))
@@ -174,38 +253,54 @@ def distribute_work(ip: str, open_ports: Dict[str, List[int]]) -> Dict[str, Dict
         spinner.text = '{Fore.GREEN}{Style.BRIGHT}Finished Scanning All Ports{Style.RESET_ALL}'
         spinner.stop()
 
+    def print_warning(message: str):
+        """Prints warnings in red."""
+        print(f"{Fore.RED}{Style.BRIGHT}{message}{Style.RESET_ALL}")
+
+    def print_certificate(cert_text: str):
+        """Prints certificate details, highlighting the BEGIN and END markers."""
+        cert_lines = cert_text.split('\n')
+        for line in cert_lines:
+            if "BEGIN CERTIFICATE" in line or "END CERTIFICATE" in line:
+                print(f"{Fore.YELLOW}{Style.BRIGHT}{line}{Style.RESET_ALL}")
+            else:
+                print(f"{Fore.CYAN}{line}{Style.RESET_ALL}")
+
+    # Terminal output
     for ports_info in detailed_results.values():
         for port, info in ports_info.items():
-            print(f"{Fore.BLUE}{Style.BRIGHT}Port{Style.RESET_ALL} {Fore.GREEN}{Style.BRIGHT}[{Style.RESET_ALL}{Fore.RED}{Style.BRIGHT}{port}{Style.RESET_ALL}{Fore.GREEN}{Style.BRIGHT}]{Style.RESET_ALL}")
-            print(f"{Fore.GREEN}{Style.BRIGHT}State{Style.RESET_ALL}{Fore.GREEN}{Style.BRIGHT}:{Style.RESET_ALL}{info.get('state')}")
-            print(f"{Fore.YELLOW}Name{Style.RESET_ALL}{Fore.GREEN}{Style.BRIGHT}:{Style.RESET_ALL}{info.get('name')}")
-            product = info.get('product')
-            if product:
-                print(f"{Fore.BLUE}{Style.BRIGHT}Product{Style.RESET_ALL}{Fore.GREEN}{Style.BRIGHT}:{Style.RESET_ALL} {Fore.CYAN}{Style.BRIGHT}{product}{Style.RESET_ALL}")
-            else:
-                print(f"{Fore.BLUE}{Style.BRIGHT}Product{Style.RESET_ALL}{Fore.GREEN}{Style.BRIGHT}:{Style.RESET_ALL} {Fore.CYAN}{Style.BRIGHT}No product found{Style.RESET_ALL}")
-            print(f"{Fore.YELLOW}Version{Style.RESET_ALL}{Fore.GREEN}{Style.BRIGHT}:{Style.RESET_ALL}{info.get('version')}")
-            print(f"{Fore.YELLOW}Extra Info{Style.RESET_ALL}{Fore.GREEN}{Style.BRIGHT}:{Style.RESET_ALL}{info.get('extrainfo')}")
-            print(f"{Fore.YELLOW}Reason{Style.RESET_ALL}{Fore.GREEN}{Style.BRIGHT}:{Style.RESET_ALL}{info.get('reason')}")
-            print(f"{Fore.YELLOW}OS Class{Style.RESET_ALL}{Fore.GREEN}{Style.BRIGHT}:{Style.RESET_ALL}{info.get('osclass')}")
-            print(f"{Fore.YELLOW}OS Match{Style.RESET_ALL}{Fore.GREEN}{Style.BRIGHT}:{Style.RESET_ALL}{info.get('osmatch')}")
-            print(f"{Fore.YELLOW}OS Family{Style.RESET_ALL}{Fore.GREEN}{Style.BRIGHT}:{Style.RESET_ALL}{info.get('osfamily')}")
-            print(f"  {Fore.YELLOW}Script Output{Style.RESET_ALL}{Fore.GREEN}{Style.BRIGHT}:{Style.RESET_ALL}")
+            if info:  # Check if info is not empty
+                print(f"{Fore.BLUE}{Style.BRIGHT}Port{Style.RESET_ALL}{Fore.GREEN}{Style.BRIGHT}[{Style.RESET_ALL}{Fore.RED}{Style.BRIGHT}{port}{Style.RESET_ALL}{Fore.GREEN}{Style.BRIGHT}]{Style.RESET_ALL}")
+            # For each field, check if it exists in info and if it's not empty
+            fields = ['state', 'name', 'product', 'version', 'address', 'machine', 'memory', 'mac', 'mac_vendor', 'device', 'network', 'extrainfo', 'reason', 'osclass', 'osmatch', 'osfamily', 'hostname', 'hostnames', 'hostname_type', 'ipv4', 'ipv6', 'ipv4_id', 'ipv6_id', 'osgen', 'osaccuracy', 'osmatch', 'vlan_id', 'vlan_name', 'distance', 'tcp_sequence', 'tcp_options', 'service_info']
+            for field in fields:
+                if field in info and info[field] not in ['', 'Not available', 'None']:  # Check if field is in info and if it's not empty
+                    if field == 'state':
+                        print(f"{Fore.GREEN}{Style.BRIGHT}State{Style.RESET_ALL}{Fore.GREEN}{Style.BRIGHT}:{Style.RESET_ALL} {Fore.CYAN}{Style.BRIGHT}{info['state']}{Style.RESET_ALL}")
+                    elif field == 'name':
+                        print(f"{Fore.BLUE}{Style.BRIGHT}Name{Style.RESET_ALL}{Fore.GREEN}{Style.BRIGHT}:{Style.RESET_ALL} {Fore.RED}{Style.BRIGHT}{info['name']}{Style.RESET_ALL}")
+                    elif field == 'product':
+                        print(f"{Fore.BLUE}{Style.BRIGHT}Product{Style.RESET_ALL}{Fore.GREEN}{Style.BRIGHT}:{Style.RESET_ALL} {Fore.CYAN}{Style.BRIGHT}{info['product']}{Style.RESET_ALL}")
+                    else:
+                        print(f"{Fore.YELLOW}{field.capitalize()}{Style.RESET_ALL}{Fore.GREEN}{Style.BRIGHT}:{Style.RESET_ALL} {Fore.CYAN}{Style.BRIGHT}{info[field]}{Style.RESET_ALL}")
+            # Script-Output Info
+            print(f"{Fore.YELLOW}{Style.BRIGHT}[{Style.RESET_ALL}{Fore.BLUE}{Style.BRIGHT}NMAP Scripts Output Below If Found{Style.RESET_ALL}{Fore.YELLOW}{Style.BRIGHT}]{Style.RESET_ALL}")
             script_info = info.get('script', {})
             if isinstance(script_info, dict):
                 for key, value in script_info.items():
                     if 'vuln' in key.lower() or 'cve' in key.lower():
-                        print_warning(f"{Fore.RED}{key}{Style.RESET_ALL}{Fore.GREEN}{Style.BRIGHT}:{Style.RESET_ALL} {Fore.RED}{Style.BRIGHT}{value}{Style.RESET_ALL}")
+                        print_warning(f"{Fore.BLACK}{Style.BRIGHT}[[{Style.RESET_ALL}{Fore.RED}{Style.BRIGHT}-WARNING-{Style.RESET_ALL}{Fore.BLACK}{Style.BRIGHT}]]{Style.RESET_ALL}{Fore.WHITE}{Style.BRIGHT} VULNs ~OR~ CVEs DETECTED!{Style.RESET_ALL} {Fore.BLACK}{Style.BRIGHT}[[{Style.RESET_ALL}{Fore.RED}{Style.BRIGHT}-WARNING-{Style.RESET_ALL}{Fore.BLACK}{Style.BRIGHT}]]{Style.RESET_ALL}")
+                        print_warning(f"{Fore.RED}{key}{Style.RESET_ALL}{Fore.GREEN}{Style.BRIGHT}:{Style.RESET_ALL}{Fore.RED}{Style.BRIGHT}{value}{Style.RESET_ALL}")
                     elif 'certificate' in key.lower():
                         print_certificate(value)
                     elif 'csrf' in key.lower():
-                        print(f"{Fore.RED}{key}{Style.RESET_ALL}{Fore.GREEN}{Style.BRIGHT}:{Style.RESET_ALL} {Fore.RED}{Style.BRIGHT}{value}{Style.RESET_ALL}")
+                        print(f"{Fore.RED}{key}{Style.RESET_ALL}{Fore.GREEN}{Style.BRIGHT}:{Style.RESET_ALL}{Fore.RED}{Style.BRIGHT}{value}{Style.RESET_ALL}")
                     elif 'ssl-enum-ciphers' in key.lower():
-                        print(f"{Fore.RED}SSL Ciphers{Style.RESET_ALL}{Fore.GREEN}{Style.BRIGHT}:{Style.RESET_ALL} {Fore.RED}{Style.BRIGHT}{value}{Style.RESET_ALL}")
+                        print(f"{Fore.RED}SSL Ciphers{Style.RESET_ALL}{Fore.GREEN}{Style.BRIGHT}:{Style.RESET_ALL}{Fore.RED}{Style.BRIGHT}{value}{Style.RESET_ALL}")
                     elif 'ssh2-enum-algos' in key.lower():
-                        print(f"{Fore.RED}SSH2 Algorithms{Style.RESET_ALL}{Fore.GREEN}{Style.BRIGHT}:{Style.RESET_ALL} {Fore.RED}{Style.BRIGHT}{value}{Style.RESET_ALL}")
+                        print(f"{Fore.RED}SSH2 Algorithms{Style.RESET_ALL}{Fore.GREEN}{Style.BRIGHT}:{Style.RESET_ALL}{Fore.RED}{Style.BRIGHT}{value}{Style.RESET_ALL}")
                     elif 'http-enum' in key.lower():
-                        print(f"{Fore.YELLOW}HTTP Directories And Files{Style.RESET_ALL}{Fore.GREEN}{Style.BRIGHT}:{Style.RESET_ALL} {Fore.RED}{Style.BRIGHT}{value}{Style.RESET_ALL}")
+                        print(f"{Fore.YELLOW}HTTP Directories And Files{Style.RESET_ALL}{Fore.GREEN}{Style.BRIGHT}:{Style.RESET_ALL}{Fore.RED}{Style.BRIGHT}{value}{Style.RESET_ALL}")
                     else:
                         print(f"{Fore.YELLOW}{Style.BRIGHT}{key}{Style.RESET_ALL}{Fore.GREEN}{Style.BRIGHT}:{Style.RESET_ALL} {Fore.RED}{value}{Style.RESET_ALL}")
                 print()
@@ -226,86 +321,75 @@ def main():
     if open_ports: # Initializing a dictionary to store the detailed scan results in a dictionary object containing the details of the open ports discovered in the database
         detailed_results = distribute_work(ip, open_ports) # Performing the distributed work on the identified open ports
 
-    def print_warning(message: str):
-        if sys.stdout.isatty():
-            print(f"{message}")
-        else:
-            print(f"WARNING: {message}")
+        def print_warning(message: str):
+            if sys.stdout.isatty():
+                print(f"{message}")
+            else:
+                print(f"WARNING: {message}")
 
-    report_filename = os.path.join("C:\\YOUR\\FOLDER\\PATH\\GOES\\HERE", f"nmapscan_report_{time.strftime('%Y%m%d%H%M%S')}.txt")
-    with open(report_filename, "w") as report_file:
-        for proto, ports_info in detailed_results.items():
-            report_file.write(f"{proto.upper()} Ports:\n")
-            for port, info in ports_info.items():
-                state = info.get('state')
-                service = info.get('name')
-                product = info.get('product')
-                version = info.get('version')
-                extra = info.get('extrainfo')
-                reason = info.get('reason')
-                osclass = info.get('osclass')
-                osmatch = info.get('osmatch')
-                osfamily = info.get('osfamily')
-                report_file.write(f"Port: {port}\n")
-                report_file.write(f"  State: {state}\n")
-                report_file.write(f"  Name: {service}\n")
-                if product:
-                    report_file.write(f"  Product: {product}\n")
-                else:
-                    report_file.write("  Product: None\n")
-                report_file.write(f"  Version: {version}\n")
-                report_file.write(f"  Extra Info: {extra}\n")
-                report_file.write(f"  Reason: {reason}\n")
-                report_file.write(f"  OS Class: {osclass}\n")
-                report_file.write(f"  OS Match: {osmatch}\n")
-                report_file.write(f"  OS Family: {osfamily}\n")
-                report_file.write(f"  Script Output:\n")
-                script_info = info.get('script')
-                if isinstance(script_info, dict):
-                    for key, value in script_info.items():
-                        if 'vuln' in key.lower() or 'cve' in key.lower():
-                            report_file.write(f"{key}: {value}\n")
-                        elif 'certificate' in key.lower():
-                            report_file.write(f"Certificate: {value}\n")
-                        elif 'csrf' in key.lower():
-                            report_file.write(f"CSRF: {value}\n")
-                        elif 'ssl-enum-ciphers' in key.lower():
-                            report_file.write(f"SSL Ciphers: {value}\n")
-                        elif 'ssh2-enum-algos' in key.lower():
-                            report_file.write(f"SSH2 Algorithms: {value}\n")
-                        elif 'http-enum' in key.lower():
-                            report_file.write(f"HTTP Directories and Files: {value}\n")
-                        script_output = "\n".join([f"{str(k)}: {str(v)}" if 'vuln' not in str(k).lower() and 'cve' not in str(k).lower() else f"{str(k)}: {str(v)}" for k, v in script_info.items()])  # Formatting the script output
-                    else:
-                        script_output = ""
-                    report_line = f"Port {port} {state}: {service} {product} {version} {extra} {reason} {osclass} {osmatch} {osfamily}\nScript Output:\n{script_output}\n\n"
-                    if 'vuln' in script_output.lower() or 'cve' in script_output.lower():
-                        report_file.write(f"WARNING: Vulnerabilities or CVEs detected!\n")
-                        print_warning("Vulnerabilities or CVEs detected!")
-                    report_file.write(report_line)
-        print(f"{Fore.CYAN}{Style.BRIGHT}Detailed report saved to{Style.RESET_ALL} {Fore.RED}{Style.BRIGHT}{report_filename}{Style.RESET_ALL}")
+        # HERE AT THE TEXT OUTPUT you will have to set your own path to where the script is held in your directory: 
+        # Save scan results in TEXT format for the vulnerability scanning script
+        keys_to_ignore = []  # Define keys_to_ignore here
+        report_filename = os.path.join("C:\\YOUR\\FOLDER\\PATH\\GOES\\HERE", f"nmapscan_report_{time.strftime('%Y%m%d%H%M%S')}.txt")
+        # Text file output
+        with open(report_filename, "w") as report_file:
+            for _, ports_info in detailed_results.items():  # Ignore the protocol
+                for port, info in ports_info.items():
+                    if any(key not in keys_to_ignore for key in info.keys()):
+                        report_file.write(f"Port {port}:\n")
+                    for field in ['state', 'name', 'product', 'version', 'address', 'machine', 'memory', 'mac', 'mac_vendor', 'device', 'network', 'extrainfo', 'reason', 'osclass', 'osfamily', 'hostname', 'hostnames', 'hostname_type', 'ipv4', 'ipv6', 'ipv4_id', 'ipv6_id', 'osgen', 'osaccuracy', 'osmatch', 'vlan_id', 'vlan_name', 'distance', 'tcp_sequence', 'tcp_options', 'service_info']:
+                        value = info.get(field)
+                        if value and value not in ['Not available', 'None']:
+                            report_file.write(f"  {field.capitalize()}: {value}\n")
+                    report_file.write(f"  Script Output:\n")
+                    script_info = info.get('script', {})
+                    script_output = ''
+                    if isinstance(script_info, dict):
+                        for key, value in script_info.items():
+                            if 'vuln' in key.lower() or 'cve' in key.lower():
+                                report_file.write(f"  {key}: {value}\n")
+                            elif 'certificate' in key.lower():
+                                report_file.write(f"  Certificate: {value}\n")
+                            elif 'csrf' in key.lower():
+                                report_file.write(f"  CSRF: {value}\n")
+                            elif 'ssl-enum-ciphers' in key.lower():
+                                report_file.write(f"  SSL Ciphers: {value}\n")
+                            elif 'ssh2-enum-algos' in key.lower():
+                                report_file.write(f"  SSH2 Algorithms: {value}\n")
+                            elif 'http-enum' in key.lower():
+                                report_file.write(f"  HTTP Directories and Files: {value}\n")
+                            else:
+                                report_file.write(f"  {key}: {value}\n")
+                            script_output = value
+                        if 'vuln' in script_output.lower() or 'cve' in script_output.lower():
+                            print_warning("[[-WARNING-]] VULNs|CVEs DETECTED!")
+                    report_file.write("\n")
+            print(f"{Fore.CYAN}{Style.BRIGHT}Detailed report saved to{Fore.YELLOW}{Style.BRIGHT}{report_filename}{Style.RESET_ALL}")
 
+    # HERE AT THE JSON OUTPUT you will have to set your own path to where the script is held in your directory: 
     # Save scan results in JSON format for the vulnerability scanning script
-    results_json_path = os.path.join("C:\\Users\\MrDra\\OneDrive\\Desktop\\PythonTools", f"nmapscan_results_{time.strftime('%Y%m%d%H%M%S')}.json") # Generating the JSON file path for the vulnerability scanning script
+    results_json_path = os.path.join("C:\\YOUR\\FOLDER\\PATH\\GOES\\HERE", f"nmapscan_results_{time.strftime('%Y%m%d%H%M%S')}.json") # Generating the JSON file path for the vulnerability scanning script
     try:
         organized_results = {}
-        for proto, ports_info in detailed_results.items():
+        for _, ports_info in detailed_results.items():  # Ignore the protocol
             for port, info in ports_info.items():
+                # Filter out keys with empty values
+                filtered_info = {k: v for k, v in info.items() if v}
                 if port not in organized_results:
                     organized_results[port] = []
-                organized_results[port].append({proto: info}) # type: ignore
+                organized_results[port].append(filtered_info)  # type: ignore # Remove the protocol from the dictionary
         with open(results_json_path, 'w') as json_file: # Opening the JSON file in write mode
             json.dump(organized_results, json_file, indent=4) # Writing the organized scan results to the JSON file with indentation
-        print(f"{Fore.BLUE}{Style.BRIGHT}Detailed report saved to {Fore.YELLOW}{Style.BRIGHT}{results_json_path}{Style.RESET_ALL}") # Printing the filename of the saved JSON file for the vulnerability scanning script with indentation and indent level of 4
+        print(f"{Fore.CYAN}{Style.BRIGHT}Detailed report saved to{Fore.RED}{Style.BRIGHT}{results_json_path}{Style.RESET_ALL}") # Printing the filename of the saved JSON file for the vulnerability scanning script with indentation and indent level of 4
     except Exception as e:
         print(f"{Fore.RED}{Style.BRIGHT}An error occurred while saving the detailed report: {str(e)}{Style.RESET_ALL}")
 
 ########################################################################################################################################################################
-  #BELOW COMMENTED OUT IS WHERE THE VULNSCAN.PY SCRIPT WOULD TAKE THE JSON FILE FROM THE NMAPSCAN.PY SCAN AND WORK ON THE FINDINGS USING NVD API URL TO DIG FURTHER
-  #WILL FINISH CREATING AND TESTING THIS BUT FOR NOW IF YOU CREATE A VULNSCAN.PY SCRIPT THIS WILL WORK WITH THAT AND TAKE IN THE JSON FILE THAT THE NMAPSCAN.PY CREATES
-  #FOR NOW IT WILL BE COMMENTED OUT BUT THE NMAPSCAN.PY WORKS FINE AS A STANDALONE
+  # BELOW COMMENTED OUT IS WHERE THE VULNSCAN.PY SCRIPT WOULD TAKE THE JSON FILE FROM THE NMAPSCAN.PY SCAN AND WORK ON THE FINDINGS USING NVD 
+  # API URL TO DIG FURTHER. 
+  # WILL FINISH CREATING AND TESTING THIS BUT FOR NOW IF YOU CREATE A VULNSCAN.PY SCRIPT THIS WILL WORK WITH THAT AND TAKE IN THE JSON FILE THAT THE NMAPSCAN.PY CREATES
+  # FOR NOW IT WILL BE COMMENTED OUT BUT THE NMAPSCAN.PY WORKS FINE AS A STANDALONE
 ########################################################################################################################################################################
-
     
     # # Prompt user to initiate vulnerability scanning
     # user_input = input("Do you want to proceed with vulnerability scan? (y/n): ") # Prompting the user to initiate the vulnerability scan with y/n parameter values (y/n):
@@ -346,4 +430,4 @@ def main():
 
 if __name__ == "__main__": # Run the script if it is executed directly
     start_time = time.time()  # Record start time of the script
-    main() # Run the script and wait for the script to complete before continuing with the script execution
+    main()
