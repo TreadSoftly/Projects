@@ -1,12 +1,13 @@
 #The file is called nmapscan.py I'll get around to making it into something thats not so monstorously monolithic and ghastly. It works though.
 
+# IMPORTANT ########################################################################################################################
 #Below you will have to set your own path to where the script is held in your directory: 
 # LOOKE FOR AND EDIT> 
     # Output results to a file
     # report_filename = os.path.join("C:\\YOUR\\FOLDER\\PATH\\GOES\\HERE", f"nmapscan_report_{time.strftime('%Y%m%d%H%M%S')}.txt")
+# IMPORTANT ########################################################################################################################
 
 #The vulnscan at the end is being built out and worked on currently
-
 ########################################################################################################################################################################
   # BELOW TOWARDS THE VERY BOTTOM COMMENTED OUT IS WHERE THE VULNSCAN.PY SCRIPT WOULD TAKE THE JSON FILE FROM THE NMAPSCAN.PY SCAN AND WORK ON THE FINDINGS USING NVD 
   # API URL TO DIG FURTHER. 
@@ -25,6 +26,7 @@ import time  # Importing the time module for time-related functions
 from typing import Dict, List, Tuple, Union, Optional # Importing type hints for function signatures
 import copy  # Importing the copy module for creating deep copies of objects
 import json # Importing the json module for serialization and deserialization of objects and functions from JSON files
+import xml.etree.ElementTree as ET
 import subprocess # Importing the subprocess module for serialization and deserialization of objects and functions from JSON files
 from halo import Halo  # type: ignore
 from multiprocessing import cpu_count, Pool
@@ -84,7 +86,7 @@ def scan_port(ip: str, port: int, proto: str, nm: nmap.PortScanner) -> Tuple[int
     def parse_vuln_output(output: str) -> str:
         """Extract and format vulnerability data from script output."""
         return output
-    arguments = "-T3 -sV -A -O --version-intensity 9 --script=default,vuln,banner,http-headers,http-title,vulners -vvv"
+    arguments = "-T3 -sV -A -O --version-intensity 9 --script=default,vuln,banner,http-headers,http-title,vulners -PE -PP -PM -PS21,23,80,3389 -PA80,443,8080 -vvv"
     nm.scan(hosts=ip, ports=str(port), arguments=arguments, sudo=True if proto == 'udp' else False)
     scan_info = nm[ip].get(proto, {}).get(port, {})
     field_synonyms = {
@@ -174,7 +176,7 @@ def scan_port(ip: str, port: int, proto: str, nm: nmap.PortScanner) -> Tuple[int
 def quick_scan(ip: str, nm: nmap.PortScanner) -> Dict[str, List[int]]:
     print(f"{Fore.YELLOW}{Style.BRIGHT}Setting Up Initial Scan On {Fore.RED}{Style.BRIGHT}{Fore.GREEN}{Style.BRIGHT}[{Style.RESET_ALL}{Fore.RED}{Style.BRIGHT}SYSTEM{Style.RESET_ALL}{Fore.GREEN}{Style.BRIGHT}]{Style.RESET_ALL}")
     # Updated arguments to include multiple ICMP probes
-    arguments = "-T3 --version-intensity 2 --open -PE -PP -PM -PS21,23,80,3389 -PA80,443,8080"
+    arguments = "-T4 --version-intensity 9 --open -PE -PP -PM -PS21,23,80,3389 -PA80,443,8080"
     nm.scan(hosts=ip, ports="1-65535", arguments=arguments)
     open_ports: Dict[str, List[int]] = {'tcp': [], 'udp': []}
     spinner = Halo(text='Scanning ports', spinner='dots')
@@ -321,52 +323,45 @@ def main():
     if open_ports: # Initializing a dictionary to store the detailed scan results in a dictionary object containing the details of the open ports discovered in the database
         detailed_results = distribute_work(ip, open_ports) # Performing the distributed work on the identified open ports
 
-        def print_warning(message: str):
-            if sys.stdout.isatty():
-                print(f"{message}")
-            else:
-                print(f"WARNING: {message}")
 
-        # HERE AT THE TEXT OUTPUT you will have to set your own path to where the script is held in your directory: 
-        # Save scan results in TEXT format for the vulnerability scanning script
-        keys_to_ignore = []  # Define keys_to_ignore here
-        report_filename = os.path.join("C:\\YOUR\\FOLDER\\PATH\\GOES\\HERE", f"nmapscan_report_{time.strftime('%Y%m%d%H%M%S')}.txt")
-        # Text file output
-        with open(report_filename, "w") as report_file:
-            for _, ports_info in detailed_results.items():  # Ignore the protocol
-                for port, info in ports_info.items():
-                    if any(key not in keys_to_ignore for key in info.keys()):
-                        report_file.write(f"Port {port}:\n")
-                    for field in ['state', 'name', 'product', 'version', 'address', 'machine', 'memory', 'mac', 'mac_vendor', 'device', 'network', 'extrainfo', 'reason', 'osclass', 'osfamily', 'hostname', 'hostnames', 'hostname_type', 'ipv4', 'ipv6', 'ipv4_id', 'ipv6_id', 'osgen', 'osaccuracy', 'osmatch', 'vlan_id', 'vlan_name', 'distance', 'tcp_sequence', 'tcp_options', 'service_info']:
-                        value = info.get(field)
-                        if value and value not in ['Not available', 'None']:
-                            report_file.write(f"  {field.capitalize()}: {value}\n")
-                    report_file.write(f"  Script Output:\n")
-                    script_info = info.get('script', {})
-                    script_output = ''
-                    if isinstance(script_info, dict):
-                        for key, value in script_info.items():
-                            if 'vuln' in key.lower() or 'cve' in key.lower():
-                                report_file.write(f"  {key}: {value}\n")
-                            elif 'certificate' in key.lower():
-                                report_file.write(f"  Certificate: {value}\n")
-                            elif 'csrf' in key.lower():
-                                report_file.write(f"  CSRF: {value}\n")
-                            elif 'ssl-enum-ciphers' in key.lower():
-                                report_file.write(f"  SSL Ciphers: {value}\n")
-                            elif 'ssh2-enum-algos' in key.lower():
-                                report_file.write(f"  SSH2 Algorithms: {value}\n")
-                            elif 'http-enum' in key.lower():
-                                report_file.write(f"  HTTP Directories and Files: {value}\n")
-                            else:
-                                report_file.write(f"  {key}: {value}\n")
-                            script_output = value
-                        if 'vuln' in script_output.lower() or 'cve' in script_output.lower():
-                            print_warning("[[-WARNING-]] VULNs|CVEs DETECTED!")
-                    report_file.write("\n")
-            print(f"{Fore.CYAN}{Style.BRIGHT}Detailed report saved to{Fore.YELLOW}{Style.BRIGHT}{report_filename}{Style.RESET_ALL}")
+    # Save scan results in TEXT format for the vulnerability scanning script
+    keys_to_ignore = []  # Define keys_to_ignore here
+    report_filename = os.path.join("C:\\YOUR\\FOLDER\\PATH\\GOES\\HERE", f"nmapscan_report_{time.strftime('%Y%m%d%H%M%S')}.txt")
+    # Text file output
+    with open(report_filename, "w") as report_file:
+        for _, ports_info in detailed_results.items():  # Ignore the protocol
+            for port, info in ports_info.items():
+                if any(key not in keys_to_ignore for key in info.keys()):
+                    report_file.write(f"Port {port}:\n")
+                for field in ['state', 'name', 'product', 'version', 'address', 'machine', 'memory', 'mac', 'mac_vendor', 'device', 'network', 'extrainfo', 'reason', 'osclass', 'osfamily', 'hostname', 'hostnames', 'hostname_type', 'ipv4', 'ipv6', 'ipv4_id', 'ipv6_id', 'osgen', 'osaccuracy', 'osmatch', 'vlan_id', 'vlan_name', 'distance', 'tcp_sequence', 'tcp_options', 'service_info']:
+                    value = info.get(field)
+                    if value and value not in ['Not available', 'None']:
+                        report_file.write(f"  {field.capitalize()}: {value}\n")
+                report_file.write(f"  Script Output:\n")
+                script_info = info.get('script', {})
+                script_output = ''
+                vuln_detected = False
+                if isinstance(script_info, dict):
+                    for key, value in script_info.items():
+                        if ('vuln' in script_output.lower() or 'cve' in script_output.lower()) and not vuln_detected:
+                            report_file.write(f"  [[-WARNING-]] VULNs|CVEs DETECTED!\n  {key}: {value}\n")
+                            vuln_detected = True
+                        elif 'certificate' in key.lower():
+                            report_file.write(f"  Certificate: {value}\n")
+                        elif 'csrf' in key.lower():
+                            report_file.write(f"  CSRF: {value}\n")
+                        elif 'ssl-enum-ciphers' in key.lower():
+                            report_file.write(f"  SSL Ciphers: {value}\n")
+                        elif 'ssh2-enum-algos' in key.lower():
+                            report_file.write(f"  SSH2 Algorithms: {value}\n")
+                        elif 'http-enum' in key.lower():
+                            report_file.write(f"  HTTP Directories and Files: {value}\n")
+                        else:
+                            report_file.write(f"  {key}: {value}\n")
+                        script_output += value
+                report_file.write("\n")
+        print(f"{Fore.CYAN}{Style.BRIGHT}Detailed TEXT Report Saved To{Fore.YELLOW}{Style.BRIGHT}{report_filename}{Style.RESET_ALL}")
 
-    # HERE AT THE JSON OUTPUT you will have to set your own path to where the script is held in your directory: 
     # Save scan results in JSON format for the vulnerability scanning script
     results_json_path = os.path.join("C:\\YOUR\\FOLDER\\PATH\\GOES\\HERE", f"nmapscan_results_{time.strftime('%Y%m%d%H%M%S')}.json") # Generating the JSON file path for the vulnerability scanning script
     try:
@@ -380,9 +375,48 @@ def main():
                 organized_results[port].append(filtered_info)  # type: ignore # Remove the protocol from the dictionary
         with open(results_json_path, 'w') as json_file: # Opening the JSON file in write mode
             json.dump(organized_results, json_file, indent=4) # Writing the organized scan results to the JSON file with indentation
-        print(f"{Fore.CYAN}{Style.BRIGHT}Detailed report saved to{Fore.RED}{Style.BRIGHT}{results_json_path}{Style.RESET_ALL}") # Printing the filename of the saved JSON file for the vulnerability scanning script with indentation and indent level of 4
+        print(f"{Fore.CYAN}{Style.BRIGHT}Detailed JSON Report Saved To{Fore.RED}{Style.BRIGHT}{results_json_path}{Style.RESET_ALL}") # Printing the filename of the saved JSON file for the vulnerability scanning script with indentation and indent level of 4
     except Exception as e:
         print(f"{Fore.RED}{Style.BRIGHT}An error occurred while saving the detailed report: {str(e)}{Style.RESET_ALL}")
+
+    # Define the path for the XML file
+    xml_path = os.path.join("C:\\YOUR\\FOLDER\\PATH\\GOES\\HERE", f"nmapscan_results_{time.strftime('%Y%m%d%H%M%S')}.xml")
+    # Ensure the directory exists
+    os.makedirs(os.path.dirname(xml_path), exist_ok=True)
+    # Create the root element of the XML structure
+    root = ET.Element("NmapScanResults")
+    # Iterate over the detailed_results dictionary
+    for _, ports_info in detailed_results.items():  # Ignore the protocol
+        for port, info in ports_info.items():
+            # Create an XML element for each port
+            port_elem = ET.SubElement(root, "Port")
+            port_elem.set("id", str(port))
+            # Filter out keys with empty values
+            filtered_info = {k: v for k, v in info.items() if v and v not in ['Not available', 'None']}
+            # Create XML elements for each piece of information
+            for key, value in filtered_info.items():
+                if isinstance(value, dict):
+                    # For nested dictionaries, we will flatten the structure
+                    for subkey, subvalue in value.items():
+                        if subvalue and subvalue not in ['Not available', 'None']:
+                            sub_elem = ET.SubElement(port_elem, key + subkey.replace('_', '').capitalize())
+                            sub_elem.text = str(subvalue)
+                elif isinstance(value, list):
+                    # For lists, we join the items into a single string
+                    list_elem = ET.SubElement(port_elem, key.replace('_', '').capitalize())
+                    list_elem.text = ', '.join(value)
+                else:
+                    # Directly assign the value
+                    info_elem = ET.SubElement(port_elem, key.replace('_', '').capitalize())
+                    info_elem.text = str(value)
+                    # Check if the value contains 'vuln' or 'cve'
+                if 'vuln' in str(value).lower() or 'cve' in str(value).lower():
+                    warning_elem = ET.SubElement(port_elem, "Warning")
+                    warning_elem.text = "[[-WARNING-]] VULNs|CVEs DETECTED!"
+    # Save the XML structure to the specified XML file path
+    tree = ET.ElementTree(root)
+    tree.write(xml_path, encoding='utf-8', xml_declaration=True)
+    print(f"{Fore.CYAN}{Style.BRIGHT}Detailed XML Report Saved To{Fore.BLUE}{Style.BRIGHT}{xml_path}{Style.RESET_ALL}")
 
 ########################################################################################################################################################################
   # BELOW COMMENTED OUT IS WHERE THE VULNSCAN.PY SCRIPT WOULD TAKE THE JSON FILE FROM THE NMAPSCAN.PY SCAN AND WORK ON THE FINDINGS USING NVD 
@@ -393,6 +427,52 @@ def main():
     
     # # Prompt user to initiate vulnerability scanning
     # user_input = input("Do you want to proceed with vulnerability scan? (y/n): ") # Prompting the user to initiate the vulnerability scan with y/n parameter values (y/n):
+    # if user_input.lower() == 'y' or user_input.upper() == 'Y': # Checking if the user input is 'y' or 'Y'
+    #     print("Proceeding with vulnerability scan...") # Prompting the user to proceed with the vulnerability scan
+    #     # Assuming `results_json_path` holds the path to the JSON file from nmap scan
+    #     vulnscan_script_path = os.path.join(os.path.dirname(__file__), "vulnscan.py") # Path to the vulnerability scanning script file
+    #     output_dir = os.path.join(os.path.dirname(vulnscan_script_path), "vulnscan_results") # Directory to store the vulnerability scanning results file
+    #     # Execute vulnscan.py script with real-time output
+    #     try: # Using a try block to handle exceptions that may occur while executing the vulnerability scanning script
+    #         command = ["python", vulnscan_script_path, results_json_path, output_dir] # Creating a command to execute the vulnerability scanning script with the JSON file path and output directory
+    #         with subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, universal_newlines=True) as process: # Using the subprocess module to execute the vulnerability scanning script with real-time output instead of using the os.system() function
+    #             while process.stdout is not None: # Checking if the output directory is not empty before reading the line from the output directory
+    #                 line = process.stdout.readline() # Read the line from the output directory and convert it to a string
+    #                 if not line: # Checking if the line is empty is not necessary as the loop will break if the line is empty
+    #                     break # Ignore error and continue processing further lines from the output directory
+    #                 print(line, end='') # print line from the output directory if it exists and is not empty
+    #         process.wait()  # Wait for the process to complete
+    #         if process.returncode != 0: # Checking if the process return code is not 0 means that the process encountered an error
+    #             print(f"{Fore.RED}Vulnerability scan encountered an error.{Style.RESET_ALL}") # Reset all variables to their initial values before continuing to run vulnerability scanning script
+    #     except Exception as e: # Handling exceptions that may occur while executing the vulnerability scanning script
+    #         print(f"{Fore.RED}Failed to execute vulnscan.py: {e}{Style.RESET_ALL}") # Error handling is not necessary as the user input is validated before proceeding with the vulnerability scan
+    # else: # Error handling is not necessary as the user input is validated before proceeding with the vulnerability scan
+    #     print("Vulnerability scan aborted.") # Printing a message if the user chooses not to proceed with the vulnerability scan
+    # if user_input.lower() == 'y' or user_input.upper() == 'Y': # Checking if the user input is 'y' or 'Y'
+    #     print("Proceeding with vulnerability scan...") # Prompting the user to proceed with the vulnerability scan
+    #     # Assuming `results_json_path` holds the path to the JSON file from nmap scan
+    #     vulnscan_script_path = os.path.join(os.path.dirname(__file__), "vulnscan.py") # Path to the vulnerability scanning script file
+    #     output_dir = os.path.join(os.path.dirname(vulnscan_script_path), "vulnscan_results") # Directory to store the vulnerability scanning results file
+
+    #     # Execute vulnscan.py script with real-time output
+    #     try: # Using a try block to handle exceptions that may occur while executing the vulnerability scanning script
+    #         command = ["python", vulnscan_script_path, results_json_path, output_dir] # Creating a command to execute the vulnerability scanning script with the JSON file path and output directory
+    #         with subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, universal_newlines=True) as process: # Using the subprocess module to execute the vulnerability scanning script with real-time output instead of using the os.system() function
+    #             while process.stdout is not None: # Checking if the output directory is not empty before reading the line from the output directory
+    #                 line = process.stdout.readline() # Read the line from the output directory and convert it to a string
+    #                 if not line: # Checking if the line is empty is not necessary as the loop will break if the line is empty
+    #                     break # Ignore error and continue processing further lines from the output directory
+    #                 print(line, end='') # print line from the output directory if it exists and is not empty
+    #         process.wait()  # Wait for the process to complete
+
+    #         if process.returncode != 0: # Checking if the process return code is not 0 means that the process encountered an error
+    #             print(f"{Fore.RED}Vulnerability scan encountered an error.{Style.RESET_ALL}") # Reset all variables to their initial values before continuing to run vulnerability scanning script
+    #     except Exception as e: # Handling exceptions that may occur while executing the vulnerability scanning script
+    #         print(f"{Fore.RED}Failed to execute vulnscan.py: {e}{Style.RESET_ALL}") # Error handling is not necessary as the user input is validated before proceeding with the vulnerability scan
+    # else: # Error handling is not necessary as the user input is validated before proceeding with the vulnerability scan
+    #     print("Vulnerability scan aborted.") # Printing a message if the user chooses not to proceed with the vulnerability scan
+
+    # # Assuming `results_json_path` holds the path to the JSON file from nmap scan
     # if user_input.lower() == 'y' or user_input.upper() == 'Y': # Checking if the user input is 'y' or 'Y'
     #     print("Proceeding with vulnerability scan...") # Prompting the user to proceed with the vulnerability scan
     #     # Assuming `results_json_path` holds the path to the JSON file from nmap scan
@@ -431,3 +511,4 @@ def main():
 if __name__ == "__main__": # Run the script if it is executed directly
     start_time = time.time()  # Record start time of the script
     main()
+
