@@ -176,7 +176,7 @@ def scan_port(ip: str, port: int, proto: str, nm: nmap.PortScanner) -> Tuple[int
 def quick_scan(ip: str, nm: nmap.PortScanner) -> Dict[str, List[int]]:
     print(f"{Fore.YELLOW}{Style.BRIGHT}Setting Up Initial Scan On {Fore.RED}{Style.BRIGHT}{Fore.GREEN}{Style.BRIGHT}[{Style.RESET_ALL}{Fore.RED}{Style.BRIGHT}SYSTEM{Style.RESET_ALL}{Fore.GREEN}{Style.BRIGHT}]{Style.RESET_ALL}")
     # Updated arguments to include multiple ICMP probes
-    arguments = "-T4 --version-intensity 9 --open -PE -PP -PM -PS21,23,80,3389 -PA80,443,8080"
+    arguments = "-T5 --version-intensity 9 --open -PE -PP -PM -PS21,23,80,3389 -PA80,443,8080"
     nm.scan(hosts=ip, ports="1-65535", arguments=arguments)
     open_ports: Dict[str, List[int]] = {'tcp': [], 'udp': []}
     spinner = Halo(text='Scanning ports', spinner='dots')
@@ -340,12 +340,10 @@ def main():
                 report_file.write(f"  Script Output:\n")
                 script_info = info.get('script', {})
                 script_output = ''
-                vuln_detected = False
                 if isinstance(script_info, dict):
                     for key, value in script_info.items():
-                        if ('vuln' in script_output.lower() or 'cve' in script_output.lower()) and not vuln_detected:
-                            report_file.write(f"  [[-WARNING-]] VULNs|CVEs DETECTED!\n  {key}: {value}\n")
-                            vuln_detected = True
+                        if 'vuln' in key.lower() or 'cve' in key.lower():
+                            report_file.write(f"  [[-WARNING-]] VULNs ~OR~ CVEs DETECTED! [[-WARNING-]]\n  {key}: {value}\n")
                         elif 'certificate' in key.lower():
                             report_file.write(f"  Certificate: {value}\n")
                         elif 'csrf' in key.lower():
@@ -370,6 +368,13 @@ def main():
             for port, info in ports_info.items():
                 # Filter out keys with empty values
                 filtered_info = {k: v for k, v in info.items() if v}
+                if 'script' in filtered_info:
+                    script_info = filtered_info['script']
+                    if isinstance(script_info, dict):
+                        for key, value in script_info.items():
+                            if 'vuln' in key.lower() or 'cve' in key.lower():
+                                filtered_info['warning'] = '[[-WARNING-]] VULNs ~OR~ CVEs DETECTED! [[-WARNING-]]'
+                                break
                 if port not in organized_results:
                     organized_results[port] = []
                 organized_results[port].append(filtered_info)  # type: ignore # Remove the protocol from the dictionary
@@ -393,7 +398,7 @@ def main():
             port_elem.set("id", str(port))
             # Filter out keys with empty values
             filtered_info = {k: v for k, v in info.items() if v and v not in ['Not available', 'None']}
-            # Create XML elements for each piece of information
+            # Create XML elements for each piece of information                            warning_created = False
             for key, value in filtered_info.items():
                 if isinstance(value, dict):
                     # For nested dictionaries, we will flatten the structure
@@ -410,9 +415,11 @@ def main():
                     info_elem = ET.SubElement(port_elem, key.replace('_', '').capitalize())
                     info_elem.text = str(value)
                     # Check if the value contains 'vuln' or 'cve'
-                if 'vuln' in str(value).lower() or 'cve' in str(value).lower():
+                warning_created = False
+                if not warning_created and ('vuln' in str(value).lower() or 'cve' in str(value).lower()):
                     warning_elem = ET.SubElement(port_elem, "Warning")
-                    warning_elem.text = "[[-WARNING-]] VULNs|CVEs DETECTED!"
+                    warning_elem.text = "[[-WARNING-]] VULNs ~OR~ CVEs DETECTED! [[-WARNING-]]"
+                    warning_created = True
     # Save the XML structure to the specified XML file path
     tree = ET.ElementTree(root)
     tree.write(xml_path, encoding='utf-8', xml_declaration=True)
@@ -511,4 +518,5 @@ def main():
 if __name__ == "__main__": # Run the script if it is executed directly
     start_time = time.time()  # Record start time of the script
     main()
+
 
