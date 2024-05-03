@@ -2,9 +2,8 @@
 
 # IMPORTANT ########################################################################################################################
 #Below you will have to set your own path to where the script is held in your directory: 
-# LOOKE FOR AND EDIT> 
-    # Output results to a file
-    # report_filename = os.path.join("C:\\YOUR\\FOLDER\\PATH\\GOES\\HERE", f"nmapscan_report_{time.strftime('%Y%m%d%H%M%S')}.txt")
+# LOOKE FOR AND EDIT THE THREE FILE OUTPUTS FOR TEXT, JSON & XML (Just CTL+F search this below) 
+    # "C:\\YOUR\\FOLDER\\PATH\\GOES\\HERE"
 # IMPORTANT ########################################################################################################################
 
 #The vulnscan at the end is being built out and worked on currently
