@@ -157,7 +157,6 @@ EOF
 
 
 
-
 ###################################################
 # REBOOT FUNCTION
 TYPE 'reboot'
@@ -204,7 +203,6 @@ function reboot() {
     # Reboot machine
     /sbin/reboot
 }
-
 
 
 
