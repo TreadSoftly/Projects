@@ -8,7 +8,7 @@
 </p>
 
 
-<p align="center"><strong>🔥 Some of the OSINT/GEOSINT I have utilized for humanitarian aid.</strong></p>
+<p align="center"><strong>🔥 Some of the OSINT/GEOINT I have utilized for humanitarian aid.</strong></p>
 
 
 
