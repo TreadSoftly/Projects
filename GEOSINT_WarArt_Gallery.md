@@ -1,4 +1,4 @@
-<h2 align="center">🌍GEOSINT ARTofWAR🪖</h2>
+<h2 align="center">🌍GEOINT ARTofWAR🪖</h2>
 
 
 <p align="center">
