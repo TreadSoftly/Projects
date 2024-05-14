@@ -1,5 +1,5 @@
 # This project is originally called nmapscan.py I'll get around to making it into something thats not so monstorously monolithic and ghastly. It works though.
-# Working on correcting the LOGs functions, everything else works pretty fine and plenty of room for tinkering and tweaking. Have it it!
+# Works pretty fine and plenty of room for tinkering and tweaking. Have it it!
 
 # IMPORTANT ########################################################################################################################
 #Below you will have to set your own path to where the script is held in your directory: 
@@ -26,11 +26,12 @@ from multiprocessing import cpu_count, Pool
 import concurrent.futures
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from typing import Dict, List, Tuple, Union, Optional, Sequence
+import re
 
 init(autoreset=True)  # Initializing colorama for auto-resetting colors after each print statement
 
 # Global variables for logging
-LOG_LEVEL = "INFO"  # Bright Magenta
+LOG_LEVEL = "INFO"
 LOG_FILE = os.path.join(os.path.dirname(os.path.realpath(__file__)), f"nmap_scan{time.strftime('%Y%m%d%H%M%S')}.log")
 LOG_COLORS = {
     "DEBUG": "\033[1;34m",  # Bright Blue
@@ -41,13 +42,11 @@ LOG_COLORS = {
     "NC": "\033[0m"         # No color (resets the color)
 }
 
-def log(log_priority: str, log_message: str):
-    """
-    Log messages to both console and file.
+def strip_ansi_codes(text: str) -> str:
+    ansi_escape = re.compile(r'\x1B[@-_][0-?]*[ -/]*[@-~]')
+    return ansi_escape.sub('', text)
 
-    :param log_priority: Priority level of log (DEBUG, INFO, WARN, ERROR, FATAL)
-    :param log_message: The message to log
-    """
+def log(log_priority: str, log_message: str):
     date_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     color = LOG_COLORS.get(log_priority, LOG_COLORS["NC"])
 
@@ -57,8 +56,9 @@ def log(log_priority: str, log_message: str):
 
     # Log to file
     try:
+        stripped_message = strip_ansi_codes(console_message)
         with open(LOG_FILE, 'a') as file:
-            file.write(f"{date_time} [{log_priority}] {log_message}\n")
+            file.write(f"{stripped_message}\n")
     except Exception as e:
         print(f"{Fore.RED}{Style.BRIGHT}Failed to write log to file: {e}{Style.RESET_ALL}")
 
