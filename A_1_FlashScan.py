@@ -259,7 +259,6 @@ def scan_port(ip: str, port: int, proto: str, nm: nmap.PortScanner) -> Tuple[int
 
 def quick_scan(ip: str, nm: nmap.PortScanner) -> Dict[str, List[int]]:
     log("INFO", f"{Fore.YELLOW}{Style.BRIGHT}Setting Up Initial Scan On{Style.RESET_ALL} {Fore.GREEN}{Style.BRIGHT}[{Style.RESET_ALL}{Fore.WHITE}{Style.BRIGHT}{ip}{Style.RESET_ALL}{Fore.GREEN}{Style.BRIGHT}]{Style.RESET_ALL}")
-    # Updated arguments to include multiple ICMP probes
     arguments = "-T3 --version-intensity 9 --open -PE -PP -PM -PS21,23,80,3389 -PA80,443,8080 -vvv"
     nm.scan(hosts=ip, ports="1-65535", arguments=arguments)
     open_ports: Dict[str, List[int]] = {'tcp': [], 'udp': []}
