@@ -1,4 +1,5 @@
-#The file is called nmapscan.py I'll get around to making it into something thats not so monstorously monolithic and ghastly. It works though.
+# This project is originally called nmapscan.py I'll get around to making it into something thats not so monstorously monolithic and ghastly. It works though.
+# Working on correcting the LOGs functions, everything else works pretty fine and plenty of room for tinkering and tweaking. Have it it!
 
 # IMPORTANT ########################################################################################################################
 #Below you will have to set your own path to where the script is held in your directory: 
@@ -6,63 +7,146 @@
     # "C:\\YOUR\\FOLDER\\PATH\\GOES\\HERE"
 # IMPORTANT ########################################################################################################################
 
-#The vulnscan at the end is being built out and worked on currently
-########################################################################################################################################################################
-  # BELOW TOWARDS THE VERY BOTTOM COMMENTED OUT IS WHERE THE VULNSCAN.PY SCRIPT WOULD TAKE THE JSON FILE FROM THE NMAPSCAN.PY SCAN AND WORK ON THE FINDINGS USING NVD 
-  # API URL TO DIG FURTHER. 
-  # WILL FINISH CREATING AND TESTING THIS BUT FOR NOW IF YOU CREATE A VULNSCAN.PY SCRIPT THIS WILL WORK WITH THAT AND TAKE IN THE JSON FILE THAT THE NMAPSCAN.PY CREATES
-  # FOR NOW IT WILL BE COMMENTED OUT BUT THE NMAPSCAN.PY WORKS FINE AS A STANDALONE
-########################################################################################################################################################################
-
-import nmap  # Importing the nmap library for network scanning
-import concurrent.futures  # Importing the concurrent.futures module for parallel execution
-import socket  # Importing the socket module for network communication
-import os  # Importing the os module for interacting with the operating system
-import sys  # Importing the sys module for system-specific parameters and functions
-import multiprocessing  # Importing the multiprocessing module for utilizing multiple CPU cores
-import contextlib  # Importing the contextlib module for context management utilities
-import time  # Importing the time module for time-related functions
-from typing import Dict, List, Tuple, Union, Optional # Importing type hints for function signatures
-import copy  # Importing the copy module for creating deep copies of objects
-import json # Importing the json module for serialization and deserialization of objects and functions from JSON files
+import nmap
+import socket
+import os
+import sys
+import contextlib
+import importlib.util
+import time
+import copy
+import json
 import xml.etree.ElementTree as ET
-import subprocess # Importing the subprocess module for serialization and deserialization of objects and functions from JSON files
+import subprocess
+from datetime import datetime
+from colorama import Fore, Style, init
 from halo import Halo  # type: ignore
+import multiprocessing
 from multiprocessing import cpu_count, Pool
+import concurrent.futures
 from concurrent.futures import ThreadPoolExecutor, as_completed
-from colorama import Fore, Style, init  # Importing the colorama library for colored terminal output
-init(autoreset=True) # Initializing colorama for auto-resetting colors after each print statement
+from typing import Dict, List, Tuple, Union, Optional, Sequence
+
+init(autoreset=True)  # Initializing colorama for auto-resetting colors after each print statement
+
+# Global variables for logging
+LOG_LEVEL = "INFO"  # Bright Magenta
+LOG_FILE = os.path.join(os.path.dirname(os.path.realpath(__file__)), f"nmap_scan{time.strftime('%Y%m%d%H%M%S')}.log")
+LOG_COLORS = {
+    "DEBUG": "\033[1;34m",  # Bright Blue
+    "INFO": "\033[1;35m",   # Bright Magenta
+    "WARN": "\033[1;33m",   # Bright Yellow
+    "ERROR": "\033[1;31m",  # Bright Red
+    "FATAL": "\033[1;31m",  # Bright Red
+    "NC": "\033[0m"         # No color (resets the color)
+}
+
+def log(log_priority: str, log_message: str):
+    """
+    Log messages to both console and file.
+
+    :param log_priority: Priority level of log (DEBUG, INFO, WARN, ERROR, FATAL)
+    :param log_message: The message to log
+    """
+    date_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    color = LOG_COLORS.get(log_priority, LOG_COLORS["NC"])
+
+    # Log to console
+    console_message = f"{color}{date_time} [{log_priority}] {log_message}{LOG_COLORS['NC']}"
+    print(console_message)
+
+    # Log to file
+    try:
+        with open(LOG_FILE, 'a') as file:
+            file.write(f"{date_time} [{log_priority}] {log_message}\n")
+    except Exception as e:
+        print(f"{Fore.RED}{Style.BRIGHT}Failed to write log to file: {e}{Style.RESET_ALL}")
+
+    # Exit if fatal error
+    if log_priority == "FATAL":
+        exit(1)
+
+# Function to validate IP address
+def is_valid_ip(ip: str) -> bool:
+    try:
+        socket.inet_aton(ip)
+        return True
+    except socket.error:
+        return False
+
+def install_modules(modules: Sequence[Tuple[str, Optional[str]]]) -> None:
+    for module_name, pip_name in modules:
+        try:
+            if pip_name:
+                log("INFO", f"Installing {pip_name}...")
+                subprocess.check_call([sys.executable, '-m', 'pip', 'install', pip_name])
+            else:
+                importlib.import_module(module_name)
+        except ImportError:
+            if pip_name:
+                log("ERROR", f"Failed to install {pip_name}. Exiting...")
+            else:
+                log("ERROR", f"Module {module_name} is a built-in module and should not fail. Exiting...")
+            sys.exit(1)
+
+# List of modules with corresponding pip install names
+modules = [
+    ('nmap', 'python-nmap'),
+    ('socket', None),
+    ('os', None),
+    ('sys', None),
+    ('contextlib', None),
+    ('time', None),
+    ('copy', None),
+    ('json', None),
+    ('xml.etree.ElementTree', 'xml'),
+    ('subprocess', None),
+    ('colorama', 'colorama'),
+    ('halo', 'halo'),
+    ('multiprocessing', None),
+    ('concurrent.futures', None),
+    ('typing', None)
+]
+
+# Detect and install missing modules
+missing_modules = [(module_name, pip_name) for module_name, pip_name in modules if not importlib.util.find_spec(module_name)]
+if missing_modules:
+    install_modules(missing_modules)
 
 # Ensure Nmap is available
-try: # Using a try block to handle exceptions in Python exceptions that are not caught by the standard exception handler module
-    nm = nmap.PortScanner()  # Creating an instance of the PortScanner class from the nmap library
-except nmap.PortScannerError as e: # Handling the exception if an error occurs while creating the PortScanner instance
-    print(f"{Fore.RED}{Style.BRIGHT}Nmap not found: {e}{Style.RESET_ALL}")  # Printing an error message if Nmap is not found on the system or an error occurs while creating the PortScanner instance
-    sys.exit(1)  # Exiting the program with a non-zero exit code if Nmap is not found or an error occurs while creating the PortScanner instance
-except Exception as e: # Handling any other exceptions that may occur while creating the PortScanner instance or running the network scan
-    print(f"{Fore.RED}{Style.BRIGHT}Unexpected error: {e}{Style.RESET_ALL}")  # Printing an unexpected error message if Unexpected error occurs while creating the PortScanner instance or running the network scan
-    sys.exit(1)  # Exiting the program with a non-zero exit code if an unexpected error occurs while creating the PortScanner instance or running the network scan
+try:
+    nm = nmap.PortScanner()
+except nmap.PortScannerError as e:
+    print(f"{Fore.RED}{Style.BRIGHT}Nmap not found. Installing 'python-nmap'...{Style.RESET_ALL}")
+    log("ERROR", f"Nmap not found. Installing 'python-nmap'...")
+    subprocess.check_call([sys.executable, '-m', 'pip', 'install', 'python-nmap'])
+    nm = nmap.PortScanner()
+except Exception as e:
+    print(f"{Fore.RED}{Style.BRIGHT}Unexpected error: {e}{Style.RESET_ALL}")
+    log("FATAL", f"Unexpected error: {e}")
+    sys.exit(1)
 
-@contextlib.contextmanager # Using the contextlib module to create a context manager for suppressing stdout and stderr output temporarily
-def suppress_stdout_stderr(): # Defining a function to suppress stdout and stderr output temporarily
-    with open(os.devnull, 'w') as fnull: # Opening the null device for writing to suppress the output
-        old_stdout, old_stderr = sys.stdout, sys.stderr # Saving the original stdout and stderr streams
-        sys.stdout, sys.stderr = fnull, fnull # Redirecting stdout and stderr to the null device to suppress the output
-        try: # Using a try block to handle exceptions
-            yield # Yielding to the context manager to execute the code within the context
-        finally: # Using a finally block to ensure cleanup
-            sys.stdout, sys.stderr = old_stdout, old_stderr # Restoring the original stdout and stderr streamswith ThreadPoolExecutor(max_workers=cpu_count() or 1) as executor:
+@contextlib.contextmanager
+def suppress_stdout_stderr():
+    with open(os.devnull, 'w') as fnull:
+        old_stdout, old_stderr = sys.stdout, sys.stderr
+        sys.stdout, sys.stderr = fnull, fnull
+        try:
+            yield
+        finally:
+            sys.stdout, sys.stderr = old_stdout, old_stderr
 
-CPU_CORES = multiprocessing.cpu_count() or 1 + 4  # Getting the number of CPU cores or defaulting to 1 if Not Available
+CPU_CORES = multiprocessing.cpu_count() or 1 + 4
 
-def get_local_ip() -> str: # Defining a function to get the local IP address of the current process and return it as a string in the format expected by the current process and previous process manager
-    try: # Using a try block to handle exceptions
-        with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as s: # Creating a socket object for network communication
-            s.connect(('10.255.255.255', 1))  # Connecting to a dummy IP address to get the local IP
-            local_ip = s.getsockname()[0]  # Getting the local IP address
-    except Exception: # Handling exceptions that may occur while getting the local IP address
-        local_ip = '127.0.0.1'  # Defaulting to localhost IP if an error occurs
-    return local_ip # Returning the local IP address as a string
+def get_local_ip() -> str:
+    try:
+        with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as s:
+            s.connect(('10.255.255.255', 1))
+            local_ip = s.getsockname()[0]
+    except Exception as e:
+        log("ERROR", f"Failed to obtain local IP, defaulting to localhost: {e}")
+        local_ip = '127.0.0.1'
+    return local_ip
 
 def scan_port(ip: str, port: int, proto: str, nm: nmap.PortScanner) -> Tuple[int, Dict[str, Union[str, List[str], Dict[str, str]]]]:
     def get_field_name(key: str, synonyms_dict: Dict[str, List[str]]) -> Optional[str]:
@@ -107,6 +191,7 @@ def scan_port(ip: str, port: int, proto: str, nm: nmap.PortScanner) -> Tuple[int
         "hostname": ["hostname", "host_id", "server_name", "node_name", "machine_name", "dns_name", "computer_name", "system_name", "network_name"],
         "hostnames": ["hostnames", "host_ids", "server_names", "node_names", "machine_names", "dns_names", "computer_names", "system_names", "network_names"],
         "hostname_type": ["hostname_type", "host_category", "server_class", "machine_kind", "node_type", "name_category", "system_class", "network_type", "domain_type"],
+        "ip": ["ip", "ip_address", "address", "inet_address", "loc", "site", "node", "zone", "region", "sector"],
         "ipv4": ["ipv4", "ipv4_address", "inet4_address", "ipv4_loc", "ipv4_site", "ipv4_node", "ipv4_zone", "ipv4_region", "ipv4_sector"],
         "ipv6": ["ipv6", "ipv6_address", "inet6_address", "ipv6_loc", "ipv6_site", "ipv6_node", "ipv6_zone", "ipv6_region", "ipv6_sector"],
         "ipv4_id": ["ipv4_id", "ipv4_ident", "ipv4_tag", "ipv4_code", "ipv4_mark", "ipv4_num", "ipv4_ref", "ipv4_index", "ipv4_label"],
@@ -173,9 +258,9 @@ def scan_port(ip: str, port: int, proto: str, nm: nmap.PortScanner) -> Tuple[int
     return port, result
 
 def quick_scan(ip: str, nm: nmap.PortScanner) -> Dict[str, List[int]]:
-    print(f"{Fore.YELLOW}{Style.BRIGHT}Setting Up Initial Scan On {Fore.RED}{Style.BRIGHT}{Fore.GREEN}{Style.BRIGHT}[{Style.RESET_ALL}{Fore.RED}{Style.BRIGHT}SYSTEM{Style.RESET_ALL}{Fore.GREEN}{Style.BRIGHT}]{Style.RESET_ALL}")
+    log("INFO", f"{Fore.YELLOW}{Style.BRIGHT}Setting Up Initial Scan On{Style.RESET_ALL} {Fore.GREEN}{Style.BRIGHT}[{Style.RESET_ALL}{Fore.WHITE}{Style.BRIGHT}{ip}{Style.RESET_ALL}{Fore.GREEN}{Style.BRIGHT}]{Style.RESET_ALL}")
     # Updated arguments to include multiple ICMP probes
-    arguments = "-T5 --version-intensity 9 --open -PE -PP -PM -PS21,23,80,3389 -PA80,443,8080"
+    arguments = "-T3 --version-intensity 9 --open -PE -PP -PM -PS21,23,80,3389 -PA80,443,8080 -vvv"
     nm.scan(hosts=ip, ports="1-65535", arguments=arguments)
     open_ports: Dict[str, List[int]] = {'tcp': [], 'udp': []}
     spinner = Halo(text='Scanning ports', spinner='dots')
@@ -189,7 +274,7 @@ def quick_scan(ip: str, nm: nmap.PortScanner) -> Dict[str, List[int]]:
             futures = {executor.submit(nm[ip][proto].get, port): port for port in ports}
             for future in futures:
                 port = future
-                spinner.text = f'{Fore.GREEN}{Style.BRIGHT}Scan Submitted For{Style.RESET_ALL} [{Fore.BLUE}{Style.BRIGHT}Port{Style.RESET_ALL}{Fore.GREEN}{Style.BRIGHT}:{Style.RESET_ALL}{Style.RESET_ALL}{Fore.RED}{Style.BRIGHT}{port}{Style.RESET_ALL}]'
+                spinner.text = f'{Fore.GREEN}{Style.BRIGHT}Scan Submitted For{Style.RESET_ALL} [{Fore.BLUE}{Style.BRIGHT}Port{Style.RESET_ALL}{Fore.GREEN}{Style.BRIGHT}:{Style.RESET_ALL}{Fore.RED}{Style.BRIGHT}{port}{Style.RESET_ALL}]'
             for future in as_completed(futures):
                 port = futures[future]
                 if future.result()['state'] == 'open':
@@ -211,7 +296,7 @@ def scan_all_open_ports(ip: str):
 def worker(ip: str, ports: List[int], proto: str, nm: nmap.PortScanner, spinner: Halo, completed: Dict[str, int]) -> Dict[int, Optional[Dict[str, Union[str, List[str], Dict[str, str]]]]]:
     results: Dict[int, Optional[Dict[str, Union[str, List[str], Dict[str, str]]]]] = {}
     def scan_and_update(port: int, ip: str, proto: str, nm: nmap.PortScanner, spinner: Halo, completed: Dict[str, int], results: Dict[int, Optional[Dict[str, Union[str, List[str], Dict[str, str]]]]]):
-        spinner.text = f'{Fore.YELLOW}{Style.BRIGHT}Initializing Scan On{Style.RESET_ALL} [{Fore.CYAN}{Style.BRIGHT}Port{Style.RESET_ALL}{Fore.GREEN}{Style.BRIGHT}:{Style.RESET_ALL}{Style.RESET_ALL}{Fore.RED}{Style.BRIGHT}{port}{Style.RESET_ALL}]'
+        spinner.text = f'{Fore.YELLOW}{Style.BRIGHT}Initializing Scan On{Style.RESET_ALL} [{Fore.CYAN}{Style.BRIGHT}Port{Style.RESET_ALL}{Fore.GREEN}{Style.BRIGHT}:{Style.RESET_ALL}{Fore.RED}{Style.BRIGHT}{port}{Style.RESET_ALL}]'
         port_result = scan_port(ip, port, proto, nm)
         percentage = 0
         if port_result[1]:
@@ -221,8 +306,8 @@ def worker(ip: str, ports: List[int], proto: str, nm: nmap.PortScanner, spinner:
             spinner.text = f'{Fore.GREEN}{Style.BRIGHT}Finished Scan On {Style.RESET_ALL}[{Fore.BLUE}{Style.BRIGHT}Port:{Style.RESET_ALL} {Fore.RED}{Style.BRIGHT}{port}{Style.RESET_ALL}] [Completion:[{completed["count"]}/{completed["total"]}]{Fore.GREEN}{Style.BRIGHT} {percentage:.2f}%{Style.RESET_ALL}]'
             time.sleep(5)
         else:
-            spinner.text = f'{Fore.RED}{Style.BRIGHT}No Results On{Style.RESET_ALL} [{Fore.GREEN}{Style.BRIGHT}Port{Style.RESET_ALL}{Fore.GREEN}{Style.BRIGHT}:{Style.RESET_ALL}{Style.RESET_ALL}{Fore.RED}{Style.BRIGHT}{port}{Style.RESET_ALL}]'
-        spinner.text = f'{Fore.GREEN}{Style.BRIGHT}Scan In Progress On{Style.RESET_ALL} [{Fore.BLUE}{Style.BRIGHT}Port{Style.RESET_ALL}{Fore.GREEN}{Style.BRIGHT}:{Style.RESET_ALL}{Style.RESET_ALL}{Fore.RED}{Style.BRIGHT}{port}{Style.RESET_ALL}] [Completion:[{completed["count"]}/{completed["total"]}]{Fore.GREEN}{Style.BRIGHT} {percentage:.2f}%{Style.RESET_ALL}]'
+            spinner.text = f'{Fore.RED}{Style.BRIGHT}No Results On{Style.RESET_ALL} [{Fore.GREEN}{Style.BRIGHT}Port{Style.RESET_ALL}{Fore.GREEN}{Style.BRIGHT}:{Style.RESET_ALL}{Fore.RED}{Style.BRIGHT}{port}{Style.RESET_ALL}]'
+        spinner.text = f'{Fore.GREEN}{Style.BRIGHT}Scan In Progress On{Style.RESET_ALL} [{Fore.BLUE}{Style.BRIGHT}Port{Style.RESET_ALL}{Fore.GREEN}{Style.BRIGHT}:{Style.RESET_ALL}{Fore.RED}{Style.BRIGHT}{port}{Style.RESET_ALL}] [Completion:[{completed["count"]}/{completed["total"]}]{Fore.GREEN}{Style.BRIGHT} {percentage:.2f}%{Style.RESET_ALL}]'
         time.sleep(15)
     max_workers = (cpu_count() or 1) + 4
     with ThreadPoolExecutor(max_workers=max_workers) as executor:
@@ -236,12 +321,12 @@ def distribute_work(ip: str, open_ports: Dict[str, List[int]]) -> Dict[str, Dict
     proto = None
     total_ports = sum(len(ports) for ports in open_ports.values())
     completed = {'total': total_ports, 'count': 0}
-    spinner = Halo(text=f'{Fore.GREEN}{Style.BRIGHT}Initializing', spinner='dots')  # Initialize spinner here
+    spinner = Halo(text=f'{Fore.GREEN}{Style.BRIGHT}Initializing{Style.RESET_ALL}', spinner='dots')  # Initialize spinner here
     with concurrent.futures.ThreadPoolExecutor(max_workers=CPU_CORES) as executor:
         futures: List[concurrent.futures.Future[Dict[int, Optional[Dict[str, Union[str, List[str], Dict[str, str]]]]]]] = []
         for proto, ports in open_ports.items():
             if ports:
-                print(f"{Fore.CYAN}{Style.BRIGHT}Performing Detailed Scan On {Fore.RED}{Style.BRIGHT}Open Ports:{Style.RESET_ALL}")
+                print(f"{Fore.CYAN}{Style.BRIGHT}Performing Detailed Scan On{Style.RESET_ALL} {Fore.RED}{Style.BRIGHT}Open Ports:{Style.RESET_ALL}")
                 spinner.start(text=None) # type: ignore
                 for port in ports:
                     nm_copy = copy.deepcopy(nm)
@@ -290,7 +375,7 @@ def distribute_work(ip: str, open_ports: Dict[str, List[int]]) -> Dict[str, Dict
             if isinstance(script_info, dict):
                 for key, value in script_info.items():
                     if 'vuln' in key.lower() or 'cve' in key.lower():
-                        print_warning(f"{Fore.BLACK}{Style.BRIGHT}[[{Style.RESET_ALL}{Fore.RED}{Style.BRIGHT}-WARNING-{Style.RESET_ALL}{Fore.BLACK}{Style.BRIGHT}]]{Style.RESET_ALL}{Fore.WHITE}{Style.BRIGHT} VULNs ~OR~ CVEs DETECTED!{Style.RESET_ALL} {Fore.BLACK}{Style.BRIGHT}[[{Style.RESET_ALL}{Fore.RED}{Style.BRIGHT}-WARNING-{Style.RESET_ALL}{Fore.BLACK}{Style.BRIGHT}]]{Style.RESET_ALL}")
+                        print_warning(f"{Fore.GREEN}{Style.BRIGHT}[[{Style.RESET_ALL}{Fore.RED}{Style.BRIGHT}-WARNING-{Style.RESET_ALL}{Fore.GREEN}{Style.BRIGHT}]]{Style.RESET_ALL}{Fore.WHITE}{Style.BRIGHT} !POSSIBLE! VULNs ~OR~ CVEs !DETECTED!{Style.RESET_ALL} {Fore.GREEN}{Style.BRIGHT}[[{Style.RESET_ALL}{Fore.RED}{Style.BRIGHT}-WARNING-{Style.RESET_ALL}{Fore.GREEN}{Style.BRIGHT}]]{Style.RESET_ALL}")
                         print_warning(f"{Fore.RED}{key}{Style.RESET_ALL}{Fore.GREEN}{Style.BRIGHT}:{Style.RESET_ALL}{Fore.RED}{Style.BRIGHT}{value}{Style.RESET_ALL}")
                     elif 'certificate' in key.lower():
                         print_certificate(value)
@@ -311,21 +396,20 @@ def distribute_work(ip: str, open_ports: Dict[str, List[int]]) -> Dict[str, Dict
 
 def main():
     ip = get_local_ip()
-    print(f"{Fore.RED}{Style.BRIGHT}Scanning {Fore.GREEN}{Style.BRIGHT}{ip}{Style.RESET_ALL} {Fore.GREEN}{Style.BRIGHT}[{Style.RESET_ALL}{Fore.BLUE}{Style.BRIGHT}With Optimal System Resources{Style.RESET_ALL}{Fore.GREEN}{Style.BRIGHT}]{Style.RESET_ALL}")
+    log("INFO", f"{Fore.RED}{Style.BRIGHT}Scanning{Style.RESET_ALL} {Fore.WHITE}{Style.BRIGHT}{ip}{Style.RESET_ALL} {Fore.GREEN}{Style.BRIGHT}[{Style.RESET_ALL}{Fore.BLUE}{Style.BRIGHT}With Optimal System Resources{Style.RESET_ALL}{Fore.GREEN}{Style.BRIGHT}]{Style.RESET_ALL}")
     open_ports: Dict[str, List[int]] = {'tcp': [], 'udp': []}
     nm = nmap.PortScanner()
     # Quick Scan
     open_ports = quick_scan(ip, nm)  # Performing the quick scan and getting the open ports
-    print(f"{Fore.GREEN}{Style.BRIGHT}Quick Scan Completed.{Style.RESET_ALL} {Fore.CYAN}{Style.BRIGHT}Identified Open Ports:{Style.RESET_ALL} {Fore.RED}{Style.BRIGHT}{', '.join(map(str, open_ports['tcp']))}{Style.RESET_ALL}{Fore.GREEN}{Style.BRIGHT}(TCP),{Fore.RED}{Style.BRIGHT}{', '.join(map(str, open_ports['udp']))}{Style.RESET_ALL}{Fore.GREEN}{Style.BRIGHT}(UDP){Style.RESET_ALL}")  # Printing the identified open ports
+    log("INFO", f"{Fore.GREEN}{Style.BRIGHT}Quick Scan Completed.{Style.RESET_ALL} {Fore.CYAN}{Style.BRIGHT}Identified Open Ports:{Style.RESET_ALL} {Fore.RED}{Style.BRIGHT}{', '.join(map(str, open_ports['tcp']))}{Style.RESET_ALL}{Fore.GREEN}{Style.BRIGHT}(TCP),{Style.RESET_ALL}{Fore.RED}{Style.BRIGHT}{', '.join(map(str, open_ports['udp']))}{Style.RESET_ALL}{Fore.GREEN}{Style.BRIGHT}(UDP){Style.RESET_ALL}")  # Printing the identified open ports
     # Detailed Scan on Open Ports
     detailed_results: Dict[str, Dict[int, Dict[str, Union[str, List[str], Dict[str, str]]]]] = {'tcp': {}, 'udp': {}}
     if open_ports: # Initializing a dictionary to store the detailed scan results in a dictionary object containing the details of the open ports discovered in the database
         detailed_results = distribute_work(ip, open_ports) # Performing the distributed work on the identified open ports
 
-
     # Save scan results in TEXT format for the vulnerability scanning script
     keys_to_ignore = []  # Define keys_to_ignore here
-    report_filename = os.path.join("C:\\YOUR\\FOLDER\\PATH\\GOES\\HERE", f"nmapscan_report_{time.strftime('%Y%m%d%H%M%S')}.txt")
+    report_filename = os.path.join("C:\\YOUR\\FOLDER\\PATH\\GOES\\HERE", f"nmapscan_txt_report_{time.strftime('%Y%m%d%H%M%S')}.txt")
     # Text file output
     with open(report_filename, "w") as report_file:
         for _, ports_info in detailed_results.items():  # Ignore the protocol
@@ -342,7 +426,7 @@ def main():
                 if isinstance(script_info, dict):
                     for key, value in script_info.items():
                         if 'vuln' in key.lower() or 'cve' in key.lower():
-                            report_file.write(f"  [[-WARNING-]] VULNs ~OR~ CVEs DETECTED! [[-WARNING-]]\n  {key}: {value}\n")
+                            report_file.write(f"[[-WARNING-]] !POSSIBLE! VULNs ~OR~ CVEs !DETECTED! [[-WARNING-]]\n  {key}: {value}\n")
                         elif 'certificate' in key.lower():
                             report_file.write(f"  Certificate: {value}\n")
                         elif 'csrf' in key.lower():
@@ -357,10 +441,10 @@ def main():
                             report_file.write(f"  {key}: {value}\n")
                         script_output += value
                 report_file.write("\n")
-        print(f"{Fore.CYAN}{Style.BRIGHT}Detailed TEXT Report Saved To{Fore.YELLOW}{Style.BRIGHT}{report_filename}{Style.RESET_ALL}")
+        log("INFO", f"{Fore.CYAN}{Style.BRIGHT}Detailed TEXT Report Saved To{Style.RESET_ALL} {Fore.GREEN}{Style.BRIGHT}|{Style.RESET_ALL} {Fore.YELLOW}{Style.BRIGHT}{report_filename}{Style.RESET_ALL}")
 
     # Save scan results in JSON format for the vulnerability scanning script
-    results_json_path = os.path.join("C:\\YOUR\\FOLDER\\PATH\\GOES\\HERE", f"nmapscan_results_{time.strftime('%Y%m%d%H%M%S')}.json") # Generating the JSON file path for the vulnerability scanning script
+    results_json_path = os.path.join("C:\\YOUR\\FOLDER\\PATH\\GOES\\HERE", f"nmapscan_json_report_{time.strftime('%Y%m%d%H%M%S')}.json") # Generating the JSON file path for the vulnerability scanning script
     try:
         organized_results = {}
         for _, ports_info in detailed_results.items():  # Ignore the protocol
@@ -372,19 +456,19 @@ def main():
                     if isinstance(script_info, dict):
                         for key, value in script_info.items():
                             if 'vuln' in key.lower() or 'cve' in key.lower():
-                                filtered_info['warning'] = '[[-WARNING-]] VULNs ~OR~ CVEs DETECTED! [[-WARNING-]]'
+                                filtered_info['warning'] = '[[-WARNING-]] !POSSIBLE! VULNs ~OR~ CVEs !DETECTED! [[-WARNING-]]'
                                 break
                 if port not in organized_results:
                     organized_results[port] = []
                 organized_results[port].append(filtered_info)  # type: ignore # Remove the protocol from the dictionary
         with open(results_json_path, 'w') as json_file: # Opening the JSON file in write mode
             json.dump(organized_results, json_file, indent=4) # Writing the organized scan results to the JSON file with indentation
-        print(f"{Fore.CYAN}{Style.BRIGHT}Detailed JSON Report Saved To{Fore.RED}{Style.BRIGHT}{results_json_path}{Style.RESET_ALL}") # Printing the filename of the saved JSON file for the vulnerability scanning script with indentation and indent level of 4
+        log("INFO", f"{Fore.CYAN}{Style.BRIGHT}Detailed JSON Report Saved To{Style.RESET_ALL} {Fore.GREEN}{Style.BRIGHT}|{Style.RESET_ALL} {Fore.RED}{Style.BRIGHT}{results_json_path}{Style.RESET_ALL}") # Logging the filename of the saved JSON file for the vulnerability scanning script with indentation and indent level of 4
     except Exception as e:
-        print(f"{Fore.RED}{Style.BRIGHT}An error occurred while saving the detailed report: {str(e)}{Style.RESET_ALL}")
+        log("ERROR", f"{Fore.RED}{Style.BRIGHT}An error occurred while saving the detailed report: {str(e)}{Style.RESET_ALL}")
 
     # Define the path for the XML file
-    xml_path = os.path.join("C:\\YOUR\\FOLDER\\PATH\\GOES\\HERE", f"nmapscan_results_{time.strftime('%Y%m%d%H%M%S')}.xml")
+    xml_path = os.path.join("C:\\YOUR\\FOLDER\\PATH\\GOES\\HERE", f"nmapscan_xml_report_{time.strftime('%Y%m%d%H%M%S')}.xml")
     # Ensure the directory exists
     os.makedirs(os.path.dirname(xml_path), exist_ok=True)
     # Create the root element of the XML structure
@@ -417,105 +501,17 @@ def main():
                 warning_created = False
                 if not warning_created and ('vuln' in str(value).lower() or 'cve' in str(value).lower()):
                     warning_elem = ET.SubElement(port_elem, "Warning")
-                    warning_elem.text = "[[-WARNING-]] VULNs ~OR~ CVEs DETECTED! [[-WARNING-]]"
+                    warning_elem.text = "[[-WARNING-]] !POSSIBLE! VULNs ~OR~ CVEs !DETECTED! [[-WARNING-]]"
                     warning_created = True
     # Save the XML structure to the specified XML file path
     tree = ET.ElementTree(root)
     tree.write(xml_path, encoding='utf-8', xml_declaration=True)
-    print(f"{Fore.CYAN}{Style.BRIGHT}Detailed XML Report Saved To{Fore.BLUE}{Style.BRIGHT}{xml_path}{Style.RESET_ALL}")
-
-########################################################################################################################################################################
-  # BELOW COMMENTED OUT IS WHERE THE VULNSCAN.PY SCRIPT WOULD TAKE THE JSON FILE FROM THE NMAPSCAN.PY SCAN AND WORK ON THE FINDINGS USING NVD 
-  # API URL TO DIG FURTHER. 
-  # WILL FINISH CREATING AND TESTING THIS BUT FOR NOW IF YOU CREATE A VULNSCAN.PY SCRIPT THIS WILL WORK WITH THAT AND TAKE IN THE JSON FILE THAT THE NMAPSCAN.PY CREATES
-  # FOR NOW IT WILL BE COMMENTED OUT BUT THE NMAPSCAN.PY WORKS FINE AS A STANDALONE
-########################################################################################################################################################################
-    
-    # # Prompt user to initiate vulnerability scanning
-    # user_input = input("Do you want to proceed with vulnerability scan? (y/n): ") # Prompting the user to initiate the vulnerability scan with y/n parameter values (y/n):
-    # if user_input.lower() == 'y' or user_input.upper() == 'Y': # Checking if the user input is 'y' or 'Y'
-    #     print("Proceeding with vulnerability scan...") # Prompting the user to proceed with the vulnerability scan
-    #     # Assuming `results_json_path` holds the path to the JSON file from nmap scan
-    #     vulnscan_script_path = os.path.join(os.path.dirname(__file__), "vulnscan.py") # Path to the vulnerability scanning script file
-    #     output_dir = os.path.join(os.path.dirname(vulnscan_script_path), "vulnscan_results") # Directory to store the vulnerability scanning results file
-    #     # Execute vulnscan.py script with real-time output
-    #     try: # Using a try block to handle exceptions that may occur while executing the vulnerability scanning script
-    #         command = ["python", vulnscan_script_path, results_json_path, output_dir] # Creating a command to execute the vulnerability scanning script with the JSON file path and output directory
-    #         with subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, universal_newlines=True) as process: # Using the subprocess module to execute the vulnerability scanning script with real-time output instead of using the os.system() function
-    #             while process.stdout is not None: # Checking if the output directory is not empty before reading the line from the output directory
-    #                 line = process.stdout.readline() # Read the line from the output directory and convert it to a string
-    #                 if not line: # Checking if the line is empty is not necessary as the loop will break if the line is empty
-    #                     break # Ignore error and continue processing further lines from the output directory
-    #                 print(line, end='') # print line from the output directory if it exists and is not empty
-    #         process.wait()  # Wait for the process to complete
-    #         if process.returncode != 0: # Checking if the process return code is not 0 means that the process encountered an error
-    #             print(f"{Fore.RED}Vulnerability scan encountered an error.{Style.RESET_ALL}") # Reset all variables to their initial values before continuing to run vulnerability scanning script
-    #     except Exception as e: # Handling exceptions that may occur while executing the vulnerability scanning script
-    #         print(f"{Fore.RED}Failed to execute vulnscan.py: {e}{Style.RESET_ALL}") # Error handling is not necessary as the user input is validated before proceeding with the vulnerability scan
-    # else: # Error handling is not necessary as the user input is validated before proceeding with the vulnerability scan
-    #     print("Vulnerability scan aborted.") # Printing a message if the user chooses not to proceed with the vulnerability scan
-    # if user_input.lower() == 'y' or user_input.upper() == 'Y': # Checking if the user input is 'y' or 'Y'
-    #     print("Proceeding with vulnerability scan...") # Prompting the user to proceed with the vulnerability scan
-    #     # Assuming `results_json_path` holds the path to the JSON file from nmap scan
-    #     vulnscan_script_path = os.path.join(os.path.dirname(__file__), "vulnscan.py") # Path to the vulnerability scanning script file
-    #     output_dir = os.path.join(os.path.dirname(vulnscan_script_path), "vulnscan_results") # Directory to store the vulnerability scanning results file
-
-    #     # Execute vulnscan.py script with real-time output
-    #     try: # Using a try block to handle exceptions that may occur while executing the vulnerability scanning script
-    #         command = ["python", vulnscan_script_path, results_json_path, output_dir] # Creating a command to execute the vulnerability scanning script with the JSON file path and output directory
-    #         with subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, universal_newlines=True) as process: # Using the subprocess module to execute the vulnerability scanning script with real-time output instead of using the os.system() function
-    #             while process.stdout is not None: # Checking if the output directory is not empty before reading the line from the output directory
-    #                 line = process.stdout.readline() # Read the line from the output directory and convert it to a string
-    #                 if not line: # Checking if the line is empty is not necessary as the loop will break if the line is empty
-    #                     break # Ignore error and continue processing further lines from the output directory
-    #                 print(line, end='') # print line from the output directory if it exists and is not empty
-    #         process.wait()  # Wait for the process to complete
-
-    #         if process.returncode != 0: # Checking if the process return code is not 0 means that the process encountered an error
-    #             print(f"{Fore.RED}Vulnerability scan encountered an error.{Style.RESET_ALL}") # Reset all variables to their initial values before continuing to run vulnerability scanning script
-    #     except Exception as e: # Handling exceptions that may occur while executing the vulnerability scanning script
-    #         print(f"{Fore.RED}Failed to execute vulnscan.py: {e}{Style.RESET_ALL}") # Error handling is not necessary as the user input is validated before proceeding with the vulnerability scan
-    # else: # Error handling is not necessary as the user input is validated before proceeding with the vulnerability scan
-    #     print("Vulnerability scan aborted.") # Printing a message if the user chooses not to proceed with the vulnerability scan
-
-    # # Assuming `results_json_path` holds the path to the JSON file from nmap scan
-    # if user_input.lower() == 'y' or user_input.upper() == 'Y': # Checking if the user input is 'y' or 'Y'
-    #     print("Proceeding with vulnerability scan...") # Prompting the user to proceed with the vulnerability scan
-    #     # Assuming `results_json_path` holds the path to the JSON file from nmap scan
-    #     vulnscan_script_path = os.path.join(os.path.dirname(__file__), "vulnscan.py") # Path to the vulnerability scanning script file
-    #     output_dir = os.path.join(os.path.dirname(vulnscan_script_path), "vulnscan_results") # Directory to store the vulnerability scanning results file
-
-    #     # Execute vulnscan.py script with real-time output
-    #     try: # Using a try block to handle exceptions that may occur while executing the vulnerability scanning script
-    #         command = ["python", vulnscan_script_path, results_json_path, output_dir] # Creating a command to execute the vulnerability scanning script with the JSON file path and output directory
-    #         with subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, universal_newlines=True) as process: # Using the subprocess module to execute the vulnerability scanning script with real-time output instead of using the os.system() function
-    #             while process.stdout is not None: # Checking if the output directory is not empty before reading the line from the output directory
-    #                 line = process.stdout.readline() # Read the line from the output directory and convert it to a string
-    #                 if not line: # Checking if the line is empty is not necessary as the loop will break if the line is empty
-    #                     break # Ignore error and continue processing further lines from the output directory
-    #                 print(line, end='') # print line from the output directory if it exists and is not empty
-    #         process.wait()  # Wait for the process to complete
-
-    #         if process.returncode != 0: # Checking if the process return code is not 0 means that the process encountered an error
-    #             print(f"{Fore.RED}Vulnerability scan encountered an error.{Style.RESET_ALL}") # Reset all variables to their initial values before continuing to run vulnerability scanning script
-    #     except Exception as e: # Handling exceptions that may occur while executing the vulnerability scanning script
-    #         print(f"{Fore.RED}Failed to execute vulnscan.py: {e}{Style.RESET_ALL}") # Error handling is not necessary as the user input is validated before proceeding with the vulnerability scan
-    # else: # Error handling is not necessary as the user input is validated before proceeding with the vulnerability scan
-    #     print("Vulnerability scan aborted.") # Printing a message if the user chooses not to proceed with the vulnerability scan
-
-    #             # Assuming `results_json_path` holds the path to the JSON file from nmap scan
-    #     vulnscan_script_path = os.path.join(os.path.dirname(__file__), "vulnscan.py") # Path to the vulnerability scanning script file
-    #     output_dir = os.path.join(os.path.dirname(vulnscan_script_path), "vulnscan_results") # Directory to store the vulnerability scanning results file
-
-    #             # Create the output directory if it doesn't exist
-    #     os.makedirs(output_dir, exist_ok=True) # Make sure output directory exists before running the vulnerability scanning script
+    log("INFO", f"{Fore.CYAN}{Style.BRIGHT}Detailed XML Report Saved To{Style.RESET_ALL} {Fore.GREEN}{Style.BRIGHT}|{Style.RESET_ALL} {Fore.BLUE}{Style.BRIGHT}{xml_path}{Style.RESET_ALL}")
 
     # Timing and final message
     elapsed_time = time.time() - start_time # Time difference between start_time and end_time for the last scan in seconds since the last time the script was run
-    print(f"\n{Fore.GREEN}Total process completed in {elapsed_time:.2f} seconds.{Style.RESET_ALL}") # Reset all variables to their initial values before continuing to run vulnerability scanning script
+    log("INFO", f"\n{Fore.WHITE}{Style.BRIGHT}Total process completed in{Style.RESET_ALL} {Fore.GREEN}{Style.BRIGHT}{elapsed_time:.2f} seconds.{Style.RESET_ALL}") # Logging the total time taken for the script to complete
 
 if __name__ == "__main__": # Run the script if it is executed directly
     start_time = time.time()  # Record start time of the script
     main()
-
-
