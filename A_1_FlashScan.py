@@ -181,7 +181,7 @@ def scan_port(ip: str, port: int, proto: str, nm: nmap.PortScanner) -> Tuple[int
         """Extract and format vulnerability data from script output."""
         return output
 
-    arguments = "-T3 -sV"
+    arguments = "-T3 -sV -A -O --version-intensity 9 --script=default,vuln,banner,http-headers,http-title,vulners -PE -PP -PM -PS21,23,80,3389 -PA80,443,8080 -vvv"
 
     try:
         nm.scan(hosts=ip, ports=str(port), arguments=arguments, sudo=True if proto == 'udp' else False)
@@ -281,7 +281,7 @@ def scan_port(ip: str, port: int, proto: str, nm: nmap.PortScanner) -> Tuple[int
 
 def quick_scan(ip: str, nm: nmap.PortScanner) -> Dict[str, List[int]]:
     log("INFO", f"{Fore.YELLOW}{Style.BRIGHT}Setting Up Initial Scan On{Style.RESET_ALL} {Fore.GREEN}{Style.BRIGHT}[{Style.RESET_ALL}{Fore.WHITE}{Style.BRIGHT}{ip}{Style.RESET_ALL}{Fore.GREEN}{Style.BRIGHT}]{Style.RESET_ALL}")
-    arguments = "-T5 --open"
+    arguments = "-T3 --version-intensity 9 --open -PE -PP -PM -PS21,23,80,3389 -PA80,443,8080 -vvv"
     try:
         nm.scan(hosts=ip, ports="1-65535", arguments=arguments)
     except nmap.PortScannerError as e:
