@@ -22,7 +22,7 @@ from datetime import datetime
 from colorama import Fore, Style, init
 from halo import Halo  # type: ignore
 import multiprocessing
-from multiprocessing import cpu_count, Pool
+from multiprocessing import cpu_count
 import concurrent.futures
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from typing import Dict, List, Tuple, Union, Optional, Sequence
@@ -41,6 +41,8 @@ LOG_COLORS = {
     "FATAL": "\033[1;31m",  # Bright Red
     "NC": "\033[0m"         # No color (resets the color)
 }
+
+CPU_CORES = multiprocessing.cpu_count() or 1 + 4
 
 def strip_ansi_codes(text: str) -> str:
     ansi_escape = re.compile(r'\x1B[@-_][0-?]*[ -/]*[@-~]')
@@ -75,19 +77,25 @@ def is_valid_ip(ip: str) -> bool:
         return False
 
 def install_modules(modules: Sequence[Tuple[str, Optional[str]]]) -> None:
-    for module_name, pip_name in modules:
+    def install_module(module_name: str, pip_name: Optional[str]):
         try:
             if pip_name:
-                log("INFO", f"Installing {pip_name}...")
+                log("INFO", f"{Fore.YELLOW}{Style.BRIGHT}Installing{Style.RESET_ALL} {Fore.CYAN}{Style.BRIGHT}{pip_name}{Style.RESET_ALL}{Fore.YELLOW}{Style.BRIGHT}...{Style.RESET_ALL}")
                 subprocess.check_call([sys.executable, '-m', 'pip', 'install', pip_name])
             else:
                 importlib.import_module(module_name)
-        except ImportError:
+        except ImportError as e:
             if pip_name:
-                log("ERROR", f"Failed to install {pip_name}. Exiting...")
+                log("ERROR", f"{Fore.RED}{Style.BRIGHT}Failed to install{Style.RESET_ALL} {Fore.CYAN}{Style.BRIGHT}{pip_name}{Style.RESET_ALL}. {Fore.RED}{Style.BRIGHT}Error:{Style.RESET_ALL} {e}. {Fore.RED}{Style.BRIGHT}Exiting...{Style.RESET_ALL}")
             else:
-                log("ERROR", f"Module {module_name} is a built-in module and should not fail. Exiting...")
+                log("ERROR", f"{Fore.RED}{Style.BRIGHT}Module{Style.RESET_ALL} {Fore.CYAN}{Style.BRIGHT}{module_name}{Style.RESET_ALL} {Fore.RED}{Style.BRIGHT}is a built-in module and should not fail. Error:{Style.RESET_ALL} {e}. {Fore.RED}{Style.BRIGHT}Exiting...{Style.RESET_ALL}")
             sys.exit(1)
+
+    max_workers = (cpu_count() or 1) + 4
+    with ThreadPoolExecutor(max_workers=max_workers) as executor:
+        futures = [executor.submit(install_module, module_name, pip_name) for module_name, pip_name in modules]
+        for future in as_completed(futures):
+            future.result()
 
 # List of modules with corresponding pip install names
 modules = [
@@ -118,12 +126,12 @@ try:
     nm = nmap.PortScanner()
 except nmap.PortScannerError as e:
     print(f"{Fore.RED}{Style.BRIGHT}Nmap not found. Installing 'python-nmap'...{Style.RESET_ALL}")
-    log("ERROR", f"Nmap not found. Installing 'python-nmap'...")
+    log("ERROR", f"{Fore.RED}{Style.BRIGHT}Nmap not found. Error: {e}. Installing 'python-nmap'...{Style.RESET_ALL}")
     subprocess.check_call([sys.executable, '-m', 'pip', 'install', 'python-nmap'])
     nm = nmap.PortScanner()
 except Exception as e:
     print(f"{Fore.RED}{Style.BRIGHT}Unexpected error: {e}{Style.RESET_ALL}")
-    log("FATAL", f"Unexpected error: {e}")
+    log("FATAL", f"{Fore.RED}{Style.BRIGHT}Unexpected error: {e}{Style.RESET_ALL}")
     sys.exit(1)
 
 @contextlib.contextmanager
@@ -136,15 +144,13 @@ def suppress_stdout_stderr():
         finally:
             sys.stdout, sys.stderr = old_stdout, old_stderr
 
-CPU_CORES = multiprocessing.cpu_count() or 1 + 4
-
 def get_local_ip() -> str:
     try:
         with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as s:
             s.connect(('10.255.255.255', 1))
             local_ip = s.getsockname()[0]
     except Exception as e:
-        log("ERROR", f"Failed to obtain local IP, defaulting to localhost: {e}")
+        log("ERROR", f"{Fore.RED}{Style.BRIGHT}Failed to obtain local IP, defaulting to localhost: {e}{Style.RESET_ALL}")
         local_ip = '127.0.0.1'
     return local_ip
 
@@ -154,24 +160,40 @@ def scan_port(ip: str, port: int, proto: str, nm: nmap.PortScanner) -> Tuple[int
             if key.lower() in [synonym.lower() for synonym in synonyms]:
                 return field
         return None
+
     def process_certificate(cert_text: str) -> List[str]:
         """Process the SSL certificate output from nmap."""
         return cert_text.splitlines()
+
     def process_scripts(scripts: Dict[str, str]) -> Dict[str, Union[str, List[str], Dict[str, str]]]:
         """Process and return structured data from script outputs."""
         processed_scripts: Dict[str, Union[str, List[str], Dict[str, str]]] = {}
         for script_name, output in scripts.items():
             if 'vuln' in script_name:
                 processed_scripts['vulnerabilities'] = parse_vuln_output(output)
+            elif 'ssl-cert' in script_name:
+                processed_scripts['ssl_cert'] = process_certificate(output)
             else:
                 processed_scripts[script_name] = output
         return processed_scripts
+
     def parse_vuln_output(output: str) -> str:
         """Extract and format vulnerability data from script output."""
         return output
-    arguments = "-T3 -sV -A -O --version-intensity 9 --script=default,vuln,banner,http-headers,http-title,vulners -PE -PP -PM -PS21,23,80,3389 -PA80,443,8080 -vvv"
-    nm.scan(hosts=ip, ports=str(port), arguments=arguments, sudo=True if proto == 'udp' else False)
+
+    arguments = "-T3 -sV"
+
+    try:
+        nm.scan(hosts=ip, ports=str(port), arguments=arguments, sudo=True if proto == 'udp' else False)
+    except nmap.PortScannerError as e:
+        log("ERROR", f"{Fore.RED}{Style.BRIGHT}Error occurred while scanning port{Style.RESET_ALL} {Fore.GREEN}{Style.BRIGHT}{port}{Style.RESET_ALL} {Fore.RED}{Style.BRIGHT}on IP{Style.RESET_ALL} {Fore.WHITE}{Style.BRIGHT}{ip}: {e}{Style.RESET_ALL}")
+        return port, {}
+    except Exception as e:
+        log("ERROR", f"{Fore.RED}{Style.BRIGHT}Unexpected error occurred while scanning port{Style.RESET_ALL} {Fore.GREEN}{Style.BRIGHT}{port}{Style.RESET_ALL} {Fore.RED}{Style.BRIGHT}on IP{Style.RESET_ALL} {Fore.WHITE}{Style.BRIGHT}{ip}: {e}{Style.RESET_ALL}")
+        return port, {}
+
     scan_info = nm[ip].get(proto, {}).get(port, {})
+
     field_synonyms = {
         "state": ["state", "status", "condition", "stature", "standing", "state_of_play", "context", "situation", "phase"],
         "name": ["name", "moniker", "denomination", "appellation", "nomenclature", "term", "designation", "title", "alias"],
@@ -259,8 +281,15 @@ def scan_port(ip: str, port: int, proto: str, nm: nmap.PortScanner) -> Tuple[int
 
 def quick_scan(ip: str, nm: nmap.PortScanner) -> Dict[str, List[int]]:
     log("INFO", f"{Fore.YELLOW}{Style.BRIGHT}Setting Up Initial Scan On{Style.RESET_ALL} {Fore.GREEN}{Style.BRIGHT}[{Style.RESET_ALL}{Fore.WHITE}{Style.BRIGHT}{ip}{Style.RESET_ALL}{Fore.GREEN}{Style.BRIGHT}]{Style.RESET_ALL}")
-    arguments = "-T3 --version-intensity 9 --open -PE -PP -PM -PS21,23,80,3389 -PA80,443,8080 -vvv"
-    nm.scan(hosts=ip, ports="1-65535", arguments=arguments)
+    arguments = "-T5 --open"
+    try:
+        nm.scan(hosts=ip, ports="1-65535", arguments=arguments)
+    except nmap.PortScannerError as e:
+        log("ERROR", f"{Fore.RED}{Style.BRIGHT}Error occurred during quick scan on IP{Style.RESET_ALL} {Fore.WHITE}{Style.BRIGHT}{ip}: {e}{Style.RESET_ALL}")
+        return {'tcp': [], 'udp': []}
+    except Exception as e:
+        log("ERROR", f"{Fore.RED}{Style.BRIGHT}Unexpected error occurred during quick scan on IP{Style.RESET_ALL} {Fore.WHITE}{Style.BRIGHT}{ip}: {e}{Style.RESET_ALL}")
+        return {'tcp': [], 'udp': []}
     open_ports: Dict[str, List[int]] = {'tcp': [], 'udp': []}
     spinner = Halo(text='Scanning ports', spinner='dots')
     spinner.start(text=None)  # type: ignore
@@ -276,8 +305,11 @@ def quick_scan(ip: str, nm: nmap.PortScanner) -> Dict[str, List[int]]:
                 spinner.text = f'{Fore.GREEN}{Style.BRIGHT}Scan Submitted For{Style.RESET_ALL} [{Fore.BLUE}{Style.BRIGHT}Port{Style.RESET_ALL}{Fore.GREEN}{Style.BRIGHT}:{Style.RESET_ALL}{Fore.RED}{Style.BRIGHT}{port}{Style.RESET_ALL}]'
             for future in as_completed(futures):
                 port = futures[future]
-                if future.result()['state'] == 'open':
-                    open_ports[proto].append(port)
+                try:
+                    if future.result()['state'] == 'open':
+                        open_ports[proto].append(port)
+                except Exception as e:
+                  log("ERROR", f"\n{Fore.RED}{Style.BRIGHT}Error processing result for port{Style.RESET_ALL} {Fore.GREEN}{Style.BRIGHT}{port}{Style.RESET_ALL} {Fore.RED}{Style.BRIGHT}on IP{Style.RESET_ALL} {Fore.WHITE}{Style.BRIGHT}{ip}: {e}{Style.RESET_ALL}")
                 completed += 1
                 percentage = (completed / total_ports) * 100
                 spinner.text = f'Scanned {completed} of {total_ports} ports ({percentage:.2f}%)'
@@ -287,46 +319,63 @@ def quick_scan(ip: str, nm: nmap.PortScanner) -> Dict[str, List[int]]:
 def scan_all_open_ports(ip: str):
     nm = nmap.PortScanner()
     open_ports = quick_scan(ip, nm)
-    with Pool(processes=(cpu_count() or 1) + 4) as pool:
-        results: List[Tuple[int, Optional[Dict[str, Union[str, List[str], Dict[str, str]]]]]] = pool.starmap(scan_port, [(ip, port, proto) for proto, ports in open_ports.items() for port in ports])
+    if not open_ports['tcp'] and not open_ports['udp']:
+        log("INFO", f"{Fore.YELLOW}{Style.BRIGHT}No open ports found on IP{Style.RESET_ALL} {Fore.WHITE}{Style.BRIGHT}{ip}{Style.RESET_ALL}.")
+        return
+    pool = multiprocessing.Pool(processes=(os.cpu_count() or 1) + 4)
+    try:
+        results: List[Tuple[int, Dict[str, Union[str, List[str], Dict[str, str]]]]] = pool.starmap(scan_port, [(ip, port, proto, nm) for proto, ports in open_ports.items() for port in ports])
         for port, result in results:
             print(f"Port: {port}, Result: {result}")
+    except Exception as e:
+        log("ERROR", f"{Fore.RED}{Style.BRIGHT}Error occurred during scanning of all open ports on IP{Style.RESET_ALL} {Fore.WHITE}{Style.BRIGHT}{ip}: {e}{Style.RESET_ALL}")
+    finally:
+        pool.close()
+        pool.join()
 
 def worker(ip: str, ports: List[int], proto: str, nm: nmap.PortScanner, spinner: Halo, completed: Dict[str, int]) -> Dict[int, Optional[Dict[str, Union[str, List[str], Dict[str, str]]]]]:
     results: Dict[int, Optional[Dict[str, Union[str, List[str], Dict[str, str]]]]] = {}
+
     def scan_and_update(port: int, ip: str, proto: str, nm: nmap.PortScanner, spinner: Halo, completed: Dict[str, int], results: Dict[int, Optional[Dict[str, Union[str, List[str], Dict[str, str]]]]]):
-        spinner.text = f'{Fore.YELLOW}{Style.BRIGHT}Initializing Scan On{Style.RESET_ALL} [{Fore.CYAN}{Style.BRIGHT}Port{Style.RESET_ALL}{Fore.GREEN}{Style.BRIGHT}:{Style.RESET_ALL}{Fore.RED}{Style.BRIGHT}{port}{Style.RESET_ALL}]'
-        port_result = scan_port(ip, port, proto, nm)
-        percentage = 0
-        if port_result[1]:
-            results[port_result[0]] = port_result[1]
-            completed['count'] += 1
-            percentage = (completed['count'] / completed['total']) * 100
-            spinner.text = f'{Fore.GREEN}{Style.BRIGHT}Finished Scan On {Style.RESET_ALL}[{Fore.BLUE}{Style.BRIGHT}Port:{Style.RESET_ALL} {Fore.RED}{Style.BRIGHT}{port}{Style.RESET_ALL}] [Completion:[{completed["count"]}/{completed["total"]}]{Fore.GREEN}{Style.BRIGHT} {percentage:.2f}%{Style.RESET_ALL}]'
+        try:
+            spinner.text = f'{Fore.YELLOW}{Style.BRIGHT}Initializing Scan On{Style.RESET_ALL} [{Fore.CYAN}{Style.BRIGHT}Port{Style.RESET_ALL}{Fore.GREEN}{Style.BRIGHT}:{Style.RESET_ALL}{Fore.RED}{Style.BRIGHT}{port}{Style.RESET_ALL}]'
+            port_result = scan_port(ip, port, proto, nm)
+            if port_result[1]:
+                results[port_result[0]] = port_result[1]
+                completed['count'] += 1
+                percentage = (completed['count'] / completed['total']) * 100
+                spinner.text = f'{Fore.GREEN}{Style.BRIGHT}Finished Scan On {Style.RESET_ALL}[{Fore.BLUE}{Style.BRIGHT}Port:{Style.RESET_ALL} {Fore.RED}{Style.BRIGHT}{port}{Style.RESET_ALL}] [Completion:[{completed["count"]}/{completed["total"]}]{Fore.GREEN}{Style.BRIGHT} {percentage:.2f}%{Style.RESET_ALL}]'
+            else:
+                spinner.text = f'{Fore.RED}{Style.BRIGHT}No Results On{Style.RESET_ALL} [{Fore.GREEN}{Style.BRIGHT}Port{Style.RESET_ALL}{Fore.GREEN}{Style.BRIGHT}:{Style.RESET_ALL}{Fore.RED}{Style.BRIGHT}{port}{Style.RESET_ALL}]'
+        except Exception as e:
+            log("ERROR", f"{Fore.RED}{Style.BRIGHT}Error occurred during scan and update for port{Style.RESET_ALL} {Fore.GREEN}{Style.BRIGHT}{port}{Style.RESET_ALL} {Fore.RED}{Style.BRIGHT}on IP{Style.RESET_ALL} {Fore.WHITE}{Style.BRIGHT}{ip}: {e}{Style.RESET_ALL}")
+        finally:
             time.sleep(5)
-        else:
-            spinner.text = f'{Fore.RED}{Style.BRIGHT}No Results On{Style.RESET_ALL} [{Fore.GREEN}{Style.BRIGHT}Port{Style.RESET_ALL}{Fore.GREEN}{Style.BRIGHT}:{Style.RESET_ALL}{Fore.RED}{Style.BRIGHT}{port}{Style.RESET_ALL}]'
-        spinner.text = f'{Fore.GREEN}{Style.BRIGHT}Scan In Progress On{Style.RESET_ALL} [{Fore.BLUE}{Style.BRIGHT}Port{Style.RESET_ALL}{Fore.GREEN}{Style.BRIGHT}:{Style.RESET_ALL}{Fore.RED}{Style.BRIGHT}{port}{Style.RESET_ALL}] [Completion:[{completed["count"]}/{completed["total"]}]{Fore.GREEN}{Style.BRIGHT} {percentage:.2f}%{Style.RESET_ALL}]'
-        time.sleep(15)
+            percentage = (completed['count'] / completed['total']) * 100
+            spinner.text = f'{Fore.GREEN}{Style.BRIGHT}Scan In Progress On{Style.RESET_ALL} [{Fore.BLUE}{Style.BRIGHT}Port{Style.RESET_ALL}{Fore.GREEN}{Style.BRIGHT}:{Style.RESET_ALL}{Fore.RED}{Style.BRIGHT}{port}{Style.RESET_ALL}] [Completion:[{completed["count"]}/{completed["total"]}]{Fore.GREEN}{Style.BRIGHT} {percentage:.2f}%{Style.RESET_ALL}]'
+            time.sleep(15)
+
     max_workers = (cpu_count() or 1) + 4
     with ThreadPoolExecutor(max_workers=max_workers) as executor:
         executor.map(scan_and_update, ports, [ip]*len(ports), [proto]*len(ports), [nm]*len(ports), [spinner]*len(ports), [completed]*len(ports), [results]*len(ports))
     return results
 
 scan_info = {}  # Add this line at the appropriate place in your code
-def distribute_work(ip: str, open_ports: Dict[str, List[int]]) -> Dict[str, Dict[int, Dict[str, Union[str, List[str], Dict[str, str]]]]]:# Define scan_info here or get its value from somewhere
+
+def distribute_work(ip: str, open_ports: Dict[str, List[int]]) -> Dict[str, Dict[int, Dict[str, Union[str, List[str], Dict[str, str]]]]]:
     init()
     detailed_results: Dict[str, Dict[int, Dict[str, Union[str, List[str], Dict[str, str]]]]] = {'tcp': {}, 'udp': {}}
     proto = None
     total_ports = sum(len(ports) for ports in open_ports.values())
     completed = {'total': total_ports, 'count': 0}
     spinner = Halo(text=f'{Fore.GREEN}{Style.BRIGHT}Initializing{Style.RESET_ALL}', spinner='dots')  # Initialize spinner here
+
     with concurrent.futures.ThreadPoolExecutor(max_workers=CPU_CORES) as executor:
         futures: List[concurrent.futures.Future[Dict[int, Optional[Dict[str, Union[str, List[str], Dict[str, str]]]]]]] = []
         for proto, ports in open_ports.items():
             if ports:
                 print(f"{Fore.CYAN}{Style.BRIGHT}Performing Detailed Scan On{Style.RESET_ALL} {Fore.RED}{Style.BRIGHT}Open Ports:{Style.RESET_ALL}")
-                spinner.start(text=None) # type: ignore
+                spinner.start(text=None)  # type: ignore
                 for port in ports:
                     nm_copy = copy.deepcopy(nm)
                     futures.append(executor.submit(worker, ip, [port], proto, nm_copy, spinner, completed))
@@ -335,7 +384,7 @@ def distribute_work(ip: str, open_ports: Dict[str, List[int]]) -> Dict[str, Dict
             for port, result in proto_results.items():
                 if proto is not None and result is not None:
                     detailed_results[proto][port] = result
-        spinner.text = '{Fore.GREEN}{Style.BRIGHT}Finished Scanning All Ports{Style.RESET_ALL}'
+        spinner.text = f'{Fore.GREEN}{Style.BRIGHT}Finished Scanning All Ports{Style.RESET_ALL}'
         spinner.stop()
 
     def print_warning(message: str):
@@ -398,119 +447,151 @@ def main():
     log("INFO", f"{Fore.RED}{Style.BRIGHT}Scanning{Style.RESET_ALL} {Fore.WHITE}{Style.BRIGHT}{ip}{Style.RESET_ALL} {Fore.GREEN}{Style.BRIGHT}[{Style.RESET_ALL}{Fore.BLUE}{Style.BRIGHT}With Optimal System Resources{Style.RESET_ALL}{Fore.GREEN}{Style.BRIGHT}]{Style.RESET_ALL}")
     open_ports: Dict[str, List[int]] = {'tcp': [], 'udp': []}
     nm = nmap.PortScanner()
-    # Quick Scan
-    open_ports = quick_scan(ip, nm)  # Performing the quick scan and getting the open ports
-    log("INFO", f"{Fore.GREEN}{Style.BRIGHT}Quick Scan Completed.{Style.RESET_ALL} {Fore.CYAN}{Style.BRIGHT}Identified Open Ports:{Style.RESET_ALL} {Fore.RED}{Style.BRIGHT}{', '.join(map(str, open_ports['tcp']))}{Style.RESET_ALL}{Fore.GREEN}{Style.BRIGHT}(TCP),{Style.RESET_ALL}{Fore.RED}{Style.BRIGHT}{', '.join(map(str, open_ports['udp']))}{Style.RESET_ALL}{Fore.GREEN}{Style.BRIGHT}(UDP){Style.RESET_ALL}")  # Printing the identified open ports
+    try:
+        # Quick Scan
+        open_ports = quick_scan(ip, nm)  # Performing the quick scan and getting the open ports
+        log("INFO", f"\n{Fore.GREEN}{Style.BRIGHT}Quick Scan Completed.{Style.RESET_ALL} {Fore.CYAN}{Style.BRIGHT}Identified Open Ports:{Style.RESET_ALL} {Fore.RED}{Style.BRIGHT}{', '.join(map(str, open_ports['tcp']))}{Style.RESET_ALL}{Fore.GREEN}{Style.BRIGHT}(TCP),{Style.RESET_ALL}{Fore.RED}{Style.BRIGHT}{', '.join(map(str, open_ports['udp']))}{Style.RESET_ALL}{Fore.GREEN}{Style.BRIGHT}(UDP){Style.RESET_ALL}")  # Printing the identified open ports
+    except Exception as e:
+        log("ERROR", f"\n{Fore.RED}{Style.BRIGHT}Error occurred during quick scan: {e}{Style.RESET_ALL}")
+        return
     # Detailed Scan on Open Ports
     detailed_results: Dict[str, Dict[int, Dict[str, Union[str, List[str], Dict[str, str]]]]] = {'tcp': {}, 'udp': {}}
-    if open_ports: # Initializing a dictionary to store the detailed scan results in a dictionary object containing the details of the open ports discovered in the database
-        detailed_results = distribute_work(ip, open_ports) # Performing the distributed work on the identified open ports
+    if open_ports['tcp'] or open_ports['udp']:  # Check if there are any open ports
+        try:
+            detailed_results = distribute_work(ip, open_ports)  # Performing the distributed work on the identified open ports
+        except Exception as e:
+            log("ERROR", f"\n{Fore.RED}{Style.BRIGHT}Error occurred during detailed scan: {e}{Style.RESET_ALL}")
+            return
 
-    # Save scan results in TEXT format for the vulnerability scanning script
+    # Save scan results in parallel
+    save_reports(detailed_results)
+
+def save_reports(detailed_results: Dict[str, Dict[int, Dict[str, Union[str, List[str], Dict[str, str]]]]]):
     keys_to_ignore = []  # Define keys_to_ignore here
-    report_filename = os.path.join("C:\\YOUR\\FOLDER\\PATH\\GOES\\HERE", f"nmapscan_txt_report_{time.strftime('%Y%m%d%H%M%S')}.txt")
-    # Text file output
-    with open(report_filename, "w") as report_file:
-        for _, ports_info in detailed_results.items():  # Ignore the protocol
-            for port, info in ports_info.items():
-                if any(key not in keys_to_ignore for key in info.keys()):
-                    report_file.write(f"Port {port}:\n")
-                for field in ['state', 'name', 'product', 'version', 'address', 'machine', 'memory', 'mac', 'mac_vendor', 'device', 'network', 'extrainfo', 'reason', 'osclass', 'osfamily', 'hostname', 'hostnames', 'hostname_type', 'ipv4', 'ipv6', 'ipv4_id', 'ipv6_id', 'osgen', 'osaccuracy', 'osmatch', 'vlan_id', 'vlan_name', 'distance', 'tcp_sequence', 'tcp_options', 'service_info']:
-                    value = info.get(field)
-                    if value and value not in ['Not available', 'None']:
-                        report_file.write(f"  {field.capitalize()}: {value}\n")
-                report_file.write(f"  Script Output:\n")
-                script_info = info.get('script', {})
-                script_output = ''
-                if isinstance(script_info, dict):
-                    for key, value in script_info.items():
-                        if 'vuln' in key.lower() or 'cve' in key.lower():
-                            report_file.write(f"[[-WARNING-]] !POSSIBLE! VULNs ~OR~ CVEs !DETECTED! [[-WARNING-]]\n  {key}: {value}\n")
-                        elif 'certificate' in key.lower():
-                            report_file.write(f"  Certificate: {value}\n")
-                        elif 'csrf' in key.lower():
-                            report_file.write(f"  CSRF: {value}\n")
-                        elif 'ssl-enum-ciphers' in key.lower():
-                            report_file.write(f"  SSL Ciphers: {value}\n")
-                        elif 'ssh2-enum-algos' in key.lower():
-                            report_file.write(f"  SSH2 Algorithms: {value}\n")
-                        elif 'http-enum' in key.lower():
-                            report_file.write(f"  HTTP Directories and Files: {value}\n")
-                        else:
-                            report_file.write(f"  {key}: {value}\n")
-                        script_output += value
-                report_file.write("\n")
-        log("INFO", f"{Fore.CYAN}{Style.BRIGHT}Detailed TEXT Report Saved To{Style.RESET_ALL} {Fore.GREEN}{Style.BRIGHT}|{Style.RESET_ALL} {Fore.YELLOW}{Style.BRIGHT}{report_filename}{Style.RESET_ALL}")
-
-    # Save scan results in JSON format for the vulnerability scanning script
-    results_json_path = os.path.join("C:\\YOUR\\FOLDER\\PATH\\GOES\\HERE", f"nmapscan_json_report_{time.strftime('%Y%m%d%H%M%S')}.json") # Generating the JSON file path for the vulnerability scanning script
-    try:
-        organized_results = {}
-        for _, ports_info in detailed_results.items():  # Ignore the protocol
-            for port, info in ports_info.items():
-                # Filter out keys with empty values
-                filtered_info = {k: v for k, v in info.items() if v}
-                if 'script' in filtered_info:
-                    script_info = filtered_info['script']
-                    if isinstance(script_info, dict):
-                        for key, value in script_info.items():
-                            if 'vuln' in key.lower() or 'cve' in key.lower():
-                                filtered_info['warning'] = '[[-WARNING-]] !POSSIBLE! VULNs ~OR~ CVEs !DETECTED! [[-WARNING-]]'
-                                break
-                if port not in organized_results:
-                    organized_results[port] = []
-                organized_results[port].append(filtered_info)  # type: ignore # Remove the protocol from the dictionary
-        with open(results_json_path, 'w') as json_file: # Opening the JSON file in write mode
-            json.dump(organized_results, json_file, indent=4) # Writing the organized scan results to the JSON file with indentation
-        log("INFO", f"{Fore.CYAN}{Style.BRIGHT}Detailed JSON Report Saved To{Style.RESET_ALL} {Fore.GREEN}{Style.BRIGHT}|{Style.RESET_ALL} {Fore.RED}{Style.BRIGHT}{results_json_path}{Style.RESET_ALL}") # Logging the filename of the saved JSON file for the vulnerability scanning script with indentation and indent level of 4
-    except Exception as e:
-        log("ERROR", f"{Fore.RED}{Style.BRIGHT}An error occurred while saving the detailed report: {str(e)}{Style.RESET_ALL}")
-
-    # Define the path for the XML file
     xml_path = os.path.join("C:\\YOUR\\FOLDER\\PATH\\GOES\\HERE", f"nmapscan_xml_report_{time.strftime('%Y%m%d%H%M%S')}.xml")
-    # Ensure the directory exists
-    os.makedirs(os.path.dirname(xml_path), exist_ok=True)
-    # Create the root element of the XML structure
-    root = ET.Element("NmapScanResults")
-    # Iterate over the detailed_results dictionary
-    for _, ports_info in detailed_results.items():  # Ignore the protocol
-        for port, info in ports_info.items():
-            # Create an XML element for each port
-            port_elem = ET.SubElement(root, "Port")
-            port_elem.set("id", str(port))
-            # Filter out keys with empty values
-            filtered_info = {k: v for k, v in info.items() if v and v not in ['Not available', 'None']}
-            # Create XML elements for each piece of information                            warning_created = False
-            for key, value in filtered_info.items():
-                if isinstance(value, dict):
-                    # For nested dictionaries, we will flatten the structure
-                    for subkey, subvalue in value.items():
-                        if subvalue and subvalue not in ['Not available', 'None']:
-                            sub_elem = ET.SubElement(port_elem, key + subkey.replace('_', '').capitalize())
-                            sub_elem.text = str(subvalue)
-                elif isinstance(value, list):
-                    # For lists, we join the items into a single string
-                    list_elem = ET.SubElement(port_elem, key.replace('_', '').capitalize())
-                    list_elem.text = ', '.join(value)
-                else:
-                    # Directly assign the value
-                    info_elem = ET.SubElement(port_elem, key.replace('_', '').capitalize())
-                    info_elem.text = str(value)
-                    # Check if the value contains 'vuln' or 'cve'
-                warning_created = False
-                if not warning_created and ('vuln' in str(value).lower() or 'cve' in str(value).lower()):
-                    warning_elem = ET.SubElement(port_elem, "Warning")
-                    warning_elem.text = "[[-WARNING-]] !POSSIBLE! VULNs ~OR~ CVEs !DETECTED! [[-WARNING-]]"
-                    warning_created = True
-    # Save the XML structure to the specified XML file path
-    tree = ET.ElementTree(root)
-    tree.write(xml_path, encoding='utf-8', xml_declaration=True)
-    log("INFO", f"{Fore.CYAN}{Style.BRIGHT}Detailed XML Report Saved To{Style.RESET_ALL} {Fore.GREEN}{Style.BRIGHT}|{Style.RESET_ALL} {Fore.BLUE}{Style.BRIGHT}{xml_path}{Style.RESET_ALL}")
+    report_filename = os.path.join("C:\\YOUR\\FOLDER\\PATH\\GOES\\HERE", f"nmapscan_txt_report_{time.strftime('%Y%m%d%H%M%S')}.txt")
+    results_json_path = os.path.join("C:\\YOUR\\FOLDER\\PATH\\GOES\\HERE", f"nmapscan_json_report_{time.strftime('%Y%m%d%H%M%S')}.json")
+
+        # Define the save_xml_report function
+    def save_xml_report():
+        try:
+            # Ensure the directory exists
+            os.makedirs(os.path.dirname(xml_path), exist_ok=True)
+            # Create the root element of the XML structure
+            root = ET.Element("NmapScanResults")
+            # Iterate over the detailed_results dictionary
+            for _, ports_info in detailed_results.items():  # Ignore the protocol
+                for port, info in ports_info.items():
+                    # Create an XML element for each port
+                    port_elem = ET.SubElement(root, "Port")
+                    port_elem.set("id", str(port))
+                    # Filter out keys with empty values
+                    filtered_info = {k: v for k, v in info.items() if v and v not in ['Not available', 'None']}
+                    # Create XML elements for each piece of information
+                    warning_created = False
+                    for key, value in filtered_info.items():
+                        if isinstance(value, dict):
+                            # For nested dictionaries, we will flatten the structure
+                            for subkey, subvalue in value.items():
+                                if subvalue and subvalue not in ['Not available', 'None']:
+                                    sub_elem = ET.SubElement(port_elem, key + subkey.replace('_', '').capitalize())
+                                    sub_elem.text = str(subvalue)
+                        elif isinstance(value, list):
+                            # For lists, we join the items into a single string
+                            list_elem = ET.SubElement(port_elem, key.replace('_', '').capitalize())
+                            list_elem.text = ', '.join(value)
+                        else:
+                            # Directly assign the value
+                            info_elem = ET.SubElement(port_elem, key.replace('_', '').capitalize())
+                            info_elem.text = str(value)
+                            # Check if the value contains 'vuln' or 'cve'
+                        if not warning_created and ('vuln' in str(value).lower() or 'cve' in str(value).lower()):
+                            warning_elem = ET.SubElement(port_elem, "Warning")
+                            warning_elem.text = "[[-WARNING-]] !POSSIBLE! VULNs ~OR~ CVEs !DETECTED! [[-WARNING-]]"
+                            warning_created = True
+            # Save the XML structure to the specified XML file path
+            tree = ET.ElementTree(root)
+            tree.write(xml_path, encoding='utf-8', xml_declaration=True)
+            log("INFO", f"\n{Fore.CYAN}{Style.BRIGHT}Detailed XML Report Saved To{Style.RESET_ALL} {Fore.GREEN}{Style.BRIGHT}|{Style.RESET_ALL} {Fore.BLUE}{Style.BRIGHT}{xml_path}{Style.RESET_ALL}\n")
+        except Exception as e:
+            log("ERROR", f"\n{Fore.RED}{Style.BRIGHT}Error occurred while saving the detailed XML report: {e}{Style.RESET_ALL}\n")
+
+    # Define the save_json_report function
+    def save_json_report():
+        try:
+            organized_results = {}
+            for _, ports_info in detailed_results.items():  # Ignore the protocol
+                for port, info in ports_info.items():
+                    # Filter out keys with empty values
+                    filtered_info = {k: v for k, v in info.items() if v}
+                    if 'script' in filtered_info:
+                        script_info = filtered_info['script']
+                        if isinstance(script_info, dict):
+                            for key, _ in script_info.items():  # Replace 'value' with underscore (_) to indicate it is intentionally unused
+                                if 'vuln' in key.lower() or 'cve' in key.lower():
+                                    filtered_info['warning'] = '[[-WARNING-]] !POSSIBLE! VULNs ~OR~ CVEs !DETECTED! [[-WARNING-]]'
+                                    break
+                    if port not in organized_results:
+                        organized_results[port] = []
+                    organized_results[port].append(filtered_info)  # type: ignore # Remove the protocol from the dictionary
+            with open(results_json_path, 'w') as json_file:  # Opening the JSON file in write mode
+                json.dump(organized_results, json_file, indent=4)  # Writing the organized scan results to the JSON file with indentation
+            log("INFO", f"\n{Fore.CYAN}{Style.BRIGHT}Detailed JSON Report Saved To{Style.RESET_ALL} {Fore.GREEN}{Style.BRIGHT}|{Style.RESET_ALL} {Fore.RED}{Style.BRIGHT}{results_json_path}{Style.RESET_ALL}\n")
+        except Exception as e:
+            log("ERROR", f"\n{Fore.RED}{Style.BRIGHT}An error occurred while saving the detailed report: {str(e)}{Style.RESET_ALL}\n")
+
+    # Define the save_text_report function
+    def save_text_report():
+        try:
+            with open(report_filename, "w") as report_file:
+                for _, ports_info in detailed_results.items():  # Ignore the protocol
+                    for port, info in ports_info.items():
+                        if any(key not in keys_to_ignore for key in info.keys()):
+                            report_file.write(f"Port {port}:\n")
+                        for field in ['state', 'name', 'product', 'version', 'address', 'machine', 'memory', 'mac', 'mac_vendor', 'device', 'network', 'extrainfo', 'reason', 'osclass', 'osfamily', 'hostname', 'hostnames', 'hostname_type', 'ipv4', 'ipv6', 'ipv4_id', 'ipv6_id', 'osgen', 'osaccuracy', 'osmatch', 'vlan_id', 'vlan_name', 'distance', 'tcp_sequence', 'tcp_options', 'service_info']:
+                            value = info.get(field)
+                            if value and value not in ['Not available', 'None']:
+                                report_file.write(f"  {field.capitalize()}: {value}\n")
+                        report_file.write(f"  Script Output:\n")
+                        script_info = info.get('script', {})
+                        if isinstance(script_info, dict):
+                            for key, value in script_info.items():
+                                if 'vuln' in key.lower() or 'cve' in key.lower():
+                                    report_file.write(f"[[-WARNING-]] !POSSIBLE! VULNs ~OR~ CVEs !DETECTED! [[-WARNING-]]\n  {key}: {value}\n")
+                                elif 'certificate' in key.lower():
+                                    report_file.write(f"  Certificate: {value}\n")
+                                elif 'csrf' in key.lower():
+                                    report_file.write(f"  CSRF: {value}\n")
+                                elif 'ssl-enum-ciphers' in key.lower():
+                                    report_file.write(f"  SSL Ciphers: {value}\n")
+                                elif 'ssh2-enum-algos' in key.lower():
+                                    report_file.write(f"  SSH2 Algorithms: {value}\n")
+                                elif 'http-enum' in key.lower():
+                                    report_file.write(f"  HTTP Directories and Files: {value}\n")
+                                else:
+                                    report_file.write(f"  {key}: {value}\n")
+                        report_file.write("\n")
+            log("INFO", f"\n{Fore.CYAN}{Style.BRIGHT}Detailed TEXT Report Saved To{Style.RESET_ALL} {Fore.GREEN}{Style.BRIGHT}|{Style.RESET_ALL} {Fore.YELLOW}{Style.BRIGHT}{report_filename}{Style.RESET_ALL}\n")
+        except Exception as e:
+            log("ERROR", f"\n{Fore.RED}{Style.BRIGHT}Error occurred while saving the detailed TEXT report: {e}{Style.RESET_ALL}\n")
+
+    # Use ThreadPoolExecutor to save reports in parallel
+    with ThreadPoolExecutor(max_workers=3) as executor:
+        futures = [
+            executor.submit(save_xml_report),
+            executor.submit(save_text_report),
+            executor.submit(save_json_report)
+        ]
+        for future in as_completed(futures):
+            future.result()
 
     # Timing and final message
-    elapsed_time = time.time() - start_time # Time difference between start_time and end_time for the last scan in seconds since the last time the script was run
-    log("INFO", f"\n{Fore.WHITE}{Style.BRIGHT}Total process completed in{Style.RESET_ALL} {Fore.GREEN}{Style.BRIGHT}{elapsed_time:.2f} seconds.{Style.RESET_ALL}") # Logging the total time taken for the script to complete
+    elapsed_time = time.time() - start_time  # Time difference between start_time and end_time for the last scan in seconds since the last time the script was run
+    hours = int(elapsed_time // 3600)
+    minutes = int((elapsed_time % 3600) // 60)
+    seconds = int(elapsed_time % 60)
+    log("INFO", f"{Fore.WHITE}{Style.BRIGHT}Total process completed in{Style.RESET_ALL}{Fore.GREEN}{Style.BRIGHT} {hours:02d}:{minutes:02d}:{seconds:02d}.{Style.RESET_ALL}")
 
-if __name__ == "__main__": # Run the script if it is executed directly
+if __name__ == "__main__":  # Run the script if it is executed directly
     start_time = time.time()  # Record start time of the script
     main()
