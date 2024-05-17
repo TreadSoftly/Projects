@@ -6,7 +6,6 @@
 # LOOKE FOR AND EDIT THE THREE FILE OUTPUTS FOR TEXT, JSON & XML (Just CTL+F search this below) 
     # "C:\\YOUR\\FOLDER\\PATH\\GOES\\HERE"
 # IMPORTANT ########################################################################################################################
-
 import nmap
 import socket
 import os
@@ -27,6 +26,8 @@ import concurrent.futures
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from typing import Dict, List, Tuple, Union, Optional, Sequence
 import re
+import itertools
+import threading
 
 init(autoreset=True)  # Initializing colorama for auto-resetting colors after each print statement
 
@@ -52,15 +53,15 @@ def log(log_priority: str, log_message: str):
     date_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     color = LOG_COLORS.get(log_priority, LOG_COLORS["NC"])
 
-    # Log to console
-    console_message = f"{color}{date_time} [{log_priority}] {log_message}{LOG_COLORS['NC']}"
+    # Simplified console message
+    console_message = f"{color}{log_message}{LOG_COLORS['NC']}"
     print(console_message)
 
     # Log to file
     try:
-        stripped_message = strip_ansi_codes(console_message)
+        file_message = f"{date_time} [{log_priority}] {strip_ansi_codes(log_message)}"
         with open(LOG_FILE, 'a') as file:
-            file.write(f"{stripped_message}\n")
+            file.write(f"{file_message}\n")
     except Exception as e:
         print(f"{Fore.RED}{Style.BRIGHT}Failed to write log to file: {e}{Style.RESET_ALL}")
 
@@ -75,6 +76,14 @@ def is_valid_ip(ip: str) -> bool:
         return True
     except socket.error:
         return False
+
+def resolve_hostname(hostname: str) -> Optional[str]:
+    try:
+        ip = socket.gethostbyname(hostname)
+        return ip
+    except socket.gaierror:
+        log("ERROR", f"{Fore.RED}{Style.BRIGHT}Failed to resolve hostname: {hostname}{Style.RESET_ALL}")
+        return None
 
 def install_modules(modules: Sequence[Tuple[str, Optional[str]]]) -> None:
     def install_module(module_name: str, pip_name: Optional[str]):
@@ -181,13 +190,11 @@ def scan_port(ip: str, port: int, proto: str, nm: nmap.PortScanner) -> Tuple[int
         """Extract and format vulnerability data from script output."""
         return output
 
-    arguments = "-T3 -sV -A -O --version-intensity 9 --script=default,vuln,banner,http-headers,http-title,vulners -PE -PP -PM -PS21,23,80,3389 -PA80,443,8080 -vvv"
-
+    arguments = "-sS -T3 -sV -A -O --version-intensity 9 --script=default,vuln,banner,http-headers,http-title,vulners -PE -PP -PM -PS21,23,80,3389 -PA80,443,8080 --data-length 10 -vvv"
     try:
         nm.scan(hosts=ip, ports=str(port), arguments=arguments, sudo=True if proto == 'udp' else False)
     except nmap.PortScannerError as e:
         log("ERROR", f"{Fore.RED}{Style.BRIGHT}Error occurred while scanning port{Style.RESET_ALL} {Fore.GREEN}{Style.BRIGHT}{port}{Style.RESET_ALL} {Fore.RED}{Style.BRIGHT}on IP{Style.RESET_ALL} {Fore.WHITE}{Style.BRIGHT}{ip}: {e}{Style.RESET_ALL}")
-        return port, {}
     except Exception as e:
         log("ERROR", f"{Fore.RED}{Style.BRIGHT}Unexpected error occurred while scanning port{Style.RESET_ALL} {Fore.GREEN}{Style.BRIGHT}{port}{Style.RESET_ALL} {Fore.RED}{Style.BRIGHT}on IP{Style.RESET_ALL} {Fore.WHITE}{Style.BRIGHT}{ip}: {e}{Style.RESET_ALL}")
         return port, {}
@@ -280,40 +287,73 @@ def scan_port(ip: str, port: int, proto: str, nm: nmap.PortScanner) -> Tuple[int
     return port, result
 
 def quick_scan(ip: str, nm: nmap.PortScanner) -> Dict[str, List[int]]:
-    log("INFO", f"{Fore.YELLOW}{Style.BRIGHT}Setting Up Initial Scan On{Style.RESET_ALL} {Fore.GREEN}{Style.BRIGHT}[{Style.RESET_ALL}{Fore.WHITE}{Style.BRIGHT}{ip}{Style.RESET_ALL}{Fore.GREEN}{Style.BRIGHT}]{Style.RESET_ALL}")
-    arguments = "-T3 --version-intensity 9 --open -PE -PP -PM -PS21,23,80,3389 -PA80,443,8080 -vvv"
+    arguments = "-T4 -O --version-intensity 9 --open -PE -PP -PM -PS21,23,80,3389 -PA80,443,8080 -vvv"
+
+    spinner_text = ''.join([Fore.MAGENTA, Style.BRIGHT, 'INITIALIZING PRETTY SCAN', Style.RESET_ALL])
+    spinners = [
+        Halo(text=spinner_text, spinner='dots'),
+        Halo(text=spinner_text, spinner='dots2'),
+        Halo(text=spinner_text, spinner='dots3'),
+        Halo(text=spinner_text, spinner='dots4'),
+        Halo(text=spinner_text, spinner='dots5'),
+        Halo(text=spinner_text, spinner='dots6'),
+        Halo(text=spinner_text, spinner='dots7'),
+        Halo(text=spinner_text, spinner='dots8'),
+        Halo(text=spinner_text, spinner='dots9'),
+        Halo(text=spinner_text, spinner='dots10'),
+        Halo(text=spinner_text, spinner='dots11'),
+        Halo(text=spinner_text, spinner='dots12')
+    ]
+
+    # Start each spinner in different colors
+    colors = [Fore.RED, Fore.GREEN, Fore.BLUE, Fore.YELLOW, Fore.CYAN, Fore.MAGENTA]
+    for index, spinner in enumerate(spinners):
+        color = colors[index % len(colors)]
+        spinner.text = ''.join([color, Style.BRIGHT, 'INITIALIZING PRETTY SCAN', Style.RESET_ALL])
+        spinner.start(text=None)  # type: ignore
+
     try:
         nm.scan(hosts=ip, ports="1-65535", arguments=arguments)
     except nmap.PortScannerError as e:
         log("ERROR", f"{Fore.RED}{Style.BRIGHT}Error occurred during quick scan on IP{Style.RESET_ALL} {Fore.WHITE}{Style.BRIGHT}{ip}: {e}{Style.RESET_ALL}")
+        for spinner in spinners:
+            spinner.stop()
         return {'tcp': [], 'udp': []}
     except Exception as e:
         log("ERROR", f"{Fore.RED}{Style.BRIGHT}Unexpected error occurred during quick scan on IP{Style.RESET_ALL} {Fore.WHITE}{Style.BRIGHT}{ip}: {e}{Style.RESET_ALL}")
+        for spinner in spinners:
+            spinner.stop()
         return {'tcp': [], 'udp': []}
+
     open_ports: Dict[str, List[int]] = {'tcp': [], 'udp': []}
-    spinner = Halo(text='Scanning ports', spinner='dots')
-    spinner.start(text=None)  # type: ignore
     for proto in nm[ip].all_protocols():
         ports = sorted(nm[ip][proto].keys())
         total_ports = len(ports)
         completed = 0
         max_workers = (os.cpu_count() or 1) + 4
+
+        spinner = Halo(text=f'{Fore.GREEN}{Style.BRIGHT}Scanning {proto.upper()} Ports{Style.RESET_ALL}', spinner='dots')
+        spinner.start(text=None)  # type: ignore
+
         with ThreadPoolExecutor(max_workers=max_workers) as executor:
             futures = {executor.submit(nm[ip][proto].get, port): port for port in ports}
-            for future in futures:
-                port = future
-                spinner.text = f'{Fore.GREEN}{Style.BRIGHT}Scan Submitted For{Style.RESET_ALL} [{Fore.BLUE}{Style.BRIGHT}Port{Style.RESET_ALL}{Fore.GREEN}{Style.BRIGHT}:{Style.RESET_ALL}{Fore.RED}{Style.BRIGHT}{port}{Style.RESET_ALL}]'
             for future in as_completed(futures):
                 port = futures[future]
                 try:
-                    if future.result()['state'] == 'open':
+                    result = future.result()
+                    if result['state'] == 'open':
                         open_ports[proto].append(port)
                 except Exception as e:
-                  log("ERROR", f"\n{Fore.RED}{Style.BRIGHT}Error processing result for port{Style.RESET_ALL} {Fore.GREEN}{Style.BRIGHT}{port}{Style.RESET_ALL} {Fore.RED}{Style.BRIGHT}on IP{Style.RESET_ALL} {Fore.WHITE}{Style.BRIGHT}{ip}: {e}{Style.RESET_ALL}")
+                    log("ERROR", f"\n{Fore.RED}{Style.BRIGHT}Error processing result for port{Style.RESET_ALL} {Fore.GREEN}{Style.BRIGHT}{port}{Style.RESET_ALL} {Fore.RED}{Style.BRIGHT}on IP{Style.RESET_ALL} {Fore.WHITE}{Style.BRIGHT}{ip}: {e}{Style.RESET_ALL}")
                 completed += 1
                 percentage = (completed / total_ports) * 100
                 spinner.text = f'Scanned {completed} of {total_ports} ports ({percentage:.2f}%)'
-    spinner.stop()
+
+        spinner.stop()
+
+    for spinner in spinners:
+        spinner.stop()
+
     return open_ports
 
 def scan_all_open_ports(ip: str):
@@ -322,6 +362,28 @@ def scan_all_open_ports(ip: str):
     if not open_ports['tcp'] and not open_ports['udp']:
         log("INFO", f"{Fore.YELLOW}{Style.BRIGHT}No open ports found on IP{Style.RESET_ALL} {Fore.WHITE}{Style.BRIGHT}{ip}{Style.RESET_ALL}.")
         return
+
+    spinner_text = ''.join([Fore.MAGENTA, Style.BRIGHT, 'Scanning All Open Ports', Style.RESET_ALL])
+    spinners = [
+        Halo(text=spinner_text, spinner='dots'),
+        Halo(text=spinner_text, spinner='dots2'),
+        Halo(text=spinner_text, spinner='dots3'),
+        Halo(text=spinner_text, spinner='dots4'),
+        Halo(text=spinner_text, spinner='dots5'),
+        Halo(text=spinner_text, spinner='dots6'),
+        Halo(text=spinner_text, spinner='dots7'),
+        Halo(text=spinner_text, spinner='dots8'),
+        Halo(text=spinner_text, spinner='dots9'),
+        Halo(text=spinner_text, spinner='dots10'),
+        Halo(text=spinner_text, spinner='dots11'),
+        Halo(text=spinner_text, spinner='dots12')
+    ]
+    # Start each spinner in different colors
+    colors = [Fore.RED, Fore.GREEN, Fore.BLUE, Fore.YELLOW, Fore.CYAN, Fore.MAGENTA]
+    for index, spinner in enumerate(spinners):
+        color = colors[index % len(colors)]
+        spinner.text = ''.join([color, Style.BRIGHT, 'Pretty Scanning All Open PORTS', Style.RESET_ALL])
+        spinner.start(text=None)  # type: ignore
     pool = multiprocessing.Pool(processes=(os.cpu_count() or 1) + 4)
     try:
         results: List[Tuple[int, Dict[str, Union[str, List[str], Dict[str, str]]]]] = pool.starmap(scan_port, [(ip, port, proto, nm) for proto, ports in open_ports.items() for port in ports])
@@ -333,34 +395,49 @@ def scan_all_open_ports(ip: str):
         pool.close()
         pool.join()
 
+    for spinner in spinners:
+        spinner.stop()
+
 def worker(ip: str, ports: List[int], proto: str, nm: nmap.PortScanner, spinner: Halo, completed: Dict[str, int]) -> Dict[int, Optional[Dict[str, Union[str, List[str], Dict[str, str]]]]]:
     results: Dict[int, Optional[Dict[str, Union[str, List[str], Dict[str, str]]]]] = {}
 
     def scan_and_update(port: int, ip: str, proto: str, nm: nmap.PortScanner, spinner: Halo, completed: Dict[str, int], results: Dict[int, Optional[Dict[str, Union[str, List[str], Dict[str, str]]]]]):
+        colors = [Fore.RED, Fore.GREEN, Fore.BLUE, Fore.YELLOW, Fore.CYAN, Fore.MAGENTA]
+        color_cycle = itertools.cycle(colors)  # Create a cycle iterator for colors
+        stop_event = threading.Event()
+
+        def update_spinner_text(base_text: str):
+            while not stop_event.is_set():
+                color = next(color_cycle)
+                percentage = (completed['count'] / completed['total']) * 100
+                spinner.text = f'\r{color}{Style.BRIGHT}{base_text} {Fore.GREEN}{Style.BRIGHT}[{Fore.MAGENTA}{Style.BRIGHT}TOTAL PORTS{Style.RESET_ALL}{Fore.CYAN}{Style.BRIGHT}:{Style.RESET_ALL}{Fore.WHITE}{Style.BRIGHT}[{Style.RESET_ALL}{completed["count"]}{Style.RESET_ALL}{Fore.WHITE}{Style.BRIGHT}/{Style.RESET_ALL}{completed["total"]}{Fore.WHITE}{Style.BRIGHT}]{Style.RESET_ALL}{Fore.GREEN}{Style.BRIGHT} {Fore.YELLOW}{Style.BRIGHT}PROGRESS{Style.RESET_ALL}{Fore.GREEN}{Style.BRIGHT}:{Style.RESET_ALL}{Fore.WHITE}{Style.BRIGHT}[{Style.RESET_ALL}{percentage:.2f}{Fore.RED}{Style.BRIGHT}%{Style.RESET_ALL}{Style.RESET_ALL}{Fore.WHITE}{Style.BRIGHT}]{Style.RESET_ALL}{Fore.GREEN}{Style.BRIGHT}]{Style.RESET_ALL}'
+                time.sleep(0.5)  # Update the color every 0.5 seconds
         try:
-            spinner.text = f'{Fore.YELLOW}{Style.BRIGHT}Initializing Scan On{Style.RESET_ALL} [{Fore.CYAN}{Style.BRIGHT}Port{Style.RESET_ALL}{Fore.GREEN}{Style.BRIGHT}:{Style.RESET_ALL}{Fore.RED}{Style.BRIGHT}{port}{Style.RESET_ALL}]'
+            threading.Thread(target=update_spinner_text, args=(f'Pretty Scan Starting On {Fore.GREEN}{Style.BRIGHT}[{Style.RESET_ALL}{Fore.WHITE}{Style.BRIGHT}Port{Style.RESET_ALL}{Fore.GREEN}{Style.BRIGHT}:{Style.RESET_ALL} {Fore.RED}{Style.BRIGHT}{port}{Style.RESET_ALL}{Fore.GREEN}{Style.BRIGHT}]{Style.RESET_ALL} ',), daemon=True).start()
             port_result = scan_port(ip, port, proto, nm)
+            stop_event.set()
             if port_result[1]:
                 results[port_result[0]] = port_result[1]
                 completed['count'] += 1
-                percentage = (completed['count'] / completed['total']) * 100
-                spinner.text = f'{Fore.GREEN}{Style.BRIGHT}Finished Scan On {Style.RESET_ALL}[{Fore.BLUE}{Style.BRIGHT}Port:{Style.RESET_ALL} {Fore.RED}{Style.BRIGHT}{port}{Style.RESET_ALL}] [Completion:[{completed["count"]}/{completed["total"]}]{Fore.GREEN}{Style.BRIGHT} {percentage:.2f}%{Style.RESET_ALL}]'
+                stop_event.clear()
+                threading.Thread(target=update_spinner_text, args=(f'Pretty Scan Finished On {Fore.GREEN}{Style.BRIGHT}[{Style.RESET_ALL}{Fore.WHITE}{Style.BRIGHT}Port{Style.RESET_ALL}{Fore.GREEN}{Style.BRIGHT}:{Style.RESET_ALL} {Fore.RED}{Style.BRIGHT}{port}{Style.RESET_ALL}{Fore.GREEN}{Style.BRIGHT}]{Style.RESET_ALL} ',), daemon=True).start()
             else:
-                spinner.text = f'{Fore.RED}{Style.BRIGHT}No Results On{Style.RESET_ALL} [{Fore.GREEN}{Style.BRIGHT}Port{Style.RESET_ALL}{Fore.GREEN}{Style.BRIGHT}:{Style.RESET_ALL}{Fore.RED}{Style.BRIGHT}{port}{Style.RESET_ALL}]'
+                stop_event.clear()
+                threading.Thread(target=update_spinner_text, args=(f'Pretty Scan 0 Results On {Fore.GREEN}{Style.BRIGHT}[{Style.RESET_ALL}{Fore.WHITE}{Style.BRIGHT}Port{Style.RESET_ALL}{Fore.GREEN}{Style.BRIGHT}:{Style.RESET_ALL} {Fore.RED}{Style.BRIGHT}{port}{Style.RESET_ALL}{Fore.GREEN}{Style.BRIGHT}]{Style.RESET_ALL} ',), daemon=True).start()
         except Exception as e:
-            log("ERROR", f"{Fore.RED}{Style.BRIGHT}Error occurred during scan and update for port{Style.RESET_ALL} {Fore.GREEN}{Style.BRIGHT}{port}{Style.RESET_ALL} {Fore.RED}{Style.BRIGHT}on IP{Style.RESET_ALL} {Fore.WHITE}{Style.BRIGHT}{ip}: {e}{Style.RESET_ALL}")
+            log("ERROR", f"{Fore.RED}{Style.BRIGHT}Error occurred during Scan and update for port{Style.RESET_ALL} {Fore.GREEN}{Style.BRIGHT}{port}{Style.RESET_ALL} {Fore.RED}{Style.BRIGHT}on IP{Style.RESET_ALL} {Fore.WHITE}{Style.BRIGHT}{ip}: {e}{Style.RESET_ALL}")
         finally:
+            stop_event.set()
             time.sleep(5)
-            percentage = (completed['count'] / completed['total']) * 100
-            spinner.text = f'{Fore.GREEN}{Style.BRIGHT}Scan In Progress On{Style.RESET_ALL} [{Fore.BLUE}{Style.BRIGHT}Port{Style.RESET_ALL}{Fore.GREEN}{Style.BRIGHT}:{Style.RESET_ALL}{Fore.RED}{Style.BRIGHT}{port}{Style.RESET_ALL}] [Completion:[{completed["count"]}/{completed["total"]}]{Fore.GREEN}{Style.BRIGHT} {percentage:.2f}%{Style.RESET_ALL}]'
+            stop_event.clear()
+            threading.Thread(target=update_spinner_text, args=(f'Pretty Scan Progress On {Fore.GREEN}{Style.BRIGHT}[{Style.RESET_ALL}{Fore.WHITE}{Style.BRIGHT}Port{Style.RESET_ALL}{Fore.GREEN}{Style.BRIGHT}:{Style.RESET_ALL} {Fore.RED}{Style.BRIGHT}{port}{Style.RESET_ALL}{Fore.GREEN}{Style.BRIGHT}]{Style.RESET_ALL} ',), daemon=True).start()
             time.sleep(15)
+            stop_event.set()
 
     max_workers = (cpu_count() or 1) + 4
     with ThreadPoolExecutor(max_workers=max_workers) as executor:
         executor.map(scan_and_update, ports, [ip]*len(ports), [proto]*len(ports), [nm]*len(ports), [spinner]*len(ports), [completed]*len(ports), [results]*len(ports))
     return results
-
-scan_info = {}  # Add this line at the appropriate place in your code
 
 def distribute_work(ip: str, open_ports: Dict[str, List[int]]) -> Dict[str, Dict[int, Dict[str, Union[str, List[str], Dict[str, str]]]]]:
     init()
@@ -368,6 +445,7 @@ def distribute_work(ip: str, open_ports: Dict[str, List[int]]) -> Dict[str, Dict
     proto = None
     total_ports = sum(len(ports) for ports in open_ports.values())
     completed = {'total': total_ports, 'count': 0}
+
     spinner = Halo(text=f'{Fore.GREEN}{Style.BRIGHT}Initializing{Style.RESET_ALL}', spinner='dots')  # Initialize spinner here
 
     with concurrent.futures.ThreadPoolExecutor(max_workers=CPU_CORES) as executor:
@@ -442,23 +520,116 @@ def distribute_work(ip: str, open_ports: Dict[str, List[int]]) -> Dict[str, Dict
                 print(f"{Fore.RED}No script output\n{Style.RESET_ALL}")
     return detailed_results
 
+def target_input_type(input_str: str) -> str:
+    ip_pattern = r'^(?:[0-9]{1,3}\.){3}[0-9]{1,3}$'
+    domain_pattern = r'^(?:[a-zA-Z0-9]+(-[a-zA-Z0-9]+)*\.)+[a-zA-Z]{2,}$'
+    port_pattern = r'^\d{1,5}$'
+    mac_pattern = r'^([0-9A-Fa-f]{2}[:-]){5}([0-9A-Fa-f]{2})$'
+    url_pattern = r'^https?://(?:[-\w.]|(?:%[\da-fA-F]{2}))+(/[-\w._~:/?#[\]@!$&()*+,;=]*)?$'
+    asn_pattern = r'^AS\d+$'
+    if re.match(ip_pattern, input_str):
+        return "ip"
+    elif re.match(domain_pattern, input_str):
+        return "domain"
+    elif re.match(port_pattern, input_str):
+        return "port"
+    elif re.match(mac_pattern, input_str):
+        return "mac"
+    elif re.match(url_pattern, input_str):
+        return "url"
+    elif re.match(asn_pattern, input_str):
+        return "asn"
+    else:
+        return "unknown"
+
+def get_target() -> Tuple[str, str]:
+    init(autoreset=True)
+    while True:
+        print(f"{Fore.RED}{Style.BRIGHT}Enter A Scan Type{Style.RESET_ALL}{Fore.GREEN}{Style.BRIGHT}:{Style.RESET_ALL}\n{Fore.WHITE}1.{Style.RESET_ALL} {Fore.RED}{Style.BRIGHT}LOCAL{Style.RESET_ALL}\n{Fore.WHITE}2.{Style.RESET_ALL} {Fore.RED}{Style.BRIGHT}TARGET{Style.RESET_ALL}")
+        choice = input(f"{Fore.GREEN}{Style.BRIGHT}Type Choice (1 or 2): {Style.RESET_ALL}")
+        if choice == "1":
+            return get_local_ip(), "local"
+        elif choice == "2":
+            print(f"{Fore.RED}Types Include:{Style.RESET_ALL} {Fore.GREEN}[{Style.RESET_ALL}{Fore.WHITE}IP Address, Domain, Port, MAC, URL, ASN{Style.RESET_ALL}{Fore.GREEN}]{Style.RESET_ALL}")
+            target = input(f"{Fore.YELLOW}{Style.BRIGHT}Enter Target Type: {Style.RESET_ALL}")
+            target_type = target_input_type(target)
+            if target_type == "unknown":
+                log("ERROR", f"{Fore.RED}{Style.BRIGHT}Invalid input:{Style.RESET_ALL} {Fore.GREEN}{Style.BRIGHT}{target}{Style.RESET_ALL}")
+            else:
+                target = re.sub(r'^https?://', '', target)
+                target = target.rstrip('/')
+
+                spinner_text = ''.join([Fore.MAGENTA, Style.BRIGHT, 'Locating Target ', target, Style.RESET_ALL])
+                spinners = [
+                    Halo(text=spinner_text, spinner='dots'),
+                    Halo(text=spinner_text, spinner='dots2'),
+                    Halo(text=spinner_text, spinner='dots3'),
+                    Halo(text=spinner_text, spinner='dots4'),
+                    Halo(text=spinner_text, spinner='dots5'),
+                    Halo(text=spinner_text, spinner='dots6'),
+                    Halo(text=spinner_text, spinner='dots7'),
+                    Halo(text=spinner_text, spinner='dots8'),
+                    Halo(text=spinner_text, spinner='dots9'),
+                    Halo(text=spinner_text, spinner='dots10'),
+                    Halo(text=spinner_text, spinner='dots11'),
+                    Halo(text=spinner_text, spinner='dots12')
+                ]
+
+                colors = [Fore.RED, Fore.GREEN, Fore.BLUE, Fore.YELLOW, Fore.CYAN, Fore.MAGENTA]
+                for index, spinner in enumerate(spinners):
+                    color = colors[index % len(colors)]
+                    spinner.text = ''.join([color, Style.BRIGHT, 'Locating Target ', target, Style.RESET_ALL])
+                    spinner.start() # type: ignore
+
+                try:
+                    result = subprocess.run(f"ping -c 1 {target}", shell=True, capture_output=True, text=True)
+                    for spinner in spinners:
+                        spinner.stop()
+
+                    if result.returncode == 0:
+                        log("INFO", f"{Fore.GREEN}{Style.BRIGHT}Ping Check Succeeded{Style.RESET_ALL}{Fore.CYAN}{Style.BRIGHT}:{Style.RESET_ALL}{Fore.MAGENTA}{Style.BRIGHT}[{Style.RESET_ALL}{Fore.WHITE}{Style.BRIGHT}{target}{Style.RESET_ALL}{Fore.MAGENTA}{Style.BRIGHT}]{Style.RESET_ALL}{Fore.GREEN}{Style.BRIGHT}[{Style.RESET_ALL}{Fore.RED}{Style.BRIGHT}TARGET LOCKED{Style.RESET_ALL}{Fore.GREEN}{Style.BRIGHT}]{Style.RESET_ALL}")
+                    else:
+                        log("ERROR", f"{Fore.RED}{Style.BRIGHT}Ping check failed{Style.RESET_ALL}{Fore.GREEN}{Style.BRIGHT}: {Fore.GREEN}{Style.BRIGHT}{target}{Style.RESET_ALL} {Fore.RED}TARGET{Style.RESET_ALL} {Fore.RED}{Style.BRIGHT}FAIL{Style.RESET_ALL}")
+                except Exception as e:
+                    for spinner in spinners:
+                        spinner.stop()
+                    log("ERROR", f"{Fore.RED}{Style.BRIGHT}ERROR RUNNING PING{Style.RESET_ALL}{Fore.GREEN}{Style.BRIGHT}: {e}{Style.RESET_ALL}")
+                return target, target_type
+        else:
+            print(f"{Fore.RED}{Style.BRIGHT}Invalid choice{Style.RESET_ALL}{Fore.GREEN}{Style.BRIGHT}:{Style.RESET_ALL} {Fore.YELLOW}{Style.BRIGHT}Please enter 1 or 2.{Style.RESET_ALL}")
+
 def main():
-    ip = get_local_ip()
-    log("INFO", f"{Fore.RED}{Style.BRIGHT}Scanning{Style.RESET_ALL} {Fore.WHITE}{Style.BRIGHT}{ip}{Style.RESET_ALL} {Fore.GREEN}{Style.BRIGHT}[{Style.RESET_ALL}{Fore.BLUE}{Style.BRIGHT}With Optimal System Resources{Style.RESET_ALL}{Fore.GREEN}{Style.BRIGHT}]{Style.RESET_ALL}")
+    target, target_type = get_target()  # Get target and target type
+
+    if target_type == "domain":
+        resolved_ip = resolve_hostname(target)
+        if resolved_ip:
+            target = resolved_ip
+        else:
+            log("ERROR", f"{Fore.RED}{Style.BRIGHT}Invalid domain: {target}{Style.RESET_ALL}")
+            return
+
+    log("INFO", f"{Fore.MAGENTA}{Style.BRIGHT}Setting Up Scan On{Style.RESET_ALL} {Fore.MAGENTA}{Style.BRIGHT}[{Style.RESET_ALL}{Fore.WHITE}{Style.BRIGHT}{target}{Style.RESET_ALL}{Fore.MAGENTA}{Style.BRIGHT}]{Style.RESET_ALL}")
     open_ports: Dict[str, List[int]] = {'tcp': [], 'udp': []}
     nm = nmap.PortScanner()
     try:
-        # Quick Scan
-        open_ports = quick_scan(ip, nm)  # Performing the quick scan and getting the open ports
-        log("INFO", f"\n{Fore.GREEN}{Style.BRIGHT}Quick Scan Completed.{Style.RESET_ALL} {Fore.CYAN}{Style.BRIGHT}Identified Open Ports:{Style.RESET_ALL} {Fore.RED}{Style.BRIGHT}{', '.join(map(str, open_ports['tcp']))}{Style.RESET_ALL}{Fore.GREEN}{Style.BRIGHT}(TCP),{Style.RESET_ALL}{Fore.RED}{Style.BRIGHT}{', '.join(map(str, open_ports['udp']))}{Style.RESET_ALL}{Fore.GREEN}{Style.BRIGHT}(UDP){Style.RESET_ALL}")  # Printing the identified open ports
+        if target_type == "local":
+            # Quick Scan for local scan
+            open_ports = quick_scan(target, nm)  # Performing the quick scan and getting the open ports
+            log("INFO", f"\n{Fore.GREEN}{Style.BRIGHT}Local Quick Scan Completed.{Style.RESET_ALL} {Fore.CYAN}{Style.BRIGHT}Identified Open Ports:{Style.RESET_ALL} \n{Fore.GREEN}{Style.BRIGHT}[{Style.RESET_ALL}{Fore.RED}{Style.BRIGHT}{', '.join(map(str, open_ports['tcp']))}{Style.RESET_ALL}{Fore.RED}{Style.BRIGHT}{', '.join(map(str, open_ports['udp']))}{Style.RESET_ALL}{Fore.GREEN}{Style.BRIGHT}]{Style.RESET_ALL}\n")  # Printing the identified open ports
+        else:
+            # Quick Scan for target scan
+            open_ports = quick_scan(target, nm)  # Performing the quick scan and getting the open ports
+            log("INFO", f"\n{Fore.GREEN}{Style.BRIGHT}Target Quick Scan Completed.{Style.RESET_ALL} {Fore.CYAN}{Style.BRIGHT}Identified Open Ports:{Style.RESET_ALL} \n{Fore.GREEN}{Style.BRIGHT}[{Style.RESET_ALL}{Fore.RED}{Style.BRIGHT}{', '.join(map(str, open_ports['tcp']))}{Style.RESET_ALL}{Fore.RED}{Style.BRIGHT}{', '.join(map(str, open_ports['udp']))}{Style.RESET_ALL}{Fore.GREEN}{Style.BRIGHT}]{Style.RESET_ALL}\n") # Printing the identified open ports
     except Exception as e:
-        log("ERROR", f"\n{Fore.RED}{Style.BRIGHT}Error occurred during quick scan: {e}{Style.RESET_ALL}")
+        log("ERROR", f"\n{Fore.RED}{Style.BRIGHT}Error occurred during scan: {e}{Style.RESET_ALL}")
         return
+
     # Detailed Scan on Open Ports
     detailed_results: Dict[str, Dict[int, Dict[str, Union[str, List[str], Dict[str, str]]]]] = {'tcp': {}, 'udp': {}}
     if open_ports['tcp'] or open_ports['udp']:  # Check if there are any open ports
         try:
-            detailed_results = distribute_work(ip, open_ports)  # Performing the distributed work on the identified open ports
+            detailed_results = distribute_work(target, open_ports)  # Performing the distributed work on the identified open ports
         except Exception as e:
             log("ERROR", f"\n{Fore.RED}{Style.BRIGHT}Error occurred during detailed scan: {e}{Style.RESET_ALL}")
             return
@@ -472,7 +643,7 @@ def save_reports(detailed_results: Dict[str, Dict[int, Dict[str, Union[str, List
     report_filename = os.path.join("C:\\YOUR\\FOLDER\\PATH\\GOES\\HERE", f"nmapscan_txt_report_{time.strftime('%Y%m%d%H%M%S')}.txt")
     results_json_path = os.path.join("C:\\YOUR\\FOLDER\\PATH\\GOES\\HERE", f"nmapscan_json_report_{time.strftime('%Y%m%d%H%M%S')}.json")
 
-        # Define the save_xml_report function
+    # Define the save_xml_report function
     def save_xml_report():
         try:
             # Ensure the directory exists
