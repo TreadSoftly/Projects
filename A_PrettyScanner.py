@@ -287,7 +287,7 @@ class NmapScanner:
     def scan_port(self, ip: str, port: int, proto: str) -> Tuple[int, Dict[str, Union[str, List[str], Mapping[str, str]]]]:
         log("INFO", f"Scanning port {port} on IP {ip} using {proto}", console=False)
 
-        arguments = "-sS -T3 -sV -A -O --version-intensity 9 --script=default,vuln,banner,http-headers,http-title,vulners,dns-recursion,dns-srv-enum,dns-brute,broadcast-dns-service-discovery -PE -PP -PM -PS21,23,80,3389 -PA80,443,8080 --data-length 10 -vvv "
+        arguments = "-sS -T4 -sV -A -O --version-intensity 9 --script=default,vuln,banner,http-headers,http-title,vulners,dns-recursion,dns-srv-enum,dns-brute,broadcast-dns-service-discovery -PE -PP -PM -PS21,23,80,3389 -PA80,443,8080 --data-length 10 -vvv "
 
         try:
             self.nm.scan(hosts=ip, ports=str(port), arguments=arguments, sudo=True if proto == 'udp' else False)
@@ -303,7 +303,7 @@ class NmapScanner:
         return port, scan_info
 
     def quick_scan(self, ip: str) -> Dict[str, List[int]]:
-        arguments = "-sS -T4 --open -PE -PP -PM -PS21,23,80,3389 -PA80,443,8080 --data-length 10 -vvv"
+        arguments = "-sS -T4 -O --open -PE -PP -PM -PS21,23,80,3389 -PA80,443,8080 --data-length 10 -vvv"
         total_ports = 65535
         completed = {'count': 0, 'total': total_ports}
         open_ports: Dict[str, List[int]] = {'tcp': [], 'udp': []}
@@ -865,29 +865,17 @@ class PrettyScan:
         return results
 
     @staticmethod
-    def print_warning(message: str) -> None:
+    def print_warning(message: str):
         print(f"{Fore.RED}{Style.BRIGHT}{message}{Style.RESET_ALL}")
 
     @staticmethod
-    def print_certificate(cert_text: str) -> None:
+    def print_certificate(cert_text: str):
         cert_lines = cert_text.split('\n')
-        dns_san_values = extract_dns_san(cert_text)
         for line in cert_lines:
             if "BEGIN CERTIFICATE" in line or "END CERTIFICATE" in line:
                 log("INFO", f"{Fore.YELLOW}{Style.BRIGHT}{line}{Style.RESET_ALL}")
             else:
                 log("INFO", f"{Fore.CYAN}{line}{Style.RESET_ALL}")
-
-        # Save DNS SAN values to detailed files
-        if dns_san_values:
-            detailed_dir = DirectoryManager.get_desktop_path()
-            detailed_dir = os.path.join(detailed_dir, 'LEVERAGE', 'detailed')
-            os.makedirs(detailed_dir, exist_ok=True)
-            field = "DNS_SAN"
-            file_formats = ["txt", "json", "xml"]
-            for file_format in file_formats:
-                ReportGenerator.save_detailed_file(detailed_dir, field, dns_san_values, file_format)
-
 
     def main(self):
         start_time = time.time()
@@ -931,12 +919,10 @@ class PrettyScan:
 
 if __name__ == "__main__":
     try:
-        cluster = LocalCluster(n_workers=4, threads_per_worker=2)
+        cluster = LocalCluster(n_workers=4, threads_per_worker=4, processes=True, silence_logs=logging.ERROR)
         client = Client(cluster)
     except CommClosedError as e:
-        log("ERROR", f"Dask communication error: {e}", console=True)
+        log("ERROR", f"Dask communication error: {e}", console=False)
         sys.exit(1)
     pretty_scan = PrettyScan()
     pretty_scan.main()
-
-
