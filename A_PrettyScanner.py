@@ -45,6 +45,17 @@ class SelectorsFilter(logging.Filter):
     def filter(self, record: LogRecord) -> bool:
         return not record.getMessage().startswith("Using selector:")
 
+class SuppressErrorFilter(logging.Filter):
+    def filter(self, record: LogRecord) -> bool:
+        unwanted_errors = [
+            "Error resolving IP address for",
+            "Error decoding JSON file",
+            "Extracted DNS SANs:",
+            "Running nikto scan on",
+            "Nikto scan results saved to"
+        ]
+        return not any(error in record.getMessage() for error in unwanted_errors)
+
 LOGGING_CONFIG = {
     "version": 1,
     "disable_existing_loggers": False,
@@ -55,9 +66,10 @@ LOGGING_CONFIG = {
     },
     "handlers": {
         "console": {
-            "level": "INFO",
+            "level": "WARNING",  # Change log level to WARNING to suppress lower-level messages
             "class": "logging.StreamHandler",
-            "formatter": "standard"
+            "formatter": "standard",
+            "filters": ["suppress_error_filter"]
         },
         "file": {
             "level": "DEBUG",
@@ -81,6 +93,9 @@ LOGGING_CONFIG = {
     "filters": {
         "selectors_filter": {
             "()": SelectorsFilter
+        },
+        "suppress_error_filter": {
+            "()": SuppressErrorFilter
         }
     }
 }
@@ -143,7 +158,7 @@ class LoggerSetup:
         # Create handlers
         c_handler = logging.StreamHandler()
         f_handler = logging.FileHandler(log_file)
-        c_handler.setLevel(logging.DEBUG)
+        c_handler.setLevel(logging.WARNING)  # Set console log level to WARNING
         f_handler.setLevel(logging.DEBUG)
 
         # Create formatters and add it to handlers
@@ -302,6 +317,7 @@ class NmapScanner:
         log("DEBUG", f"Scan info for port {port} on IP {ip}: {scan_info}", console=False)
         return port, scan_info
 
+
     def quick_scan(self, ip: str) -> Dict[str, List[int]]:
         arguments = "-sS -T4 -O --open -PE -PP -PM -PS21,23,80,3389 -PA80,443,8080 --data-length 10 -vvv"
         total_ports = 65535
@@ -364,6 +380,70 @@ class NmapScanner:
         spinner.stop()
         return open_ports
 
+def extract_dns_san(cert_text: str) -> List[str]:
+    dns_san_pattern = re.compile(r'DNS:([a-zA-Z0-9.-]+)')
+    dns_san_matches = dns_san_pattern.findall(cert_text)
+    log("DEBUG", f"Extracted DNS SANs: {dns_san_matches}", console=False)
+    return dns_san_matches
+
+
+def process_txt_files(txt_dir: str) -> List[str]:
+    dns_san_entries: List[str] = []
+    for root, _, files in os.walk(txt_dir):
+        for file in files:
+            if file.endswith(".txt"):
+                with open(os.path.join(root, file), 'r') as f:
+                    content = f.read()
+                    dns_san_entries.extend(extract_dns_san(content))
+    return dns_san_entries
+
+def process_json_files(json_dir: str) -> List[str]:
+    dns_san_entries: List[str] = []
+    for root, _, files in os.walk(json_dir):
+        for file in files:
+            if file.endswith(".json"):
+                file_path = os.path.join(root, file)
+                try:
+                    with open(file_path, 'r') as f:
+                        content = json.load(f)
+                        if isinstance(content, dict) or isinstance(content, list):
+                            content = json.dumps(content)
+                        dns_san_entries.extend(extract_dns_san(content))
+                except (json.JSONDecodeError, Exception):
+                    continue  # Skip the file if there's an error
+    return dns_san_entries
+
+def process_xml_files(xml_dir: str) -> List[str]:
+    dns_san_entries: List[str] = []
+    for root, _, files in os.walk(xml_dir):
+        for file in files:
+            if file.endswith(".xml"):
+                tree = ET.parse(os.path.join(root, file))
+                root_elem = tree.getroot()
+                content: str = ET.tostring(root_elem, encoding='utf-8', method='text').decode('utf-8')
+                dns_san_entries.extend(extract_dns_san(content))
+    return dns_san_entries
+
+def save_dns_san_to_file(dns_san_entries: List[str], output_file: str):
+    unique_entries = list(set(dns_san_entries))
+    with open(output_file, 'w') as f:
+        for entry in unique_entries:
+            f.write(f"{entry}\n")
+
+def save_dns_san_to_json(dns_san_entries: List[str], output_file: str):
+    unique_entries = list(set(dns_san_entries))
+    with open(output_file, 'w') as f:
+        json.dump(unique_entries, f, indent=4)
+
+def save_dns_san_to_xml(dns_san_entries: List[str], output_file: str):
+    unique_entries = list(set(dns_san_entries))
+    root = ET.Element("DNS_SANs")
+    for entry in unique_entries:
+        dns_san_elem = ET.SubElement(root, "DNS_SAN")
+        dns_san_elem.text = entry
+    tree = ET.ElementTree(root)
+    tree.write(output_file, encoding='utf-8', xml_declaration=True)
+
 class ReportGenerator:
     def __init__(self, xml_dir: str, txt_dir: str, json_dir: str, logger: logging.Logger):
         self.xml_dir = xml_dir
@@ -388,7 +468,7 @@ class ReportGenerator:
 
         start_time = time.time()
 
-        with ThreadPoolExecutor(max_workers=PrettyScan.dynamic_worker_count()) as executor:
+        with ThreadPoolExecutor(max_workers=10) as executor:
             futures = [
                 executor.submit(self.save_xml_report, detailed_results, xml_path, detailed_xml_dir),
                 executor.submit(self.save_text_report, detailed_results, report_filename, detailed_txt_dir),
@@ -397,9 +477,9 @@ class ReportGenerator:
             for future in as_completed(futures):
                 try:
                     future.result()
-                    log("INFO", f"{Fore.GREEN}{Style.BRIGHT}Report saved successfully.{Style.RESET_ALL}", console=False)
+                    self.logger.info(f"Report saved successfully.")
                 except Exception as e:
-                    log("ERROR", f"{Fore.RED}{Style.BRIGHT}Error occurred while saving report: {e}{Style.RESET_ALL}", console=True)
+                    self.logger.error(f"Error occurred while saving report: {e}")
 
         elapsed_time = time.time() - start_time
         hours = int(elapsed_time // 3600)
@@ -407,170 +487,8 @@ class ReportGenerator:
         seconds = int(elapsed_time % 60)
 
         total_ports = sum(len(ports) for ports in detailed_results.values())
-        log("INFO", f"{Fore.RED}{Style.BRIGHT}TOTAL OPEN PORTS SCANNED{Style.RESET_ALL}{Fore.GREEN}{Style.BRIGHT}:{Style.RESET_ALL}{Fore.WHITE}{Style.BRIGHT}[{Style.RESET_ALL}{Fore.RED}{Style.BRIGHT}{total_ports}{Style.RESET_ALL}{Fore.WHITE}{Style.BRIGHT}]{Style.RESET_ALL}", console=True)
-        log("INFO", f"{Fore.WHITE}{Style.BRIGHT}Report generation completed in{Style.RESET_ALL}{Fore.GREEN}{Style.BRIGHT} {hours:02d}:{minutes:02d}:{seconds:02d}.{Style.RESET_ALL}", console=False)
-
-    def save_xml_report(self, detailed_results: Mapping[str, Mapping[int, Mapping[str, Union[str, List[str], Mapping[str, str]]]]], xml_path: str, detailed_dir: str):
-        try:
-            os.makedirs(os.path.dirname(xml_path), exist_ok=True)
-            root = ET.Element("NmapScanResults")
-
-            for ip, ports_info in detailed_results.items():
-                ip_elem = ET.SubElement(root, "IP")
-                ip_elem.set("address", ip)
-                for port, info in ports_info.items():
-                    port_elem = ET.SubElement(ip_elem, "Port")
-                    port_elem.set("id", str(port))
-                    filtered_info = {k: v for k, v in info.items() if v and v not in ['Not available', 'None']}
-
-                    vulnerability_found = False
-                    vulnerability_details: List[str] = []
-
-                    for key, value in filtered_info.items():
-                        if isinstance(value, dict):
-                            for subkey, subvalue in value.items():
-                                if subvalue and subvalue not in ['Not available', 'None']:
-                                    if 'vuln' in subkey.lower() or 'cve' in subkey.lower() or 'exploit' in subkey.lower():
-                                        vulnerability_found = True
-                                        vulnerability_details.append(f"{key + subkey.replace('_', '').capitalize()}: {strip_ansi_codes(str(subvalue))}")
-                                    else:
-                                        sub_elem = ET.SubElement(port_elem, key + subkey.replace('_', '').capitalize())
-                                        sub_elem.text = strip_ansi_codes(str(subvalue))
-                                    self.save_detailed_file(detailed_dir, f"{key}_{subkey}", subvalue, "xml")
-                        elif isinstance(value, list):
-                            for item in value:
-                                if 'vuln' in str(item).lower() or 'cve' in str(item).lower() or 'exploit' in str(item).lower():
-                                    vulnerability_found = True
-                                    vulnerability_details.append(f"{key.replace('_', '').capitalize()}: {strip_ansi_codes(str(item))}")
-                                else:
-                                    list_elem = ET.SubElement(port_elem, key.replace('_', '').capitalize())
-                                    list_elem.text = strip_ansi_codes(str(item))
-                                self.save_detailed_file(detailed_dir, key, item, "xml")
-                        else:
-                            if 'vuln' in str(value).lower() or 'cve' in str(value).lower() or 'exploit' in str(value).lower():
-                                vulnerability_found = True
-                                vulnerability_details.append(f"{key.replace('_', '').capitalize()}: {strip_ansi_codes(str(value))}")
-                            else:
-                                info_elem = ET.SubElement(port_elem, key.replace('_', '').capitalize())
-                                info_elem.text = strip_ansi_codes(str(value))
-                            self.save_detailed_file(detailed_dir, key, value, "xml")
-
-                    if vulnerability_found:
-                        warning_elem = ET.SubElement(port_elem, "Warning")
-                        warning_elem.text = "[[-WARNING-]] !POSSIBLE! VULNs ~OR~ CVEs !DETECTED! [[-WARNING-]]"
-                        for detail in vulnerability_details:
-                            tag, detail_text = detail.split(": ", 1)
-                            detail_elem = ET.SubElement(port_elem, tag)
-                            detail_elem.text = detail_text
-
-            tree = ET.ElementTree(root)
-            tree.write(xml_path, encoding='utf-8', xml_declaration=True)
-            log("INFO", f"\n{Fore.CYAN}{Style.BRIGHT}Detailed XML Report Saved To{Style.RESET_ALL} {Fore.GREEN}{Style.BRIGHT}|{Style.RESET_ALL} {Fore.WHITE}{Style.BRIGHT}[{Style.RESET_ALL}{Fore.BLUE}{Style.BRIGHT}{xml_path}{Style.RESET_ALL}{Fore.WHITE}{Style.BRIGHT}]{Style.RESET_ALL}\n", console=True)
-        except Exception as e:
-            log("ERROR", f"{Fore.RED}{Style.BRIGHT}Error occurred while saving the detailed XML report: {e}{Style.RESET_ALL}\n", console=True)
-
-    def save_json_report(self, detailed_results: Mapping[str, Mapping[int, Mapping[str, Union[str, List[str], Mapping[str, str]]]]], results_json_path: str, detailed_dir: str):
-        try:
-            os.makedirs(os.path.dirname(results_json_path), exist_ok=True)
-            organized_results: Dict[str, List[Dict[str, Union[str, List[str], Mapping[str, str]]]]] = {}
-
-            for ip, ports_info in detailed_results.items():
-                if ip not in organized_results:
-                    organized_results[ip] = []
-                for port, info in ports_info.items():
-                    port_info: Dict[str, Union[str, List[str], Mapping[str, str]]] = {"Port": str(port)}
-                    filtered_info = {k: v for k, v in info.items() if v}
-
-                    for key, value in filtered_info.items():
-                        warning_inserted = False  # Track if warning has been inserted
-
-                        if isinstance(value, dict):
-                            for subkey, subvalue in value.items():
-                                if subvalue and subvalue not in ['Not available', 'None']:
-                                    if ('vuln' in subkey.lower() or 'cve' in subkey.lower() or 'exploit' in subkey.lower()) and not warning_inserted:
-                                        warning = f"[[-WARNING-]] !POSSIBLE! VULNs ~OR~ CVEs !DETECTED! [[-WARNING-]]"
-                                        port_info[f"Warning_{key}_{subkey}"] = warning
-                                        warning_inserted = True
-                                    port_info[f"{key}_{subkey}"] = strip_ansi_codes(str(subvalue))
-                                    self.save_detailed_file(detailed_dir, f"{key}_{subkey}", subvalue, "json")
-                        elif isinstance(value, list):
-                            processed_list: List[str] = []
-                            for item in value:
-                                if ('vuln' in item.lower() or 'cve' in item.lower() or 'exploit' in item.lower()) and not warning_inserted:
-                                    warning = f"[[-WARNING-]] !POSSIBLE! VULNs ~OR~ CVEs !DETECTED! [[-WARNING-]]"
-                                    port_info[f"Warning_{key}"] = warning
-                                    warning_inserted = True
-                                processed_list.append(strip_ansi_codes(str(item)))
-                                self.save_detailed_file(detailed_dir, key, item, "json")
-                            port_info[key] = processed_list
-                        else:
-                            if ('vuln' in str(value).lower() or 'cve' in str(value).lower() or 'exploit' in str(value).lower()) and not warning_inserted:
-                                warning = f"[[-WARNING-]] !POSSIBLE! VULNs ~OR~ CVEs !DETECTED! [[-WARNING-]]"
-                                port_info[f"Warning_{key}"] = warning
-                                warning_inserted = True
-                            port_info[key] = strip_ansi_codes(str(value))
-                            self.save_detailed_file(detailed_dir, key, value, "json")
-
-                    organized_results[ip].append(port_info)
-
-            with open(results_json_path, 'w') as json_file:
-                json.dump(organized_results, json_file, indent=4)
-            log("INFO", f"\n{Fore.CYAN}{Style.BRIGHT}Detailed JSON Report Saved To{Style.RESET_ALL} {Fore.GREEN}{Style.BRIGHT}|{Style.RESET_ALL} {Fore.WHITE}{Style.BRIGHT}[{Style.RESET_ALL}{Fore.RED}{Style.BRIGHT}{results_json_path}{Style.RESET_ALL}{Fore.WHITE}{Style.BRIGHT}]{Style.RESET_ALL}\n", console=True)
-        except Exception as e:
-            log("ERROR", f"{Fore.RED}{Style.BRIGHT}An error occurred while saving the detailed report: {str(e)}{Style.RESET_ALL}\n", console=True)
-
-    def save_text_report(self, detailed_results: Mapping[str, Mapping[int, Mapping[str, Union[str, List[str], Mapping[str, str]]]]], report_filename: str, detailed_dir: str):
-        try:
-            os.makedirs(os.path.dirname(report_filename), exist_ok=True)
-            with open(report_filename, "w") as report_file:
-                for ip, ports_info in detailed_results.items():
-                    report_file.write(f"IP: {ip}\n")
-                    for port, info in ports_info.items():
-                        report_file.write(f"  Port {port}:\n")
-                        processed_fields: Set[str] = set()
-                        vulnerability_found = False
-                        vulnerability_details: List[str] = []
-
-                        for field, value in info.items():
-                            if field not in processed_fields and value and value not in ['Not available', 'None']:
-                                processed_fields.add(field)
-                                if isinstance(value, dict):
-                                    report_file.write(f"    {field.capitalize()}:\n")
-                                    for sub_key, sub_value in value.items():
-                                        if sub_value and sub_value not in ['Not available', 'None']:
-                                            if 'vuln' in sub_key.lower() or 'cve' in sub_key.lower() or 'exploit' in sub_key.lower():
-                                                vulnerability_found = True
-                                                vulnerability_details.append(f"      {sub_key}: {strip_ansi_codes(str(sub_value))}\n")
-                                                self.save_detailed_file(detailed_dir, f"{field}_{sub_key}", sub_value, "txt")
-                                            else:
-                                                report_file.write(f"      {sub_key}: {strip_ansi_codes(str(sub_value))}\n")
-                                                self.save_detailed_file(detailed_dir, f"{field}_{sub_key}", sub_value, "txt")
-                                elif isinstance(value, list):
-                                    report_file.write(f"    {field.capitalize()}:\n")
-                                    for item in value:
-                                        if 'vuln' in item.lower() or 'cve' in item.lower() or 'exploit' in item.lower():
-                                            vulnerability_found = True
-                                            vulnerability_details.append(f"      {strip_ansi_codes(item)}\n")
-                                            self.save_detailed_file(detailed_dir, field, item, "txt")
-                                        else:
-                                            report_file.write(f"      {strip_ansi_codes(item)}\n")
-                                            self.save_detailed_file(detailed_dir, field, item, "txt")
-                                else:
-                                    if 'vuln' in str(value).lower() or 'cve' in str(value).lower() or 'exploit' in str(value).lower():
-                                        vulnerability_found = True
-                                        vulnerability_details.append(f"    {field.capitalize()}: {strip_ansi_codes(str(value))}\n")
-                                        self.save_detailed_file(detailed_dir, field, value, "txt")
-                                    else:
-                                        report_file.write(f"    {field.capitalize()}: {strip_ansi_codes(str(value))}\n")
-                                        self.save_detailed_file(detailed_dir, field, value, "txt")
-                        if vulnerability_found:
-                            report_file.write(f"[[-WARNING-]] !POSSIBLE! VULNs ~OR~ CVEs !DETECTED! [[-WARNING-]]\n")
-                            for detail in vulnerability_details:
-                                report_file.write(detail)
-                        report_file.write("\n")
-            log("INFO", f"\n{Fore.CYAN}{Style.BRIGHT}Detailed TEXT Report Saved To{Style.RESET_ALL} {Fore.GREEN}{Style.BRIGHT}|{Style.RESET_ALL} {Fore.WHITE}{Style.BRIGHT}[{Style.RESET_ALL}{Fore.YELLOW}{Style.BRIGHT}{report_filename}{Style.RESET_ALL}{Fore.WHITE}{Style.BRIGHT}]{Style.RESET_ALL}\n", console=True)
-        except Exception as e:
-            log("ERROR", f"{Fore.RED}{Style.BRIGHT}Error occurred while saving the detailed TEXT report: {e}{Style.RESET_ALL}\n", console=True)
+        self.logger.info(f"TOTAL OPEN PORTS SCANNED: {total_ports}")
+        self.logger.info(f"Report generation completed in {hours:02d}:{minutes:02d}:{seconds:02d}.")
 
     @staticmethod
     def save_detailed_file(detailed_dir: str, field: str, value: Union[str, List[str], Mapping[str, str]], file_format: str) -> None:
@@ -613,15 +531,213 @@ class ReportGenerator:
             tree = ET.ElementTree(root)
             tree.write(detailed_file_path, encoding='utf-8', xml_declaration=True)
 
-def extract_dns_san(cert_text: str) -> List[str]:
-    dns_san_pattern = re.compile(r'DNS:([a-zA-Z0-9.-]+)')
-    dns_san_matches = dns_san_pattern.findall(cert_text)
-    return dns_san_matches
+    def save_xml_report(self, detailed_results: Mapping[str, Mapping[int, Mapping[str, Union[str, List[str], Mapping[str, str]]]]], xml_path: str, detailed_dir: str):
+        try:
+            os.makedirs(os.path.dirname(xml_path), exist_ok=True)
+            root = ET.Element("NmapScanResults")
+
+            for ip, ports_info in detailed_results.items():
+                ip_elem = ET.SubElement(root, "IP")
+                ip_elem.set("address", ip)
+                for port, info in ports_info.items():
+                    port_elem = ET.SubElement(ip_elem, "Port")
+                    port_elem.set("id", str(port))
+                    filtered_info = {k: v for k, v in info.items() if v and v not in ['Not available', 'None']}
+
+                    vulnerability_found = False
+                    vulnerability_details: List[str] = []
+
+                    for key, value in filtered_info.items():
+                        if isinstance(value, dict):
+                            for subkey, subvalue in value.items():
+                                if subvalue and subvalue not in ['Not available', 'None']:
+                                    if 'vuln' in subkey.lower() or 'cve' in subkey.lower() or 'exploit' in subkey.lower():
+                                        vulnerability_found = True
+                                        vulnerability_details.append(f"{key + subkey.replace('_', '').capitalize()}: {strip_ansi_codes(str(subvalue))}")
+                                    elif 'dns' in subkey.lower() or 'subject alternative name' in subkey.lower():
+                                        dns_sans = extract_dns_san(subvalue)
+                                        for dns_san in dns_sans:
+                                            self.save_detailed_file(detailed_dir, "dns", dns_san, "xml")
+                                    else:
+                                        sub_elem = ET.SubElement(port_elem, key + subkey.replace('_', '').capitalize())
+                                        sub_elem.text = strip_ansi_codes(str(subvalue))
+                                    self.save_detailed_file(detailed_dir, f"{key}_{subkey}", subvalue, "xml")
+                        elif isinstance(value, list):
+                            for item in value:
+                                if 'vuln' in str(item).lower() or 'cve' in str(item).lower() or 'exploit' in str(item).lower():
+                                    vulnerability_found = True
+                                    vulnerability_details.append(f"{key.replace('_', '').capitalize()}: {strip_ansi_codes(str(item))}")
+                                elif 'dns' in str(item).lower() or 'subject alternative name' in str(item).lower():
+                                    dns_sans = extract_dns_san(item)
+                                    for dns_san in dns_sans:
+                                        self.save_detailed_file(detailed_dir, "dns", dns_san, "xml")
+                                else:
+                                    list_elem = ET.SubElement(port_elem, key.replace('_', '').capitalize())
+                                    list_elem.text = strip_ansi_codes(str(item))
+                                self.save_detailed_file(detailed_dir, key, item, "xml")
+                        else:
+                            if 'vuln' in str(value).lower() or 'cve' in str(value).lower() or 'exploit' in str(value).lower():
+                                vulnerability_found = True
+                                vulnerability_details.append(f"{key.replace('_', '').capitalize()}: {strip_ansi_codes(str(value))}")
+                            elif 'dns' in str(value).lower() or 'subject alternative name' in str(value).lower():
+                                dns_sans = extract_dns_san(str(value))
+                                for dns_san in dns_sans:
+                                    self.save_detailed_file(detailed_dir, "dns", dns_san, "xml")
+                            else:
+                                info_elem = ET.SubElement(port_elem, key.replace('_', '').capitalize())
+                                info_elem.text = strip_ansi_codes(str(value))
+                            self.save_detailed_file(detailed_dir, key, value, "xml")
+
+                        if vulnerability_found:
+                            warning_elem = ET.SubElement(port_elem, "Warning")
+                            warning_elem.text = "[[-WARNING-]] !POSSIBLE! VULNs ~OR~ CVEs !DETECTED! [[-WARNING-]]"
+                            for detail in vulnerability_details:
+                                tag, detail_text = detail.split(": ", 1)
+                                detail_elem = ET.SubElement(port_elem, tag)
+                                detail_elem.text = detail_text
+
+                tree = ET.ElementTree(root)
+                tree.write(xml_path, encoding='utf-8', xml_declaration=True)
+                self.logger.info(f"Detailed XML Report Saved To {xml_path}")
+        except Exception as e:
+            self.logger.error(f"Error occurred while saving the detailed XML report: {e}")
+
+    def save_json_report(self, detailed_results: Mapping[str, Mapping[int, Mapping[str, Union[str, List[str], Mapping[str, str]]]]], results_json_path: str, detailed_dir: str):
+        try:
+            os.makedirs(os.path.dirname(results_json_path), exist_ok=True)
+            organized_results: Dict[str, List[Dict[str, Union[str, List[str], Mapping[str, str]]]]] = {}
+
+            for ip, ports_info in detailed_results.items():
+                if ip not in organized_results:
+                    organized_results[ip] = []
+                for port, info in ports_info.items():
+                    port_info: Dict[str, Union[str, List[str], Mapping[str, str]]] = {"Port": str(port)}
+                    filtered_info = {k: v for k, v in info.items() if v}
+
+                    for key, value in filtered_info.items():
+                        warning_inserted = False  # Track if warning has been inserted
+
+                        if isinstance(value, dict):
+                            for subkey, subvalue in value.items():
+                                if subvalue and subvalue not in ['Not available', 'None']:
+                                    if ('vuln' in subkey.lower() or 'cve' in subkey.lower() or 'exploit' in subkey.lower()) and not warning_inserted:
+                                        warning = f"[[-WARNING-]] !POSSIBLE! VULNs ~OR~ CVEs !DETECTED! [[-WARNING-]]"
+                                        port_info[f"Warning_{key}_{subkey}"] = warning
+                                        warning_inserted = True
+                                    elif 'dns' in subkey.lower() or 'subject alternative name' in subkey.lower():
+                                        dns_sans = extract_dns_san(subvalue)
+                                        for dns_san in dns_sans:
+                                            self.save_detailed_file(detailed_dir, "dns", dns_san, "json")
+                                    port_info[f"{key}_{subkey}"] = strip_ansi_codes(str(subvalue))
+                                    self.save_detailed_file(detailed_dir, f"{key}_{subkey}", subvalue, "json")
+                        elif isinstance(value, list):
+                            processed_list: List[str] = []
+                            for item in value:
+                                if ('vuln' in item.lower() or 'cve' in item.lower() or 'exploit' in item.lower()) and not warning_inserted:
+                                    warning = f"[[-WARNING-]] !POSSIBLE! VULNs ~OR~ CVEs !DETECTED! [[-WARNING-]]"
+                                    port_info[f"Warning_{key}"] = warning
+                                    warning_inserted = True
+                                elif 'dns' in item.lower() or 'subject alternative name' in item.lower():
+                                    dns_sans = extract_dns_san(item)
+                                    for dns_san in dns_sans:
+                                        self.save_detailed_file(detailed_dir, "dns", dns_san, "json")
+                                processed_list.append(strip_ansi_codes(str(item)))
+                                self.save_detailed_file(detailed_dir, key, item, "json")
+                            port_info[key] = processed_list
+                        else:
+                            if ('vuln' in str(value).lower() or 'cve' in str(value).lower() or 'exploit' in str(value).lower()) and not warning_inserted:
+                                warning = f"[[-WARNING-]] !POSSIBLE! VULNs ~OR~ CVEs !DETECTED! [[-WARNING-]]"
+                                port_info[f"Warning_{key}"] = warning
+                                warning_inserted = True
+                            elif 'dns' in str(value).lower() or 'subject alternative name' in str(value).lower():
+                                dns_sans = extract_dns_san(str(value))
+                                for dns_san in dns_sans:
+                                    self.save_detailed_file(detailed_dir, "dns", dns_san, "json")
+                            port_info[key] = strip_ansi_codes(str(value))
+                            self.save_detailed_file(detailed_dir, key, value, "json")
+
+                        organized_results[ip].append(port_info)
+
+            with open(results_json_path, 'w') as json_file:
+                json.dump(organized_results, json_file, indent=4)
+            self.logger.info(f"Detailed JSON Report Saved To {results_json_path}")
+        except Exception as e:
+            self.logger.error(f"An error occurred while saving the detailed report: {str(e)}")
+
+    def save_text_report(self, detailed_results: Mapping[str, Mapping[int, Mapping[str, Union[str, List[str], Mapping[str, str]]]]], report_filename: str, detailed_dir: str):
+        try:
+            os.makedirs(os.path.dirname(report_filename), exist_ok=True)
+            dns_san_filename = os.path.join(detailed_dir, "dns.txt")
+
+            with open(report_filename, "w") as report_file, open(dns_san_filename, "w") as dns_san_file:
+                for ip, ports_info in detailed_results.items():
+                    report_file.write(f"IP: {ip}\n")
+                    for port, info in ports_info.items():
+                        report_file.write(f"  Port {port}:\n")
+                        processed_fields: Set[str] = set()
+                        vulnerability_found = False
+                        vulnerability_details: List[str] = []
+
+                        for field, value in info.items():
+                            if field not in processed_fields and value and value not in ['Not available', 'None']:
+                                processed_fields.add(field)
+                                if isinstance(value, dict):
+                                    report_file.write(f"    {field.capitalize()}:\n")
+                                    for sub_key, sub_value in value.items():
+                                        if sub_value and sub_value not in ['Not available', 'None']:
+                                            if 'vuln' in sub_key.lower() or 'cve' in sub_key.lower() or 'exploit' in sub_key.lower():
+                                                vulnerability_found = True
+                                                vulnerability_details.append(f"      {sub_key}: {strip_ansi_codes(str(sub_value))}\n")
+                                                self.save_detailed_file(detailed_dir, f"{field}_{sub_key}", sub_value, "txt")
+                                            elif 'dns' in sub_key.lower() or 'subject alternative name' in sub_key.lower():
+                                                dns_sans = extract_dns_san(sub_value)
+                                                for dns_san in dns_sans:
+                                                    dns_san_file.write(f"{dns_san}\n")
+                                                    self.save_detailed_file(detailed_dir, "dns", dns_san, "txt")
+                                            else:
+                                                report_file.write(f"      {sub_key}: {strip_ansi_codes(str(sub_value))}\n")
+                                                self.save_detailed_file(detailed_dir, f"{field}_{sub_key}", sub_value, "txt")
+                                elif isinstance(value, list):
+                                    report_file.write(f"    {field.capitalize()}:\n")
+                                    for item in value:
+                                        if 'vuln' in item.lower() or 'cve' in item.lower() or 'exploit' in item.lower():
+                                            vulnerability_found = True
+                                            vulnerability_details.append(f"      {strip_ansi_codes(item)}\n")
+                                            self.save_detailed_file(detailed_dir, field, item, "txt")
+                                        elif 'dns' in item.lower() or 'subject alternative name' in item.lower():
+                                            dns_sans = extract_dns_san(item)
+                                            for dns_san in dns_sans:
+                                                dns_san_file.write(f"{dns_san}\n")
+                                                self.save_detailed_file(detailed_dir, "dns", dns_san, "txt")
+                                        else:
+                                            report_file.write(f"      {strip_ansi_codes(item)}\n")
+                                            self.save_detailed_file(detailed_dir, field, item, "txt")
+                                else:
+                                    if 'vuln' in str(value).lower() or 'cve' in str(value).lower() or 'exploit' in str(value).lower():
+                                        vulnerability_found = True
+                                        vulnerability_details.append(f"    {field.capitalize()}: {strip_ansi_codes(str(value))}\n")
+                                        self.save_detailed_file(detailed_dir, field, value, "txt")
+                                    elif 'dns' in str(value).lower() or 'subject alternative name' in str(value).lower():
+                                        dns_sans = extract_dns_san(str(value))
+                                        for dns_san in dns_sans:
+                                            dns_san_file.write(f"{dns_san}\n")
+                                            self.save_detailed_file(detailed_dir, "dns", dns_san, "txt")
+                                    else:
+                                        report_file.write(f"    {field.capitalize()}: {strip_ansi_codes(str(value))}\n")
+                                        self.save_detailed_file(detailed_dir, field, value, "txt")
+
+                                    if vulnerability_found:
+                                        report_file.write(f"[[-WARNING-]] !POSSIBLE! VULNs ~OR~ CVEs !DETECTED! [[-WARNING-]]\n")
+                                        for detail in vulnerability_details:
+                                            report_file.write(detail)
+                        report_file.write("\n")
+            self.logger.info(f"Detailed TEXT Report Saved To {report_filename}")
+        except Exception as e:
+            self.logger.error(f"Error occurred while saving the detailed TEXT report: {e}")
 
 class PrettyScan:
     def __init__(self):
         self.xml_dir, self.txt_dir, self.json_dir, self.log_dir = DirectoryManager.create_directories()
-        self.data_dir = ""  # Replace with the appropriate value
         self.log_file = LoggerSetup.create_log_file(self.log_dir)
         self.logger = LoggerSetup.setup_logger(self.log_file)
         global logger
@@ -665,15 +781,12 @@ class PrettyScan:
                 if target_type == "unknown":
                     print(f"{Fore.RED}{Style.BRIGHT}Invalid input:{Style.RESET_ALL} {Fore.GREEN}{Style.BRIGHT}{target}{Style.RESET_ALL}")
                 else:
-                    if target_type == "url":
-                        try:
-                            hostname = self.extract_hostname(target)
-                            target = hostname
-                        except ValueError as e:
-                            print(f"{Fore.RED}{Style.BRIGHT}{str(e)}{Style.RESET_ALL}")
+                    if target_type in ["domain", "url"]:
+                        target_ip = self.resolve_hostname(target)
+                        if not target_ip:
+                            print(f"{Fore.RED}Failed to resolve {target} to an IP address. Please try again.")
                             continue
-                    target = re.sub(r'^https?://', '', target)
-                    target = target.rstrip('/')
+                        target = target_ip
                     spinner_text = ''.join([Fore.MAGENTA, Style.BRIGHT, 'Locating Target ', target, Style.RESET_ALL])
                     spinner = Halo(text=spinner_text, spinner='dots')
                     spinner.start()  # type: ignore
@@ -714,26 +827,24 @@ class PrettyScan:
             return "asn"
         else:
             return "unknown"
-    @staticmethod
-    def extract_hostname(url: str) -> str:
-        parsed_url = urlparse(url)
-        hostname = parsed_url.hostname
-        if hostname is None:
-            raise ValueError(f"{Fore.RED}{Style.BRIGHT}Invalid URL: {url}{Style.RESET_ALL}")
-        return hostname
 
     @staticmethod
     def resolve_hostname(hostname: str) -> Optional[str]:
         try:
+            parsed_url = urlparse(hostname)
+            if parsed_url.scheme:
+                hostname = parsed_url.hostname or ""
+            if not hostname:
+                raise ValueError("Invalid hostname")
             with ProcessPoolExecutor(max_workers=PrettyScan.dynamic_worker_count()) as executor:
                 future = executor.submit(socket.gethostbyname, hostname)
                 ip = future.result()
             return ip
         except socket.gaierror:
-            log("ERROR", f"{Fore.RED}{Style.BRIGHT}Failed to resolve hostname: {hostname}{Style.RESET_ALL}", console=True)
+            log("ERROR", f"Failed to resolve hostname: {hostname}")
             return None
         except Exception as e:
-            log("ERROR", f"{Fore.RED}{Style.BRIGHT}Unexpected error occurred while resolving hostname: {e}{Style.RESET_ALL}", console=True)
+            log("ERROR", f"Unexpected error occurred while resolving hostname: {e}")
             return None
 
     @staticmethod
@@ -743,7 +854,7 @@ class PrettyScan:
                 s.connect(('10.255.255.255', 1))
                 local_ip = s.getsockname()[0]
         except Exception as e:
-            log("ERROR", f"{Fore.RED}{Style.BRIGHT}Failed to obtain local IP, defaulting to localhost: {e}{Style.RESET_ALL}")
+            log("ERROR", f"Failed to obtain local IP, defaulting to localhost: {e}")
             local_ip = '127.0.0.1'
         return local_ip
 
@@ -847,7 +958,6 @@ class PrettyScan:
 
         return detailed_results
 
-
     def worker(self, ip: str, port: int, proto: str) -> Dict[int, Optional[Mapping[str, Union[str, List[str], Mapping[str, str]]]]]:
         results: Dict[int, Optional[Mapping[str, Union[str, List[str], Mapping[str, str]]]]] = {}
         nm = nmap.PortScanner()
@@ -858,7 +968,7 @@ class PrettyScan:
                 if port_result[1]:
                     results[port_result[0]] = port_result[1]
             except Exception as e:
-                log("ERROR", f"{Fore.RED}{Style.BRIGHT}Error occurred during PRETTY DEEP SCAN and update for port{Style.RESET_ALL} {Fore.GREEN}{Style.BRIGHT}{port}{Style.RESET_ALL} {Fore.RED}{Style.BRIGHT}on IP{Style.RESET_ALL} {Fore.WHITE}{Style.BRIGHT}{ip}: {e}{Style.RESET_ALL}")
+                log("ERROR", f"Error occurred during PRETTY DEEP SCAN and update for port {port} on IP {ip}: {e}")
 
         with ThreadPoolExecutor(max_workers=self.dynamic_worker_count()) as executor:
             executor.map(scan_and_update, [port], [ip], [proto], [nm], [results])
@@ -879,15 +989,8 @@ class PrettyScan:
 
     def main(self):
         start_time = time.time()
-        target, target_type = self.get_target()
+        target, _ = self.get_target()
         tag = target.replace('.', '_')
-        if target_type == "domain":
-            resolved_ip = self.resolve_hostname(target)
-            if resolved_ip:
-                target = resolved_ip
-            else:
-                log("ERROR", f"{Fore.RED}{Style.BRIGHT}Invalid domain: {target}{Style.RESET_ALL}", console=True)
-                return
         log("INFO", f"{Fore.MAGENTA}{Style.BRIGHT}Setting Up Scan On{Style.RESET_ALL} {Fore.MAGENTA}{Style.BRIGHT}[{Style.RESET_ALL}{Fore.WHITE}{Style.BRIGHT}{target}{Style.RESET_ALL}{Fore.MAGENTA}{Style.BRIGHT}]{Style.RESET_ALL}", console=True)
         open_ports: Dict[str, List[int]] = {'tcp': [], 'udp': []}
         try:
@@ -900,16 +1003,28 @@ class PrettyScan:
                 formatted_udp_ports = self.format_ports(open_ports['udp'])
                 log("INFO", f"{Fore.GREEN}{Style.BRIGHT}\n{formatted_udp_ports}{Style.RESET_ALL}", console=True)
         except Exception as e:
-            log("ERROR", f"{Fore.RED}{Style.BRIGHT}Error occurred during scan: {e}{Style.RESET_ALL}", console=True)
+            log("ERROR", f"{Fore.RED}{Style.BRIGHT}Error occurred during scan: {e}{Style.RESET_ALL}", console=False)
             return
         detailed_results: Dict[str, Dict[int, Mapping[str, Union[str, List[str], Mapping[str, str]]]]] = {'tcp': {}, 'udp': {}}
         if open_ports['tcp'] or open_ports['udp']:
             try:
                 detailed_results = self.distribute_work(target, open_ports)
             except Exception as e:
-                log("ERROR", f"{Fore.RED}{Style.BRIGHT}Error occurred during detailed scan: {e}{Style.RESET_ALL}", console=True)
+                log("ERROR", f"{Fore.RED}{Style.BRIGHT}Error occurred during detailed scan: {e}{Style.RESET_ALL}", console=False)
                 return
         self.report_generator.save_reports(detailed_results, tag)
+        self.run_nikto_scan(target)
+
+        # Process SSL cert files and save DNS SAN entries to file
+        dns_san_entries = process_txt_files(self.txt_dir)
+        dns_san_entries.extend(process_json_files(self.json_dir))
+        dns_san_entries.extend(process_xml_files(self.xml_dir))
+        detailed_dns_txt = os.path.join(self.txt_dir, "detailed", "dns.txt")
+        detailed_dns_json = os.path.join(self.json_dir, "detailed", "dns.json")
+        detailed_dns_xml = os.path.join(self.xml_dir, "detailed", "dns.xml")
+        save_dns_san_to_file(dns_san_entries, detailed_dns_txt)
+        save_dns_san_to_json(dns_san_entries, detailed_dns_json)
+        save_dns_san_to_xml(dns_san_entries, detailed_dns_xml)
 
         elapsed_time = time.time() - start_time
         hours = int(elapsed_time // 3600)
@@ -917,12 +1032,59 @@ class PrettyScan:
         seconds = int(elapsed_time % 60)
         log("INFO", f"{Fore.WHITE}{Style.BRIGHT}TOTAL SCAN COMPLETED IN{Style.RESET_ALL}{Fore.GREEN}{Style.BRIGHT}{Fore.MAGENTA}{Style.BRIGHT}[{Style.RESET_ALL}{hours:02d}:{minutes:02d}:{seconds:02d}{Style.RESET_ALL}{Fore.MAGENTA}{Style.BRIGHT}]{Style.RESET_ALL}", console=True)
 
+
+    def get_ip_from_url(self, url: str) -> str:
+        try:
+            # Check if the URL is already an IP address
+            ip_pattern = re.compile(r'^(?:[0-9]{1,3}\.){3}[0-9]{1,3}$')
+            if ip_pattern.match(url):
+                return url
+
+            # Otherwise, resolve the hostname to an IP address
+            hostname = urlparse(url).hostname
+            if not hostname:
+                raise ValueError("Invalid URL")
+            ip_address = socket.gethostbyname(hostname)
+            return ip_address
+        except socket.gaierror:
+            log("ERROR", f"Could not resolve IP address for {url}", console=False)
+            return ""  # Return an empty string instead of None
+        except Exception as e:
+            log("ERROR", f"Error resolving IP address for {url}: {e}", console=False)
+            return ""  # Return an empty string instead of None
+
+
+
+    def run_nikto_scan(self, url: str):
+        ip_address = self.get_ip_from_url(url)
+        if ip_address:
+            nikto_command = f"""
+            nikto -h {url} \
+            -Tuning 1234567890ab \
+            -timeout 5 \
+            -maxtime 30m \
+            -nointeractive \
+            -nossl \
+            -Cgidirs /cgi-bin/ \
+            -Display V \
+            -vhost fs.ncaa.org \
+            -useragent "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36" \
+            -mutate 123456 \
+            -evasion 1 \
+            -Plugins ALL \
+            -output {self.txt_dir}/detailed/nikto_{ip_address}.txt -Format txt
+            """
+            subprocess.run(nikto_command, shell=True)
+        else:
+            log("ERROR", f"Could not resolve IP address for {url}")
+
+
 if __name__ == "__main__":
     try:
-        cluster = LocalCluster(n_workers=4, threads_per_worker=4, processes=True, silence_logs=logging.ERROR)
+        cluster = LocalCluster(n_workers=4, threads_per_worker=2, processes=True, silence_logs=logging.ERROR)
         client = Client(cluster)
     except CommClosedError as e:
-        log("ERROR", f"Dask communication error: {e}", console=False)
+        log("ERROR", f"Dask communication error: {e}")
         sys.exit(1)
     pretty_scan = PrettyScan()
     pretty_scan.main()
