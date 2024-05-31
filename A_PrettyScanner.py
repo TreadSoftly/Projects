@@ -19,8 +19,7 @@ import threading
 import time
 import warnings
 import xml.etree.ElementTree as ET
-from concurrent.futures import (ProcessPoolExecutor, ThreadPoolExecutor,
-                                as_completed)
+from concurrent.futures import ThreadPoolExecutor, as_completed
 from datetime import datetime
 from itertools import cycle
 from logging import LogRecord
@@ -317,9 +316,8 @@ class NmapScanner:
         log("DEBUG", f"Scan info for port {port} on IP {ip}: {scan_info}", console=False)
         return port, scan_info
 
-
     def quick_scan(self, ip: str) -> Dict[str, List[int]]:
-        arguments = "-sS -T4 -O --open -PE -PP -PM -PS21,23,80,3389 -PA80,443,8080 --data-length 10 -vvv"
+        arguments = "-sS --open -Pn -PE -PP -PM -PS21,23,80,3389 -PA80,443,8080 --data-length 10 -vvv"
         total_ports = 65535
         completed = {'count': 0, 'total': total_ports}
         open_ports: Dict[str, List[int]] = {'tcp': [], 'udp': []}
@@ -385,7 +383,6 @@ def extract_dns_san(cert_text: str) -> List[str]:
     dns_san_matches = dns_san_pattern.findall(cert_text)
     log("DEBUG", f"Extracted DNS SANs: {dns_san_matches}", console=False)
     return dns_san_matches
-
 
 def process_txt_files(txt_dir: str) -> List[str]:
     dns_san_entries: List[str] = []
@@ -782,7 +779,7 @@ class PrettyScan:
                     print(f"{Fore.RED}{Style.BRIGHT}Invalid input:{Style.RESET_ALL} {Fore.GREEN}{Style.BRIGHT}{target}{Style.RESET_ALL}")
                 else:
                     if target_type in ["domain", "url"]:
-                        target_ip = self.resolve_hostname(target)
+                        target_ip = self.get_ip_from_url(target)
                         if not target_ip:
                             print(f"{Fore.RED}Failed to resolve {target} to an IP address. Please try again.")
                             continue
@@ -828,23 +825,17 @@ class PrettyScan:
         else:
             return "unknown"
 
-    @staticmethod
-    def resolve_hostname(hostname: str) -> Optional[str]:
+    def get_ip_from_url(self, url: str) -> Optional[str]:
         try:
-            parsed_url = urlparse(hostname)
-            if parsed_url.scheme:
-                hostname = parsed_url.hostname or ""
-            if not hostname:
-                raise ValueError("Invalid hostname")
-            with ProcessPoolExecutor(max_workers=PrettyScan.dynamic_worker_count()) as executor:
-                future = executor.submit(socket.gethostbyname, hostname)
-                ip = future.result()
-            return ip
+            parsed_url = urlparse(url)
+            hostname = parsed_url.hostname if parsed_url.hostname else url
+            ip_address = socket.gethostbyname(hostname)
+            return ip_address
         except socket.gaierror:
-            log("ERROR", f"Failed to resolve hostname: {hostname}")
+            log("ERROR", f"Could not resolve IP address for {url}", console=False)
             return None
         except Exception as e:
-            log("ERROR", f"Unexpected error occurred while resolving hostname: {e}")
+            log("ERROR", f"Error resolving IP address for {url}: {e}", console=False)
             return None
 
     @staticmethod
@@ -1032,29 +1023,6 @@ class PrettyScan:
         seconds = int(elapsed_time % 60)
         log("INFO", f"{Fore.WHITE}{Style.BRIGHT}TOTAL SCAN COMPLETED IN{Style.RESET_ALL}{Fore.GREEN}{Style.BRIGHT}{Fore.MAGENTA}{Style.BRIGHT}[{Style.RESET_ALL}{hours:02d}:{minutes:02d}:{seconds:02d}{Style.RESET_ALL}{Fore.MAGENTA}{Style.BRIGHT}]{Style.RESET_ALL}", console=True)
 
-
-    def get_ip_from_url(self, url: str) -> str:
-        try:
-            # Check if the URL is already an IP address
-            ip_pattern = re.compile(r'^(?:[0-9]{1,3}\.){3}[0-9]{1,3}$')
-            if ip_pattern.match(url):
-                return url
-
-            # Otherwise, resolve the hostname to an IP address
-            hostname = urlparse(url).hostname
-            if not hostname:
-                raise ValueError("Invalid URL")
-            ip_address = socket.gethostbyname(hostname)
-            return ip_address
-        except socket.gaierror:
-            log("ERROR", f"Could not resolve IP address for {url}", console=False)
-            return ""  # Return an empty string instead of None
-        except Exception as e:
-            log("ERROR", f"Error resolving IP address for {url}: {e}", console=False)
-            return ""  # Return an empty string instead of None
-
-
-
     def run_nikto_scan(self, url: str):
         ip_address = self.get_ip_from_url(url)
         if ip_address:
@@ -1077,7 +1045,6 @@ class PrettyScan:
             subprocess.run(nikto_command, shell=True)
         else:
             log("ERROR", f"Could not resolve IP address for {url}")
-
 
 if __name__ == "__main__":
     try:
