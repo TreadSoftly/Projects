@@ -301,7 +301,7 @@ class NmapScanner:
     def scan_port(self, ip: str, port: int, proto: str) -> Tuple[int, Dict[str, Union[str, List[str], Mapping[str, str]]]]:
         log("INFO", f"Scanning port {port} on IP {ip} using {proto}", console=False)
 
-        arguments = "-sS -T4 -sV -A -O --spoof-mac Cisco --version-intensity 9 --script=default,vuln,banner,http-headers,http-title,dns-recursion,dns-srv-enum,dns-brute,broadcast-dns-service-discovery,vulscan/vulscan.nse -Pn -PE -PP -PM -PS21,23,80,3389 -PA80,443,8080 --data-length 5 -vvv "
+        arguments = "-sS -T4 -sV -A -O --spoof-mac Cisco --version-intensity 9 --script=default,vuln,banner,http-headers,http-title,dns-recursion,dns-srv-enum,dns-brute,broadcast-dns-service-discovery,vulscan/vulscan.nse -Pn -PE -PP -PM -PS21,23,80,3389 -PA80,443,8080 --source-port 53 -g 53 --data-length 5 -vvv"
 
         try:
             self.nm.scan(hosts=ip, ports=str(port), arguments=arguments, sudo=True if proto == 'udp' else False)
@@ -317,7 +317,7 @@ class NmapScanner:
         return port, scan_info
 
     def quick_scan(self, ip: str) -> Dict[str, List[int]]:
-        arguments = "-sS --open -Pn -PE -PP -PM -PS21,23,80,3389 -PA80,443,8080 --data-length 5 -vvv"
+        arguments = "-sS --open --spoof-mac Cisco -Pn -PE -PP -PM -PS21,23,80,3389 -PA80,443,8080 --data-length 5 -vvv"
         total_ports = 65535
         completed = {'count': 0, 'total': total_ports}
         open_ports: Dict[str, List[int]] = {'tcp': [], 'udp': []}
@@ -1055,4 +1055,3 @@ if __name__ == "__main__":
         sys.exit(1)
     pretty_scan = PrettyScan()
     pretty_scan.main()
-
