@@ -1,768 +1,1298 @@
-# This project is originally called nmapscan.py I'll get around to making it into something thats not so monstorously monolithic and ghastly. It works though.
-# Works pretty fine and plenty of room for tinkering and tweaking. Have it it!
-
-# IMPORTANT ########################################################################################################################
-#Below you will have to set your own path to where the script is held in your directory: 
-# LOOKE FOR AND EDIT THE THREE FILE OUTPUTS FOR TEXT, JSON & XML (Just CTL+F search this below) 
-    # "C:\\YOUR\\FOLDER\\PATH\\GOES\\HERE"
-# IMPORTANT ########################################################################################################################
-import nmap
-import socket
-import os
-import sys
-import contextlib
-import importlib.util
-import time
-import copy
-import json
-import xml.etree.ElementTree as ET
-import subprocess
-from datetime import datetime
-from colorama import Fore, Style, init
-from halo import Halo  # type: ignore
-import multiprocessing
-from multiprocessing import cpu_count
+import ast
+import asyncio
 import concurrent.futures
-from concurrent.futures import ThreadPoolExecutor, as_completed
-from typing import Dict, List, Tuple, Union, Optional, Sequence
-import re
+import importlib.util
 import itertools
+import json
+import logging
+import logging.config
+import os
+import platform
+import re
+import socket
+import subprocess
+import sys
 import threading
+import time
+import warnings
+import xml.etree.ElementTree as ET
+from concurrent.futures import (ProcessPoolExecutor, ThreadPoolExecutor,
+                                as_completed)
+from datetime import datetime
+from itertools import cycle
+from logging import LogRecord
+from multiprocessing import cpu_count
+from typing import Dict, List, Mapping, Optional, Sequence, Set, Tuple, Union
+from urllib.parse import urlparse
 
-init(autoreset=True)  # Initializing colorama for auto-resetting colors after each print statement
+import nmap
+import psutil
+from colorama import Fore, Style, init
+from dask.distributed import Client, LocalCluster
+from distributed.comm.core import CommClosedError
+from halo import Halo  # type: ignore
 
-# Global variables for logging
-LOG_LEVEL = "INFO"
-LOG_FILE = os.path.join(os.path.dirname(os.path.realpath(__file__)), f"nmap_scan{time.strftime('%Y%m%d%H%M%S')}.log")
-LOG_COLORS = {
-    "DEBUG": "\033[1;34m",  # Bright Blue
-    "INFO": "\033[1;35m",   # Bright Magenta
-    "WARN": "\033[1;33m",   # Bright Yellow
-    "ERROR": "\033[1;31m",  # Bright Red
-    "FATAL": "\033[1;31m",  # Bright Red
-    "NC": "\033[0m"         # No color (resets the color)
+# Suppress specific warnings
+warnings.filterwarnings(
+    "ignore", message="Creating scratch directories is taking a surprisingly long time"
+)
+
+# Initialize colorama once at the beginning
+init(autoreset=True)
+
+# Define color variables
+yellow = Fore.YELLOW
+green = Fore.GREEN
+red = Fore.RED
+blue = Fore.BLUE
+white = Style.RESET_ALL
+
+# Global logger variable
+logger: logging.Logger
+
+class SelectorsFilter(logging.Filter):
+    def filter(self, record: LogRecord) -> bool:
+        return not record.getMessage().startswith("Using selector:")
+
+LOGGING_CONFIG = {
+    "version": 1,
+    "disable_existing_loggers": False,
+    "formatters": {"standard": {"format": "%(asctime)s [%(levelname)s] %(message)s"}},
+    "handlers": {
+        "console": {
+            "level": "INFO",
+            "class": "logging.StreamHandler",
+            "formatter": "standard",
+        },
+        "file": {
+            "level": "DEBUG",
+            "class": "logging.FileHandler",
+            "formatter": "standard",
+            "filename": "prettyscan.log",
+        },
+    },
+    "loggers": {
+        "": {
+            "handlers": ["console", "file"],
+            "level": "DEBUG",
+            "propagate": True,
+        },
+        "selectors": {
+            "handlers": ["console", "file"],
+            "level": "INFO",
+            "filters": ["selectors_filter"],
+        },
+    },
+    "filters": {"selectors_filter": {"()": SelectorsFilter}},
 }
 
-CPU_CORES = multiprocessing.cpu_count() or 1 + 4
+logging.config.dictConfig(LOGGING_CONFIG)
+logger = logging.getLogger(__name__)
 
 def strip_ansi_codes(text: str) -> str:
-    ansi_escape = re.compile(r'\x1B[@-_][0-?]*[ -/]*[@-~]')
-    return ansi_escape.sub('', text)
+    ansi_escape = re.compile(r"\x1B[@-_][0-?]*[ -/]*[@-~]")
+    return ansi_escape.sub("", text)
 
-def log(log_priority: str, log_message: str):
-    date_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-    color = LOG_COLORS.get(log_priority, LOG_COLORS["NC"])
+def log(level: str, message: str, console: bool = True):
+    stripped_message = strip_ansi_codes(message)
+    if console:
+        print(message)
+    logger.log(getattr(logging, level.upper(), logging.INFO), stripped_message)
 
-    # Simplified console message
-    console_message = f"{color}{log_message}{LOG_COLORS['NC']}"
-    print(console_message)
+class DirectoryManager:
+    @staticmethod
+    def get_desktop_path() -> str:
+        if platform.system() == "Windows":
+            try:
+                import winreg as reg
 
-    # Log to file
-    try:
-        file_message = f"{date_time} [{log_priority}] {strip_ansi_codes(log_message)}"
-        with open(LOG_FILE, 'a') as file:
-            file.write(f"{file_message}\n")
-    except Exception as e:
-        print(f"{Fore.RED}{Style.BRIGHT}Failed to write log to file: {e}{Style.RESET_ALL}")
+                key = reg.OpenKey(
+                    reg.HKEY_CURRENT_USER,
+                    r"Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders",
+                )
+                desktop_path, _ = reg.QueryValueEx(key, "Desktop")
+                desktop_path = os.path.expandvars(desktop_path)
+                return desktop_path
+            except Exception as e:
+                logger.error(f"Error retrieving Desktop path from registry: {e}")
+                return os.path.join(os.path.expanduser("~"), "Desktop")
+        else:
+            return os.path.join(os.path.expanduser("~"), "Desktop")
 
-    # Exit if fatal error
-    if log_priority == "FATAL":
-        exit(1)
+    @staticmethod
+    def create_directories() -> Tuple[str, str, str, str]:
+        desktop_dir = DirectoryManager.get_desktop_path()
+        base_dir = os.path.join(desktop_dir, "LEVERAGE")
+        sub_dirs = ["XML", "TXT", "JSON", "PRETTY_SCAN_LOGS"]
+        dir_paths = [os.path.join(base_dir, sub_dir) for sub_dir in sub_dirs]
+        for path in dir_paths:
+            os.makedirs(path, exist_ok=True)
+        return dir_paths[0], dir_paths[1], dir_paths[2], dir_paths[3]
 
-# Function to validate IP address
-def is_valid_ip(ip: str) -> bool:
-    try:
-        socket.inet_aton(ip)
-        return True
-    except socket.error:
-        return False
+class LoggerSetup:
+    @staticmethod
+    def create_log_file(log_dir: str) -> str:
+        current_date = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
+        log_file = os.path.join(log_dir, f"prettyscan_log_{current_date}.log")
+        if not os.path.exists(log_file):
+            with open(log_file, "a") as lf:
+                lf.write(f"Log file created on {current_date}\n")
+        return log_file
 
-def resolve_hostname(hostname: str) -> Optional[str]:
-    try:
-        ip = socket.gethostbyname(hostname)
-        return ip
-    except socket.gaierror:
-        log("ERROR", f"{Fore.RED}{Style.BRIGHT}Failed to resolve hostname: {hostname}{Style.RESET_ALL}")
-        return None
+    @staticmethod
+    def setup_logger(log_file: str) -> logging.Logger:
+        logger = logging.getLogger(__name__)
+        logger.setLevel(logging.DEBUG)
 
-def install_modules(modules: Sequence[Tuple[str, Optional[str]]]) -> None:
-    def install_module(module_name: str, pip_name: Optional[str]):
+        # Create handlers
+        c_handler = logging.StreamHandler()
+        f_handler = logging.FileHandler(log_file)
+        c_handler.setLevel(logging.DEBUG)
+        f_handler.setLevel(logging.DEBUG)
+
+        # Create formatters and add it to handlers
+        c_format = logging.Formatter("%(asctime)s [%(levelname)s] %(message)s")
+        f_format = logging.Formatter("%(asctime)s [%(levelname)s] %(message)s")
+        c_handler.setFormatter(c_format)
+        f_handler.setFormatter(f_format)
+
+        # Add handlers to the logger
+        logger.addHandler(c_handler)
+        logger.addHandler(f_handler)
+
+        return logger
+
+class ModuleInstaller:
+    """Class for installing necessary modules."""
+
+    @staticmethod
+    def dynamic_worker_count() -> int:
+        """Determine the optimal number of workers based on system resources."""
+        total_memory = psutil.virtual_memory().total
+        memory_factor = total_memory // (512 * 1024 * 1024)
+        cpu_factor = psutil.cpu_count() * 3
+        return min(memory_factor, cpu_factor, 61)
+
+    @staticmethod
+    def install_system_dependencies():
+        """Install system dependencies like pip and nmap."""
         try:
-            if pip_name:
-                log("INFO", f"{Fore.YELLOW}{Style.BRIGHT}Installing{Style.RESET_ALL} {Fore.CYAN}{Style.BRIGHT}{pip_name}{Style.RESET_ALL}{Fore.YELLOW}{Style.BRIGHT}...{Style.RESET_ALL}")
-                subprocess.check_call([sys.executable, '-m', 'pip', 'install', pip_name])
+            if platform.system() == "Windows":
+                # Check and install pip
+                subprocess.check_call(
+                    [sys.executable, "-m", "ensurepip", "--default-pip"]
+                )
+                subprocess.check_call(
+                    [sys.executable, "-m", "pip", "install", "--upgrade", "pip"]
+                )
+
+                # Check and install nmap
+                try:
+                    subprocess.check_call(["nmap", "--version"])
+                except subprocess.CalledProcessError:
+                    log(
+                        "ERROR",
+                        "Nmap not found. Please install Nmap manually.",
+                        console=True,
+                    )
+                    sys.exit(1)
+            elif platform.system() == "Darwin":  # macOS
+                # Check and install Homebrew if not installed
+                try:
+                    subprocess.check_call(["brew", "--version"])
+                except subprocess.CalledProcessError:
+                    subprocess.check_call(
+                        [
+                            "/bin/bash",
+                            "-c",
+                            "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)",
+                        ]
+                    )
+
+                # Check and install pip
+                subprocess.check_call(["brew", "install", "python"])
+                subprocess.check_call(
+                    [sys.executable, "-m", "pip", "install", "--upgrade", "pip"]
+                )
+
+                # Check and install nmap
+                try:
+                    subprocess.check_call(["nmap", "--version"])
+                except subprocess.CalledProcessError:
+                    subprocess.check_call(["brew", "install", "nmap"])
             else:
-                importlib.import_module(module_name)
-        except ImportError as e:
-            if pip_name:
-                log("ERROR", f"{Fore.RED}{Style.BRIGHT}Failed to install{Style.RESET_ALL} {Fore.CYAN}{Style.BRIGHT}{pip_name}{Style.RESET_ALL}. {Fore.RED}{Style.BRIGHT}Error:{Style.RESET_ALL} {e}. {Fore.RED}{Style.BRIGHT}Exiting...{Style.RESET_ALL}")
-            else:
-                log("ERROR", f"{Fore.RED}{Style.BRIGHT}Module{Style.RESET_ALL} {Fore.CYAN}{Style.BRIGHT}{module_name}{Style.RESET_ALL} {Fore.RED}{Style.BRIGHT}is a built-in module and should not fail. Error:{Style.RESET_ALL} {e}. {Fore.RED}{Style.BRIGHT}Exiting...{Style.RESET_ALL}")
+                # Check and install pip
+                subprocess.check_call(
+                    ["sudo", "apt-get", "install", "-y", "python3-pip"]
+                )
+                subprocess.check_call(
+                    [sys.executable, "-m", "pip", "install", "--upgrade", "pip"]
+                )
+
+                # Check and install nmap
+                try:
+                    subprocess.check_call(["nmap", "--version"])
+                except subprocess.CalledProcessError:
+                    subprocess.check_call(["sudo", "apt-get", "install", "-y", "nmap"])
+        except Exception as e:
+            log(
+                "ERROR",
+                f"Error installing system dependencies: {e}",
+                console=False,
+            )
             sys.exit(1)
 
-    max_workers = (cpu_count() or 1) + 4
-    with ThreadPoolExecutor(max_workers=max_workers) as executor:
-        futures = [executor.submit(install_module, module_name, pip_name) for module_name, pip_name in modules]
-        for future in as_completed(futures):
-            future.result()
+    @staticmethod
+    async def install_module(module_name: str) -> None:
+        """Install a single module."""
+        if importlib.util.find_spec(module_name) is not None:
+            log(
+                "INFO",
+                f"{Fore.GREEN}{Style.BRIGHT}{module_name} is already installed.{Style.RESET_ALL}",
+                console=False,
+            )
+            return
 
-# List of modules with corresponding pip install names
-modules = [
-    ('nmap', 'python-nmap'),
-    ('socket', None),
-    ('os', None),
-    ('sys', None),
-    ('contextlib', None),
-    ('time', None),
-    ('copy', None),
-    ('json', None),
-    ('xml.etree.ElementTree', 'xml'),
-    ('subprocess', None),
-    ('colorama', 'colorama'),
-    ('halo', 'halo'),
-    ('multiprocessing', None),
-    ('concurrent.futures', None),
-    ('typing', None)
-]
-
-# Detect and install missing modules
-missing_modules = [(module_name, pip_name) for module_name, pip_name in modules if not importlib.util.find_spec(module_name)]
-if missing_modules:
-    install_modules(missing_modules)
-
-# Ensure Nmap is available
-try:
-    nm = nmap.PortScanner()
-except nmap.PortScannerError as e:
-    print(f"{Fore.RED}{Style.BRIGHT}Nmap not found. Installing 'python-nmap'...{Style.RESET_ALL}")
-    log("ERROR", f"{Fore.RED}{Style.BRIGHT}Nmap not found. Error: {e}. Installing 'python-nmap'...{Style.RESET_ALL}")
-    subprocess.check_call([sys.executable, '-m', 'pip', 'install', 'python-nmap'])
-    nm = nmap.PortScanner()
-except Exception as e:
-    print(f"{Fore.RED}{Style.BRIGHT}Unexpected error: {e}{Style.RESET_ALL}")
-    log("FATAL", f"{Fore.RED}{Style.BRIGHT}Unexpected error: {e}{Style.RESET_ALL}")
-    sys.exit(1)
-
-@contextlib.contextmanager
-def suppress_stdout_stderr():
-    with open(os.devnull, 'w') as fnull:
-        old_stdout, old_stderr = sys.stdout, sys.stderr
-        sys.stdout, sys.stderr = fnull, fnull
         try:
-            yield
-        finally:
-            sys.stdout, sys.stderr = old_stdout, old_stderr
+            log(
+                "INFO",
+                f"{Fore.YELLOW}{Style.BRIGHT}Installing {module_name}...{Style.RESET_ALL}",
+                console=False,
+            )
+            subprocess.check_call(
+                [sys.executable, "-m", "pip", "install", module_name]
+            )
+        except subprocess.CalledProcessError as e:
+            log(
+                "ERROR",
+                f"{Fore.RED}{Style.BRIGHT}Failed to install {module_name}. Error: {e}. Continuing...{Style.RESET_ALL}",
+                console=False,
+            )
 
-def get_local_ip() -> str:
-    try:
-        with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as s:
-            s.connect(('10.255.255.255', 1))
-            local_ip = s.getsockname()[0]
-    except Exception as e:
-        log("ERROR", f"{Fore.RED}{Style.BRIGHT}Failed to obtain local IP, defaulting to localhost: {e}{Style.RESET_ALL}")
-        local_ip = '127.0.0.1'
-    return local_ip
+    @staticmethod
+    async def install_modules(modules: Sequence[str]) -> None:
+        """Install necessary Python modules."""
+        tasks = [ModuleInstaller.install_module(module) for module in modules]
+        await asyncio.gather(*tasks)
 
-def scan_port(ip: str, port: int, proto: str, nm: nmap.PortScanner) -> Tuple[int, Dict[str, Union[str, List[str], Dict[str, str]]]]:
-    def get_field_name(key: str, synonyms_dict: Dict[str, List[str]]) -> Optional[str]:
-        for field, synonyms in synonyms_dict.items():
-            if key.lower() in [synonym.lower() for synonym in synonyms]:
-                return field
-        return None
+    @staticmethod
+    def extract_modules_from_script(file_path: str) -> Sequence[str]:
+        """Extract module names from the given Python script."""
+        imported_modules: Set[str] = set()
+        try:
+            with open(file_path, "r") as file:
+                tree: ast.Module = ast.parse(file.read(), filename=file_path)
+                for node in ast.walk(tree):
+                    if isinstance(node, ast.Import):
+                        for alias in node.names:
+                            imported_modules.add(alias.name)
+                    elif isinstance(node, ast.ImportFrom) and node.module:
+                        imported_modules.add(node.module)
+        except IndentationError as e:
+            log(
+                "ERROR",
+                f"Indentation error in file {file_path}: {e}",
+                console=False,
+            )
+        except SyntaxError as e:
+            log("ERROR", f"Syntax error in file {file_path}: {e}", console=False)
+        return list(imported_modules)
 
-    def process_certificate(cert_text: str) -> List[str]:
-        """Process the SSL certificate output from nmap."""
-        return cert_text.splitlines()
+    @staticmethod
+    def install_modules_from_script(file_path: str):
+        """Install modules extracted directly from the Python script."""
+        ModuleInstaller.install_system_dependencies()
+        modules = ModuleInstaller.extract_modules_from_script(file_path)
+        asyncio.run(ModuleInstaller.install_modules(modules))
 
-    def process_scripts(scripts: Dict[str, str]) -> Dict[str, Union[str, List[str], Dict[str, str]]]:
-        """Process and return structured data from script outputs."""
-        processed_scripts: Dict[str, Union[str, List[str], Dict[str, str]]] = {}
-        for script_name, output in scripts.items():
-            if 'vuln' in script_name:
-                processed_scripts['vulnerabilities'] = parse_vuln_output(output)
-            elif 'ssl-cert' in script_name:
-                processed_scripts['ssl_cert'] = process_certificate(output)
-            else:
-                processed_scripts[script_name] = output
-        return processed_scripts
+class NmapScanner:
+    def __init__(self, logger: logging.Logger):
+        self.logger = logger
+        self.nm = self.initialize_nmap()
 
-    def parse_vuln_output(output: str) -> str:
-        """Extract and format vulnerability data from script output."""
-        return output
+    @staticmethod
+    def initialize_nmap() -> nmap.PortScanner:
+        try:
+            nm = nmap.PortScanner()
+        except nmap.PortScannerError as e:
+            log(
+                "ERROR",
+                f"Nmap not found. Error: {e}. Installing 'python-nmap'...",
+                console=True,
+            )
+            subprocess.check_call(
+                [sys.executable, "-m", "pip", "install", "python-nmap"]
+            )
+            nm = nmap.PortScanner()
+        except Exception as e:
+            log("ERROR", f"Unexpected error: {e}", console=True)
+            sys.exit(1)
+        return nm
 
-    arguments = "-sS -T3 -sV -A -O --version-intensity 9 --script=default,vuln,banner,http-headers,http-title,vulners -PE -PP -PM -PS21,23,80,3389 -PA80,443,8080 --data-length 10 -vvv"
-    try:
-        nm.scan(hosts=ip, ports=str(port), arguments=arguments, sudo=True if proto == 'udp' else False)
-    except nmap.PortScannerError as e:
-        log("ERROR", f"{Fore.RED}{Style.BRIGHT}Error occurred while scanning port{Style.RESET_ALL} {Fore.GREEN}{Style.BRIGHT}{port}{Style.RESET_ALL} {Fore.RED}{Style.BRIGHT}on IP{Style.RESET_ALL} {Fore.WHITE}{Style.BRIGHT}{ip}: {e}{Style.RESET_ALL}")
-    except Exception as e:
-        log("ERROR", f"{Fore.RED}{Style.BRIGHT}Unexpected error occurred while scanning port{Style.RESET_ALL} {Fore.GREEN}{Style.BRIGHT}{port}{Style.RESET_ALL} {Fore.RED}{Style.BRIGHT}on IP{Style.RESET_ALL} {Fore.WHITE}{Style.BRIGHT}{ip}: {e}{Style.RESET_ALL}")
-        return port, {}
+    @staticmethod
+    def dynamic_worker_count() -> int:
+        total_memory = psutil.virtual_memory().total
+        memory_factor = total_memory // (512 * 1024 * 1024)
+        cpu_factor = psutil.cpu_count() * 3
+        return min(memory_factor, cpu_factor, 61)
 
-    scan_info = nm[ip].get(proto, {}).get(port, {})
+    def scan_port(
+        self, ip: str, port: int, proto: str
+    ) -> Tuple[int, Dict[str, Union[str, List[str], Mapping[str, str]]]]:
+        log(
+            "INFO",
+            f"Scanning port {port} on IP {ip} using {proto}",
+            console=False,
+        )
 
-    field_synonyms = {
-        "state": ["state", "status", "condition", "stature", "standing", "state_of_play", "context", "situation", "phase"],
-        "name": ["name", "moniker", "denomination", "appellation", "nomenclature", "term", "designation", "title", "alias"],
-        "product": ["product", "item", "goods", "merchandise", "commodity", "article", "unit", "model", "make"],
-        "version": ["version", "revision", "variant", "edit", "update", "upgrade", "release", "edition", "build"],
-        "address": ["address", "location", "place", "point", "site", "spot", "locale", "position", "setting"],
-        "machine": ["machine", "engine", "apparatus", "mechanism", "contraption", "device", "gadget", "instrument", "tool"],
-        "memory": ["memory", "storage", "capacity", "cache", "buffer", "bank", "reservoir", "store", "repository"],
-        "mac": ["mac", "media_access_control", "ethernet_address", "network_address", "physical_address", "hardware_id", "nic_address", "adapter_address", "link_address"],
-        "mac_vendor": ["mac_vendor", "manufacturer", "brand", "producer", "maker", "fabricator", "builder", "creator", "supplier"],
-        "device": ["device", "gadget", "appliance", "instrument", "tool", "machinery", "equipment", "apparatus", "hardware"],
-        "network": ["network", "net", "system", "grid", "web", "mesh", "matrix", "plexus", "complex"],
-        "extrainfo": ["extrainfo", "details", "data", "particulars", "information", "insights", "specifics", "facts", "figures"],
-        "reason": ["reason", "cause", "basis", "rationale", "motive", "justification", "grounds", "explanation", "purpose"],
-        "osclass": ["osclass", "operating_system_class", "os_family", "os_type", "os_category", "system_type", "platform_type", "os_group", "os_series"],
-        "osfamily": ["osfamily", "os_lineage", "os_kind", "system_family", "platform_family", "os_branch", "os_grouping", "os_genus", "os_order"],
-        "hostname": ["hostname", "host_id", "server_name", "node_name", "machine_name", "dns_name", "computer_name", "system_name", "network_name"],
-        "hostnames": ["hostnames", "host_ids", "server_names", "node_names", "machine_names", "dns_names", "computer_names", "system_names", "network_names"],
-        "hostname_type": ["hostname_type", "host_category", "server_class", "machine_kind", "node_type", "name_category", "system_class", "network_type", "domain_type"],
-        "ip": ["ip", "ip_address", "address", "inet_address", "loc", "site", "node", "zone", "region", "sector"],
-        "ipv4": ["ipv4", "ipv4_address", "inet4_address", "ipv4_loc", "ipv4_site", "ipv4_node", "ipv4_zone", "ipv4_region", "ipv4_sector"],
-        "ipv6": ["ipv6", "ipv6_address", "inet6_address", "ipv6_loc", "ipv6_site", "ipv6_node", "ipv6_zone", "ipv6_region", "ipv6_sector"],
-        "ipv4_id": ["ipv4_id", "ipv4_ident", "ipv4_tag", "ipv4_code", "ipv4_mark", "ipv4_num", "ipv4_ref", "ipv4_index", "ipv4_label"],
-        "ipv6_id": ["ipv6_id", "ipv6_ident", "ipv6_tag", "ipv6_code", "ipv6_mark", "ipv6_num", "ipv6_ref", "ipv6_index", "ipv6_label"],
-        "osgen": ["osgen", "os_generation", "os_release", "os_version", "os_build", "os_revision", "os_cycle", "os_wave", "os_period"],
-        "osaccuracy": ["osaccuracy", "os_precision", "os_certainty", "os_exactness", "os_fidelity", "os_reliability", "os_precision_level", "os_accuracy_grade", "os_exact_measure"],
-        "osmatch": ["osmatch", "os_compatibility", "os_correspondence", "os_conformity", "os_alignment", "os_agreement", "os_parallels", "os_similarity", "os_congruence"],
-        "vlan_id": ["vlan_id", "vlan_tag", "vlan_code", "vlan_mark", "vlan_label", "vlan_number", "vlan_index", "vlan_identifier", "vlan_ref"],
-        "vlan_name": ["vlan_name", "vlan_designation", "vlan_title", "vlan_alias", "vlan_nomenclature", "vlan_label", "vlan_denomination", "vlan_term", "vlan_identifier"],
-        "distance": ["distance", "range", "span", "reach", "length", "stretch", "expanse", "interval", "separation"],
-        "tcp_sequence": ["tcp_sequence", "tcp_seq", "sequence_number", "tcp_order", "tcp_progression", "tcp_chain", "tcp_series", "tcp_succession", "tcp_continuum"],
-        "tcp_options": ["tcp_options", "tcp_prefs", "tcp_settings", "tcp_choices", "tcp_flags", "tcp_configurations", "tcp_parameters", "tcp_modes", "tcp_alternatives"],
-        "service_info": ["service_info", "service_data", "service_details", "service_facts", "service_specifics", "service_statistics", "service_insights", "service_intelligence", "service_records"],
-        "script": ["script", "script_code", "nse_output", "automation_code", "routine", "procedure", "batch_script", "script_file", "executable_script"]
-    }
-    # Process and map nmap results to fields dynamically
-    result: Dict[str, Union[str, List[str], Dict[str, str]]] = {}
-    for key, value in scan_info.items():
-        field_name = get_field_name(key, field_synonyms)
-        if field_name:
-            result[field_name] = value
-        else:
-            result[key] = value  # Keep original if no synonym found
-    if 'ssl-cert' in scan_info:
-        cert_details = process_certificate(scan_info['ssl-cert'])
-        result['cert'] = cert_details
-    if 'script' in scan_info:
-        script_outputs = process_scripts(scan_info['script'])
-        result.update(script_outputs)
-    result = {
-        "state": scan_info.get('state', 'closed'),
-        "name": scan_info.get('name', ''),
-        "product": scan_info.get('product', ''),
-        "version": scan_info.get('version', ''),
-        "address": scan_info.get('address', ''),
-        "machine": scan_info.get('machine', ''),
-        "memory": scan_info.get('memory', ''),
-        "mac": scan_info.get('mac', ''),
-        "mac_vendor": scan_info.get('mac_vendor', ''),
-        "device": scan_info.get('device', ''),
-        "network": scan_info.get('network', ''),
-        "extrainfo": scan_info.get('extrainfo', ''),
-        "reason": scan_info.get('reason', ''),
-        "osclass": scan_info.get('osclass', ''),
-        "osfamily": scan_info.get('osfamily', ''),
-        "hostname": scan_info.get('hostname', ''),
-        "hostnames": scan_info.get('hostnames', ''),
-        "hostname_type": scan_info.get('hostname_type', ''),
-        "ipv4": scan_info.get('ipv4', ''),
-        "ipv6": scan_info.get('ipv6', ''),
-        "ipv4_id": scan_info.get('ipv4_id', ''),
-        "ipv6_id": scan_info.get('ipv6_id', ''),
-        "osgen": scan_info.get('osgen', ''),
-        "osaccuracy": scan_info.get('osaccuracy', ''),
-        "osmatch": scan_info.get('osmatch', ''),
-        "vlan_id": scan_info.get('vlan_id', ''),
-        "vlan_name": scan_info.get('vlan_name', ''),
-        "distance": scan_info.get('distance', ''),
-        "tcp_sequence": scan_info.get('tcp_sequence', ''),
-        "tcp_options": scan_info.get('tcp_options', ''),
-        "service_info": scan_info.get('service_info', ''),
-        "script": scan_info.get('script', {})
-    } if scan_info else {}
-    return port, result
+        arguments = (
+            "-sS -T3 -sV -A -O --version-intensity 9 --script=default,vuln,banner,"
+            "http-headers,http-title,vulners,dns-recursion,dns-srv-enum,dns-brute,"
+            "broadcast-dns-service-discovery -PE -PP -PM -PS21,23,80,3389 -PA80,443,"
+            "8080 --data-length 10 -vvv "
+        )
 
-def quick_scan(ip: str, nm: nmap.PortScanner) -> Dict[str, List[int]]:
-    arguments = "-T4 -O --version-intensity 9 --open -PE -PP -PM -PS21,23,80,3389 -PA80,443,8080 -vvv"
+        try:
+            self.nm.scan(
+                hosts=ip,
+                ports=str(port),
+                arguments=arguments,
+                sudo=True if proto == "udp" else False,
+            )
+        except nmap.PortScannerError as e:
+            log(
+                "ERROR",
+                f"Error occurred while scanning port {port} on IP {ip}: {e}",
+                console=False,
+            )
+            return port, {}
+        except Exception as e:
+            log(
+                "ERROR",
+                f"Unexpected error occurred while scanning port {port} on IP {ip}: {e}",
+                console=False,
+            )
+            return port, {}
 
-    spinner_text = ''.join([Fore.MAGENTA, Style.BRIGHT, 'INITIALIZING PRETTY SCAN', Style.RESET_ALL])
-    spinners = [
-        Halo(text=spinner_text, spinner='dots'),
-        Halo(text=spinner_text, spinner='dots2'),
-        Halo(text=spinner_text, spinner='dots3'),
-        Halo(text=spinner_text, spinner='dots4'),
-        Halo(text=spinner_text, spinner='dots5'),
-        Halo(text=spinner_text, spinner='dots6'),
-        Halo(text=spinner_text, spinner='dots7'),
-        Halo(text=spinner_text, spinner='dots8'),
-        Halo(text=spinner_text, spinner='dots9'),
-        Halo(text=spinner_text, spinner='dots10'),
-        Halo(text=spinner_text, spinner='dots11'),
-        Halo(text=spinner_text, spinner='dots12')
-    ]
+        scan_info = self.nm[ip].get(proto, {}).get(port, {})
+        log(
+            "DEBUG",
+            f"Scan info for port {port} on IP {ip}: {scan_info}",
+            console=False,
+        )
+        return port, scan_info
 
-    # Start each spinner in different colors
-    colors = [Fore.RED, Fore.GREEN, Fore.BLUE, Fore.YELLOW, Fore.CYAN, Fore.MAGENTA]
-    for index, spinner in enumerate(spinners):
-        color = colors[index % len(colors)]
-        spinner.text = ''.join([color, Style.BRIGHT, 'INITIALIZING PRETTY SCAN', Style.RESET_ALL])
-        spinner.start(text=None)  # type: ignore
+    def quick_scan(self, ip: str) -> Dict[str, List[int]]:
+        arguments = (
+            "-sS -T3 -O --version-intensity 9 --open -PE -PP -PM -PS21,23,80,3389 "
+            "-PA80,443,8080 --data-length 10 -vvv"
+        )
+        total_ports = 65535
+        completed = {"count": 0, "total": total_ports}
+        open_ports: Dict[str, List[int]] = {"tcp": [], "udp": []}
+        current_port = {"port": None}
 
-    try:
-        nm.scan(hosts=ip, ports="1-65535", arguments=arguments)
-    except nmap.PortScannerError as e:
-        log("ERROR", f"{Fore.RED}{Style.BRIGHT}Error occurred during quick scan on IP{Style.RESET_ALL} {Fore.WHITE}{Style.BRIGHT}{ip}: {e}{Style.RESET_ALL}")
-        for spinner in spinners:
-            spinner.stop()
-        return {'tcp': [], 'udp': []}
-    except Exception as e:
-        log("ERROR", f"{Fore.RED}{Style.BRIGHT}Unexpected error occurred during quick scan on IP{Style.RESET_ALL} {Fore.WHITE}{Style.BRIGHT}{ip}: {e}{Style.RESET_ALL}")
-        for spinner in spinners:
-            spinner.stop()
-        return {'tcp': [], 'udp': []}
-
-    open_ports: Dict[str, List[int]] = {'tcp': [], 'udp': []}
-    for proto in nm[ip].all_protocols():
-        ports = sorted(nm[ip][proto].keys())
-        total_ports = len(ports)
-        completed = 0
-        max_workers = (os.cpu_count() or 1) + 4
-
-        spinner = Halo(text=f'{Fore.GREEN}{Style.BRIGHT}Scanning {proto.upper()} Ports{Style.RESET_ALL}', spinner='dots')
-        spinner.start(text=None)  # type: ignore
-
-        with ThreadPoolExecutor(max_workers=max_workers) as executor:
-            futures = {executor.submit(nm[ip][proto].get, port): port for port in ports}
-            for future in as_completed(futures):
-                port = futures[future]
-                try:
-                    result = future.result()
-                    if result['state'] == 'open':
-                        open_ports[proto].append(port)
-                except Exception as e:
-                    log("ERROR", f"\n{Fore.RED}{Style.BRIGHT}Error processing result for port{Style.RESET_ALL} {Fore.GREEN}{Style.BRIGHT}{port}{Style.RESET_ALL} {Fore.RED}{Style.BRIGHT}on IP{Style.RESET_ALL} {Fore.WHITE}{Style.BRIGHT}{ip}: {e}{Style.RESET_ALL}")
-                completed += 1
-                percentage = (completed / total_ports) * 100
-                spinner.text = f'Scanned {completed} of {total_ports} ports ({percentage:.2f}%)'
-
-        spinner.stop()
-
-    for spinner in spinners:
-        spinner.stop()
-
-    return open_ports
-
-def scan_all_open_ports(ip: str):
-    nm = nmap.PortScanner()
-    open_ports = quick_scan(ip, nm)
-    if not open_ports['tcp'] and not open_ports['udp']:
-        log("INFO", f"{Fore.YELLOW}{Style.BRIGHT}No open ports found on IP{Style.RESET_ALL} {Fore.WHITE}{Style.BRIGHT}{ip}{Style.RESET_ALL}.")
-        return
-
-    spinner_text = ''.join([Fore.MAGENTA, Style.BRIGHT, 'Scanning All Open Ports', Style.RESET_ALL])
-    spinners = [
-        Halo(text=spinner_text, spinner='dots'),
-        Halo(text=spinner_text, spinner='dots2'),
-        Halo(text=spinner_text, spinner='dots3'),
-        Halo(text=spinner_text, spinner='dots4'),
-        Halo(text=spinner_text, spinner='dots5'),
-        Halo(text=spinner_text, spinner='dots6'),
-        Halo(text=spinner_text, spinner='dots7'),
-        Halo(text=spinner_text, spinner='dots8'),
-        Halo(text=spinner_text, spinner='dots9'),
-        Halo(text=spinner_text, spinner='dots10'),
-        Halo(text=spinner_text, spinner='dots11'),
-        Halo(text=spinner_text, spinner='dots12')
-    ]
-    # Start each spinner in different colors
-    colors = [Fore.RED, Fore.GREEN, Fore.BLUE, Fore.YELLOW, Fore.CYAN, Fore.MAGENTA]
-    for index, spinner in enumerate(spinners):
-        color = colors[index % len(colors)]
-        spinner.text = ''.join([color, Style.BRIGHT, 'Pretty Scanning All Open PORTS', Style.RESET_ALL])
-        spinner.start(text=None)  # type: ignore
-    pool = multiprocessing.Pool(processes=(os.cpu_count() or 1) + 4)
-    try:
-        results: List[Tuple[int, Dict[str, Union[str, List[str], Dict[str, str]]]]] = pool.starmap(scan_port, [(ip, port, proto, nm) for proto, ports in open_ports.items() for port in ports])
-        for port, result in results:
-            print(f"Port: {port}, Result: {result}")
-    except Exception as e:
-        log("ERROR", f"{Fore.RED}{Style.BRIGHT}Error occurred during scanning of all open ports on IP{Style.RESET_ALL} {Fore.WHITE}{Style.BRIGHT}{ip}: {e}{Style.RESET_ALL}")
-    finally:
-        pool.close()
-        pool.join()
-
-    for spinner in spinners:
-        spinner.stop()
-
-def worker(ip: str, ports: List[int], proto: str, nm: nmap.PortScanner, spinner: Halo, completed: Dict[str, int]) -> Dict[int, Optional[Dict[str, Union[str, List[str], Dict[str, str]]]]]:
-    results: Dict[int, Optional[Dict[str, Union[str, List[str], Dict[str, str]]]]] = {}
-
-    def scan_and_update(port: int, ip: str, proto: str, nm: nmap.PortScanner, spinner: Halo, completed: Dict[str, int], results: Dict[int, Optional[Dict[str, Union[str, List[str], Dict[str, str]]]]]):
-        colors = [Fore.RED, Fore.GREEN, Fore.BLUE, Fore.YELLOW, Fore.CYAN, Fore.MAGENTA]
-        color_cycle = itertools.cycle(colors)  # Create a cycle iterator for colors
+        spinner_text = "INITIALIZING PRETTY SCAN"
+        spinner = Halo(text=spinner_text, spinner="dots")
+        spinner.start()  # type: ignore
+        colors = [
+            Fore.RED,
+            Fore.GREEN,
+            Fore.BLUE,
+            Fore.YELLOW,
+            Fore.CYAN,
+            Fore.MAGENTA,
+            Fore.BLACK,
+            Fore.WHITE,
+            Fore.LIGHTBLACK_EX,
+            Fore.LIGHTBLUE_EX,
+            Fore.LIGHTCYAN_EX,
+            Fore.LIGHTGREEN_EX,
+            Fore.LIGHTMAGENTA_EX,
+            Fore.LIGHTRED_EX,
+            Fore.LIGHTWHITE_EX,
+            Fore.LIGHTYELLOW_EX,
+        ]
+        color_cycle = itertools.cycle(colors)
         stop_event = threading.Event()
 
-        def update_spinner_text(base_text: str):
+        def update_spinner_text():
+            while not stop_event.is_set():
+                color = next(color_cycle)
+                percentage = (completed["count"] / completed["total"]) * 100
+                spinner.text = (
+                    f"{color}{Style.BRIGHT}INITIALIZING PRETTY SCAN "
+                    f"{Fore.GREEN}{Style.BRIGHT}[{Fore.WHITE}{Style.BRIGHT}Port{Style.RESET_ALL}{Fore.GREEN}{Style.BRIGHT}:{Style.RESET_ALL}{Fore.RED}{Style.BRIGHT}{current_port['port']}{Style.RESET_ALL}{Fore.GREEN}{Style.BRIGHT}] "
+                    f"{Fore.GREEN}{Style.BRIGHT}[{Fore.MAGENTA}{Style.BRIGHT}PORTS SCANNED{Style.RESET_ALL}"
+                    f"{Fore.CYAN}{Style.BRIGHT}:{Style.RESET_ALL}{Fore.WHITE}{Style.BRIGHT}[{Style.RESET_ALL}"
+                    f"{completed['count']}{Style.RESET_ALL}{Fore.RED}{Style.BRIGHT}/{Style.RESET_ALL}"
+                    f"{completed['total']}{Fore.WHITE}{Style.BRIGHT}]{Style.RESET_ALL}{Fore.GREEN}{Style.BRIGHT} "
+                    f"{Fore.YELLOW}{Style.BRIGHT}PROGRESS{Style.RESET_ALL}{Fore.GREEN}{Style.BRIGHT}:{Style.RESET_ALL}"
+                    f"{Fore.WHITE}{Style.BRIGHT}[{Style.RESET_ALL}{percentage:.2f}{Fore.RED}{Style.BRIGHT}%{Style.RESET_ALL}"
+                    f"{Style.RESET_ALL}{Fore.WHITE}{Style.BRIGHT}]{Style.RESET_ALL}{Fore.GREEN}{Style.BRIGHT}]"
+                )
+                time.sleep(0.1)
+
+        threading.Thread(target=update_spinner_text, daemon=True).start()
+
+        def scan_callback(host: str, scan_result: nmap.PortScannerHostDict) -> None:
+            for proto in scan_result.all_protocols():
+                ports = scan_result[proto].keys()
+                for port in ports:
+                    current_port["port"] = port
+                    completed["count"] += 1
+                    state = scan_result[proto][port]["state"]
+                    if state == "open":
+                        open_ports[proto].append(port)
+
+        try:
+            self.nm.scan(hosts=ip, ports="1-65535", arguments=arguments)
+            for host in self.nm.all_hosts():
+                scan_callback(host, self.nm[host])
+        except nmap.PortScannerError as e:
+            log(
+                "ERROR",
+                f"{Fore.RED}{Style.BRIGHT}Error occurred during quick scan on IP {ip}: {e}{Style.RESET_ALL}",
+                console=False,
+            )
+            stop_event.set()
+            spinner.stop()
+            return open_ports
+        except Exception as e:
+            log(
+                "ERROR",
+                f"{Fore.RED}{Style.BRIGHT}Unexpected error occurred during quick scan on IP {ip}: {e}{Style.RESET_ALL}",
+                console=False,
+            )
+            stop_event.set()
+            spinner.stop()
+            return open_ports
+
+        stop_event.set()
+        spinner.stop()
+        return open_ports
+
+class ReportGenerator:
+    def __init__(
+        self, xml_dir: str, txt_dir: str, json_dir: str, logger: logging.Logger
+    ):
+        self.xml_dir = xml_dir
+        self.txt_dir = txt_dir
+        self.json_dir = json_dir
+        self.logger = logger
+
+    def save_reports(
+        self,
+        detailed_results: Mapping[
+            str,
+            Mapping[int, Mapping[str, Union[str, List[str], Mapping[str, str]]]],
+        ],
+        tag: str,
+    ):
+        timestamp = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
+
+        xml_path = os.path.join(
+            self.xml_dir, f"nmapscan_xml_report_{tag}_{timestamp}.xml"
+        )
+        report_filename = os.path.join(
+            self.txt_dir, f"nmapscan_txt_report_{tag}_{timestamp}.txt"
+        )
+        results_json_path = os.path.join(
+            self.json_dir, f"nmapscan_json_report_{tag}_{timestamp}.json"
+        )
+
+        detailed_xml_dir = os.path.join(self.xml_dir, "detailed")
+        detailed_txt_dir = os.path.join(self.txt_dir, "detailed")
+        detailed_json_dir = os.path.join(self.json_dir, "detailed")
+
+        os.makedirs(detailed_xml_dir, exist_ok=True)
+        os.makedirs(detailed_txt_dir, exist_ok=True)
+        os.makedirs(detailed_json_dir, exist_ok=True)
+
+        start_time = time.time()
+
+        with ThreadPoolExecutor(
+            max_workers=PrettyScan.dynamic_worker_count()
+        ) as executor:
+            futures = [
+                executor.submit(
+                    self.save_xml_report, detailed_results, xml_path, detailed_xml_dir
+                ),
+                executor.submit(
+                    self.save_text_report,
+                    detailed_results,
+                    report_filename,
+                    detailed_txt_dir,
+                ),
+                executor.submit(
+                    self.save_json_report,
+                    detailed_results,
+                    results_json_path,
+                    detailed_json_dir,
+                ),
+            ]
+            for future in as_completed(futures):
+                try:
+                    future.result()
+                    log(
+                        "INFO",
+                        f"{Fore.GREEN}{Style.BRIGHT}Report saved successfully.{Style.RESET_ALL}",
+                        console=False,
+                    )
+                except Exception as e:
+                    log(
+                        "ERROR",
+                        f"{Fore.RED}{Style.BRIGHT}Error occurred while saving report: {e}{Style.RESET_ALL}",
+                        console=True,
+                    )
+
+        elapsed_time = time.time() - start_time
+        hours = int(elapsed_time // 3600)
+        minutes = int((elapsed_time % 3600) // 60)
+        seconds = int(elapsed_time % 60)
+
+        total_ports = sum(len(ports) for ports in detailed_results.values())
+        log(
+            "INFO",
+            f"{Fore.RED}{Style.BRIGHT}TOTAL OPEN PORTS SCANNED{Style.RESET_ALL}{Fore.GREEN}{Style.BRIGHT}:{Style.RESET_ALL}{Fore.WHITE}{Style.BRIGHT}[{Style.RESET_ALL}{Fore.RED}{Style.BRIGHT}{total_ports}{Style.RESET_ALL}{Fore.WHITE}{Style.BRIGHT}]{Style.RESET_ALL}",
+            console=True,
+        )
+        log(
+            "INFO",
+            f"{Fore.WHITE}{Style.BRIGHT}Report generation completed in{Style.RESET_ALL}{Fore.GREEN}{Style.BRIGHT} {hours:02d}:{minutes:02d}:{seconds:02d}.{Style.RESET_ALL}",
+            console=False,
+        )
+
+    def save_xml_report(
+        self,
+        detailed_results: Mapping[
+            str,
+            Mapping[int, Mapping[str, Union[str, List[str], Mapping[str, str]]]],
+        ],
+        xml_path: str,
+        detailed_dir: str,
+    ):
+        try:
+            os.makedirs(os.path.dirname(xml_path), exist_ok=True)
+            root = ET.Element("NmapScanResults")
+
+            for ip, ports_info in detailed_results.items():
+                ip_elem = ET.SubElement(root, "IP")
+                ip_elem.set("address", ip)
+                for port, info in ports_info.items():
+                    port_elem = ET.SubElement(ip_elem, "Port")
+                    port_elem.set("id", str(port))
+                    filtered_info = {
+                        k: v for k, v in info.items() if v and v not in ["Not available", "None"]
+                    }
+
+                    vulnerability_found = False
+                    vulnerability_details: List[str] = []
+
+                    for key, value in filtered_info.items():
+                        if isinstance(value, dict):
+                            for subkey, subvalue in value.items():
+                                if subvalue and subvalue not in ["Not available", "None"]:
+                                    if (
+                                        "vuln" in subkey.lower()
+                                        or "cve" in subkey.lower()
+                                        or "exploit" in subkey.lower()
+                                    ):
+                                        vulnerability_found = True
+                                        vulnerability_details.append(
+                                            f"{key + subkey.replace('_', '').capitalize()}: {strip_ansi_codes(str(subvalue))}"
+                                        )
+                                    else:
+                                        sub_elem = ET.SubElement(
+                                            port_elem, key + subkey.replace("_", "").capitalize()
+                                        )
+                                        sub_elem.text = strip_ansi_codes(str(subvalue))
+                                    self.save_detailed_file(
+                                        detailed_dir, f"{key}_{subkey}", subvalue, "xml"
+                                    )
+                        elif isinstance(value, list):
+                            for item in value:
+                                if (
+                                    "vuln" in str(item).lower()
+                                    or "cve" in str(item).lower()
+                                    or "exploit" in str(item).lower()
+                                ):
+                                    vulnerability_found = True
+                                    vulnerability_details.append(
+                                        f"{key.replace('_', '').capitalize()}: {strip_ansi_codes(str(item))}"
+                                    )
+                                else:
+                                    list_elem = ET.SubElement(
+                                        port_elem, key.replace("_", "").capitalize()
+                                    )
+                                    list_elem.text = strip_ansi_codes(str(item))
+                                self.save_detailed_file(detailed_dir, key, item, "xml")
+                        else:
+                            if (
+                                "vuln" in str(value).lower()
+                                or "cve" in str(value).lower()
+                                or "exploit" in str(value).lower()
+                            ):
+                                vulnerability_found = True
+                                vulnerability_details.append(
+                                    f"{key.replace('_', '').capitalize()}: {strip_ansi_codes(str(value))}"
+                                )
+                            else:
+                                info_elem = ET.SubElement(
+                                    port_elem, key.replace("_", "").capitalize()
+                                )
+                                info_elem.text = strip_ansi_codes(str(value))
+                            self.save_detailed_file(detailed_dir, key, value, "xml")
+
+                    if vulnerability_found:
+                        warning_elem = ET.SubElement(port_elem, "Warning")
+                        warning_elem.text = (
+                            "[[-WARNING-]] !POSSIBLE! VULNs ~OR~ CVEs !DETECTED! [[-WARNING-]]"
+                        )
+                        for detail in vulnerability_details:
+                            tag, detail_text = detail.split(": ", 1)
+                            detail_elem = ET.SubElement(port_elem, tag)
+                            detail_elem.text = detail_text
+
+            tree = ET.ElementTree(root)
+            tree.write(xml_path, encoding="utf-8", xml_declaration=True)
+            log(
+                "INFO",
+                f"\n{Fore.CYAN}{Style.BRIGHT}Detailed XML Report Saved To{Style.RESET_ALL} {Fore.GREEN}{Style.BRIGHT}|{Style.RESET_ALL} {Fore.WHITE}{Style.BRIGHT}[{Style.RESET_ALL}{Fore.BLUE}{Style.BRIGHT}{xml_path}{Style.RESET_ALL}{Fore.WHITE}{Style.BRIGHT}]{Style.RESET_ALL}\n",
+                console=True,
+            )
+        except Exception as e:
+            log(
+                "ERROR",
+                f"{Fore.RED}{Style.BRIGHT}Error occurred while saving the detailed XML report: {e}{Style.RESET_ALL}\n",
+                console=True,
+            )
+
+    def save_json_report(
+        self,
+        detailed_results: Mapping[
+            str,
+            Mapping[int, Mapping[str, Union[str, List[str], Mapping[str, str]]]],
+        ],
+        results_json_path: str,
+        detailed_dir: str,
+    ):
+        try:
+            os.makedirs(os.path.dirname(results_json_path), exist_ok=True)
+            organized_results: Dict[
+                str, List[Dict[str, Union[str, List[str], Mapping[str, str]]]]
+            ] = {}
+
+            for ip, ports_info in detailed_results.items():
+                if ip not in organized_results:
+                    organized_results[ip] = []
+                for port, info in ports_info.items():
+                    port_info: Dict[str, Union[str, List[str], Mapping[str, str]]] = {
+                        "Port": str(port)
+                    }
+                    filtered_info = {k: v for k, v in info.items() if v}
+
+                    for key, value in filtered_info.items():
+                        warning_inserted = False  # Track if warning has been inserted
+
+                        if isinstance(value, dict):
+                            for subkey, subvalue in value.items():
+                                if subvalue and subvalue not in ["Not available", "None"]:
+                                    if (
+                                        ("vuln" in subkey.lower() or "cve" in subkey.lower() or "exploit" in subkey.lower())
+                                        and not warning_inserted
+                                    ):
+                                        warning = (
+                                            "[[-WARNING-]] !POSSIBLE! VULNs ~OR~ CVEs !DETECTED! [[-WARNING-]]"
+                                        )
+                                        port_info[f"Warning_{key}_{subkey}"] = warning
+                                        warning_inserted = True
+                                    port_info[f"{key}_{subkey}"] = strip_ansi_codes(
+                                        str(subvalue)
+                                    )
+                                    self.save_detailed_file(
+                                        detailed_dir, f"{key}_{subkey}", subvalue, "json"
+                                    )
+                        elif isinstance(value, list):
+                            processed_list: List[str] = []
+                            for item in value:
+                                if (
+                                    ("vuln" in item.lower() or "cve" in item.lower() or "exploit" in item.lower())
+                                    and not warning_inserted
+                                ):
+                                    warning = (
+                                        "[[-WARNING-]] !POSSIBLE! VULNs ~OR~ CVEs !DETECTED! [[-WARNING-]]"
+                                    )
+                                    port_info[f"Warning_{key}"] = warning
+                                    warning_inserted = True
+                                processed_list.append(strip_ansi_codes(str(item)))
+                                self.save_detailed_file(detailed_dir, key, item, "json")
+                            port_info[key] = processed_list
+                        else:
+                            if (
+                                ("vuln" in str(value).lower() or "cve" in str(value).lower() or "exploit" in str(value).lower())
+                                and not warning_inserted
+                            ):
+                                warning = (
+                                    "[[-WARNING-]] !POSSIBLE! VULNs ~OR~ CVEs !DETECTED! [[-WARNING-]]"
+                                )
+                                port_info[f"Warning_{key}"] = warning
+                                warning_inserted = True
+                            port_info[key] = strip_ansi_codes(str(value))
+                            self.save_detailed_file(detailed_dir, key, value, "json")
+
+                    organized_results[ip].append(port_info)
+
+            with open(results_json_path, "w") as json_file:
+                json.dump(organized_results, json_file, indent=4)
+            log(
+                "INFO",
+                f"\n{Fore.CYAN}{Style.BRIGHT}Detailed JSON Report Saved To{Style.RESET_ALL} {Fore.GREEN}{Style.BRIGHT}|{Style.RESET_ALL} {Fore.WHITE}{Style.BRIGHT}[{Style.RESET_ALL}{Fore.RED}{Style.BRIGHT}{results_json_path}{Style.RESET_ALL}{Fore.WHITE}{Style.BRIGHT}]{Style.RESET_ALL}\n",
+                console=True,
+            )
+        except Exception as e:
+            log(
+                "ERROR",
+                f"{Fore.RED}{Style.BRIGHT}An error occurred while saving the detailed report: {str(e)}{Style.RESET_ALL}\n",
+                console=True,
+            )
+
+    def save_text_report(
+        self,
+        detailed_results: Mapping[
+            str,
+            Mapping[int, Mapping[str, Union[str, List[str], Mapping[str, str]]]],
+        ],
+        report_filename: str,
+        detailed_dir: str,
+    ):
+        try:
+            os.makedirs(os.path.dirname(report_filename), exist_ok=True)
+            with open(report_filename, "w") as report_file:
+                for ip, ports_info in detailed_results.items():
+                    report_file.write(f"IP: {ip}\n")
+                    for port, info in ports_info.items():
+                        report_file.write(f"  Port {port}:\n")
+                        processed_fields: Set[str] = set()
+                        vulnerability_found = False
+                        vulnerability_details: List[str] = []
+
+                        for field, value in info.items():
+                            if (
+                                field not in processed_fields
+                                and value
+                                and value not in ["Not available", "None"]
+                            ):
+                                processed_fields.add(field)
+                                if isinstance(value, dict):
+                                    report_file.write(f"    {field.capitalize()}:\n")
+                                    for sub_key, sub_value in value.items():
+                                        if sub_value and sub_value not in ["Not available", "None"]:
+                                            if (
+                                                "vuln" in sub_key.lower()
+                                                or "cve" in sub_key.lower()
+                                                or "exploit" in sub_key.lower()
+                                            ):
+                                                vulnerability_found = True
+                                                vulnerability_details.append(
+                                                    f"      {sub_key}: {strip_ansi_codes(str(sub_value))}\n"
+                                                )
+                                                self.save_detailed_file(
+                                                    detailed_dir,
+                                                    f"{field}_{sub_key}",
+                                                    sub_value,
+                                                    "txt",
+                                                )
+                                            else:
+                                                report_file.write(
+                                                    f"      {sub_key}: {strip_ansi_codes(str(sub_value))}\n"
+                                                )
+                                                self.save_detailed_file(
+                                                    detailed_dir,
+                                                    f"{field}_{sub_key}",
+                                                    sub_value,
+                                                    "txt",
+                                                )
+                                elif isinstance(value, list):
+                                    report_file.write(f"    {field.capitalize()}:\n")
+                                    for item in value:
+                                        if (
+                                            "vuln" in item.lower()
+                                            or "cve" in item.lower()
+                                            or "exploit" in item.lower()
+                                        ):
+                                            vulnerability_found = True
+                                            vulnerability_details.append(
+                                                f"      {strip_ansi_codes(item)}\n"
+                                            )
+                                            self.save_detailed_file(
+                                                detailed_dir, field, item, "txt"
+                                            )
+                                        else:
+                                            report_file.write(
+                                                f"      {strip_ansi_codes(item)}\n"
+                                            )
+                                            self.save_detailed_file(
+                                                detailed_dir, field, item, "txt"
+                                            )
+                                else:
+                                    if (
+                                        "vuln" in str(value).lower()
+                                        or "cve" in str(value).lower()
+                                        or "exploit" in str(value).lower()
+                                    ):
+                                        vulnerability_found = True
+                                        vulnerability_details.append(
+                                            f"    {field.capitalize()}: {strip_ansi_codes(str(value))}\n"
+                                        )
+                                        self.save_detailed_file(
+                                            detailed_dir, field, value, "txt"
+                                        )
+                                    else:
+                                        report_file.write(
+                                            f"    {field.capitalize()}: {strip_ansi_codes(str(value))}\n"
+                                        )
+                                        self.save_detailed_file(
+                                            detailed_dir, field, value, "txt"
+                                        )
+                        if vulnerability_found:
+                            report_file.write(
+                                f"[[-WARNING-]] !POSSIBLE! VULNs ~OR~ CVEs !DETECTED! [[-WARNING-]]\n"
+                            )
+                            for detail in vulnerability_details:
+                                report_file.write(detail)
+                        report_file.write("\n")
+            log(
+                "INFO",
+                f"\n{Fore.CYAN}{Style.BRIGHT}Detailed TEXT Report Saved To{Style.RESET_ALL} {Fore.GREEN}{Style.BRIGHT}|{Style.RESET_ALL} {Fore.WHITE}{Style.BRIGHT}[{Style.RESET_ALL}{Fore.YELLOW}{Style.BRIGHT}{report_filename}{Style.RESET_ALL}{Fore.WHITE}{Style.BRIGHT}]{Style.RESET_ALL}\n",
+                console=True,
+            )
+        except Exception as e:
+            log(
+                "ERROR",
+                f"{Fore.RED}{Style.BRIGHT}Error occurred while saving the detailed TEXT report: {e}{Style.RESET_ALL}\n",
+                console=True,
+            )
+
+    def save_detailed_file(
+        self,
+        detailed_dir: str,
+        field: str,
+        value: Union[str, List[str], Mapping[str, str]],
+        file_format: str,
+    ):
+        os.makedirs(detailed_dir, exist_ok=True)
+        if file_format == "txt":
+            if isinstance(value, dict):
+                for sub_key, sub_value in value.items():
+                    self.save_detailed_file(
+                        detailed_dir, f"{field}_{sub_key}", sub_value, file_format
+                    )
+            elif isinstance(value, list):
+                with open(os.path.join(detailed_dir, f"{field}.txt"), "a") as file:
+                    for item in value:
+                        file.write(f"{strip_ansi_codes(str(item))}\n")
+            else:
+                with open(os.path.join(detailed_dir, f"{field}.txt"), "a") as file:
+                    file.write(f"{strip_ansi_codes(str(value))}\n")
+        elif file_format == "json":
+            detailed_file_path = os.path.join(detailed_dir, f"{field}.json")
+            if isinstance(value, dict):
+                with open(detailed_file_path, "a") as file:
+                    json.dump(value, file, indent=4)
+            elif isinstance(value, list):
+                with open(detailed_file_path, "a") as file:
+                    json.dump(value, file, indent=4)
+            else:
+                with open(detailed_file_path, "a") as file:
+                    json.dump({field: value}, file, indent=4)
+        elif file_format == "xml":
+            detailed_file_path = os.path.join(detailed_dir, f"{field}.xml")
+            root = ET.Element(field)
+            if isinstance(value, dict):
+                for sub_key, sub_value in value.items():
+                    sub_elem = ET.SubElement(root, sub_key)
+                    sub_elem.text = strip_ansi_codes(str(sub_value))
+            elif isinstance(value, list):
+                for item in value:
+                    item_elem = ET.SubElement(root, field)
+                    item_elem.text = strip_ansi_codes(str(item))
+            else:
+                root.text = strip_ansi_codes(str(value))
+            tree = ET.ElementTree(root)
+            tree.write(detailed_file_path, encoding="utf-8", xml_declaration=True)
+
+class PrettyScan:
+    def __init__(self):
+        self.xml_dir, self.txt_dir, self.json_dir, self.log_dir = (
+            DirectoryManager.create_directories()
+        )
+        self.data_dir = ""  # Replace with the appropriate value
+        self.log_file = LoggerSetup.create_log_file(self.log_dir)
+        self.logger = LoggerSetup.setup_logger(self.log_file)
+        global logger
+        logger = self.logger
+        self.logger.setLevel(logging.WARNING)
+        self.nmap_scanner = NmapScanner(self.logger)
+        self.report_generator = ReportGenerator(
+            self.xml_dir, self.txt_dir, self.json_dir, self.logger
+        )
+
+    def print_ascii_art(self):
+        print(
+            """
+              .                                                      .
+            .n                   .                 .                  n.
+      .   .dP                  dP                   9b                 9b.    .
+     4    qXb         .       dX                     Xb       .        dXp     t
+    dX.    9Xb      .dXb    __           """
+            + yellow
+            + """hunt"""
+            + green
+            + """          __    dXb.     dXP     .Xb
+    9XXb._       _.dXXXXb dXXXXbo.                 .odXXXXb dXXXXb._       _.dXXP
+     9XXXXXXXXXXXXXXXXXXXVXXXXXXXXOo.           .oOXXXXXXXXVXXXXXXXXXXXXXXXXXXXP
+      `9XXXXXXXXXXXXXXXXXXXXX'~   ~`OOO8b   d8OOO'~   ~`XXXXXXXXXXXXXXXXXXXXXP'
+        `9XXXXXXXXXXXP' `9XX'   """
+            + red
+            + """STAY"""
+            + green
+            + """    `98v8P'  """
+            + red
+            + """CALM"""
+            + green
+            + """   `XXP' `9XXXXXXXXXXXP'
+            ~~~~~~~       9X.          .db|db.          .XP       ~~~~~~~
+                            )b.  .dbo.dP'`v'`9b.odb.  .dX(
+                          ,dXXXXXXXXXXXb     dXXXXXXXXXXXb.
+                         dXXXXXXXXXXXP'   .   `9XXXXXXXXXXXb
+                        dXXXXXXXXXXXXb   d|b   dXXXXXXXXXXXXb
+                        9XXb'   `XXXXXb.dX|Xb.dXXXXX'   `dXXP
+                         `'      9XXXXXX(   )XXXXXXP      `'
+                                  XXXX X.`v'.X XXXX
+                                  XP^X'`b   d'`X^XX
+                                  X. 9  `   '  P )X
+                                  `b  `       '  d'
+                                   `             '
+                        PrettyScanner - Simple Vulnerability Scanner
+
+    """
+            + blue
+            + """Disclaimer\t"""
+            + yellow
+            + """:"""
+            + red
+            + """ This tool is for educational purposes only. I am not responsible for you!
+    """
+            + blue
+            + """Author\t\t"""
+            + yellow
+            + """:"""
+            + red
+            + """ Dr4gnf1y / https://github.com/Dr4gnf1y
+
+    """
+            + white
+        )
+
+    @staticmethod
+    def format_ports(ports: List[int], per_line: int = 10) -> str:
+        sorted_ports = sorted(ports)  # Sort the ports in ascending order
+        lines = [
+            sorted_ports[i : i + per_line]
+            for i in range(0, len(sorted_ports), per_line)
+        ]
+        formatted_lines = "\n".join(
+            f"{Fore.WHITE}{Style.BRIGHT}[{Style.RESET_ALL}"
+            + f"{Fore.WHITE}{Style.BRIGHT}] [{Style.RESET_ALL}".join(
+                f"{Fore.RED}{Style.BRIGHT}{port:>5}{Style.RESET_ALL}" for port in line
+            )
+            + f"{Fore.WHITE}{Style.BRIGHT}]{Style.RESET_ALL}"
+            for line in lines
+        )
+        return formatted_lines
+
+    @staticmethod
+    def dynamic_worker_count() -> int:
+        total_memory = psutil.virtual_memory().total
+        memory_factor = total_memory // (512 * 1024 * 1024)
+        cpu_factor = cpu_count() * 3
+        return min(memory_factor, cpu_factor, 61)
+
+    def get_target(self) -> Tuple[str, str]:
+        init(autoreset=True)
+        while True:
+            print(f"{Fore.RED}{Style.BRIGHT}Enter A Scan Type{Style.RESET_ALL}{Fore.GREEN}{Style.BRIGHT}:{Style.RESET_ALL}\n{Fore.WHITE}1.{Style.RESET_ALL} {Fore.RED}{Style.BRIGHT}LOCAL{Style.RESET_ALL}\n{Fore.WHITE}2.{Style.RESET_ALL} {Fore.RED}{Style.BRIGHT}TARGET{Style.RESET_ALL}")
+            print(f"{Fore.YELLOW}{Style.BRIGHT}Type Choice{Style.RESET_ALL} {Fore.GREEN}{Style.BRIGHT}({Style.RESET_ALL}{Fore.WHITE}{Style.BRIGHT}1{Style.RESET_ALL} {Fore.BLACK}{Style.BRIGHT}or{Style.RESET_ALL} {Fore.WHITE}{Style.BRIGHT}2{Style.RESET_ALL}{Fore.GREEN}{Style.BRIGHT}){Style.RESET_ALL}{Fore.GREEN}{Style.BRIGHT}:{Style.RESET_ALL} ", end='')
+            choice = input(f"{Fore.MAGENTA}{Style.BRIGHT}")
+            if choice == "1":
+                return self.get_local_ip(), "local"
+            elif choice == "2":
+                print(f"{Fore.RED}Types Include:{Style.RESET_ALL} {Fore.GREEN}[{Style.RESET_ALL}{Fore.WHITE}IP Address (e.g., 192.168.0.1), Domain (e.g., example.com), Port (e.g., 80), MAC (e.g., 00:1A:2B:3C:4D:5E), URL (e.g., https://example.com), ASN (e.g., AS12345){Style.RESET_ALL}{Fore.GREEN}]{Style.RESET_ALL}")
+                target = input(f"{Fore.YELLOW}{Style.BRIGHT}Enter Target Type: {Style.RESET_ALL}{Fore.MAGENTA}{Style.BRIGHT}")
+                target_type = self.target_input_type(target)
+                if target_type == "unknown":
+                    print(f"{Fore.RED}{Style.BRIGHT}Invalid input:{Style.RESET_ALL} {Fore.GREEN}{Style.BRIGHT}{target}{Style.RESET_ALL}")
+                else:
+                    if target_type == "url":
+                        try:
+                            hostname = self.extract_hostname(target)
+                            target = hostname
+                        except ValueError as e:
+                            print(f"{Fore.RED}{Style.BRIGHT}{str(e)}{Style.RESET_ALL}")
+                            continue
+                    target = re.sub(r'^https?://', '', target)
+                    target = target.rstrip('/')
+                    spinner_text = ''.join([Fore.MAGENTA, Style.BRIGHT, 'Locating Target ', target, Style.RESET_ALL])
+                    spinner = Halo(text=spinner_text, spinner='dots')
+                    spinner.start()  # type: ignore
+                    try:
+                        result = subprocess.run(f"ping -c 1 {target}", shell=True, capture_output=True, text=True)
+                        spinner.stop()
+                        if result.returncode == 0:
+                            log("INFO", f"{Fore.GREEN}{Style.BRIGHT}Ping Check Succeeded{Style.RESET_ALL}{Fore.CYAN}{Style.BRIGHT}:{Style.RESET_ALL}{Fore.MAGENTA}{Style.BRIGHT}[{Style.RESET_ALL}{Fore.WHITE}{Style.BRIGHT}{target}{Style.RESET_ALL}{Fore.MAGENTA}{Style.BRIGHT}]{Style.RESET_ALL}{Fore.GREEN}{Style.BRIGHT}[{Style.RESET_ALL}{Fore.RED}{Style.BRIGHT}TARGET LOCKED{Style.RESET_ALL}{Fore.GREEN}{Style.BRIGHT}]{Style.RESET_ALL}", console=True)
+                        else:
+                            log("INFO", f"{Fore.RED}{Style.BRIGHT}Ping check failed{Style.RESET_ALL}{Fore.GREEN}{Style.BRIGHT}: {Fore.GREEN}{Style.BRIGHT}{target}{Style.RESET_ALL} {Fore.RED}TARGET{Style.RESET_ALL} {Fore.RED}{Style.BRIGHT}FAIL{Style.RESET_ALL}", console=True)
+                    except Exception as e:
+                        spinner.stop()
+                        log("ERROR", f"{Fore.RED}{Style.BRIGHT}ERROR RUNNING PING{Style.RESET_ALL}{Fore.GREEN}{Style.BRIGHT}: {e}{Style.RESET_ALL}", console=True)
+                    return target, target_type
+            else:
+                print(f"{Fore.RED}{Style.BRIGHT}Invalid choice{Style.RESET_ALL}{Fore.GREEN}{Style.BRIGHT}:{Style.RESET_ALL} {Fore.YELLOW}{Style.BRIGHT}Please enter {Fore.GREEN}{Style.BRIGHT}({Style.RESET_ALL}{Fore.WHITE}{Style.BRIGHT}1{Style.RESET_ALL} {Fore.BLACK}{Style.BRIGHT}or{Style.RESET_ALL} {Fore.WHITE}{Style.BRIGHT}2{Style.RESET_ALL}{Fore.GREEN}{Style.BRIGHT}){Style.RESET_ALL}{Fore.GREEN}{Style.BRIGHT}:{Style.RESET_ALL} ", end='')
+                choice = input(f"{Fore.MAGENTA}{Style.BRIGHT}")
+
+    @staticmethod
+    def target_input_type(input_str: str) -> str:
+        ip_pattern = r'^(?:[0-9]{1,3}\.){3}[0-9]{1,3}$'
+        domain_pattern = r'^(?:[a-zA-Z0-9]+(-[a-zA-Z0-9]+)*\.)+[a-zA-Z]{2,}$'
+        port_pattern = r'^\d{1,5}$'
+        mac_pattern = r'^([0-9A-Fa-f]{2}[:-]){5}([0-9A-Fa-f]{2})$'
+        url_pattern = r'^https?://(?:[-\w.]|(?:%[\da-fA-F]{2}))+(/[-\w._~:/?#[\]@!$&()*+,;=]*)?$'
+        asn_pattern = r'^AS\d+$'
+        if re.match(ip_pattern, input_str):
+            return "ip"
+        elif re.match(domain_pattern, input_str):
+            return "domain"
+        elif re.match(port_pattern, input_str):
+            return "port"
+        elif re.match(mac_pattern, input_str):
+            return "mac"
+        elif re.match(url_pattern, input_str):
+            return "url"
+        elif re.match(asn_pattern, input_str):
+            return "asn"
+        else:
+            return "unknown"
+    @staticmethod
+    def extract_hostname(url: str) -> str:
+        parsed_url = urlparse(url)
+        hostname = parsed_url.hostname
+        if hostname is None:
+            raise ValueError(f"{Fore.RED}{Style.BRIGHT}Invalid URL: {url}{Style.RESET_ALL}")
+        return hostname
+
+    @staticmethod
+    def resolve_hostname(hostname: str) -> Optional[str]:
+        try:
+            with ProcessPoolExecutor(max_workers=PrettyScan.dynamic_worker_count()) as executor:
+                future = executor.submit(socket.gethostbyname, hostname)
+                ip = future.result()
+            return ip
+        except socket.gaierror:
+            log("ERROR", f"{Fore.RED}{Style.BRIGHT}Failed to resolve hostname: {hostname}{Style.RESET_ALL}", console=True)
+            return None
+        except Exception as e:
+            log("ERROR", f"{Fore.RED}{Style.BRIGHT}Unexpected error occurred while resolving hostname: {e}{Style.RESET_ALL}", console=True)
+            return None
+
+    @staticmethod
+    def get_local_ip() -> str:
+        try:
+            with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as s:
+                s.connect(('10.255.255.255', 1))
+                local_ip = s.getsockname()[0]
+        except Exception as e:
+            log("ERROR", f"{Fore.RED}{Style.BRIGHT}Failed to obtain local IP, defaulting to localhost: {e}{Style.RESET_ALL}")
+            local_ip = '127.0.0.1'
+        return local_ip
+
+    def distribute_work(self, ip: str, open_ports: Dict[str, List[int]]) -> Dict[str, Dict[int, Mapping[str, Union[str, List[str], Mapping[str, str]]]]]:
+        init()
+        detailed_results: Dict[str, Dict[int, Mapping[str, Union[str, List[str], Mapping[str, str]]]]] = {'tcp': {}, 'udp': {}}
+        total_ports = sum(len(ports) for ports in open_ports.values())
+        completed = {'total': total_ports, 'count': 0}
+        current_port: Dict[str, Optional[int]] = {'port': None}
+
+        spinner_text = ''.join([Fore.MAGENTA, Style.BRIGHT, 'PRETTY DEEP SCAN ON', Style.RESET_ALL])
+        spinner = Halo(text=spinner_text, spinner='dots')
+        colors = [Fore.RED, Fore.GREEN, Fore.BLUE, Fore.YELLOW, Fore.CYAN, Fore.MAGENTA, Fore.BLACK, Fore.WHITE, Fore.LIGHTBLACK_EX, Fore.LIGHTBLUE_EX, Fore.LIGHTCYAN_EX, Fore.LIGHTGREEN_EX, Fore.LIGHTMAGENTA_EX, Fore.LIGHTRED_EX, Fore.LIGHTWHITE_EX, Fore.LIGHTYELLOW_EX]
+        color_cycle = cycle(colors)
+        stop_event = threading.Event()
+
+        def update_spinner():
             while not stop_event.is_set():
                 color = next(color_cycle)
                 percentage = (completed['count'] / completed['total']) * 100
-                spinner.text = f'\r{color}{Style.BRIGHT}{base_text} {Fore.GREEN}{Style.BRIGHT}[{Fore.MAGENTA}{Style.BRIGHT}TOTAL PORTS{Style.RESET_ALL}{Fore.CYAN}{Style.BRIGHT}:{Style.RESET_ALL}{Fore.WHITE}{Style.BRIGHT}[{Style.RESET_ALL}{completed["count"]}{Style.RESET_ALL}{Fore.WHITE}{Style.BRIGHT}/{Style.RESET_ALL}{completed["total"]}{Fore.WHITE}{Style.BRIGHT}]{Style.RESET_ALL}{Fore.GREEN}{Style.BRIGHT} {Fore.YELLOW}{Style.BRIGHT}PROGRESS{Style.RESET_ALL}{Fore.GREEN}{Style.BRIGHT}:{Style.RESET_ALL}{Fore.WHITE}{Style.BRIGHT}[{Style.RESET_ALL}{percentage:.2f}{Fore.RED}{Style.BRIGHT}%{Style.RESET_ALL}{Style.RESET_ALL}{Fore.WHITE}{Style.BRIGHT}]{Style.RESET_ALL}{Fore.GREEN}{Style.BRIGHT}]{Style.RESET_ALL}'
-                time.sleep(0.5)  # Update the color every 0.5 seconds
-        try:
-            threading.Thread(target=update_spinner_text, args=(f'Pretty Scan Starting On {Fore.GREEN}{Style.BRIGHT}[{Style.RESET_ALL}{Fore.WHITE}{Style.BRIGHT}Port{Style.RESET_ALL}{Fore.GREEN}{Style.BRIGHT}:{Style.RESET_ALL} {Fore.RED}{Style.BRIGHT}{port}{Style.RESET_ALL}{Fore.GREEN}{Style.BRIGHT}]{Style.RESET_ALL} ',), daemon=True).start()
-            port_result = scan_port(ip, port, proto, nm)
-            stop_event.set()
-            if port_result[1]:
-                results[port_result[0]] = port_result[1]
-                completed['count'] += 1
-                stop_event.clear()
-                threading.Thread(target=update_spinner_text, args=(f'Pretty Scan Finished On {Fore.GREEN}{Style.BRIGHT}[{Style.RESET_ALL}{Fore.WHITE}{Style.BRIGHT}Port{Style.RESET_ALL}{Fore.GREEN}{Style.BRIGHT}:{Style.RESET_ALL} {Fore.RED}{Style.BRIGHT}{port}{Style.RESET_ALL}{Fore.GREEN}{Style.BRIGHT}]{Style.RESET_ALL} ',), daemon=True).start()
-            else:
-                stop_event.clear()
-                threading.Thread(target=update_spinner_text, args=(f'Pretty Scan 0 Results On {Fore.GREEN}{Style.BRIGHT}[{Style.RESET_ALL}{Fore.WHITE}{Style.BRIGHT}Port{Style.RESET_ALL}{Fore.GREEN}{Style.BRIGHT}:{Style.RESET_ALL} {Fore.RED}{Style.BRIGHT}{port}{Style.RESET_ALL}{Fore.GREEN}{Style.BRIGHT}]{Style.RESET_ALL} ',), daemon=True).start()
-        except Exception as e:
-            log("ERROR", f"{Fore.RED}{Style.BRIGHT}Error occurred during Scan and update for port{Style.RESET_ALL} {Fore.GREEN}{Style.BRIGHT}{port}{Style.RESET_ALL} {Fore.RED}{Style.BRIGHT}on IP{Style.RESET_ALL} {Fore.WHITE}{Style.BRIGHT}{ip}: {e}{Style.RESET_ALL}")
-        finally:
-            stop_event.set()
-            time.sleep(5)
-            stop_event.clear()
-            threading.Thread(target=update_spinner_text, args=(f'Pretty Scan Progress On {Fore.GREEN}{Style.BRIGHT}[{Style.RESET_ALL}{Fore.WHITE}{Style.BRIGHT}Port{Style.RESET_ALL}{Fore.GREEN}{Style.BRIGHT}:{Style.RESET_ALL} {Fore.RED}{Style.BRIGHT}{port}{Style.RESET_ALL}{Fore.GREEN}{Style.BRIGHT}]{Style.RESET_ALL} ',), daemon=True).start()
-            time.sleep(15)
-            stop_event.set()
+                spinner.text = (
+                    f'{color}{Style.BRIGHT}PRETTY DEEP SCAN ON '
+                    f'{Fore.GREEN}{Style.BRIGHT}[{Fore.WHITE}{Style.BRIGHT}Port{Style.RESET_ALL}{Fore.GREEN}{Style.BRIGHT}:{Style.RESET_ALL}{Fore.RED}{Style.BRIGHT}{current_port["port"]}{Style.RESET_ALL}{Fore.GREEN}{Style.BRIGHT}] '
+                    f'{Fore.GREEN}{Style.BRIGHT}[{Fore.MAGENTA}{Style.BRIGHT}PORTS SCANNED{Style.RESET_ALL}'
+                    f'{Fore.CYAN}{Style.BRIGHT}:{Style.RESET_ALL}{Fore.WHITE}{Style.BRIGHT}[{Style.RESET_ALL}'
+                    f'{completed["count"]}{Style.RESET_ALL}{Fore.RED}{Style.BRIGHT}/{Style.RESET_ALL}'
+                    f'{completed["total"]}{Fore.WHITE}{Style.BRIGHT}]{Style.RESET_ALL}{Fore.GREEN}{Style.BRIGHT} '
+                    f'{Fore.YELLOW}{Style.BRIGHT}PROGRESS{Style.RESET_ALL}{Fore.GREEN}{Style.BRIGHT}:{Style.RESET_ALL}'
+                    f'{Fore.WHITE}{Style.BRIGHT}[{Style.RESET_ALL}{percentage:.2f}{Fore.RED}{Style.BRIGHT}%{Style.RESET_ALL}'
+                    f'{Style.RESET_ALL}{Fore.WHITE}{Style.BRIGHT}]{Style.RESET_ALL}{Fore.GREEN}{Style.BRIGHT}]'
+                )
+                time.sleep(0.1)
 
-    max_workers = (cpu_count() or 1) + 4
-    with ThreadPoolExecutor(max_workers=max_workers) as executor:
-        executor.map(scan_and_update, ports, [ip]*len(ports), [proto]*len(ports), [nm]*len(ports), [spinner]*len(ports), [completed]*len(ports), [results]*len(ports))
-    return results
+        threading.Thread(target=update_spinner, daemon=True).start()
 
-def distribute_work(ip: str, open_ports: Dict[str, List[int]]) -> Dict[str, Dict[int, Dict[str, Union[str, List[str], Dict[str, str]]]]]:
-    init()
-    detailed_results: Dict[str, Dict[int, Dict[str, Union[str, List[str], Dict[str, str]]]]] = {'tcp': {}, 'udp': {}}
-    proto = None
-    total_ports = sum(len(ports) for ports in open_ports.values())
-    completed = {'total': total_ports, 'count': 0}
+        with ThreadPoolExecutor(max_workers=self.dynamic_worker_count()) as executor:
+            futures: Dict[int, concurrent.futures.Future[Dict[int, Optional[Mapping[str, Union[str, List[str], Mapping[str, str]]]]]]] = {}
+            proto_results_mapping: Dict[str, List[concurrent.futures.Future[Dict[int, Optional[Mapping[str, Union[str, List[str], Mapping[str, str]]]]]]]] = {
+                'tcp': [],
+                'udp': []
+            }
+            for proto, ports in open_ports.items():
+                if ports:
+                    log("INFO", f"{Fore.CYAN}{Style.BRIGHT}Performing Detailed Scan On{Style.RESET_ALL} {Fore.RED}{Style.BRIGHT}OPEN PORTS{Style.RESET_ALL}{Fore.GREEN}{Style.BRIGHT}:{Style.RESET_ALL}{Fore.WHITE}{Style.BRIGHT}[{Style.RESET_ALL}{Fore.RED}{Style.BRIGHT}{total_ports}{Style.RESET_ALL}{Fore.WHITE}{Style.BRIGHT}]{Style.RESET_ALL}", console=True)
+                    spinner.start()  # type: ignore
+                    for port in ports:
+                        future = executor.submit(self.worker, ip, port, proto)
+                        futures[port] = future
+                        proto_results_mapping[proto].append(future)
 
-    spinner = Halo(text=f'{Fore.GREEN}{Style.BRIGHT}Initializing{Style.RESET_ALL}', spinner='dots')  # Initialize spinner here
+            for proto, future_list in proto_results_mapping.items():
+                for future in as_completed(future_list):
+                    port = next((port for port, f in futures.items() if f == future), None)
+                    if port is not None:
+                        current_port['port'] = port
+                    proto_results = future.result()
+                    for port, result in proto_results.items():
+                        if result is not None:
+                            detailed_results[proto][port] = result
+                        completed['count'] += 1
 
-    with concurrent.futures.ThreadPoolExecutor(max_workers=CPU_CORES) as executor:
-        futures: List[concurrent.futures.Future[Dict[int, Optional[Dict[str, Union[str, List[str], Dict[str, str]]]]]]] = []
-        for proto, ports in open_ports.items():
-            if ports:
-                print(f"{Fore.CYAN}{Style.BRIGHT}Performing Detailed Scan On{Style.RESET_ALL} {Fore.RED}{Style.BRIGHT}Open Ports:{Style.RESET_ALL}")
-                spinner.start(text=None)  # type: ignore
-                for port in ports:
-                    nm_copy = copy.deepcopy(nm)
-                    futures.append(executor.submit(worker, ip, [port], proto, nm_copy, spinner, completed))
-        for future in concurrent.futures.as_completed(futures):
-            proto_results: Dict[int, Optional[Dict[str, Union[str, List[str], Dict[str, str]]]]] = future.result()
-            for port, result in proto_results.items():
-                if proto is not None and result is not None:
-                    detailed_results[proto][port] = result
-        spinner.text = f'{Fore.GREEN}{Style.BRIGHT}Finished Scanning All Ports{Style.RESET_ALL}'
+        stop_event.set()
         spinner.stop()
 
+        logged_ports: Set[int] = set()
+        logged_warnings: Set[str] = set()
+        for ports_info in detailed_results.values():
+            for port, info in ports_info.items():
+                if port not in logged_ports:
+                    if info:
+                        log("", f"\n{Fore.BLUE}{Style.BRIGHT}OPEN PORT{Style.RESET_ALL}{Fore.GREEN}{Style.BRIGHT}~{Style.RESET_ALL}{Fore.WHITE}{Style.BRIGHT}[{Style.RESET_ALL}{Fore.RED}{Style.BRIGHT}{port}{Style.RESET_ALL}{Fore.WHITE}{Style.BRIGHT}]{Style.RESET_ALL}", console=True)
+                    fields = ['state', 'name', 'product', 'version', 'address', 'machine', 'memory', 'mac', 'mac_vendor', 'device', 'network', 'extrainfo', 'reason', 'osclass', 'osmatch', 'osfamily', 'hostname', 'hostnames', 'hostname_type', 'ipv4', 'ipv6', 'ipv4-id', 'ipv6 id', 'osgen', 'osaccuracy', 'osmatch', 'vlan id', 'vlan name', 'distance', 'tcp_sequence', 'tcp_options', 'service_info']
+                    for field in fields:
+                        if field in info and info[field] not in ['', 'Not available', 'None']:
+                            if field == 'state':
+                                log("INFO", f"{Fore.GREEN}{Style.BRIGHT}State{Style.RESET_ALL}{Fore.GREEN}{Style.BRIGHT}:{Style.RESET_ALL} {Fore.CYAN}{Style.BRIGHT}{info['state']}{Style.RESET_ALL}", console=True)
+                            elif field == 'name':
+                                log("INFO", f"{Fore.BLUE}{Style.BRIGHT}Name{Style.RESET_ALL}{Fore.GREEN}{Style.BRIGHT}:{Style.RESET_ALL} {Fore.RED}{Style.BRIGHT}{info['name']}{Style.RESET_ALL}", console=True)
+                            elif field == 'product':
+                                log("INFO", f"{Fore.BLUE}{Style.BRIGHT}Product{Style.RESET_ALL}{Fore.GREEN}{Style.BRIGHT}:{Style.RESET_ALL} {Fore.CYAN}{Style.BRIGHT}{info['product']}{Style.RESET_ALL}", console=True)
+                            else:
+                                log("INFO", f"{Fore.BLUE}{field.capitalize()}{Style.RESET_ALL}{Fore.GREEN}{Style.BRIGHT}:{Style.RESET_ALL} {Fore.CYAN}{Style.BRIGHT}{info[field]}{Style.RESET_ALL}", console=True)
+                    log("INFO", f"{Fore.YELLOW}{Style.BRIGHT}[{Style.RESET_ALL}{Fore.BLUE}{Style.BRIGHT}~NMAP SCRIPTS OUTPUT BELOW IF FOUND~{Style.RESET_ALL}{Fore.YELLOW}{Style.BRIGHT}]{Style.RESET_ALL}", console=True)
+                    script_info = info.get('script', {})
+                    logged_warnings: Set[str] = set()
+                    if isinstance(script_info, dict):
+                        for key, value in script_info.items():
+                            if 'vuln' in key.lower() or 'cve' in key.lower():
+                                if key not in logged_warnings:
+                                    print(f"{Fore.GREEN}{Style.BRIGHT}[[{Style.RESET_ALL}{Fore.RED}{Style.BRIGHT}-WARNING-{Style.RESET_ALL}{Fore.GREEN}{Style.BRIGHT}]]{Style.RESET_ALL}{Fore.WHITE}{Style.BRIGHT} !POSSIBLE! VULNs{Style.RESET_ALL} {Fore.MAGENTA}{Style.BRIGHT}~OR~{Style.RESET_ALL} {Fore.WHITE}{Style.BRIGHT}CVEs !DETECTED!{Style.RESET_ALL} {Fore.GREEN}{Style.BRIGHT}[[{Style.RESET_ALL}{Fore.RED}{Style.BRIGHT}-WARNING-{Style.RESET_ALL}{Fore.GREEN}{Style.BRIGHT}]]{Style.RESET_ALL}")
+                                    logged_warnings.add(key)
+                                print(f"{Fore.WHITE}{Style.BRIGHT}[{Style.RESET_ALL}{Fore.RED}{key}{Style.RESET_ALL}{Fore.WHITE}{Style.BRIGHT}]{Style.RESET_ALL}{Fore.GREEN}{Style.BRIGHT}:{Style.RESET_ALL} {Fore.WHITE}{Style.BRIGHT}vvvv=====>{Style.RESET_ALL}{Fore.RED}{Style.BRIGHT}{value}{Style.RESET_ALL}{Fore.WHITE}{Style.BRIGHT}<=====^^^^{Style.RESET_ALL}")
+                            elif 'certificate' in key.lower():
+                                self.print_certificate(value)
+                                log("INFO", f"{Fore.WHITE}{Style.BRIGHT}[{Style.RESET_ALL}{Fore.RED}{key}{Style.RESET_ALL}{Fore.WHITE}{Style.BRIGHT}]{Style.RESET_ALL}{Fore.WHITE}{Style.BRIGHT}[{Style.RESET_ALL}{Fore.RED}{Style.BRIGHT}{value}{Style.RESET_ALL}{Fore.WHITE}{Style.BRIGHT}]{Style.RESET_ALL}", console=True)
+                            else:
+                                log("INFO", f"{Fore.WHITE}{Style.BRIGHT}[{Style.RESET_ALL}{Fore.YELLOW}{Style.BRIGHT}{key}{Style.RESET_ALL}{Fore.WHITE}{Style.BRIGHT}]{Style.RESET_ALL}{Fore.GREEN}{Style.BRIGHT}:{Style.RESET_ALL} {Fore.WHITE}{Style.BRIGHT}[{Style.RESET_ALL}{Fore.RED}{value}{Style.RESET_ALL}{Fore.WHITE}{Style.BRIGHT}]{Style.RESET_ALL}", console=True)
+                    else:
+                        log("ERROR", f"{Fore.RED}{Style.BRIGHT}No script output{Style.RESET_ALL}", console=True)
+                    logged_ports.add(port)
+
+        return detailed_results
+
+
+    def worker(self, ip: str, port: int, proto: str) -> Dict[int, Optional[Mapping[str, Union[str, List[str], Mapping[str, str]]]]]:
+        results: Dict[int, Optional[Mapping[str, Union[str, List[str], Mapping[str, str]]]]] = {}
+        nm = nmap.PortScanner()
+
+        def scan_and_update(port: int, ip: str, proto: str, nm: nmap.PortScanner, results: Dict[int, Optional[Mapping[str, Union[str, List[str], Mapping[str, str]]]]]):
+            try:
+                port_result = self.nmap_scanner.scan_port(ip, port, proto)
+                if port_result[1]:
+                    results[port_result[0]] = port_result[1]
+            except Exception as e:
+                log("ERROR", f"{Fore.RED}{Style.BRIGHT}Error occurred during PRETTY DEEP SCAN and update for port{Style.RESET_ALL} {Fore.GREEN}{Style.BRIGHT}{port}{Style.RESET_ALL} {Fore.RED}{Style.BRIGHT}on IP{Style.RESET_ALL} {Fore.WHITE}{Style.BRIGHT}{ip}: {e}{Style.RESET_ALL}")
+
+        with ThreadPoolExecutor(max_workers=self.dynamic_worker_count()) as executor:
+            executor.map(scan_and_update, [port], [ip], [proto], [nm], [results])
+        return results
+
+    @staticmethod
     def print_warning(message: str):
-        """Prints warnings in red."""
         print(f"{Fore.RED}{Style.BRIGHT}{message}{Style.RESET_ALL}")
 
+    @staticmethod
     def print_certificate(cert_text: str):
-        """Prints certificate details, highlighting the BEGIN and END markers."""
         cert_lines = cert_text.split('\n')
         for line in cert_lines:
             if "BEGIN CERTIFICATE" in line or "END CERTIFICATE" in line:
-                print(f"{Fore.YELLOW}{Style.BRIGHT}{line}{Style.RESET_ALL}")
+                log("INFO", f"{Fore.YELLOW}{Style.BRIGHT}{line}{Style.RESET_ALL}")
             else:
-                print(f"{Fore.CYAN}{line}{Style.RESET_ALL}")
+                log("INFO", f"{Fore.CYAN}{line}{Style.RESET_ALL}")
 
-    # Terminal output
-    for ports_info in detailed_results.values():
-        for port, info in ports_info.items():
-            if info:  # Check if info is not empty
-                print(f"{Fore.BLUE}{Style.BRIGHT}Port{Style.RESET_ALL}{Fore.GREEN}{Style.BRIGHT}[{Style.RESET_ALL}{Fore.RED}{Style.BRIGHT}{port}{Style.RESET_ALL}{Fore.GREEN}{Style.BRIGHT}]{Style.RESET_ALL}")
-            # For each field, check if it exists in info and if it's not empty
-            fields = ['state', 'name', 'product', 'version', 'address', 'machine', 'memory', 'mac', 'mac_vendor', 'device', 'network', 'extrainfo', 'reason', 'osclass', 'osmatch', 'osfamily', 'hostname', 'hostnames', 'hostname_type', 'ipv4', 'ipv6', 'ipv4_id', 'ipv6_id', 'osgen', 'osaccuracy', 'osmatch', 'vlan_id', 'vlan_name', 'distance', 'tcp_sequence', 'tcp_options', 'service_info']
-            for field in fields:
-                if field in info and info[field] not in ['', 'Not available', 'None']:  # Check if field is in info and if it's not empty
-                    if field == 'state':
-                        print(f"{Fore.GREEN}{Style.BRIGHT}State{Style.RESET_ALL}{Fore.GREEN}{Style.BRIGHT}:{Style.RESET_ALL} {Fore.CYAN}{Style.BRIGHT}{info['state']}{Style.RESET_ALL}")
-                    elif field == 'name':
-                        print(f"{Fore.BLUE}{Style.BRIGHT}Name{Style.RESET_ALL}{Fore.GREEN}{Style.BRIGHT}:{Style.RESET_ALL} {Fore.RED}{Style.BRIGHT}{info['name']}{Style.RESET_ALL}")
-                    elif field == 'product':
-                        print(f"{Fore.BLUE}{Style.BRIGHT}Product{Style.RESET_ALL}{Fore.GREEN}{Style.BRIGHT}:{Style.RESET_ALL} {Fore.CYAN}{Style.BRIGHT}{info['product']}{Style.RESET_ALL}")
-                    else:
-                        print(f"{Fore.YELLOW}{field.capitalize()}{Style.RESET_ALL}{Fore.GREEN}{Style.BRIGHT}:{Style.RESET_ALL} {Fore.CYAN}{Style.BRIGHT}{info[field]}{Style.RESET_ALL}")
-            # Script-Output Info
-            print(f"{Fore.YELLOW}{Style.BRIGHT}[{Style.RESET_ALL}{Fore.BLUE}{Style.BRIGHT}NMAP Scripts Output Below If Found{Style.RESET_ALL}{Fore.YELLOW}{Style.BRIGHT}]{Style.RESET_ALL}")
-            script_info = info.get('script', {})
-            if isinstance(script_info, dict):
-                for key, value in script_info.items():
-                    if 'vuln' in key.lower() or 'cve' in key.lower():
-                        print_warning(f"{Fore.GREEN}{Style.BRIGHT}[[{Style.RESET_ALL}{Fore.RED}{Style.BRIGHT}-WARNING-{Style.RESET_ALL}{Fore.GREEN}{Style.BRIGHT}]]{Style.RESET_ALL}{Fore.WHITE}{Style.BRIGHT} !POSSIBLE! VULNs ~OR~ CVEs !DETECTED!{Style.RESET_ALL} {Fore.GREEN}{Style.BRIGHT}[[{Style.RESET_ALL}{Fore.RED}{Style.BRIGHT}-WARNING-{Style.RESET_ALL}{Fore.GREEN}{Style.BRIGHT}]]{Style.RESET_ALL}")
-                        print_warning(f"{Fore.RED}{key}{Style.RESET_ALL}{Fore.GREEN}{Style.BRIGHT}:{Style.RESET_ALL}{Fore.RED}{Style.BRIGHT}{value}{Style.RESET_ALL}")
-                    elif 'certificate' in key.lower():
-                        print_certificate(value)
-                    elif 'csrf' in key.lower():
-                        print(f"{Fore.RED}{key}{Style.RESET_ALL}{Fore.GREEN}{Style.BRIGHT}:{Style.RESET_ALL}{Fore.RED}{Style.BRIGHT}{value}{Style.RESET_ALL}")
-                    elif 'ssl-enum-ciphers' in key.lower():
-                        print(f"{Fore.RED}SSL Ciphers{Style.RESET_ALL}{Fore.GREEN}{Style.BRIGHT}:{Style.RESET_ALL}{Fore.RED}{Style.BRIGHT}{value}{Style.RESET_ALL}")
-                    elif 'ssh2-enum-algos' in key.lower():
-                        print(f"{Fore.RED}SSH2 Algorithms{Style.RESET_ALL}{Fore.GREEN}{Style.BRIGHT}:{Style.RESET_ALL}{Fore.RED}{Style.BRIGHT}{value}{Style.RESET_ALL}")
-                    elif 'http-enum' in key.lower():
-                        print(f"{Fore.YELLOW}HTTP Directories And Files{Style.RESET_ALL}{Fore.GREEN}{Style.BRIGHT}:{Style.RESET_ALL}{Fore.RED}{Style.BRIGHT}{value}{Style.RESET_ALL}")
-                    else:
-                        print(f"{Fore.YELLOW}{Style.BRIGHT}{key}{Style.RESET_ALL}{Fore.GREEN}{Style.BRIGHT}:{Style.RESET_ALL} {Fore.RED}{value}{Style.RESET_ALL}")
-                print()
+    def main(self):
+        self.print_ascii_art()  # Call the method to display ASCII art
+        start_time = time.time()
+        target, target_type = self.get_target()
+        tag = target.replace('.', '_')
+        if target_type == "domain":
+            resolved_ip = self.resolve_hostname(target)
+            if resolved_ip:
+                target = resolved_ip
             else:
-                print(f"{Fore.RED}No script output\n{Style.RESET_ALL}")
-    return detailed_results
-
-def target_input_type(input_str: str) -> str:
-    ip_pattern = r'^(?:[0-9]{1,3}\.){3}[0-9]{1,3}$'
-    domain_pattern = r'^(?:[a-zA-Z0-9]+(-[a-zA-Z0-9]+)*\.)+[a-zA-Z]{2,}$'
-    port_pattern = r'^\d{1,5}$'
-    mac_pattern = r'^([0-9A-Fa-f]{2}[:-]){5}([0-9A-Fa-f]{2})$'
-    url_pattern = r'^https?://(?:[-\w.]|(?:%[\da-fA-F]{2}))+(/[-\w._~:/?#[\]@!$&()*+,;=]*)?$'
-    asn_pattern = r'^AS\d+$'
-    if re.match(ip_pattern, input_str):
-        return "ip"
-    elif re.match(domain_pattern, input_str):
-        return "domain"
-    elif re.match(port_pattern, input_str):
-        return "port"
-    elif re.match(mac_pattern, input_str):
-        return "mac"
-    elif re.match(url_pattern, input_str):
-        return "url"
-    elif re.match(asn_pattern, input_str):
-        return "asn"
-    else:
-        return "unknown"
-
-def get_target() -> Tuple[str, str]:
-    init(autoreset=True)
-    while True:
-        print(f"{Fore.RED}{Style.BRIGHT}Enter A Scan Type{Style.RESET_ALL}{Fore.GREEN}{Style.BRIGHT}:{Style.RESET_ALL}\n{Fore.WHITE}1.{Style.RESET_ALL} {Fore.RED}{Style.BRIGHT}LOCAL{Style.RESET_ALL}\n{Fore.WHITE}2.{Style.RESET_ALL} {Fore.RED}{Style.BRIGHT}TARGET{Style.RESET_ALL}")
-        choice = input(f"{Fore.GREEN}{Style.BRIGHT}Type Choice (1 or 2): {Style.RESET_ALL}")
-        if choice == "1":
-            return get_local_ip(), "local"
-        elif choice == "2":
-            print(f"{Fore.RED}Types Include:{Style.RESET_ALL} {Fore.GREEN}[{Style.RESET_ALL}{Fore.WHITE}IP Address, Domain, Port, MAC, URL, ASN{Style.RESET_ALL}{Fore.GREEN}]{Style.RESET_ALL}")
-            target = input(f"{Fore.YELLOW}{Style.BRIGHT}Enter Target Type: {Style.RESET_ALL}")
-            target_type = target_input_type(target)
-            if target_type == "unknown":
-                log("ERROR", f"{Fore.RED}{Style.BRIGHT}Invalid input:{Style.RESET_ALL} {Fore.GREEN}{Style.BRIGHT}{target}{Style.RESET_ALL}")
-            else:
-                target = re.sub(r'^https?://', '', target)
-                target = target.rstrip('/')
-
-                spinner_text = ''.join([Fore.MAGENTA, Style.BRIGHT, 'Locating Target ', target, Style.RESET_ALL])
-                spinners = [
-                    Halo(text=spinner_text, spinner='dots'),
-                    Halo(text=spinner_text, spinner='dots2'),
-                    Halo(text=spinner_text, spinner='dots3'),
-                    Halo(text=spinner_text, spinner='dots4'),
-                    Halo(text=spinner_text, spinner='dots5'),
-                    Halo(text=spinner_text, spinner='dots6'),
-                    Halo(text=spinner_text, spinner='dots7'),
-                    Halo(text=spinner_text, spinner='dots8'),
-                    Halo(text=spinner_text, spinner='dots9'),
-                    Halo(text=spinner_text, spinner='dots10'),
-                    Halo(text=spinner_text, spinner='dots11'),
-                    Halo(text=spinner_text, spinner='dots12')
-                ]
-
-                colors = [Fore.RED, Fore.GREEN, Fore.BLUE, Fore.YELLOW, Fore.CYAN, Fore.MAGENTA]
-                for index, spinner in enumerate(spinners):
-                    color = colors[index % len(colors)]
-                    spinner.text = ''.join([color, Style.BRIGHT, 'Locating Target ', target, Style.RESET_ALL])
-                    spinner.start() # type: ignore
-
-                try:
-                    result = subprocess.run(f"ping -c 1 {target}", shell=True, capture_output=True, text=True)
-                    for spinner in spinners:
-                        spinner.stop()
-
-                    if result.returncode == 0:
-                        log("INFO", f"{Fore.GREEN}{Style.BRIGHT}Ping Check Succeeded{Style.RESET_ALL}{Fore.CYAN}{Style.BRIGHT}:{Style.RESET_ALL}{Fore.MAGENTA}{Style.BRIGHT}[{Style.RESET_ALL}{Fore.WHITE}{Style.BRIGHT}{target}{Style.RESET_ALL}{Fore.MAGENTA}{Style.BRIGHT}]{Style.RESET_ALL}{Fore.GREEN}{Style.BRIGHT}[{Style.RESET_ALL}{Fore.RED}{Style.BRIGHT}TARGET LOCKED{Style.RESET_ALL}{Fore.GREEN}{Style.BRIGHT}]{Style.RESET_ALL}")
-                    else:
-                        log("ERROR", f"{Fore.RED}{Style.BRIGHT}Ping check failed{Style.RESET_ALL}{Fore.GREEN}{Style.BRIGHT}: {Fore.GREEN}{Style.BRIGHT}{target}{Style.RESET_ALL} {Fore.RED}TARGET{Style.RESET_ALL} {Fore.RED}{Style.BRIGHT}FAIL{Style.RESET_ALL}")
-                except Exception as e:
-                    for spinner in spinners:
-                        spinner.stop()
-                    log("ERROR", f"{Fore.RED}{Style.BRIGHT}ERROR RUNNING PING{Style.RESET_ALL}{Fore.GREEN}{Style.BRIGHT}: {e}{Style.RESET_ALL}")
-                return target, target_type
-        else:
-            print(f"{Fore.RED}{Style.BRIGHT}Invalid choice{Style.RESET_ALL}{Fore.GREEN}{Style.BRIGHT}:{Style.RESET_ALL} {Fore.YELLOW}{Style.BRIGHT}Please enter 1 or 2.{Style.RESET_ALL}")
-
-def main():
-    target, target_type = get_target()  # Get target and target type
-
-    if target_type == "domain":
-        resolved_ip = resolve_hostname(target)
-        if resolved_ip:
-            target = resolved_ip
-        else:
-            log("ERROR", f"{Fore.RED}{Style.BRIGHT}Invalid domain: {target}{Style.RESET_ALL}")
+                log("ERROR", f"{Fore.RED}{Style.BRIGHT}Invalid domain: {target}{Style.RESET_ALL}", console=True)
+                return
+        log("INFO", f"{Fore.MAGENTA}{Style.BRIGHT}Setting Up Scan On{Style.RESET_ALL} {Fore.MAGENTA}{Style.BRIGHT}[{Style.RESET_ALL}{Fore.WHITE}{Style.BRIGHT}{target}{Style.RESET_ALL}{Fore.MAGENTA}{Style.BRIGHT}]{Style.RESET_ALL}", console=True)
+        open_ports: Dict[str, List[int]] = {'tcp': [], 'udp': []}
+        try:
+            open_ports = self.nmap_scanner.quick_scan(target)
+            log("INFO", f"{Fore.GREEN}{Style.BRIGHT}Quick Scan Completed.{Style.RESET_ALL} {Fore.CYAN}{Style.BRIGHT}Identified{Style.RESET_ALL} {Fore.RED}{Style.BRIGHT}OPEN PORTS{Style.RESET_ALL}{Fore.GREEN}{Style.BRIGHT}:{Style.RESET_ALL}")
+            if open_ports['tcp']:
+                formatted_tcp_ports = self.format_ports(open_ports['tcp'])
+                log("INFO", f"{Fore.GREEN}{Style.BRIGHT}\n{formatted_tcp_ports}{Style.RESET_ALL}", console=True)
+            if open_ports['udp']:
+                formatted_udp_ports = self.format_ports(open_ports['udp'])
+                log("INFO", f"{Fore.GREEN}{Style.BRIGHT}\n{formatted_udp_ports}{Style.RESET_ALL}", console=True)
+        except Exception as e:
+            log("ERROR", f"{Fore.RED}{Style.BRIGHT}Error occurred during scan: {e}{Style.RESET_ALL}", console=True)
             return
+        detailed_results: Dict[str, Dict[int, Mapping[str, Union[str, List[str], Mapping[str, str]]]]] = {'tcp': {}, 'udp': {}}
+        if open_ports['tcp'] or open_ports['udp']:
+            try:
+                detailed_results = self.distribute_work(target, open_ports)
+            except Exception as e:
+                log("ERROR", f"{Fore.RED}{Style.BRIGHT}Error occurred during detailed scan: {e}{Style.RESET_ALL}", console=True)
+                return
+        self.report_generator.save_reports(detailed_results, tag)
 
-    log("INFO", f"{Fore.MAGENTA}{Style.BRIGHT}Setting Up Scan On{Style.RESET_ALL} {Fore.MAGENTA}{Style.BRIGHT}[{Style.RESET_ALL}{Fore.WHITE}{Style.BRIGHT}{target}{Style.RESET_ALL}{Fore.MAGENTA}{Style.BRIGHT}]{Style.RESET_ALL}")
-    open_ports: Dict[str, List[int]] = {'tcp': [], 'udp': []}
-    nm = nmap.PortScanner()
+        elapsed_time = time.time() - start_time
+        hours = int(elapsed_time // 3600)
+        minutes = int((elapsed_time % 3600) // 60)
+        seconds = int(elapsed_time % 60)
+        log("INFO", f"{Fore.WHITE}{Style.BRIGHT}TOTAL SCAN COMPLETED IN{Style.RESET_ALL}{Fore.GREEN}{Style.BRIGHT}{Fore.MAGENTA}{Style.BRIGHT}[{Style.RESET_ALL}{hours:02d}:{minutes:02d}:{seconds:02d}{Style.RESET_ALL}{Fore.MAGENTA}{Style.BRIGHT}]{Style.RESET_ALL}", console=True)
+
+if __name__ == "__main__":
     try:
-        if target_type == "local":
-            # Quick Scan for local scan
-            open_ports = quick_scan(target, nm)  # Performing the quick scan and getting the open ports
-            log("INFO", f"\n{Fore.GREEN}{Style.BRIGHT}Local Quick Scan Completed.{Style.RESET_ALL} {Fore.CYAN}{Style.BRIGHT}Identified Open Ports:{Style.RESET_ALL} \n{Fore.GREEN}{Style.BRIGHT}[{Style.RESET_ALL}{Fore.RED}{Style.BRIGHT}{', '.join(map(str, open_ports['tcp']))}{Style.RESET_ALL}{Fore.RED}{Style.BRIGHT}{', '.join(map(str, open_ports['udp']))}{Style.RESET_ALL}{Fore.GREEN}{Style.BRIGHT}]{Style.RESET_ALL}\n")  # Printing the identified open ports
-        else:
-            # Quick Scan for target scan
-            open_ports = quick_scan(target, nm)  # Performing the quick scan and getting the open ports
-            log("INFO", f"\n{Fore.GREEN}{Style.BRIGHT}Target Quick Scan Completed.{Style.RESET_ALL} {Fore.CYAN}{Style.BRIGHT}Identified Open Ports:{Style.RESET_ALL} \n{Fore.GREEN}{Style.BRIGHT}[{Style.RESET_ALL}{Fore.RED}{Style.BRIGHT}{', '.join(map(str, open_ports['tcp']))}{Style.RESET_ALL}{Fore.RED}{Style.BRIGHT}{', '.join(map(str, open_ports['udp']))}{Style.RESET_ALL}{Fore.GREEN}{Style.BRIGHT}]{Style.RESET_ALL}\n") # Printing the identified open ports
-    except Exception as e:
-        log("ERROR", f"\n{Fore.RED}{Style.BRIGHT}Error occurred during scan: {e}{Style.RESET_ALL}")
-        return
-
-    # Detailed Scan on Open Ports
-    detailed_results: Dict[str, Dict[int, Dict[str, Union[str, List[str], Dict[str, str]]]]] = {'tcp': {}, 'udp': {}}
-    if open_ports['tcp'] or open_ports['udp']:  # Check if there are any open ports
-        try:
-            detailed_results = distribute_work(target, open_ports)  # Performing the distributed work on the identified open ports
-        except Exception as e:
-            log("ERROR", f"\n{Fore.RED}{Style.BRIGHT}Error occurred during detailed scan: {e}{Style.RESET_ALL}")
-            return
-
-    # Save scan results in parallel
-    save_reports(detailed_results)
-
-def save_reports(detailed_results: Dict[str, Dict[int, Dict[str, Union[str, List[str], Dict[str, str]]]]]):
-    keys_to_ignore = []  # Define keys_to_ignore here
-    xml_path = os.path.join("C:\\YOUR\\FOLDER\\PATH\\GOES\\HERE", f"nmapscan_xml_report_{time.strftime('%Y%m%d%H%M%S')}.xml")
-    report_filename = os.path.join("C:\\YOUR\\FOLDER\\PATH\\GOES\\HERE", f"nmapscan_txt_report_{time.strftime('%Y%m%d%H%M%S')}.txt")
-    results_json_path = os.path.join("C:\\YOUR\\FOLDER\\PATH\\GOES\\HERE", f"nmapscan_json_report_{time.strftime('%Y%m%d%H%M%S')}.json")
-
-    # Define the save_xml_report function
-    def save_xml_report():
-        try:
-            # Ensure the directory exists
-            os.makedirs(os.path.dirname(xml_path), exist_ok=True)
-            # Create the root element of the XML structure
-            root = ET.Element("NmapScanResults")
-            # Iterate over the detailed_results dictionary
-            for _, ports_info in detailed_results.items():  # Ignore the protocol
-                for port, info in ports_info.items():
-                    # Create an XML element for each port
-                    port_elem = ET.SubElement(root, "Port")
-                    port_elem.set("id", str(port))
-                    # Filter out keys with empty values
-                    filtered_info = {k: v for k, v in info.items() if v and v not in ['Not available', 'None']}
-                    # Create XML elements for each piece of information
-                    warning_created = False
-                    for key, value in filtered_info.items():
-                        if isinstance(value, dict):
-                            # For nested dictionaries, we will flatten the structure
-                            for subkey, subvalue in value.items():
-                                if subvalue and subvalue not in ['Not available', 'None']:
-                                    sub_elem = ET.SubElement(port_elem, key + subkey.replace('_', '').capitalize())
-                                    sub_elem.text = str(subvalue)
-                        elif isinstance(value, list):
-                            # For lists, we join the items into a single string
-                            list_elem = ET.SubElement(port_elem, key.replace('_', '').capitalize())
-                            list_elem.text = ', '.join(value)
-                        else:
-                            # Directly assign the value
-                            info_elem = ET.SubElement(port_elem, key.replace('_', '').capitalize())
-                            info_elem.text = str(value)
-                            # Check if the value contains 'vuln' or 'cve'
-                        if not warning_created and ('vuln' in str(value).lower() or 'cve' in str(value).lower()):
-                            warning_elem = ET.SubElement(port_elem, "Warning")
-                            warning_elem.text = "[[-WARNING-]] !POSSIBLE! VULNs ~OR~ CVEs !DETECTED! [[-WARNING-]]"
-                            warning_created = True
-            # Save the XML structure to the specified XML file path
-            tree = ET.ElementTree(root)
-            tree.write(xml_path, encoding='utf-8', xml_declaration=True)
-            log("INFO", f"\n{Fore.CYAN}{Style.BRIGHT}Detailed XML Report Saved To{Style.RESET_ALL} {Fore.GREEN}{Style.BRIGHT}|{Style.RESET_ALL} {Fore.BLUE}{Style.BRIGHT}{xml_path}{Style.RESET_ALL}\n")
-        except Exception as e:
-            log("ERROR", f"\n{Fore.RED}{Style.BRIGHT}Error occurred while saving the detailed XML report: {e}{Style.RESET_ALL}\n")
-
-    # Define the save_json_report function
-    def save_json_report():
-        try:
-            organized_results = {}
-            for _, ports_info in detailed_results.items():  # Ignore the protocol
-                for port, info in ports_info.items():
-                    # Filter out keys with empty values
-                    filtered_info = {k: v for k, v in info.items() if v}
-                    if 'script' in filtered_info:
-                        script_info = filtered_info['script']
-                        if isinstance(script_info, dict):
-                            for key, _ in script_info.items():  # Replace 'value' with underscore (_) to indicate it is intentionally unused
-                                if 'vuln' in key.lower() or 'cve' in key.lower():
-                                    filtered_info['warning'] = '[[-WARNING-]] !POSSIBLE! VULNs ~OR~ CVEs !DETECTED! [[-WARNING-]]'
-                                    break
-                    if port not in organized_results:
-                        organized_results[port] = []
-                    organized_results[port].append(filtered_info)  # type: ignore # Remove the protocol from the dictionary
-            with open(results_json_path, 'w') as json_file:  # Opening the JSON file in write mode
-                json.dump(organized_results, json_file, indent=4)  # Writing the organized scan results to the JSON file with indentation
-            log("INFO", f"\n{Fore.CYAN}{Style.BRIGHT}Detailed JSON Report Saved To{Style.RESET_ALL} {Fore.GREEN}{Style.BRIGHT}|{Style.RESET_ALL} {Fore.RED}{Style.BRIGHT}{results_json_path}{Style.RESET_ALL}\n")
-        except Exception as e:
-            log("ERROR", f"\n{Fore.RED}{Style.BRIGHT}An error occurred while saving the detailed report: {str(e)}{Style.RESET_ALL}\n")
-
-    # Define the save_text_report function
-    def save_text_report():
-        try:
-            with open(report_filename, "w") as report_file:
-                for _, ports_info in detailed_results.items():  # Ignore the protocol
-                    for port, info in ports_info.items():
-                        if any(key not in keys_to_ignore for key in info.keys()):
-                            report_file.write(f"Port {port}:\n")
-                        for field in ['state', 'name', 'product', 'version', 'address', 'machine', 'memory', 'mac', 'mac_vendor', 'device', 'network', 'extrainfo', 'reason', 'osclass', 'osfamily', 'hostname', 'hostnames', 'hostname_type', 'ipv4', 'ipv6', 'ipv4_id', 'ipv6_id', 'osgen', 'osaccuracy', 'osmatch', 'vlan_id', 'vlan_name', 'distance', 'tcp_sequence', 'tcp_options', 'service_info']:
-                            value = info.get(field)
-                            if value and value not in ['Not available', 'None']:
-                                report_file.write(f"  {field.capitalize()}: {value}\n")
-                        report_file.write(f"  Script Output:\n")
-                        script_info = info.get('script', {})
-                        if isinstance(script_info, dict):
-                            for key, value in script_info.items():
-                                if 'vuln' in key.lower() or 'cve' in key.lower():
-                                    report_file.write(f"[[-WARNING-]] !POSSIBLE! VULNs ~OR~ CVEs !DETECTED! [[-WARNING-]]\n  {key}: {value}\n")
-                                elif 'certificate' in key.lower():
-                                    report_file.write(f"  Certificate: {value}\n")
-                                elif 'csrf' in key.lower():
-                                    report_file.write(f"  CSRF: {value}\n")
-                                elif 'ssl-enum-ciphers' in key.lower():
-                                    report_file.write(f"  SSL Ciphers: {value}\n")
-                                elif 'ssh2-enum-algos' in key.lower():
-                                    report_file.write(f"  SSH2 Algorithms: {value}\n")
-                                elif 'http-enum' in key.lower():
-                                    report_file.write(f"  HTTP Directories and Files: {value}\n")
-                                else:
-                                    report_file.write(f"  {key}: {value}\n")
-                        report_file.write("\n")
-            log("INFO", f"\n{Fore.CYAN}{Style.BRIGHT}Detailed TEXT Report Saved To{Style.RESET_ALL} {Fore.GREEN}{Style.BRIGHT}|{Style.RESET_ALL} {Fore.YELLOW}{Style.BRIGHT}{report_filename}{Style.RESET_ALL}\n")
-        except Exception as e:
-            log("ERROR", f"\n{Fore.RED}{Style.BRIGHT}Error occurred while saving the detailed TEXT report: {e}{Style.RESET_ALL}\n")
-
-    # Use ThreadPoolExecutor to save reports in parallel
-    with ThreadPoolExecutor(max_workers=3) as executor:
-        futures = [
-            executor.submit(save_xml_report),
-            executor.submit(save_text_report),
-            executor.submit(save_json_report)
-        ]
-        for future in as_completed(futures):
-            future.result()
-
-    # Timing and final message
-    elapsed_time = time.time() - start_time  # Time difference between start_time and end_time for the last scan in seconds since the last time the script was run
-    hours = int(elapsed_time // 3600)
-    minutes = int((elapsed_time % 3600) // 60)
-    seconds = int(elapsed_time % 60)
-    log("INFO", f"{Fore.WHITE}{Style.BRIGHT}Total process completed in{Style.RESET_ALL}{Fore.GREEN}{Style.BRIGHT} {hours:02d}:{minutes:02d}:{seconds:02d}.{Style.RESET_ALL}")
-
-if __name__ == "__main__":  # Run the script if it is executed directly
-    start_time = time.time()  # Record start time of the script
-    main()
+        cluster = LocalCluster(n_workers=4, threads_per_worker=2)
+        client = Client(cluster)
+    except CommClosedError as e:
+        log("ERROR", f"Dask communication error: {e}", console=True)
+        sys.exit(1)
+    pretty_scan = PrettyScan()
+    pretty_scan.main()
