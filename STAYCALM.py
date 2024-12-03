@@ -1,38 +1,64 @@
+import sys
+import subprocess
+import os
+import platform
+import re
+import threading
+import time
+import logging
+import logging.config
+import socket
+import json
+import ipaddress
+from datetime import datetime
+from typing import Dict, List, Mapping, Optional, Sequence, Set, Tuple, Union
+from urllib.parse import urlparse
+import itertools
 import ast
 import asyncio
 import concurrent.futures
 import importlib.util
-import ipaddress
-import itertools
-import json
-import logging
-import logging.config
-import os
-import platform
-import re
 import shutil
-import socket
-import subprocess
-import sys
-import threading
-import time
 import warnings
 import xml.etree.ElementTree as ET
-from concurrent.futures import (ProcessPoolExecutor, ThreadPoolExecutor,
-                                as_completed)
-from datetime import datetime
+from concurrent.futures import (
+    ProcessPoolExecutor,
+    ThreadPoolExecutor,
+    as_completed,
+)
 from itertools import cycle
 from logging import LogRecord
 from multiprocessing import cpu_count
-from typing import Dict, List, Mapping, Optional, Sequence, Set, Tuple, Union
-from urllib.parse import urlparse
 
 import nmap
 import psutil
 from colorama import Fore, Style, init
 from dask.distributed import Client, LocalCluster
 from distributed.comm.core import CommClosedError
-from halo import Halo  # type: ignore
+from halo import Halo # type: ignore
+
+# Function to check and install required Python packages
+def check_and_install_packages():
+    required_packages = [
+        ('nmap', 'python-nmap'),
+        ('psutil', 'psutil'),
+        ('colorama', 'colorama'),
+        ('halo', 'halo'),
+        ('dask', 'dask[distributed]'),
+        ('distributed', 'distributed'),
+    ]
+    for module_name, package_name in required_packages:
+        try:
+            __import__(module_name)
+        except ImportError:
+            print(f"Installing {package_name}...")
+            subprocess.check_call([sys.executable, "-m", "pip", "install", package_name])
+        except Exception as e:
+            print(f"An error occurred while installing {package_name}: {e}")
+            sys.exit(1)
+
+# Check and install required packages
+check_and_install_packages()
 
 # Suppress specific warnings
 warnings.filterwarnings(
@@ -91,7 +117,6 @@ LOGGING_CONFIG = {
 
 logging.config.dictConfig(LOGGING_CONFIG)
 logger = logging.getLogger(__name__)
-
 
 def strip_ansi_codes(text: str) -> str:
     ansi_escape = re.compile(r"\x1B[@-_][0-?]*[ -/]*[@-~]")
