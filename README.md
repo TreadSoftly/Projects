@@ -155,6 +155,20 @@ Transform this setup into a mobile hacking lab, enabling hands-on experimentatio
 
 </div>
 
+<div align="center">
+
+## Drone & RF Projects
+
+</div>
+
+- [OSINT_PaperPlanes.md](OSINT_PaperPlanes.md)
+- [OSINT_Sanctioned.md](OSINT_Sanctioned.md)
+- [SIGINT_MosquitoesBuzz.md](SIGINT_MosquitoesBuzz.md)
+- [SIGINT_MosquitoesRF.md](SIGINT_MosquitoesRF.md)
+- [SIGINT_Ants.md](SIGINT_Ants.md)
+- [SIGINT_BugZapperRF.py](SIGINT_BugZapperRF.py)
+- [GEOSINT_WarArt_Gallery.md](GEOSINT_WarArt_Gallery.md)
+
 Whether a seasoned pro or an aspiring ethical hacker, this rig's blend of **power**, **connectivity**, and **freedom** offers an unmatched platform for cybersecurity operations. 🛡
 
 <div align="center">
