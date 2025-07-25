@@ -54,17 +54,17 @@
 <br>
 
 <p align="center"><img src="https://i.imgur.com/rB9C8iS.jpg" height="50%" width="50%" alt="Image of the complete setup"/></p>
-<p align="justify">The image above is a snapshot of the fully assembled Raspberry Pi 4 Kali Linux build. This compact powerhouse is designed with portability and efficiency in mind. The build is carefully crafted with a Raspberry Pi 4, coupled with Kali Linux OS, and a host of meticulously selected components. It's equipped to run advanced penetration tests, conduct cybersecurity research, and perform a variety of other tasks. The system can be accessed remotely via SSH, perform packet injection scans with its Alfa wirelss card and has Bluetooth functionality, adding to its versatility. This build truly embodies the fusion of hardware and software, showcasing the potential of small-scale computing devices.</p>
+<p align="justify">The image above is a snapshot of the fully assembled Raspberry Pi 4 Kali Linux build. This compact rig is designed with portability and efficiency in mind. The build is setup with a Raspberry Pi 4, coupled with Kali Linux OS, and a host of thoughtfully selected components. It's equipped to run penetration tests, conduct research, and perform a variety of other tasks. The build can be accessed remotely via SSH, perform packet injection scans with the Alfa wirelss card and has Bluetooth capabilities. This build showcases the potential of small-scale computing devices.</p>
 <br>
 
 <h3 align="center">Kali With/Without The Screen SSH Mode: Testing Process</h3>
 <p align="center"><img src="https://i.imgur.com/YUs6IMB.jpg" height="50%" width="50%" alt="Image of Raspberry Pi with accessories"/></p>
-<p align="justify">The second image encapsulates the testing phase of the build. It's a critical process where each individual component and the system as a whole are put through rigorous tests to ensure optimal performance and that it does not fail when needed. The picture shows the build without the screen, highlighting its ability to be operated remotely through an Android app using SSH. The integration of an external SSD and remote server/storage setup is also being tested here, verifying the build's expanded storage capabilities and its ability to handle network tasks efficiently.</p>
+<p align="justify">The second image displays the testing phase of the build. It's a critical process where each individual component and the system as a whole are put through tests to ensure correct performance and that it doesn't fail when needed. The picture shows the build without the screen, highlighting its ability to be operated remotely through an Android app using SSH. The integration of an external SSD and remote server/storage setup is also being tested here, verifying the build's expanded storage capabilities and its ability to handle network tasks efficiently.</p>
 <br>
 
 <h3 align="center">Everything Broken Down: Size Comparison</h3>
 <p align="center"><img src="https://i.imgur.com/x001L8u.jpg" height="50%" width="50%" alt="Image of the device with screen attached"/></p>
-<p align="justify">Here I want to provides a perspective on the modularity & compact size of the build. With the Raspberry Pi and its associated hardware, it manages to fit a powerful computing system into the palm of a hand. Despite its small size, it's equipped to perform a wide range of tasks, from simple computing operations to complex network penetration tests. It's a testament to how far we've come in the realm of miniaturization and portable computing.</p>
+<p align="justify">Here I want to provide a perspective on the modularity & compact size of the build. With the Raspberry Pi and its associated hardware, it manages to fit a computing system into the palm of a hand. Despite its small size, it's equipped to perform a wide range of tasks, from simple computing operations to network penetration tests.</p>
 <br>
 
 
@@ -157,7 +157,7 @@ Transform this setup into a mobile hacking lab, enabling hands-on experimentatio
 
 <div align="center">
 
-This rig will get some work done wirh it's blend of **power**, **connectivity**, and **freedom** offers an unmatched platform for cybersecurity operations. 🛡
+This rig will get some work done with it's blend of **power**, **connectivity**, and **freedom** offers an unmatched platform for cybersecurity operations. 🛡
 
 <div align="center">
 <br>
